@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification  } from "firebase/auth";
 
 // Your web app's Firebase configuration
@@ -21,7 +21,7 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-const signUp = (email, password) => {
+const signUp = (email, password, firstName, lastName) => {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -29,6 +29,13 @@ const signUp = (email, password) => {
         const user = userCredential.user;
         // Send verification emeil
         sendVerificationEmail();
+        // create a new user on firestore db
+        createUserOnDb(email, firstName, lastName)
+        .then(() => {
+            console.log("User created");
+        }).catch(error => {
+            // ...
+        });
         // ...
     })
     .catch((error) => {
@@ -67,6 +74,15 @@ const sendVerificationEmail = () => {
     .then(() => {
         // Email verification sent!
         // ...
+    });
+}
+
+const createUserOnDb = async (email, firstName, lastName) => {
+    // Add a new document in collection "users"
+    await db.collection("users").doc().set({
+        firstName: firstName,
+        lastName: lastName,
+        email: email
     });
 }
 
