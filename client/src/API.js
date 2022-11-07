@@ -21,34 +21,56 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-const signUp = (email, password, firstName, lastName) => {
+const signUp = async (email, password, firstName, lastName) => {
     const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    let userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    // to do in other components
+    /*.then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        // Send verification emeil
-        sendVerificationEmail();
-        // create a new user on firestore db
-        createUserOnDb(email, firstName, lastName)
-        .then(() => {
-            console.log("User created");
-        }).catch(error => {
-            // ...
-        });
         // ...
     })
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         // ..
-    });
+    });*/
+    
+    await updateProfile(auth.currentUser, {
+        displayName: firstName + lastName
+    })
+    /*.then(() => {
+        // Profile updated!
+        // ...
+    }).catch((error) => {
+        // An error occurred
+        // ...
+    });*/
+
+    // Send verification emeil
+    await sendVerificationEmail();
+    /*.then(() => {
+        // Email verification sent!
+        // ...
+    });*/
+
+    // create a new user on firestore db
+    await createUserOnDb(email, firstName, lastName)
+    // to do in other components
+    /*.then(() => {
+        console.log("User created");
+    }).catch(error => {
+        // ...
+    });*/
+
+    return userCredential // or userCredential.user(?)
 }
 
-const logIn = (email, password) => {
+const logIn = async (email, password) => {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    await signInWithEmailAndPassword(auth, email, password)
+    // to do in other components
+    /*.then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
         // ...
@@ -56,25 +78,23 @@ const logIn = (email, password) => {
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-    });
+    });*/
 }
 
-const logOut = () => {
+const logOut = async () => {
     const auth = getAuth();
-    signOut(auth).then(() => {
+    await signOut(auth)
+    // to do in other components
+    /*.then(() => {
         // Sign-out successful.
     }).catch((error) => {
         // An error happened.
-    });
+    });*/
 }
 
-const sendVerificationEmail = () => {
+const sendVerificationEmail = async () => {
     const auth = getAuth();
-    sendEmailVerification(auth.currentUser)
-    .then(() => {
-        // Email verification sent!
-        // ...
-    });
+    await sendEmailVerification(auth.currentUser)
 }
 
 const createUserOnDb = async (email, firstName, lastName) => {
