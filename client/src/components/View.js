@@ -15,6 +15,7 @@ function DefaultRoute() {
     );
 }
 
+
 function AppLayout(props) {
     return (
         <Container fluid>
@@ -33,4 +34,4 @@ function AppLayout(props) {
 
 
 
-export { DefaultRoute, AppLayout };
+export { DefaultRoute, AppLayout};

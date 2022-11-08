@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AppLayout, DefaultRoute } from './components/View';
-
+import { HikeForm } from './components/HikeForm';
 
 function App() {
   return (
@@ -10,11 +10,10 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-          <Route path='/' element={<AppLayout />}></Route>
-
-
-
-          <Route path='*' element={<DefaultRoute />} />
+          <Route path='/' element={<AppLayout />}>
+            <Route path='/hikeform' element={<HikeForm/>}/>
+            <Route path='*' element={<DefaultRoute />} />
+          </Route>
 
         </Routes>
       </BrowserRouter>
