@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 // import API from './API.js'
 import NavBar from './components/NavBar';
 import AuthenticationContext from './components/AuthenticationContext';
-import { Container } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 
 
 function App() {
@@ -36,8 +36,15 @@ function App() {
 
 
   //value for AuthenticationContext
+  // let authObject = {
+  //   authUser: authUser,
+  //   authErr: authErr,
+  //   onLogin: login,
+  //   onLogout: logout
+  // };
+
   let authObject = {
-    authUser: authUser,
+    authUser: {name: 'Luca'},
     authErr: authErr,
     onLogin: login,
     onLogout: logout
@@ -49,15 +56,23 @@ function App() {
       <AuthenticationContext.Provider value={authObject}>
         <BrowserRouter>
           <NavBar />
-          <Routes>
+          <Container fluid>
+            <Row>
+              <Col lg={2}/>
+              <Col>
+                <Routes>
 
-            <Route path='/' element={<AppLayout />}></Route>
+                  <Route path='/' element={<AppLayout />}></Route>
 
 
 
-            <Route path='*' element={<DefaultRoute />} />
+                  <Route path='*' element={<DefaultRoute />} />
 
-          </Routes>
+                </Routes>
+              </Col>
+              <Col lg={2}/>
+            </Row>
+          </Container>
         </BrowserRouter>
       </AuthenticationContext.Provider>
     </>
