@@ -12,6 +12,8 @@ body {
 .profile-link {
   color: lightgray;
   text-decoration: none;
-}:hover {
+}
+
+.profile-link:hover {
   color: lightgray !important;
 }
