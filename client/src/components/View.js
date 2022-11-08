@@ -1,4 +1,4 @@
-import { Row, Col, Container, Button, Navbar } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import { Link, Outlet } from 'react-router-dom';
 
 
@@ -18,14 +18,6 @@ function DefaultRoute() {
 function AppLayout(props) {
     return (
         <Container fluid>
-            <Navbar bg="primary" variant="dark">
-                <Container>
-                    <Navbar.Brand >
-                        Hike Tracker
-                    </Navbar.Brand>
-                </Container>
-            </Navbar>
-
             <Outlet />
         </Container>
     );
