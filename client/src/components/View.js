@@ -17,9 +17,10 @@ function DefaultRoute() {
 
 function AppLayout(props) {
     return (
-        <Container fluid>
+        <>
+            Hi there!
             <Outlet />
-        </Container>
+        </>
     );
 }
 
