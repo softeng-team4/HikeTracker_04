@@ -106,5 +106,11 @@ const createUserOnDb = async (email, firstName, lastName) => {
     });
 }
 
-const API = { signUp, logIn, logOut };
+//Queries for the hike collection
+
+const addNewHike = async (hike) =>{
+    await db.collection("hikes").doc().set(hike)
+}
+
+const API = { signUp, logIn, logOut, addNewHike };
 export default API;
