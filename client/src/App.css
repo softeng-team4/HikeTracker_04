@@ -17,3 +17,8 @@ body {
 .nav-dropdown-link:hover {
   color: lightgray !important;
 }
+
+.leaflet-container {
+  width: 100wh; 
+  height: 30vh;
+}
