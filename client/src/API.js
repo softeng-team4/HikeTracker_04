@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification  } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -23,6 +23,7 @@ const db = getFirestore(app);
 
 const signUp = async (email, password, firstName, lastName) => {
     const auth = getAuth();
+    console.log(email, password, firstName, lastName);
     let userCredential = await createUserWithEmailAndPassword(auth, email, password)
     // to do in other components
     /*.then((userCredential) => {
@@ -70,15 +71,15 @@ const logIn = async (email, password) => {
     const auth = getAuth();
     await signInWithEmailAndPassword(auth, email, password)
     // to do in other components
-    /*.then((userCredential) => {
+    .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        // ...
+        return user;
     })
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-    });*/
+    });
 }
 
 const logOut = async () => {
