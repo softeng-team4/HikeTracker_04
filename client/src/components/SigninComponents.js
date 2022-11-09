@@ -31,7 +31,7 @@ function SigninForm(props) {
     }
     console.log(role);
     if (valid) {
-      props.signin(username, password, firstName, lastName)
+      props.signup(username, password, firstName, lastName, role)
         .catch((err) => {
           setErrorMessage("Email already used");
           valid = false;

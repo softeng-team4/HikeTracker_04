@@ -25,8 +25,8 @@ const NavBar = (props) => {
                                 <Navbar.Collapse className='justify-content-end' id="nav-toggle">
                                     {authObject.authUser &&
                                         <>
-                                            <DropdownButton className='d-flex align-items-center' title={<><FaRegUserCircle className='react-icon align-self-center'/>{'   '}{authObject.authUser.name.toUpperCase()}</>} variant='outline-dark' align={{ sm: 'end' }} menuVariant='dark'>
-                                                <Dropdown.Item ><NavLink className='profile-link' to={`/${authObject.authUser.name.toLowerCase()}`} variant='dark'>Your profile</NavLink></Dropdown.Item>
+                                            <DropdownButton className='d-flex align-items-center' title={<><FaRegUserCircle className='react-icon align-self-center'/>{'   '}{authObject.authUser.firstName.toUpperCase()}</>} variant='outline-dark' align={{ sm: 'end' }} menuVariant='dark'>
+                                                <Dropdown.Item ><NavLink className='profile-link' to={`/${authObject.authUser.firstName.toLowerCase()}`} variant='dark'>Your profile</NavLink></Dropdown.Item>
                                                 <Dropdown.Divider />
                                                 <Dropdown.Item onClick={() => authObject.onLogout()}>Sign out</Dropdown.Item>
                                             </DropdownButton>

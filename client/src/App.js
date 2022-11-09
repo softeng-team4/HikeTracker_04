@@ -13,7 +13,6 @@ import { SigninForm } from './components/SigninComponents';
 
 function App() {
 
-
   //states of authentication of an Admin
   const [authUser, setAuthUser] = useState(undefined);
   const [authErr, setAuthErr] = useState(undefined);
@@ -23,22 +22,27 @@ function App() {
   const login = async (email, password) => {
     try {
       const user = await API.logIn(email, password);
-      console.log(user);
-      setAuthUser({name: "Gianmarco"});
+      setAuthUser(user);
     } catch (err) {
+      console.log(err);
       setAuthErr(err);
     }
   }
   const logout = async () => {
+    try {
     await API.logOut();
     setAuthUser(undefined);
     setAuthErr(undefined);
+    } catch(err) {
+      console.log(err);
+    }
   }
 
-  const signup = async (email, password, firstName, lastName) => {
+  const signup = async (email, password, firstName, lastName, role) => {
     try {
-      const user = await API.signUp(email, password, firstName, lastName);
+      const user = await API.signUp(email, password, firstName, lastName, role);
     } catch (err) {
+      console.log(err);
       setMessage({ msg: err, type: 'danger' });
     }
   }
