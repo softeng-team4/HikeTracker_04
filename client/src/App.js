@@ -63,10 +63,9 @@ function App() {
               <Col>
                 <Routes>
 
-                  <Route path='/' element={<AppLayout />}></Route>
-
-                  <Route path='/' element={<AppLayout onLogOut={logout} loggedIn={login}/>}></Route>
-                  <Route path='/login' element={authUser ? <Navigate to='/'/> : <LoginForm login={login} />}/>
+                  <Route path='/' element={<Navigate to='/home'/>}/>
+                  <Route path='/home' element={<AppLayout onLogOut={logout} loggedIn={login}/>}></Route>
+                  <Route path='/login' element={authUser ? <Navigate to='/home'/> : <LoginForm login={login} />}/>
                   <Route path='/signup' element={<SigninForm signup={signup}/>}></Route>
 
                   <Route path='*' element={<DefaultRoute />} />
