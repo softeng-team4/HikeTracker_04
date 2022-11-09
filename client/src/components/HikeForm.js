@@ -2,10 +2,10 @@
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 
 import { useState } from "react"
-import { Form, Row, Col, Container, Button } from "react-bootstrap"
+import { Form, Row, Col, Container, Button, ToggleButtonGroup, ToggleButton } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
-import icon from 'leaflet'
+import L from 'leaflet'
 
 function HikeForm() {
 
@@ -17,6 +17,7 @@ function HikeForm() {
     const [difficulty, setDifficulty] = useState(undefined);
     const [description, setDescription] = useState(undefined);
     const [validated, setValidated] = useState(false);
+    const [point, setPoint] = useState(1)
 
     const handleSubmit = async (event) => {
         const form = event.currentTarget;
@@ -107,25 +108,46 @@ function HikeForm() {
                 {/* <Col sm={2}>
                     <Form.Label>Start Point:</Form.Label>
                 </Col> */}
-                <Col >
-                    <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
-                        <TileLayer
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Marker position={[51.505, -0.09]}>
-                            <Popup>
+                <Row>
+                    <Col sm={2}>Choose Hike Points:</Col>
+                    <Col>
+                        <ToggleButtonGroup type="radio" name="options" defaultValue={1} >
+                            <ToggleButton variant='outline-primary' id="tbg-radio-1" value={1} onChange={(e) => { setPoint(e.target.value) }}>
                                 Start Point
-                            </Popup>
-                        </Marker>
-                        <Marker position={[51.505, -0.10]}>
-                            <Popup>
+                            </ToggleButton>
+                            <ToggleButton variant='outline-primary' id="tbg-radio-2" value={2} onChange={(e) => { setPoint(e.target.value) }}>
                                 End Point
-                            </Popup>
-                        </Marker>
-                        <LocationMarker/>
-                    </MapContainer>
-                </Col>
+                            </ToggleButton>
+                            <ToggleButton variant='outline-primary' id="tbg-radio-3" value={3} onChange={(e) => { setPoint(e.target.value) }}>
+                                Preference Points
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col >
+                        <MapContainer center={[45.06294822296754, 7.662272990156818]} zoom={13} scrollWheelZoom={false}>
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                            <LocationMarker />
+
+                        </MapContainer>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col><Button variant='primary'
+                        onClick={() => {
+                            //add into db
+                            //if ponit=1, add into start point
+                            //if ponit=2, add into end point
+                            //if ponit=3, add into preference point
+
+                        }}
+                    >save
+                    </Button></Col>
+                </Row>
             </Form.Group>
             {/* <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
@@ -155,23 +177,26 @@ function HikeForm() {
     )
 }
 
-function LocationMarker() {
-    const [position, setPosition] = useState(null)
+function LocationMarker(props) {
+    const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
     const map = useMapEvents({
-      click() {
-        map.locate()
-      },
-      locationfound(e) {
-        setPosition(e.latlng)
-        map.flyTo(e.latlng, map.getZoom())
-      },
+        click(e) {
+            setPosition(e.latlng)
+            console.log(position)
+        },
+        locationfound(e) {
+            // setPosition(e.latlng)
+            map.flyTo(e.latlng, map.getZoom())
+        },
     })
-  
+
     return position === null ? null : (
-      <Marker position={position}>
-        <Popup>You are here</Popup>
-      </Marker>
+
+        <Marker position={position}>
+            <Popup>Start point</Popup>
+        </Marker>
     )
-  }
+}
+
 
 export { HikeForm }
