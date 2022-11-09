@@ -4,7 +4,7 @@ import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import { useState } from "react"
 import { Form, Row, Col, Container, Button } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
-import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
 import icon from 'leaflet'
 
 function HikeForm() {
@@ -123,6 +123,7 @@ function HikeForm() {
                                 End Point
                             </Popup>
                         </Marker>
+                        <LocationMarker/>
                     </MapContainer>
                 </Col>
             </Form.Group>
@@ -153,5 +154,24 @@ function HikeForm() {
         </Form>
     )
 }
+
+function LocationMarker() {
+    const [position, setPosition] = useState(null)
+    const map = useMapEvents({
+      click() {
+        map.locate()
+      },
+      locationfound(e) {
+        setPosition(e.latlng)
+        map.flyTo(e.latlng, map.getZoom())
+      },
+    })
+  
+    return position === null ? null : (
+      <Marker position={position}>
+        <Popup>You are here</Popup>
+      </Marker>
+    )
+  }
 
 export { HikeForm }
