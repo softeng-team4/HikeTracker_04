@@ -12,7 +12,7 @@ const NavBar = (props) => {
         <AuthenticationContext.Consumer>
             {(authObject) => (
                 <>
-                    <Container fluid>
+                    <Container fluid className='NavBarContainer'>
                         <Row>
                             <Col lg={2} />
                             <Col>
