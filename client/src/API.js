@@ -74,7 +74,7 @@ const getUser = async (email) => {
     if (docSnap.exists()) {
         return docSnap.data();
     } else {
-        throw new new TypeError("User not found");
+        throw new TypeError("User not found");
     }
 }
 
