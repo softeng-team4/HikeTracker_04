@@ -26,9 +26,9 @@ const NavBar = (props) => {
                                     {authObject.authUser &&
                                         <>
                                             <DropdownButton className='d-flex align-items-center' title={<><FaRegUserCircle className='react-icon align-self-center'/>{'   '}{authObject.authUser.name.toUpperCase()}</>} variant='outline-dark' align={{ sm: 'end' }} menuVariant='dark'>
-                                                <Dropdown.Item ><NavLink className='profile-link' to={`/${authObject.authUser.name.toLowerCase()}`} variant='dark'>Your profile</NavLink></Dropdown.Item>
+                                                <Dropdown.Item ><NavLink className='nav-dropdown-link' to={`/${authObject.authUser.name.toLowerCase()}`} variant='dark'>Your profile</NavLink></Dropdown.Item>
                                                 <Dropdown.Divider />
-                                                <Dropdown.Item onClick={() => authObject.onLogout()}>Sign out</Dropdown.Item>
+                                                <Dropdown.Item onClick={() => authObject.onLogout()}><NavLink className='nav-dropdown-link' to='/' variant='dark'>Sign out</NavLink></Dropdown.Item>
                                             </DropdownButton>
                                         </>
                                     }

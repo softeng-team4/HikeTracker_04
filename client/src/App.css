@@ -9,11 +9,11 @@ body {
   color: #292b2c !important;
 }
 
-.profile-link {
+.nav-dropdown-link {
   color: lightgray;
   text-decoration: none;
 }
 
-.profile-link:hover {
+.nav-dropdown-link:hover {
   color: lightgray !important;
 }
