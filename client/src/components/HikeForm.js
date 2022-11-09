@@ -18,6 +18,8 @@ function HikeForm() {
     const [description, setDescription] = useState(undefined);
     const [validated, setValidated] = useState(false);
     const [point, setPoint] = useState(1)
+    const [positionData, setPositionData] = useState([45.06294822296754, 7.662272990156818])
+
 
     const handleSubmit = async (event) => {
         const form = event.currentTarget;
@@ -46,7 +48,10 @@ function HikeForm() {
         • Description
         • Point can be: address, name of location, GPS coordinates, hut, parking lot
     */
-
+    function getPosition(data){
+        setPositionData(data);
+        // console.log('parent',positionData)
+    }
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
             <Form.Group as={Row} className="mb-3">
@@ -131,8 +136,10 @@ function HikeForm() {
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
-                            <LocationMarker />
-
+                            <LocationMarker getPosition={getPosition}/>
+                            {/* if start point? show marker
+                            if end point? show marker
+                            if preference point? show marker */}
                         </MapContainer>
                     </Col>
                 </Row>
@@ -157,14 +164,14 @@ function HikeForm() {
                     TBD
                 </Col>
             </Form.Group> */}
-            <Form.Group as={Row} className="mb-3">
+            {/* <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Reference Point:</Form.Label>
                 </Col>
                 <Col >
                     TBD
                 </Col>
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group className="mb-3">
                 <Form.Label>Description:</Form.Label>
                 <Form.Control required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
@@ -181,8 +188,9 @@ function LocationMarker(props) {
     const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
     const map = useMapEvents({
         click(e) {
-            setPosition(e.latlng)
-            console.log(position)
+            setPosition(e.latlng);
+            props.getPosition(position);
+            // console.log(position)
         },
         locationfound(e) {
             // setPosition(e.latlng)
@@ -195,6 +203,7 @@ function LocationMarker(props) {
         <Marker position={position}>
             <Popup>Start point</Popup>
         </Marker>
+        
     )
 }
 
