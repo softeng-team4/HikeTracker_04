@@ -1,15 +1,18 @@
 
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Form, Row, Col, Container, Button, ToggleButtonGroup, ToggleButton } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 
-function HikeForm() {
+function HikeForm(props) {
 
     let navigate = useNavigate()
+    const [point, setPoint] = useState('1');
+    const [num, setNum] = useState('0')
+    const [selection, setSelection] = useState(undefined)
     const [title, setTitle] = useState(undefined);
     const [length, setLength] = useState(undefined);
     const [expectedTime, setExpectedTime] = useState(undefined);
@@ -17,9 +20,17 @@ function HikeForm() {
     const [difficulty, setDifficulty] = useState(undefined);
     const [description, setDescription] = useState(undefined);
     const [validated, setValidated] = useState(false);
-    const [point, setPoint] = useState(1)
     const [positionData, setPositionData] = useState([45.06294822296754, 7.662272990156818])
+    const [startPoint, setStartPoint] = useState([null, null])
+    const [endPoint, setEndPoint] = useState([null, null])
+    const [referencePoint, setReferencePoint] = useState('')
 
+    // getPoint();
+
+    useEffect(() => {
+
+        console.log(point)
+    }, [point])
 
     const handleSubmit = async (event) => {
         const form = event.currentTarget;
@@ -35,6 +46,13 @@ function HikeForm() {
         console.log("Description:" + description)
         setValidated(true);
     };
+
+    const pointRef = useRef('1')
+    const handlePoint = (e) => {
+        setPoint(e.target.value);
+        pointRef.current = e.target.value;
+        console.log(e.target.value, point, pointRef.current)
+    }
     /*
     Data format for a hike:
         • Title/label
@@ -48,10 +66,12 @@ function HikeForm() {
         • Description
         • Point can be: address, name of location, GPS coordinates, hut, parking lot
     */
-    function getPosition(data){
+    function getPosition(data) {
         setPositionData(data);
-        // console.log('parent',positionData)
+        console.log('parent', positionData)
     }
+    // setTimeout((e) => { setPoint(e); console.log('value', e, point) }, 0);
+
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
             <Form.Group as={Row} className="mb-3">
@@ -117,14 +137,14 @@ function HikeForm() {
                     <Col sm={2}>Choose Hike Points:</Col>
                     <Col>
                         <ToggleButtonGroup type="radio" name="options" defaultValue={1} >
-                            <ToggleButton variant='outline-primary' id="tbg-radio-1" value={1} onChange={(e) => { setPoint(e.target.value) }}>
+                            <ToggleButton variant='outline-primary' id="tbg-radio-1" value={1} onChange={handlePoint}>
                                 Start Point
                             </ToggleButton>
-                            <ToggleButton variant='outline-primary' id="tbg-radio-2" value={2} onChange={(e) => { setPoint(e.target.value) }}>
+                            <ToggleButton variant='outline-primary' id="tbg-radio-2" value={2} onChange={handlePoint}>
                                 End Point
                             </ToggleButton>
-                            <ToggleButton variant='outline-primary' id="tbg-radio-3" value={3} onChange={(e) => { setPoint(e.target.value) }}>
-                                Preference Points
+                            <ToggleButton variant='outline-primary' id="tbg-radio-3" value={3} onChange={handlePoint}>
+                                Preference PointssetPoint
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </Col>
@@ -136,10 +156,11 @@ function HikeForm() {
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
-                            <LocationMarker getPosition={getPosition}/>
+                            <LocationMarker getPosition={getPosition} />
                             {/* if start point? show marker
                             if end point? show marker
                             if preference point? show marker */}
+                            {/* {startPoint === [null, null] ? '':<Marker position={startPoint}></Marker> } */}
                         </MapContainer>
                     </Col>
                 </Row>
@@ -148,8 +169,19 @@ function HikeForm() {
                         onClick={() => {
                             //add into db
                             //if ponit=1, add into start point
+                            console.log('before', pointRef.current, '>>>', startPoint);
+
+                            pointRef.current === '1' ? setStartPoint(positionData) : setStartPoint([null, null]);
+                            console.log(pointRef.current, '>>>start', startPoint);
                             //if ponit=2, add into end point
+                            pointRef.current === '2' ? setEndPoint(positionData) : setEndPoint([null, null]);
+                            console.log(pointRef.current, '>>>end', endPoint);
+
                             //if ponit=3, add into preference point
+                            pointRef.current === '3' ? setReferencePoint(positionData) : setReferencePoint([null, null]);
+                            console.log(pointRef.current, '>>>pre', referencePoint);
+
+
 
                         }}
                     >save
@@ -187,9 +219,9 @@ function HikeForm() {
 function LocationMarker(props) {
     const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
     const map = useMapEvents({
-        click(e) {
+        async click(e) {
             setPosition(e.latlng);
-            props.getPosition(position);
+            await props.getPosition(position);
             // console.log(position)
         },
         locationfound(e) {
@@ -203,7 +235,7 @@ function LocationMarker(props) {
         <Marker position={position}>
             <Popup>Start point</Popup>
         </Marker>
-        
+
     )
 }
 
