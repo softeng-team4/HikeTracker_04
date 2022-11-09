@@ -1,7 +1,32 @@
+import { useState } from "react"
 import { Form, Row, Col, Container, Button } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
+
 
 function HikeForm() {
-    let title, length, ascent, difficulty, description
+    let navigate = useNavigate()
+    const [title, setTitle] = useState(undefined);
+    const [length, setLength] = useState(undefined);
+    const [expectedTime, setExpectedTime] = useState(undefined);
+    const [ascent, setAscent] = useState(undefined);
+    const [difficulty, setDifficulty] = useState(undefined);
+    const [description, setDescription] = useState(undefined);
+    const [validated, setValidated] = useState(false);
+
+    const handleSubmit = async(event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        console.log("Title:"+title)
+        console.log("Length:"+length)
+        console.log("Expected Time:"+expectedTime)
+        console.log("Ascent:"+ascent)
+        console.log("Difficulty:"+difficulty)
+        console.log("Description:"+description)
+        setValidated(true);
+    };
     /*
     Data format for a hike:
         • Title/label
@@ -16,13 +41,15 @@ function HikeForm() {
         • Point can be: address, name of location, GPS coordinates, hut, parking lot
     */
     return (
-        <Container className="mt-3">
+        <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Title:</Form.Label>
                 </Col>
                 <Col>
-                    <Form.Control type='text' value={title} defaultValue={undefined} onChange={() => { } /*(event) => { doSomething(event.target.value);} */} />
+                    <Form.Control required type='text' onChange={(event) => setTitle(event.target.value)} />
+                    <Form.Control.Feedback>Valid title!</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Please insert a title.</Form.Control.Feedback>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
@@ -30,7 +57,9 @@ function HikeForm() {
                     <Form.Label>Length:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control type='number' value={length} defaultValue={undefined} min={0} onChange={() => { } /*(event) => { doSomething(event.target.value);} */} />
+                    <Form.Control required type='number' defaultValue={undefined} min={0} onChange={(event) => setLength(event.target.value) } />
+                    <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Please insert the length. It must be a positive integer.</Form.Control.Feedback>
                 </Col>
                 <Col sm={1}>Km</Col>
             </Form.Group>
@@ -39,7 +68,9 @@ function HikeForm() {
                     <Form.Label>Expected time:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control type='number' value={length} defaultValue={undefined} min={0} onChange={() => { } /*(event) => { doSomething(event.target.value);} */} />
+                    <Form.Control required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value) } />
+                    <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>                
                 </Col>
                 <Col sm={1}>minutes</Col>
             </Form.Group>
@@ -48,7 +79,9 @@ function HikeForm() {
                     <Form.Label>Ascent:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control type='number' value={ascent} defaultValue={undefined} min={0} onChange={() => { } /*(event) => { doSomething(event.target.value);} */} />
+                    <Form.Control required type='number' defaultValue={undefined} min={0} onChange={(event) => setAscent(event.target.value) } />
+                    <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Please insert the ascent. It must be a positive integer.</Form.Control.Feedback>
                 </Col>
                 <Col sm={1}>m</Col>
             </Form.Group>
@@ -57,10 +90,10 @@ function HikeForm() {
                     <Form.Label>Difficulty:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select value={difficulty} defaultValue={undefined} min={0} onChange={() => { } /*(event) => { doSomething(event.target.value);} */}>
-                        <option value="1">Tourist</option>
-                        <option value="2">Hiker</option>
-                        <option value="3">Professional Hiker</option>
+                    <Form.Select required defaultValue={undefined} min={0} onChange={(event) => setDifficulty(event.target.value) }>
+                        <option value={1}>Tourist (Easy)</option>
+                        <option value={2}>Hiker (Medium)</option>
+                        <option value={3}>Professional Hiker (Hard)</option>
                     </Form.Select>
                 </Col>
             </Form.Group>
@@ -90,9 +123,13 @@ function HikeForm() {
             </Form.Group>
             <Form.Group className="mb-3">
                 <Form.Label>Description:</Form.Label>
-                <Form.Control as='textarea' rows={3} value={description} defaultValue={undefined} onChange={() => { } /*(event) => { doSomething(event.target.value);} */} />
+                <Form.Control required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value) } />
+                <Form.Control.Feedback>Valid description!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>               
             </Form.Group>
-        </Container>
+            <Button variant='success' type="submit">Submit form</Button>
+            <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
+        </Form>
     )
 }
 
