@@ -66,7 +66,7 @@ function HikeForm(props) {
         • Description
         • Point can be: address, name of location, GPS coordinates, hut, parking lot
     */
-    function getPosition(data) {
+    async function getPosition(data) {
         setPositionData(data);
         console.log('parent', positionData)
     }
@@ -144,7 +144,7 @@ function HikeForm(props) {
                                 End Point
                             </ToggleButton>
                             <ToggleButton variant='outline-primary' id="tbg-radio-3" value={3} onChange={handlePoint}>
-                                Preference PointssetPoint
+                                Preference Points
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </Col>
@@ -171,14 +171,14 @@ function HikeForm(props) {
                             //if ponit=1, add into start point
                             console.log('before', pointRef.current, '>>>', startPoint);
 
-                            pointRef.current === '1' ? setStartPoint(positionData) : setStartPoint([null, null]);
+                            pointRef.current === '1' ? setStartPoint(positionData) : setStartPoint(startPoint);
                             console.log(pointRef.current, '>>>start', startPoint);
                             //if ponit=2, add into end point
-                            pointRef.current === '2' ? setEndPoint(positionData) : setEndPoint([null, null]);
+                            pointRef.current === '2' ? setEndPoint(positionData) : setEndPoint(endPoint);
                             console.log(pointRef.current, '>>>end', endPoint);
 
                             //if ponit=3, add into preference point
-                            pointRef.current === '3' ? setReferencePoint(positionData) : setReferencePoint([null, null]);
+                            pointRef.current === '3' ? setReferencePoint(positionData) : setReferencePoint(referencePoint);
                             console.log(pointRef.current, '>>>pre', referencePoint);
 
 
