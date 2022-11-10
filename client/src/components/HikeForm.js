@@ -67,9 +67,6 @@ function HikeForm(props) {
         • Description
         • Point can be: address, name of location, GPS coordinates, hut, parking lot
     */
-<<<<<<< Updated upstream
-    async function getPosition(data) {
-=======
 
         function LocationMarker(props) {
             const map = useMapEvents({
@@ -97,7 +94,6 @@ function HikeForm(props) {
         
         
     function getPosition(data) {
->>>>>>> Stashed changes
         setPositionData(data);
         console.log('parent', positionData)
     }
@@ -175,11 +171,7 @@ function HikeForm(props) {
                                 End Point
                             </ToggleButton>
                             <ToggleButton variant='outline-primary' id="tbg-radio-3" value={3} onChange={handlePoint}>
-<<<<<<< Updated upstream
-                                Preference Points
-=======
                                 Reference Points
->>>>>>> Stashed changes
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </Col>
@@ -204,20 +196,6 @@ function HikeForm(props) {
                         onClick={() => {
                             //add into db
                             //if ponit=1, add into start point
-<<<<<<< Updated upstream
-                            console.log('before', pointRef.current, '>>>', startPoint);
-
-                            pointRef.current === '1' ? setStartPoint(positionData) : setStartPoint(startPoint);
-                            console.log(pointRef.current, '>>>start', startPoint);
-                            //if ponit=2, add into end point
-                            pointRef.current === '2' ? setEndPoint(positionData) : setEndPoint(endPoint);
-                            console.log(pointRef.current, '>>>end', endPoint);
-
-                            //if ponit=3, add into preference point
-                            pointRef.current === '3' ? setReferencePoint(positionData) : setReferencePoint(referencePoint);
-                            console.log(pointRef.current, '>>>pre', referencePoint);
-
-=======
                             if (pointIndex === '1') {
                                 setStartPoint(positionData)
                             }
@@ -235,7 +213,6 @@ function HikeForm(props) {
                             pointIndex === '3' ? setReferencePoint(positionData) : setReferencePoint([null, null]);
                             console.log(pointRef.current, '>>>pre', referencePoint);*/
                             
->>>>>>> Stashed changes
 
 
                         }}
