@@ -5,14 +5,13 @@ import { useEffect, useRef, useState } from "react"
 import { Form, Row, Col, Container, Button, ToggleButtonGroup, ToggleButton } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
+import GeoPoint from "../model/GeoPoint"
 import L from 'leaflet'
 
 function HikeForm(props) {
 
     let navigate = useNavigate()
-    const [point, setPoint] = useState('1');
-    const [num, setNum] = useState('0')
-    const [selection, setSelection] = useState(undefined)
+    const [pointIndex, setPointIndex] = useState('1');
     const [title, setTitle] = useState(undefined);
     const [length, setLength] = useState(undefined);
     const [expectedTime, setExpectedTime] = useState(undefined);
@@ -20,17 +19,18 @@ function HikeForm(props) {
     const [difficulty, setDifficulty] = useState(undefined);
     const [description, setDescription] = useState(undefined);
     const [validated, setValidated] = useState(false);
-    const [positionData, setPositionData] = useState([45.06294822296754, 7.662272990156818])
+    const [positionData, setPositionData] = useState({lat: 45.06294822296754, lng: 7.662272990156818})
     const [startPoint, setStartPoint] = useState([null, null])
     const [endPoint, setEndPoint] = useState([null, null])
-    const [referencePoint, setReferencePoint] = useState('')
+    const [referencePoint, setReferencePoint] = useState([])
+    const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
 
     // getPoint();
 
     useEffect(() => {
 
-        console.log(point)
-    }, [point])
+        console.log("New point index:"+pointIndex)
+    }, [pointIndex])
 
     const handleSubmit = async (event) => {
         const form = event.currentTarget;
@@ -44,14 +44,15 @@ function HikeForm(props) {
         console.log("Ascent:" + ascent)
         console.log("Difficulty:" + difficulty)
         console.log("Description:" + description)
+        console.log("Start point:" + startPoint )
+        console.log("End point:" + endPoint )
+        console.log("Reference points:" + referencePoint )
         setValidated(true);
     };
 
-    const pointRef = useRef('1')
+    //const pointRef = useRef('1')
     const handlePoint = (e) => {
-        setPoint(e.target.value);
-        pointRef.current = e.target.value;
-        console.log(e.target.value, point, pointRef.current)
+        setPointIndex(e.target.value);
     }
     /*
     Data format for a hike:
@@ -66,7 +67,37 @@ function HikeForm(props) {
         • Description
         • Point can be: address, name of location, GPS coordinates, hut, parking lot
     */
+<<<<<<< Updated upstream
     async function getPosition(data) {
+=======
+
+        function LocationMarker(props) {
+            const map = useMapEvents({
+                async click(e) {
+                    setPosition(new GeoPoint(e.latlng.lat, e.latlng.lng));
+                    await props.getPosition(position);
+                    // console.log(position)
+                },
+                locationfound(e) {
+                    // setPosition(e.latlng)
+                    map.flyTo(e.latlng, map.getZoom())
+                },
+            })
+        
+            return position === null ? null : (
+        
+                <Marker position={position}>
+                    <Popup>
+                        {pointIndex==="1"? "Start Point": "End Point" }
+                    </Popup>
+                </Marker>
+        
+            )
+        }
+        
+        
+    function getPosition(data) {
+>>>>>>> Stashed changes
         setPositionData(data);
         console.log('parent', positionData)
     }
@@ -144,7 +175,11 @@ function HikeForm(props) {
                                 End Point
                             </ToggleButton>
                             <ToggleButton variant='outline-primary' id="tbg-radio-3" value={3} onChange={handlePoint}>
+<<<<<<< Updated upstream
                                 Preference Points
+=======
+                                Reference Points
+>>>>>>> Stashed changes
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </Col>
@@ -169,6 +204,7 @@ function HikeForm(props) {
                         onClick={() => {
                             //add into db
                             //if ponit=1, add into start point
+<<<<<<< Updated upstream
                             console.log('before', pointRef.current, '>>>', startPoint);
 
                             pointRef.current === '1' ? setStartPoint(positionData) : setStartPoint(startPoint);
@@ -181,6 +217,25 @@ function HikeForm(props) {
                             pointRef.current === '3' ? setReferencePoint(positionData) : setReferencePoint(referencePoint);
                             console.log(pointRef.current, '>>>pre', referencePoint);
 
+=======
+                            if (pointIndex === '1') {
+                                setStartPoint(positionData)
+                            }
+                            if (pointIndex === '2') {
+                                setEndPoint(positionData)
+                            }
+                            if (pointIndex === '3') {
+                                setReferencePoint([...referencePoint, positionData])
+                            }
+                            /*//if ponit=2, add into end point
+                            pointIndex === '2' ? setEndPoint(positionData) : setEndPoint([null, null]);
+                            console.log(pointRef.current, '>>>end', endPoint);
+
+                            //if ponit=3, add into preference point
+                            pointIndex === '3' ? setReferencePoint(positionData) : setReferencePoint([null, null]);
+                            console.log(pointRef.current, '>>>pre', referencePoint);*/
+                            
+>>>>>>> Stashed changes
 
 
                         }}
@@ -215,29 +270,5 @@ function HikeForm(props) {
         </Form>
     )
 }
-
-function LocationMarker(props) {
-    const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
-    const map = useMapEvents({
-        async click(e) {
-            setPosition(e.latlng);
-            await props.getPosition(position);
-            // console.log(position)
-        },
-        locationfound(e) {
-            // setPosition(e.latlng)
-            map.flyTo(e.latlng, map.getZoom())
-        },
-    })
-
-    return position === null ? null : (
-
-        <Marker position={position}>
-            <Popup>Start point</Popup>
-        </Marker>
-
-    )
-}
-
 
 export { HikeForm }
