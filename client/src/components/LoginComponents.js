@@ -19,22 +19,20 @@ function LoginForm(props) {
 
     if (valid) {
       props.login(username, password)
-        .catch((err) => { 
-          console.log("errore ", err);
-          if(err instanceof TypeError){
-            if(err.message === "Email not verified!"){
-              setErrorMessage("Email not verified! (Check your spam)");
-            }
-          }else{
-            setErrorMessage(err.message);
-          }
-        })
+      .catch((err) => { 
+        console.log(err);
+        if(err.message === "Email not verified!"){
+          setErrorMessage("Email not verified! (Check your spam)");
+        } else {
+          setErrorMessage("Error: " + err.code);
+        }
+      });
     }
   };
 
   return (
     <Container className="col-sm-8 col-12 below-nav">
-      <Form>
+      <Form onSubmit={handleSubmit}>
         {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
         <Form.Group controlId='username'>
           <Form.Label>Email</Form.Label>
@@ -42,10 +40,11 @@ function LoginForm(props) {
         </Form.Group>
         <Form.Group controlId='password'>
           <Form.Label>Password</Form.Label>
-          <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} />
+          <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} autoComplete="on" />
         </Form.Group>
-
-        <Button onClick={handleSubmit}>Login</Button>
+        <div align="right" style={{marginTop: 10}}>
+          <Button type="submit">Login</Button>
+        </div>
       </Form>
     </Container>)
 }

@@ -10,11 +10,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { LoginForm } from './components/LoginComponents';
 import { SigninForm } from './components/SigninComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
-import { assertionError, async } from '@firebase/util';
-
 
 function App() {
-
   //states of authentication of an Admin
   const [authUser, setAuthUser] = useState(undefined);
   const [authErr, setAuthErr] = useState(undefined);
@@ -65,7 +62,7 @@ function App() {
     try {
       const user = await API.signUp(email, password, firstName, lastName, role);
     } catch (err) {
-      console.log("Errore qui: ", err);
+      console.log(err);
       throw err;
     }
   }

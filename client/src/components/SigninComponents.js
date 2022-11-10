@@ -5,6 +5,7 @@ import { useState } from 'react';
 function SigninForm(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [role, setRole] = useState('Hiker');
@@ -21,6 +22,10 @@ function SigninForm(props) {
       valid = false;
       setErrorMessage('Email cannot be empty and password must be at least six character long.');
     }
+    if (password !== confirmPassword) {
+      valid = false;
+      setErrorMessage('Passwords do not match.');
+    }
     if (firstName === '') {
       valid = false;
       setErrorMessage('First name cannot be empty.');
@@ -29,14 +34,14 @@ function SigninForm(props) {
       valid = false;
       setErrorMessage('Last name cannot be empty.');
     }
-    console.log(role);
     if (valid) {
-      props.signup(username, password, firstName, lastName, role).then(()=>{
+      props.signup(username, password, firstName, lastName, role)
+      .then(()=>{
         setSubmitted(true);
       }).catch((err) => {
-          console.log(err);
-          setErrorMessage(err.message);
-        });
+        console.log(err);
+        setErrorMessage("Error: " + err.code);
+      });
     }
   };
 
@@ -47,7 +52,7 @@ function SigninForm(props) {
           Check your email to complete the registration process.
         </Alert> :
         <Container className="col-sm-8 col-12 below-nav">
-          <Form>
+          <Form onSubmit={handleSubmit}>
             {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
             <Form.Group controlId='username'>
               <Form.Label>Email</Form.Label>
@@ -55,7 +60,11 @@ function SigninForm(props) {
             </Form.Group>
             <Form.Group controlId='password'>
               <Form.Label>Password</Form.Label>
-              <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} />
+              <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} autoComplete="on"/>
+            </Form.Group>
+            <Form.Group controlId='confirm_password'>
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control type='password' value={confirmPassword} onChange={ev => setConfirmPassword(ev.target.value)} autoComplete="on"/>
             </Form.Group>
             <Form.Group controlId='firstName'>
               <Form.Label>First Name</Form.Label>
@@ -67,15 +76,14 @@ function SigninForm(props) {
             </Form.Group>
             <Form.Group controlId='role'>
               <Form.Label>Select your role</Form.Label>
-              <Form.Control as="select"
-                custom
-                onChange={ev => setRole(ev.target.value)}
-              >
+              <Form.Select onChange={ev => setRole(ev.target.value)}>
                 <option value="Hiker">Hiker</option>
                 <option value="Local guide">Local guide</option>
-              </Form.Control>
+              </Form.Select>
             </Form.Group>
-            <Button onClick={handleSubmit}>Sign Up</Button>
+            <div align="right" style={{marginTop: 10}}>
+              <Button type="submit">Sign Up</Button>
+            </div>
           </Form>
         </Container>
     }</>)

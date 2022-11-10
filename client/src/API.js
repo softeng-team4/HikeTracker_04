@@ -35,7 +35,6 @@ const logIn = async (email, password) => {
     const auth = getAuth();
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const emailVerified = userCredential.user.emailVerified;
-    console.log(emailVerified);
     if (emailVerified) {
         return await getUser(email);
     } else {
