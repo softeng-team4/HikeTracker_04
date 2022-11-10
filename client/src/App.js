@@ -9,6 +9,8 @@ import AuthenticationContext from './components/AuthenticationContext';
 import { Container, Row, Col } from 'react-bootstrap';
 import { LoginForm } from './components/LoginComponents';
 import { SigninForm } from './components/SigninComponents';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
+import { assertionError, async } from '@firebase/util';
 
 
 function App() {
@@ -16,36 +18,58 @@ function App() {
   //states of authentication of an Admin
   const [authUser, setAuthUser] = useState(undefined);
   const [authErr, setAuthErr] = useState(undefined);
-  const [message, setMessage] = useState(undefined);
+  const [currentUser, setCurrentUser] = useState({});
+
+  const auth = getAuth();
+
+  useEffect(()=>{
+    onAuthStateChanged(auth, async (currentUser)=>{
+      setCurrentUser(currentUser);
+      if(currentUser){
+        try {
+          if(currentUser.emailVerified){
+            const userInfo = await API.getUser(currentUser.email);
+            setAuthUser(userInfo);
+          }
+        } catch(err) {
+          setAuthErr(err);
+        }
+      }
+    })
+  },[]);
 
   //login and logut functions
   const login = async (email, password) => {
     try {
       const user = await API.logIn(email, password);
       setAuthUser(user);
+      setAuthErr(undefined);
     } catch (err) {
-      console.log(err);
       setAuthErr(err);
+      setAuthUser(undefined);
+      console.log(err);
+      throw(err);
     }
   }
   const logout = async () => {
     try {
-    await API.logOut();
-    setAuthUser(undefined);
-    setAuthErr(undefined);
+      await API.logOut();
+      setAuthUser(undefined);
+      setAuthErr(undefined);
     } catch(err) {
       console.log(err);
     }
-  }
+  }  
 
   const signup = async (email, password, firstName, lastName, role) => {
     try {
       const user = await API.signUp(email, password, firstName, lastName, role);
     } catch (err) {
-      console.log(err);
-      setMessage({ msg: err, type: 'danger' });
+      console.log("Errore qui: ", err);
+      throw err;
     }
   }
+  
 
   //value for AuthenticationContext
    let authObject = {

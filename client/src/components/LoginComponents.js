@@ -19,7 +19,16 @@ function LoginForm(props) {
 
     if (valid) {
       props.login(username, password)
-        .catch((err) => { setErrorMessage(err) })
+        .catch((err) => { 
+          console.log("errore ", err);
+          if(err instanceof TypeError){
+            if(err.message === "Email not verified!"){
+              setErrorMessage("Email not verified! (Check your spam)");
+            }
+          }else{
+            setErrorMessage(err.message);
+          }
+        })
     }
   };
 

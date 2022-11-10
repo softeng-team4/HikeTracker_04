@@ -78,5 +78,5 @@ const getUser = async (email) => {
     }
 }
 
-const API = { signUp, logIn, logOut };
+const API = { signUp, logIn, logOut, getUser };
 export default API;

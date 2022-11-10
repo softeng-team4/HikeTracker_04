@@ -1,4 +1,4 @@
-import { Form, Button, Alert, Container, Card } from 'react-bootstrap';
+import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useState } from 'react';
 //import { Redirect } from 'react-router';
 
@@ -7,7 +7,7 @@ function SigninForm(props) {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('Hiker');
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -31,23 +31,21 @@ function SigninForm(props) {
     }
     console.log(role);
     if (valid) {
-      props.signup(username, password, firstName, lastName, role)
-        .catch((err) => {
-          setErrorMessage("Email already used");
-          valid = false;
+      props.signup(username, password, firstName, lastName, role).then(()=>{
+        setSubmitted(true);
+      }).catch((err) => {
+          console.log(err);
+          setErrorMessage(err.message);
         });
-    }
-    if (valid) {
-      setSubmitted(true);
     }
   };
 
   return (
     <>{
       submitted ?
-        <Card>
-          <Card.Body>Check your email to complete the process!!!</Card.Body>
-        </Card> :
+        <Alert key={'success'} variant={'success'}>
+          Check your email to complete the registration process.
+        </Alert> :
         <Container className="col-sm-8 col-12 below-nav">
           <Form>
             {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
