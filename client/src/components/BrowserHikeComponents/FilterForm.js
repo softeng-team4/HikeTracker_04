@@ -1,73 +1,48 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Row, Col, Button, OverlayTrigger, Tooltip, Dropdown, Form } from 'react-bootstrap';
-import { FaSearchLocation } from 'react-icons/fa';
+import DifficultyForm from './DifficultyForm';
+import GeoAreaForm from './GeoAreaForm';
+import LenghtSliderForm from './LenghtSliderForm';
 
 const FilterForm = (props) => {
 
 
-    var testCountry = ['Italy', 'Germany', 'Spain', 'Brasil', 'Korea']
-    var testRegion = ['Piedmont', 'Lombardy', 'Sicily']
-    var testCity = ['Asti', 'Biella', 'Cuneo', 'Turin', 'Novara']
-    const [country, setCountry] = useState('...')
-    const [region, setRegion] = useState('...')
-    const [city, setCity] = useState('...')
-    const [countryList, setCountryList] = useState(testCountry)
-    const [regionList, setRegionList] = useState(undefined)
-    const [cityList, setCityList] = useState(undefined)
+    // state to hold geoArea filter
+    const [geoArea, setGeoArea] = useState({country: 'None', region: 'None', city: 'None'});
+    // state to hold selected difficulty
+    const [difficulty, setDifficulty] = useState('None')
+    // state to hold lenght data range
+    const [lenghtRange, setLenghtRange] = useState({min: 0, max: 'inf'})
+    // state to hold ascent data range
+    const [ascentRange, setAscentRange] = useState({min: 0, max: 'inf'})
+    // state to hold expected time data range
+    const [expTimeRange, setExpTimeRange] = useState({min: 0, max: 'inf'})
 
-    const [countryIsSelected, setCountryIsSelected] = useState(false);
-    const [regionIsSelected, setRegionIsSelected] = useState(false);
 
-    const retrieveRegions = (ev) => {
-        ev.preventDefault();
-        // API retrieve regions for event.target.value
-        setCountry(ev.target.value)
-        console.log(country);
-        setRegionList(testRegion);
-        setCountryIsSelected(true);
+    const handleGeoAreaSubmit = () => {
+        //TODO API call
+        console.log(geoArea)
     };
 
-    const retrieveCities = (ev) => {
-        ev.preventDefault();
-        // API retrieve cities for event.target.value
-        setCity(ev.target.value)
-        console.log(city);
-        setCityList(testCity);
-        setRegionIsSelected(true);
+
+    const handleDifficultySubmit = (d) => {
+        //TODO API call
+        setDifficulty(d);
+        console.log(d);
     };
 
 
     return (
         <Row className='FilterForm'>
             <Col xl={6} className='geoAreaFilter'>
-                <Form className='d-flex justify-content-between'>
-                    <Form.Group className='col-md-3 p-2'>
-                        <Form.Label htmlFor='CountrySelection'>Select a Country</Form.Label>
-                        <Form.Select className='CountrySelection' value={country} onChange={(ev) => { retrieveRegions(ev) }}>
-                            {countryList ? countryList.map(c =>
-                                <option key={`c-${c}`}>{c}</option>
-                            ) : null}
-                        </Form.Select>
-                    </Form.Group>
-                    <Form.Group className='col-md-3 p-2'>
-                        <Form.Label htmlFor='RegionSelection'>Select a Region</Form.Label>
-                        <Form.Select className='RegionSelection' value={region} {...countryIsSelected ? null : {disabled: true}} onChange={(ev) => { retrieveCities(ev) }}>
-                            {regionList ? regionList.map(r =>
-                                <option key={`c-${r}`}>{r}</option>
-                            ) : null}
-                        </Form.Select>
-                    </Form.Group>
-                    <Form.Group className='col-md-3 p-2'>
-                        <Form.Label htmlFor='CitySelection'>Select a City</Form.Label>
-                        <Form.Select className='CitySelection' value={city} {...regionIsSelected ? null : {disabled: true}} onChange={(ev) => { setCity(ev.target.value) }}>
-                            {cityList ? cityList.map(c =>
-                                <option key={`c-${c}`}>{c}</option>
-                            ) : null}
-                        </Form.Select>
-                    </Form.Group>
-                    <Button className='col-sm-1' variant="dark" type="submit" size='sm' form='geoAreaFilter'><FaSearchLocation/></Button>
-                </Form>
+                <GeoAreaForm geoArea={geoArea} setGeoArea={setGeoArea} handleGeoAreaSubmit={handleGeoAreaSubmit}/>
+            </Col>
+            <Col>
+                <DifficultyForm difficulty={difficulty} handleDifficultySubmit={handleDifficultySubmit}/>
+            </Col>
+            <Col>
+                <LenghtSliderForm />
             </Col>
         </Row>
     );
