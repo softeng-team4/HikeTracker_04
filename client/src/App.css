@@ -20,6 +20,10 @@ body {
   color: lightgray !important;
 }
 
+.nav-icon {
+  transform: translateY(-4px)
+}
+
 /* geoAreaForm */
 
 .button-geoArea {
