@@ -1,4 +1,8 @@
-export default function GeoPoint(lat, lng) {
-    this.lat = lat;
-    this.lng = lng;
+class GeoPoint {
+    constructor(lat, lng) {
+      this.lat = lat;
+      this.lng = lng;
+    }
 }
+
+export {GeoPoint}
