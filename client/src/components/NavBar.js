@@ -17,9 +17,8 @@ const NavBar = (props) => {
                             <Col lg={2} />
                             <Col>
                             <Navbar expand="sm">
-                                <Navbar.Brand>
-                                    <FaHiking className='react-icon' />
-                                    Hike Tracker
+                                <Navbar.Brand className='d-flex'>
+                                    <h3><FaHiking className='nav-icon'/>Hike Tracker</h3>
                                 </Navbar.Brand>
                                 <Navbar.Toggle aria-controls="nav-toggle" />
                                 <Navbar.Collapse className='justify-content-end' id="nav-toggle">
