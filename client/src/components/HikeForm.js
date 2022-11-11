@@ -209,6 +209,32 @@ function HikeForm(props) {
                         </Button>
                     </Col>
                 </Row>
+                <Table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>latitude</th>
+                            <th>longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Start point</td>
+                            <td>{startPoint.lat}</td>
+                            <td>{startPoint.lng}</td>
+                        </tr>
+                        <tr>
+                            <td>End point</td>
+                            <td>{endPoint.lat}</td>
+                            <td>{endPoint.lng}</td>
+                        </tr>
+                        <tr>
+                            <td>Reference points</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </Table>
             </Form.Group>
 
             <Form.Group className="mb-3">
