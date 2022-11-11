@@ -16,8 +16,7 @@ const HikePageHandler = (props) => {
         return PaginationItems;
     };
 
-    console.log(props.pageNum)
-
+    
     return (
         <>
             {(props.pageNum > 1) ?
