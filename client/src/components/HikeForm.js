@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { Form, Row, Col, Table, Button, ToggleButtonGroup, ToggleButton } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
-import { GeoPoint} from '../model/GeoPoint'
+import { GeoPoint } from '../model/GeoPoint'
 import L from 'leaflet'
 
 function HikeForm(props) {
@@ -46,7 +46,7 @@ function HikeForm(props) {
         console.log("Description:" + description)
         console.log("Start point:" + startPoint.lat)
         console.log("End point:" + endPoint.lat)
-        console.log("Reference points:" + referencePoint)
+        console.log("Reference points:" + referencePoint.lat)
         setValidated(true);
     };
 
@@ -99,6 +99,44 @@ function HikeForm(props) {
     }
     // setTimeout((e) => { setPoint(e); console.log('value', e, point) }, 0);
 
+    /* This method will add a new row */
+    function addNewRow() {
+        var table = document.getElementById("point-table");
+        var rowCount = table.rows.length;
+        var row = table.insertRow(rowCount);
+        var cell = row.insertCell(0)
+        cell = row.insertCell(1)
+        cell.innerHTML = position.lat
+        cell = row.insertCell(2)
+        cell.innerHTML = position.lng
+      /*for (var i = 0; i < cellCount; i++) {
+            var cell = row.insertCell(i);
+            if (i === 0 ) {
+                cell.innerHTML = '';
+            } else if (i===1 ){
+                cell.innerHTML = referencePoint[referencePoint.length-1].lat;
+            } else {
+                cell.innerHTML = referencePoint[referencePoint.length-1].lng;
+            }
+        }*/
+    }
+
+    /* This method will delete a row */
+    function deleteRow(ele) {
+        var table = document.getElementById('point-table');
+        var rowCount = table.rows.length;
+        if (rowCount <= 1) {
+            alert("There is no row available to delete!");
+            return;
+        }
+        if (ele) {
+            //delete specific row
+            ele.parentNode.parentNode.remove();
+        } else {
+            //delete last row
+            table.deleteRow(rowCount - 1);
+        }
+    }
 
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
@@ -158,9 +196,6 @@ function HikeForm(props) {
                 </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
-                {/* <Col sm={2}>
-                    <Form.Label>Start Point:</Form.Label>
-                </Col> */}
                 <Row>
                     <Col sm={2}>Choose Hike Points:</Col>
                     <Col>
@@ -202,6 +237,7 @@ function HikeForm(props) {
                                 }
                                 if (pointIndex === '3') {
                                     setReferencePoint([...referencePoint, position])
+                                    addNewRow();
                                 }
 
                             }}
@@ -209,6 +245,32 @@ function HikeForm(props) {
                         </Button>
                     </Col>
                 </Row>
+                <Table id="point-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>latitude</th>
+                            <th>longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Start point</td>
+                            <td>{startPoint.lat}</td>
+                            <td>{startPoint.lng}</td>
+                        </tr>
+                        <tr>
+                            <td>End point</td>
+                            <td>{endPoint.lat}</td>
+                            <td>{endPoint.lng}</td>
+                        </tr>
+                        <tr>
+                            <td>Reference points</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </Table>
             </Form.Group>
 
             <Form.Group className="mb-3">
