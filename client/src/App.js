@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AppLayout, DefaultRoute } from './components/View';
+import { BrowserHikes, DefaultRoute } from './components/View';
 import { useEffect, useState } from 'react';
 import API from './API.js'
 import NavBar from './components/NavBar';
@@ -84,25 +84,24 @@ function App() {
       <AuthenticationContext.Provider value={authObject}>
         <BrowserRouter>
           <NavBar />
-          <Container fluid>
+          <Container fluid className='PageContainer'>
+            <Row/>
             <Row>
-              <Col lg={2} />
+              <Col xxl={2}/>
               <Col>
                 <Routes>
 
-                  <Route path='/' element={<AppLayout />}>
-                    <Route path='/hikeform' element={<HikeForm />} />
-                  </Route>
-
-                  <Route path='/' element={<AppLayout onLogOut={logout} loggedIn={login}/>}></Route>
-                  <Route path='/login' element={authUser ? <Navigate to='/'/> : <LoginForm login={login} />}/>
+                  <Route path='/' element={<Navigate to='/home'/>}/>
+                  <Route path='/home' element={<BrowserHikes onLogOut={logout} loggedIn={login}/>}></Route>
+                  <Route path='/hikeform' element={<HikeForm />} />
+                  <Route path='/login' element={authUser ? <Navigate to='/home'/> : <LoginForm login={login} />}/>
                   <Route path='/signup' element={<SigninForm signup={signup}/>}></Route>
 
                   <Route path='*' element={<DefaultRoute />} />
 
                 </Routes>
               </Col>
-              <Col lg={2} />
+              <Col xxl={2}/>
             </Row>
           </Container>
         </BrowserRouter>
