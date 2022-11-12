@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc, addDoc} from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
 
 // Your web app's Firebase configuration
@@ -77,5 +77,11 @@ const getUser = async (email) => {
     }
 }
 
-const API = { signUp, logIn, logOut, getUser };
+//Queries for the hike collection
+
+const addNewHike = async (hike) =>{
+    addDoc(collection(db,"hike"),hike).catch(console.log("Insertion error"));
+}
+
+const API = { signUp, logIn, logOut, getUser, addNewHike };
 export default API;

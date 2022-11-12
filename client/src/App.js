@@ -1,5 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AppLayout, DefaultRoute } from './components/View';
 import { useEffect, useState } from 'react';
@@ -10,6 +11,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { LoginForm } from './components/LoginComponents';
 import { SigninForm } from './components/SigninComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
+import { HikeForm } from './components/HikeForm';
 
 function App() {
   //states of authentication of an Admin
@@ -84,11 +86,13 @@ function App() {
           <NavBar />
           <Container fluid>
             <Row>
-              <Col lg={2}/>
+              <Col lg={2} />
               <Col>
                 <Routes>
 
-                  <Route path='/' element={<AppLayout />}></Route>
+                  <Route path='/' element={<AppLayout />}>
+                    <Route path='/hikeform' element={<HikeForm />} />
+                  </Route>
 
                   <Route path='/' element={<AppLayout onLogOut={logout} loggedIn={login}/>}></Route>
                   <Route path='/login' element={authUser ? <Navigate to='/'/> : <LoginForm login={login} />}/>
@@ -98,7 +102,7 @@ function App() {
 
                 </Routes>
               </Col>
-              <Col lg={2}/>
+              <Col lg={2} />
             </Row>
           </Container>
         </BrowserRouter>

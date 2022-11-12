@@ -11,6 +11,7 @@ function DefaultRoute() {
     );
 }
 
+
 function AppLayout(props) {
     return (
         <>
@@ -22,4 +23,4 @@ function AppLayout(props) {
 
 
 
-export { DefaultRoute, AppLayout };
+export { DefaultRoute, AppLayout};
