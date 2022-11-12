@@ -238,7 +238,7 @@ function HikeForm(props) {
                                     End Point
                                 </Popup>
                             </Marker> : ''}
-                            {/* {referencePoint.length===0 ? '' : referencePoint.forEach(<Marker position={referencePoint}></Marker>)} */}
+                            {/* {referencePoint.length===0 ? '' : referencePoint.forEach((rPoint,i)=>{<Marker key={i} position={rPoint}></Marker>})} */}
                         </MapContainer>
                     </Col>
                 </Row>
