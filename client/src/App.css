@@ -44,3 +44,9 @@ body {
   --bs-pagination-active-bg: gray !important;
   --bs-pagination-active-border-color: gray !important;
 }
+
+/* HikeTable */
+
+.hike-desc {
+  text-align: left;
+}
