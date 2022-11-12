@@ -83,5 +83,115 @@ const addNewHike = async (hike) =>{
     addDoc(collection(db,"hike"),hike).catch(console.log("Insertion error"));
 }
 
-const API = { signUp, logIn, logOut, getUser, addNewHike };
+const countryList = async () =>{
+    console.log("Country list.");
+    const hikesRef = collection(db, "hike");
+    const res = new Set();
+    const querySnapshot = await getDocs(hikesRef);
+    querySnapshot.forEach((doc)=>{
+        res.add(doc.data().Country);
+    });
+    return Array.from(res);
+}
+
+const regionList = async (country) =>{
+    console.log("Region list country: ", country);
+    const hikesRef = collection(db, "hike");
+    const res = new Set();
+    const q = query(hikesRef, where('Country', '==', country));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc)=>{
+        res.add(doc.data().Region);
+    });
+    return Array.from(res);
+}
+
+const cityList = async (country, region) =>{
+    const hikesRef = collection(db, "hike");
+    console.log("City list country and region: ", country, region);
+    const res = new Set();
+    const q = query(hikesRef, where('Country', '==', country), where('Region', '==', region));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc)=>{
+        res.add(doc.data().City);
+    });
+    return Array.from(res);
+}
+
+//filters example
+//const filter1 = {country: undefined, 
+//  region:undefined, 
+//  city: undefined, 
+//  difficulty: undefined, 
+//  ascent:{min: 0, max: 8000}, 
+//  length:{min:0,max:8000},
+//  expectedTime:{min:0,max:24}
+//}
+const hikesList = async (filters) =>{
+    console.log("Hikes List filters: ",filters);
+    const hikesRef = collection(db, "hike");
+    let q;
+    let cont = 0;
+    const names = [];
+    const values = [];
+    const res = [];
+    if(filters.country !== undefined){
+        names.push("Country");
+        values.push(filters.country);
+        cont ++;
+    }
+    if(filters.region !== undefined){
+        names.push("Region");
+        values.push(filters.region);
+        cont ++;
+    }
+    if(filters.city !== undefined){
+        names.push("City");
+        values.push(filters.city);
+        cont ++;
+    }
+    if(filters.difficulty !== undefined){
+        names.push("Difficulty");
+        values.push(filters.difficulty);
+        cont ++;
+    }
+    switch (cont){
+        case 1:
+            console.log(cont);
+            q = query(hikesRef, where(names[0], '==', values[0]));
+            break;
+        case 2:
+            console.log(cont);
+            q = query(hikesRef, where(names[0], '==', values[0]), where(names[1], '==', values[1]));
+            break;
+        case 3:
+            console.log(cont);
+            q = query(hikesRef, where(names[0], '==', values[0]), where(names[1], '==', values[1]), where(names[2], '==', values[2]));
+            break;
+        case 4:
+            console.log(cont);
+            q = query(hikesRef, where(names[0], '==', values[0]), where(names[1], '==', values[1]), where(names[2], '==', values[2]));
+            break;
+        default:
+            break;
+    }
+    if(cont === 0){
+        const querySnapshot = await getDocs(hikesRef);
+        querySnapshot.forEach((doc)=>{
+            if(doc.data().Expected_time>=filters.expectedTime.min && doc.data().Expected_time<=filters.expectedTime.max && doc.data().Length>=filters.length.min && doc.data().Length<=filters.length.max && doc.data().Ascent>=filters.ascent.min && doc.data().Ascent<=filters.ascent.max){
+                res.push(doc.data());
+            }
+        });
+    }else{
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc)=>{
+            if(doc.data().Expected_time>=filters.expectedTime.min && doc.data().Expected_time<=filters.expectedTime.max && doc.data().Length>=filters.length.min && doc.data().Length<=filters.length.max && doc.data().Ascent>=filters.ascent.min && doc.data().Ascent<=filters.ascent.max){
+                res.push(doc.data());
+            }
+        });
+    }
+    return res;
+}
+
+const API = { signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList };
 export default API;
