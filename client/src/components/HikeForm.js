@@ -228,9 +228,9 @@ function HikeForm(props) {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
                             <LocationMarker getPosition={getPosition} />
-                            {/* {startPoint !== { lat: undefined, lng: undefined } ? <Marker position={startPoint}></Marker> : ''} */}
-                            {/* {endPoint !== { lat: undefined, lng: undefined } ? <Marker position={endPoint}></Marker> : ''} */}
-                            {/* {referencePoint !== { lat: undefined, lng: undefined } ? <Marker position={referencePoint}></Marker> : ''} */}
+                            {startPoint.lat !== undefined? <Marker position={startPoint}></Marker> : ''}
+                            {endPoint.lat !== undefined ? <Marker position={endPoint}></Marker> : ''}
+                            {/* {referencePoint !== undefined ? <Marker position={referencePoint}></Marker> : ''} */}
                         </MapContainer>
                     </Col>
                 </Row>
