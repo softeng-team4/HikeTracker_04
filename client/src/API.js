@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification  } from "firebase/auth";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -21,75 +21,32 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-const signUp = async (email, password, firstName, lastName) => {
+const signUp = async (email, password, firstName, lastName, role) => {
     const auth = getAuth();
-    let userCredential = await createUserWithEmailAndPassword(auth, email, password)
-    // to do in other components
-    /*.then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        // ...
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-    });*/
-    
+    await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(auth.currentUser, {
         displayName: firstName + lastName
-    })
-    /*.then(() => {
-        // Profile updated!
-        // ...
-    }).catch((error) => {
-        // An error occurred
-        // ...
-    });*/
-
-    // Send verification emeil
+    });
     await sendVerificationEmail();
-    /*.then(() => {
-        // Email verification sent!
-        // ...
-    });*/
-
-    // create a new user on firestore db
-    await createUserOnDb(email, firstName, lastName)
-    // to do in other components
-    /*.then(() => {
-        console.log("User created");
-    }).catch(error => {
-        // ...
-    });*/
-
-    return userCredential // or userCredential.user(?)
+    return await createUserOnDb(email, firstName, lastName, role);
 }
 
 const logIn = async (email, password) => {
     const auth = getAuth();
-    await signInWithEmailAndPassword(auth, email, password)
-    // to do in other components
-    /*.then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        // ...
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-    });*/
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const emailVerified = userCredential.user.emailVerified;
+    if (emailVerified) {
+        return await getUser(email);
+    } else {
+        sendVerificationEmail();
+        logOut();
+        throw new TypeError("Email not verified!");
+    }
 }
 
 const logOut = async () => {
     const auth = getAuth();
     await signOut(auth)
-    // to do in other components
-    /*.then(() => {
-        // Sign-out successful.
-    }).catch((error) => {
-        // An error happened.
-    });*/
 }
 
 const sendVerificationEmail = async () => {
@@ -97,14 +54,28 @@ const sendVerificationEmail = async () => {
     await sendEmailVerification(auth.currentUser)
 }
 
-const createUserOnDb = async (email, firstName, lastName) => {
+const createUserOnDb = async (email, firstName, lastName, role) => {
     // Add a new document in collection "users"
-    await db.collection("users").doc().set({
+    const user = {
         firstName: firstName,
         lastName: lastName,
-        email: email
-    });
+        email: email,
+        role: role
+    }
+    await setDoc(doc(db, "users", email), user);
+    return user;
 }
 
-const API = { signUp, logIn, logOut };
+const getUser = async (email) => {
+    const docRef = doc(db, "users", email);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+        return docSnap.data();
+    } else {
+        throw new TypeError("User not found");
+    }
+}
+
+const API = { signUp, logIn, logOut, getUser };
 export default API;
