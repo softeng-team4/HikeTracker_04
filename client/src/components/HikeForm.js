@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
 import { GeoPoint } from '../model/GeoPoint'
 import L, { gridLayer } from 'leaflet'
-import { GrLocation } from 'react-icons/gr'
+import { Country, State, City } from 'country-state-city';
+
 
 function HikeForm(props) {
 
@@ -25,6 +26,10 @@ function HikeForm(props) {
     const [endPoint, setEndPoint] = useState(new GeoPoint())
     const [referencePoint, setReferencePoint] = useState([])
     const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
+    const [country, setCountry] = useState('')
+    const [region, setRegion] = useState('')
+    const [city, setCity] = useState('')
+
 
     // getPoint();
 
@@ -204,6 +209,32 @@ function HikeForm(props) {
                 </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
+                <Col sm={2}>
+                    <Form.Label>Coutry:</Form.Label>
+                </Col>
+                <Col >
+                    <Form.Select required defaultValue={undefined} onChange={(event) => setCountry(event.target.value)}>
+                        {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
+                    </Form.Select>
+                </Col>
+                <Col sm={2}>
+                    <Form.Label>Region:</Form.Label>
+                </Col>
+                <Col >
+                    <Form.Select required defaultValue={undefined} onChange={(event) => setRegion(event.target.value)}>
+                        {State.getStatesOfCountry(country).map((r, j) => <option key={j} value={r.isoCode}>{r.name}</option>)}
+                    </Form.Select>
+                </Col>
+                <Col sm={2}>
+                    <Form.Label>City:</Form.Label>
+                </Col>
+                <Col >
+                    <Form.Select required defaultValue={undefined} onChange={(event) => setCity(event.target.value)}>
+                        {City.getCitiesOfState(country,region).map((ci, k) => <option key={k} value={ci.isoCode}>{ci.name}</option>)}
+                    </Form.Select>
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
                 <Row>
                     <Col sm={2}>Choose Hike Points:</Col>
                     <Col>
@@ -240,7 +271,7 @@ function HikeForm(props) {
                             </Marker> : ''}
                             {referencePoint.length === 0 ? '' : referencePoint.map((rPoint, i) => <Marker key={i} position={rPoint}>
                                 <Popup>
-                                    Reference Point {i+1}
+                                    Reference Point {i + 1}
                                 </Popup>
                             </Marker>)}
                         </MapContainer>
