@@ -238,7 +238,11 @@ function HikeForm(props) {
                                     End Point
                                 </Popup>
                             </Marker> : ''}
-                            {referencePoint.length===0 ? '' : referencePoint.map((rPoint,i)=><Marker key={i} position={rPoint}></Marker>)}
+                            {referencePoint.length === 0 ? '' : referencePoint.map((rPoint, i) => <Marker key={i} position={rPoint}>
+                                <Popup>
+                                    Reference Point {i+1}
+                                </Popup>
+                            </Marker>)}
                         </MapContainer>
                     </Col>
                 </Row>
