@@ -25,10 +25,11 @@ function HikeForm(props) {
     const [startPoint, setStartPoint] = useState(new GeoPoint())
     const [endPoint, setEndPoint] = useState(new GeoPoint())
     const [referencePoint, setReferencePoint] = useState([])
-    const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
+    const [position, setPosition] = useState(['45.06294822296754', '7.662272990156818'])
     const [country, setCountry] = useState('')
     const [region, setRegion] = useState('')
     const [city, setCity] = useState('')
+    const [cityMap, setCityMap] = useState([])
 
 
     // getPoint();
@@ -105,11 +106,11 @@ function HikeForm(props) {
         )
     }
 
-
     function getPosition(data) {
         setPosition(data);
         console.log('parent', position)
     }
+
     // setTimeout((e) => { setPoint(e); console.log('value', e, point) }, 0);
 
     /* This method will add a new row */
@@ -213,7 +214,7 @@ function HikeForm(props) {
                     <Form.Label>Coutry:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required defaultValue={undefined} onChange={(event) => setCountry(event.target.value)}>
+                    <Form.Select required defaultValue={undefined} onChange={(event) => { setCountry(event.target.value); console.log(Country.getAllCountries()) }}>
                         {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
                     </Form.Select>
                 </Col>
@@ -221,7 +222,7 @@ function HikeForm(props) {
                     <Form.Label>Region:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required defaultValue={undefined} onChange={(event) => setRegion(event.target.value)}>
+                    <Form.Select required defaultValue={undefined} onChange={(event) => { setRegion(event.target.value); console.log(State.getAllStates()) }}>
                         {State.getStatesOfCountry(country).map((r, j) => <option key={j} value={r.isoCode}>{r.name}</option>)}
                     </Form.Select>
                 </Col>
@@ -229,105 +230,111 @@ function HikeForm(props) {
                     <Form.Label>City:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required defaultValue={undefined} onChange={(event) => setCity(event.target.value)}>
-                        {City.getCitiesOfState(country,region).map((ci, k) => <option key={k} value={ci.isoCode}>{ci.name}</option>)}
+                    <Form.Select required defaultValue={undefined} onChange={(event) => {
+                        setCity(event.target.value);
+                        setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
+                    }}>
+                        {City.getCitiesOfState(country, region).map((ci, k) => <option key={k} value={ci.name}>{ci.name}</option>)}
                     </Form.Select>
                 </Col>
             </Form.Group>
-            <Form.Group as={Row} className="mb-3">
-                <Row>
-                    <Col sm={2}>Choose Hike Points:</Col>
-                    <Col>
-                        <ToggleButtonGroup type="radio" name="options" defaultValue={'1'} >
-                            <ToggleButton variant='outline-primary' id="tbg-radio-1" value={'1'} onChange={handlePoint}>
-                                Start Point
-                            </ToggleButton>
-                            <ToggleButton variant='outline-primary' id="tbg-radio-2" value={'2'} onChange={handlePoint}>
-                                End Point
-                            </ToggleButton>
-                            <ToggleButton variant='outline-primary' id="tbg-radio-3" value={'3'} onChange={handlePoint}>
-                                Reference Points
-                            </ToggleButton>
-                        </ToggleButtonGroup>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col >
-                        <MapContainer center={[45.06294822296754, 7.662272990156818]} zoom={13} scrollWheelZoom={false}>
-                            <TileLayer
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
-                            <LocationMarker getPosition={getPosition} />
-                            {startPoint.lat !== undefined ? <Marker position={startPoint}>
-                                <Popup>
-                                    Start point
-                                </Popup>
-                            </Marker> : ''}
-                            {endPoint.lat !== undefined ? <Marker position={endPoint}>
-                                <Popup>
+            {cityMap[0] === undefined ? '' :
+                <Form.Group as={Row} className="mb-3">
+                    <Row>
+                        <Col sm={2}>Choose Hike Points:</Col>
+                        <Col>
+                            <ToggleButtonGroup type="radio" name="options" defaultValue={'1'} >
+                                <ToggleButton variant='outline-primary' id="tbg-radio-1" value={'1'} onChange={handlePoint}>
+                                    Start Point
+                                </ToggleButton>
+                                <ToggleButton variant='outline-primary' id="tbg-radio-2" value={'2'} onChange={handlePoint}>
                                     End Point
-                                </Popup>
-                            </Marker> : ''}
-                            {referencePoint.length === 0 ? '' : referencePoint.map((rPoint, i) => <Marker key={i} position={rPoint}>
-                                <Popup>
-                                    Reference Point {i + 1}
-                                </Popup>
-                            </Marker>)}
-                        </MapContainer>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Button variant='primary'
-                            onClick={() => {
-                                //add into db
-                                //if ponit=1, add into start point
-                                if (pointIndex === '1') {
-                                    setStartPoint(position)
-                                }
-                                if (pointIndex === '2') {
-                                    setEndPoint(position)
-                                }
-                                if (pointIndex === '3') {
-                                    setReferencePoint([...referencePoint, position])
-                                    addNewRow();
-                                }
-                                console.log(referencePoint)
-                            }
-                            }
-                        >Save point
-                        </Button>
-                    </Col>
-                </Row>
-                <Table id="point-table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>latitude</th>
-                            <th>longitude</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Start point</td>
-                            <td>{startPoint.lat}</td>
-                            <td>{startPoint.lng}</td>
-                        </tr>
-                        <tr>
-                            <td>End point</td>
-                            <td>{endPoint.lat}</td>
-                            <td>{endPoint.lng}</td>
-                        </tr>
-                        <tr>
-                            <td>Reference points</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </Table>
-            </Form.Group>
+                                </ToggleButton>
+                                <ToggleButton variant='outline-primary' id="tbg-radio-3" value={'3'} onChange={handlePoint}>
+                                    Reference Points
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col >
 
+                            <MapContainer center={cityMap} zoom={13} scrollWheelZoom={false}>
+                                <TileLayer
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                />
+                                <LocationMarker getPosition={getPosition} />
+                                {startPoint.lat !== undefined ? <Marker position={startPoint}>
+                                    <Popup>
+                                        Start point
+                                    </Popup>
+                                </Marker> : ''}
+                                {endPoint.lat !== undefined ? <Marker position={endPoint}>
+                                    <Popup>
+                                        End Point
+                                    </Popup>
+                                </Marker> : ''}
+                                {referencePoint.length === 0 ? '' : referencePoint.map((rPoint, i) => <Marker key={i} position={rPoint}>
+                                    <Popup>
+                                        Reference Point {i + 1}
+                                    </Popup>
+                                </Marker>)}
+                            </MapContainer>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Button variant='primary'
+                                onClick={() => {
+                                    //add into db
+                                    //if ponit=1, add into start point
+                                    if (pointIndex === '1') {
+                                        setStartPoint(position)
+                                    }
+                                    if (pointIndex === '2') {
+                                        setEndPoint(position)
+                                    }
+                                    if (pointIndex === '3') {
+                                        setReferencePoint([...referencePoint, position])
+                                        addNewRow();
+                                    }
+                                    console.log(referencePoint)
+                                }
+                                }
+                            >Save point
+                            </Button>
+                        </Col>
+                    </Row>
+
+                    <Table id="point-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>latitude</th>
+                                <th>longitude</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Start point</td>
+                                <td>{startPoint.lat}</td>
+                                <td>{startPoint.lng}</td>
+                            </tr>
+                            <tr>
+                                <td>End point</td>
+                                <td>{endPoint.lat}</td>
+                                <td>{endPoint.lng}</td>
+                            </tr>
+                            <tr>
+                                <td>Reference points</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                </Form.Group>
+            }
             <Form.Group className="mb-3">
                 <Form.Label>Description:</Form.Label>
                 <Form.Control required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
