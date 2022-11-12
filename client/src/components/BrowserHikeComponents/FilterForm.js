@@ -48,15 +48,15 @@ const FilterForm = (props) => {
     return (
         <>
             <Row className='FilterForm'>
-                <Col xl={6} className='geoAreaFilter'>
-                    <GeoAreaForm geoArea={geoArea} setGeoArea={setGeoArea} handleGeoAreaSubmit={handleGeoAreaSubmit} />
-                </Col>
-                <Col xl={2}>
+                <Row>
+                    <Col lg={8} className='geoAreaFilter'>
+                        <GeoAreaForm geoArea={geoArea} setGeoArea={setGeoArea} handleGeoAreaSubmit={handleGeoAreaSubmit} />
+                    </Col>
                     <DifficultyForm difficulty={difficulty} handleDifficultySubmit={handleDifficultySubmit} />
-                </Col>
-            </Row>
-            <Row>
-                <SliderForm handleSliderSubmit={handleSliderSubmit}/>
+                </Row>
+                <Row>
+                    <SliderForm handleSliderSubmit={handleSliderSubmit} />
+                </Row>
             </Row>
         </>
     );

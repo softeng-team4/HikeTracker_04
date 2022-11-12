@@ -60,7 +60,7 @@ function App() {
           <Container fluid className='PageContainer'>
             <Row/>
             <Row>
-              <Col lg={2}/>
+              <Col xxl={2}/>
               <Col>
                 <Routes>
 
@@ -73,7 +73,7 @@ function App() {
 
                 </Routes>
               </Col>
-              <Col lg={2}/>
+              <Col xxl={2}/>
             </Row>
           </Container>
         </BrowserRouter>

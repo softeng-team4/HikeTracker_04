@@ -13,16 +13,16 @@ const HikeTable = () => {
 
     // test list of retrived hikes
     var hikeListTest = [
-        { name: 'hike1', difficulty: 'easy', lenght: '2.4km', ascent: '252m', expected_time: '1h' },
-        { name: 'hike2', difficulty: 'hard', lenght: '21km', ascent: '200m', expected_time: '6h' },
-        { name: 'hike3', difficulty: 'easy', lenght: '4km', ascent: '126m', expected_time: '1.45h' },
-        { name: 'hike4', difficulty: 'medium', lenght: '8km', ascent: '550m', expected_time: '3h' },
-        { name: 'hike5', difficulty: 'hard', lenght: '27km', ascent: '350m', expected_time: '8h' },
-        { name: 'hike6', difficulty: 'easy', lenght: '5.5km', ascent: '40m', expected_time: '2h' },
-        { name: 'hike7', difficulty: 'easy', lenght: '4.2km', ascent: '89m', expected_time: '1.30h' },
-        { name: 'hike8', difficulty: 'hard', lenght: '19km', ascent: '890m', expected_time: '7h' },
-        { name: 'hike9', difficulty: 'hard', lenght: '12km', ascent: '1400m', expected_time: '5.30h' },
-        { name: 'hike10', difficulty: 'medium', lenght: '13km', ascent: '620m', expected_time: '4h' },
+        { name: 'hike1', difficulty: 'Tourist', lenght: '2.4km', ascent: '252m', expected_time: '1h' },
+        { name: 'hike2', difficulty: 'Professional Hiker', lenght: '21km', ascent: '200m', expected_time: '6h' },
+        { name: 'hike3', difficulty: 'Tourist', lenght: '4km', ascent: '126m', expected_time: '1.45h' },
+        { name: 'hike4', difficulty: 'Hiker', lenght: '8km', ascent: '550m', expected_time: '3h' },
+        { name: 'hike5', difficulty: 'Professional Hiker', lenght: '27km', ascent: '350m', expected_time: '8h' },
+        { name: 'hike6', difficulty: 'Tourist', lenght: '5.5km', ascent: '40m', expected_time: '2h' },
+        { name: 'hike7', difficulty: 'Tourist', lenght: '4.2km', ascent: '89m', expected_time: '1.30h' },
+        { name: 'hike8', difficulty: 'Professional Hiker', lenght: '19km', ascent: '890m', expected_time: '7h' },
+        { name: 'hike9', difficulty: 'Professional Hiker', lenght: '12km', ascent: '1400m', expected_time: '5.30h' },
+        { name: 'hike10', difficulty: 'Hiker', lenght: '13km', ascent: '620m', expected_time: '4h' },
     ];
     // state to hold list of hikes
     const [hikeList, setHikeList] = useState(hikeListTest)
@@ -55,11 +55,11 @@ const HikeTable = () => {
                         <div key={`div_${idx}`}>
                             <Card key={`card_${idx}`}>
                                 <Card.Header key={`card_header_${idx}`}>{hike.name}</Card.Header>
-                                <Card.Body className='d-flex justify-content-between' key={`card_body_${idx}`}>
-                                    <Col key={`hike_diff_${idx}`}><b>Difficulty:</b>&nbsp;{hike.difficulty}</Col>
-                                    <Col key={`hike_len_${idx}`}><b>Lenght:</b>&nbsp;{hike.lenght}</Col>
-                                    <Col key={`hike_asc_${idx}`}><b>Ascent:</b>&nbsp;{hike.ascent}</Col>
-                                    <Col key={`hike_time_${idx}`}><b>Estimated Time:</b>&nbsp;{hike.expected_time}</Col>
+                                <Card.Body className='row d-flex justify-content-between' key={`card_body_${idx}`}>
+                                    <Col md={3} key={`hike_diff_${idx}`}><b>Difficulty:</b>&nbsp;{hike.difficulty}</Col>
+                                    <Col md={3} key={`hike_len_${idx}`}><b>Lenght:</b>&nbsp;{hike.lenght}</Col>
+                                    <Col md={3} key={`hike_asc_${idx}`}><b>Ascent:</b>&nbsp;{hike.ascent}</Col>
+                                    <Col md={3} key={`hike_time_${idx}`}><b>Estimated Time:</b>&nbsp;{hike.expected_time}</Col>
                                 </Card.Body>
                             </Card>
                             <Spacer height='1rem' key={`card_spacer_${idx}`} />

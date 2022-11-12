@@ -66,7 +66,7 @@ const GeoAreaForm = (props) => {
 
 
     return (
-        <Form className='d-flex justify-content-between'>
+        <Form className='row d-flex justify-content-between'>
             <Form.Group className='col-md-4 p-2'>
                 <Form.Label htmlFor='CountrySelection'>Select a Country</Form.Label>
                 <Form.Select className='CountrySelection' value={props.geoArea.country} onChange={(ev) => { retrieveRegions(ev) }}>

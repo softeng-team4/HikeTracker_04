@@ -14,7 +14,7 @@ const NavBar = (props) => {
                 <>
                     <Container fluid className='NavBarContainer'>
                         <Row>
-                            <Col lg={2} />
+                            <Col xxl={2} />
                             <Col>
                             <Navbar expand="sm">
                                 <Navbar.Brand className='d-flex'>
@@ -40,7 +40,7 @@ const NavBar = (props) => {
                                 </Navbar.Collapse>
                             </Navbar>
                             </Col>
-                            <Col lg={2}/>
+                            <Col xxl={2}/>
                         </Row>
                     </Container>
                 </>

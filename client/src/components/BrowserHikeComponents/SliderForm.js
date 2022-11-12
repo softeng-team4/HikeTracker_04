@@ -24,8 +24,8 @@ const SliderForm = (props) => {
 
 
     return (
-        <Form>
-            <Form.Group className='d-flex'>
+        <Form className='row d-md-flex justify-content-between'>
+            <Form.Group className='d-md-flex'>
                 <Col className='col-md-4 p-4'>
                     <Form.Label htmlFor='LenghtRange'>Select lenght range</Form.Label>
                     <Range className='LenghtRange' min={dR[0].min} max={dR[0].max} step={dR[0].step} marks={lenghtMarks} allowCross={false} defaultValue={[dR[0].min,dR[0].max]} onAfterChange={(range) => handleRange(0, range)}/>
