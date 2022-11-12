@@ -109,16 +109,16 @@ function HikeForm(props) {
         cell.innerHTML = position.lat
         cell = row.insertCell(2)
         cell.innerHTML = position.lng
-      /*for (var i = 0; i < cellCount; i++) {
-            var cell = row.insertCell(i);
-            if (i === 0 ) {
-                cell.innerHTML = '';
-            } else if (i===1 ){
-                cell.innerHTML = referencePoint[referencePoint.length-1].lat;
-            } else {
-                cell.innerHTML = referencePoint[referencePoint.length-1].lng;
-            }
-        }*/
+        /*for (var i = 0; i < cellCount; i++) {
+              var cell = row.insertCell(i);
+              if (i === 0 ) {
+                  cell.innerHTML = '';
+              } else if (i===1 ){
+                  cell.innerHTML = referencePoint[referencePoint.length-1].lat;
+              } else {
+                  cell.innerHTML = referencePoint[referencePoint.length-1].lng;
+              }
+          }*/
     }
 
     /* This method will delete a row */
@@ -220,6 +220,9 @@ function HikeForm(props) {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
                             <LocationMarker getPosition={getPosition} />
+                            {startPoint !== { lat: undefined, lng: undefined } ? <Marker position={startPoint}></Marker> : ''}
+                            {endPoint !== { lat: undefined, lng: undefined } ? <Marker position={endPoint}></Marker> : ''}
+                            {referencePoint !== { lat: undefined, lng: undefined } ? <Marker position={referencePoint}></Marker> : ''}
                         </MapContainer>
                     </Col>
                 </Row>
@@ -239,8 +242,9 @@ function HikeForm(props) {
                                     setReferencePoint([...referencePoint, position])
                                     addNewRow();
                                 }
-
-                            }}
+                                console.log(startPoint)
+                            }
+                            }
                         >Save point
                         </Button>
                     </Col>
