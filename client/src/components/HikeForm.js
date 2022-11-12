@@ -6,7 +6,8 @@ import { Form, Row, Col, Table, Button, ToggleButtonGroup, ToggleButton } from "
 import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
 import { GeoPoint } from '../model/GeoPoint'
-import L from 'leaflet'
+import L, { gridLayer } from 'leaflet'
+import {GrLocation} from 'react-icons/gr'
 
 function HikeForm(props) {
 
@@ -28,7 +29,13 @@ function HikeForm(props) {
     // getPoint();
 
     useEffect(() => {
+        delete L.Icon.Default.prototype._getIconUrl;
 
+        L.Icon.Default.mergeOptions({
+          iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+          iconUrl: require("leaflet/dist/images/marker-icon.png"),
+          shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+        });
         console.log("New point index:" + pointIndex)
     }, [pointIndex])
 
@@ -68,6 +75,7 @@ function HikeForm(props) {
         • Point can be: address, name of location, GPS coordinates, hut, parking lot
     */
 
+    
     function LocationMarker(props) {
         const map = useMapEvents({
             async click(e) {
@@ -220,9 +228,9 @@ function HikeForm(props) {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
                             <LocationMarker getPosition={getPosition} />
-                            {startPoint !== { lat: undefined, lng: undefined } ? <Marker position={startPoint}></Marker> : ''}
-                            {endPoint !== { lat: undefined, lng: undefined } ? <Marker position={endPoint}></Marker> : ''}
-                            {referencePoint !== { lat: undefined, lng: undefined } ? <Marker position={referencePoint}></Marker> : ''}
+                            {/* {startPoint !== { lat: undefined, lng: undefined } ? <Marker position={startPoint}></Marker> : ''} */}
+                            {/* {endPoint !== { lat: undefined, lng: undefined } ? <Marker position={endPoint}></Marker> : ''} */}
+                            {/* {referencePoint !== { lat: undefined, lng: undefined } ? <Marker position={referencePoint}></Marker> : ''} */}
                         </MapContainer>
                     </Col>
                 </Row>
