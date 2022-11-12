@@ -26,8 +26,10 @@ function HikeForm(props) {
     const [endPoint, setEndPoint] = useState(new GeoPoint())
     const [referencePoint, setReferencePoint] = useState([])
     const [position, setPosition] = useState(['45.06294822296754', '7.662272990156818'])
+    const [countryCode, setCountryCode] = useState('')
     const [country, setCountry] = useState('')
     const [region, setRegion] = useState('')
+    const [regionCode, setRegionCode] = useState('')
     const [city, setCity] = useState('')
     const [cityMap, setCityMap] = useState([])
 
@@ -214,7 +216,10 @@ function HikeForm(props) {
                     <Form.Label>Coutry:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required defaultValue={undefined} onChange={(event) => { setCountry(event.target.value); console.log(Country.getAllCountries()) }}>
+                    <Form.Select required defaultValue={undefined} onChange={(event) => {
+                        setCountryCode(event.target.value);
+                        setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
+                    }}>
                         {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
                     </Form.Select>
                 </Col>
@@ -222,8 +227,11 @@ function HikeForm(props) {
                     <Form.Label>Region:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required defaultValue={undefined} onChange={(event) => { setRegion(event.target.value); console.log(State.getAllStates()) }}>
-                        {State.getStatesOfCountry(country).map((r, j) => <option key={j} value={r.isoCode}>{r.name}</option>)}
+                    <Form.Select required defaultValue={undefined} onChange={(event) => {
+                        setRegionCode(event.target.value);
+                        setRegion(State.getAllStates().filter(r => r.isoCode === event.target.value)[0].name);
+                    }}>
+                        {State.getStatesOfCountry(countryCode).map((r, j) => <option key={j} value={r.isoCode}>{r.name}</option>)}
                     </Form.Select>
                 </Col>
                 <Col sm={2}>
@@ -234,7 +242,7 @@ function HikeForm(props) {
                         setCity(event.target.value);
                         setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
                     }}>
-                        {City.getCitiesOfState(country, region).map((ci, k) => <option key={k} value={ci.name}>{ci.name}</option>)}
+                        {City.getCitiesOfState(countryCode, regionCode).map((ci, k) => <option key={k} value={ci.name}>{ci.name}</option>)}
                     </Form.Select>
                 </Col>
             </Form.Group>
