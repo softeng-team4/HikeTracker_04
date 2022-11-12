@@ -100,9 +100,6 @@ function HikeForm(props) {
         return position === null ? null : (
 
             <Marker position={position}>
-                <Popup>
-                    {pointIndex === "1" ? "Start Point" : "End Point"}
-                </Popup>
             </Marker>
 
         )
