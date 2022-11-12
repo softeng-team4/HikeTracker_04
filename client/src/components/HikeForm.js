@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
 import { GeoPoint } from '../model/GeoPoint'
 import L, { gridLayer } from 'leaflet'
-import {GrLocation} from 'react-icons/gr'
+import { GrLocation } from 'react-icons/gr'
 
 function HikeForm(props) {
 
@@ -32,9 +32,9 @@ function HikeForm(props) {
         delete L.Icon.Default.prototype._getIconUrl;
 
         L.Icon.Default.mergeOptions({
-          iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-          iconUrl: require("leaflet/dist/images/marker-icon.png"),
-          shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+            iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+            iconUrl: require("leaflet/dist/images/marker-icon.png"),
+            shadowUrl: require("leaflet/dist/images/marker-shadow.png")
         });
         console.log("New point index:" + pointIndex)
     }, [pointIndex])
@@ -75,7 +75,7 @@ function HikeForm(props) {
         • Point can be: address, name of location, GPS coordinates, hut, parking lot
     */
 
-    
+
     function LocationMarker(props) {
         const map = useMapEvents({
             async click(e) {
@@ -228,9 +228,17 @@ function HikeForm(props) {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
                             <LocationMarker getPosition={getPosition} />
-                            {startPoint.lat !== undefined? <Marker position={startPoint}></Marker> : ''}
-                            {endPoint.lat !== undefined ? <Marker position={endPoint}></Marker> : ''}
-                            {/* {referencePoint !== undefined ? <Marker position={referencePoint}></Marker> : ''} */}
+                            {startPoint.lat !== undefined ? <Marker position={startPoint}>
+                                <Popup>
+                                    Start point
+                                </Popup>
+                            </Marker> : ''}
+                            {endPoint.lat !== undefined ? <Marker position={endPoint}>
+                                <Popup>
+                                    End Point
+                                </Popup>
+                            </Marker> : ''}
+                            {/* {referencePoint.length===0 ? '' : referencePoint.forEach(<Marker position={referencePoint}></Marker>)} */}
                         </MapContainer>
                     </Col>
                 </Row>
@@ -250,7 +258,7 @@ function HikeForm(props) {
                                     setReferencePoint([...referencePoint, position])
                                     addNewRow();
                                 }
-                                console.log(startPoint)
+                                console.log(referencePoint)
                             }
                             }
                         >Save point
