@@ -18,6 +18,7 @@ function App() {
   const [authUser, setAuthUser] = useState(undefined);
   const [authErr, setAuthErr] = useState(undefined);
   const [currentUser, setCurrentUser] = useState({});
+  const [message, setMessage] = useState('');
 
   const auth = getAuth();
 
@@ -47,6 +48,7 @@ function App() {
       setAuthErr(err);
       setAuthUser(undefined);
       console.log(err);
+      setMessage({ msg: err, type: 'danger' });
       throw (err);
     }
   }
@@ -101,11 +103,12 @@ function App() {
               <Col>
                 <Routes>
 
-                  <Route path='/' element={<Navigate to='/home' />} />
-                  <Route path='/home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
-                  <Route path='/hikeform' element={<HikeForm addNewHike={addNewHike} />} />
                   <Route path='/login' element={authUser ? <Navigate to='/home' /> : <LoginForm login={login} />} />
                   <Route path='/signup' element={<SigninForm signup={signup} />}></Route>
+                  <Route path='/' element={<Navigate to='/home' />} />
+                  <Route path='home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
+                  <Route path='/hikeform' element={<HikeForm addNewHike={addNewHike} />} />
+
 
                   <Route path='*' element={<DefaultRoute />} />
 

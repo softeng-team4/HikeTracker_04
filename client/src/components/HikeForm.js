@@ -1,14 +1,11 @@
 
-import markerIconPng from "leaflet/dist/images/marker-icon.png"
-
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { Form, Row, Col, Table, Button, ToggleButtonGroup, ToggleButton } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
-import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet'
-import { GeoPoint } from '../model/GeoPoint'
-import L, { gridLayer } from 'leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
+import L from 'leaflet'
 import { Country, State, City } from 'country-state-city';
-import Hike from "../model/Hike"
+
 
 
 function HikeForm(props) {
@@ -73,6 +70,11 @@ function HikeForm(props) {
         await props.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
             length, referencePoint, region, title, startPoint);
         setValidated(true);
+        setAscent('');
+        setCity('');
+        setCountry('');
+        setDescription('');
+        setDifficulty('');
     };
 
     //const pointRef = useRef('1')
@@ -115,12 +117,6 @@ function HikeForm(props) {
         )
     }
 
-    // function getPosition(data) {
-    //     setPosition(data);
-    //     console.log('parent', position)
-    // }
-
-    // setTimeout((e) => { setPoint(e); console.log('value', e, point) }, 0);
 
     /* This method will add a new row */
     function addNewRow() {
@@ -168,7 +164,7 @@ function HikeForm(props) {
                     <Form.Label>Title:</Form.Label>
                 </Col>
                 <Col>
-                    <Form.Control required type='text' onChange={(event) => setTitle(event.target.value)} />
+                    <Form.Control className='title-input' required type='text' onChange={(event) => setTitle(event.target.value)} />
                     <Form.Control.Feedback>Valid title!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert a title.</Form.Control.Feedback>
                 </Col>
@@ -178,7 +174,7 @@ function HikeForm(props) {
                     <Form.Label>Length:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control required type='number' defaultValue={undefined} min={0} onChange={(event) => setLength(event.target.value)} />
+                    <Form.Control className='length-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setLength(event.target.value)} />
                     <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert the length. It must be a positive integer.</Form.Control.Feedback>
                 </Col>
@@ -189,7 +185,7 @@ function HikeForm(props) {
                     <Form.Label>Expected time:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
+                    <Form.Control className='expTime-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
                     <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>
                 </Col>
@@ -200,7 +196,7 @@ function HikeForm(props) {
                     <Form.Label>Ascent:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control required type='number' defaultValue={undefined} min={0} onChange={(event) => setAscent(event.target.value)} />
+                    <Form.Control  className='ascent-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setAscent(event.target.value)} />
                     <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert the ascent. It must be a positive integer.</Form.Control.Feedback>
                 </Col>
@@ -211,7 +207,7 @@ function HikeForm(props) {
                     <Form.Label>Difficulty:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required defaultValue={1} onChange={(event) => setDifficulty(event.target.value)}>
+                    <Form.Select className='difficulty-input' required defaultValue={1} onChange={(event) => setDifficulty(event.target.value)}>
                         <option value={1}>Tourist (Easy)</option>
                         <option value={2}>Hiker (Medium)</option>
                         <option value={3}>Professional Hiker (Hard)</option>
@@ -220,10 +216,10 @@ function HikeForm(props) {
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
-                    <Form.Label>Coutry:</Form.Label>
+                    <Form.Label>Country:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required onChange={(event) => {
+                    <Form.Select className='country-input' required onChange={(event) => {
                         setCountryCode(event.target.value);
                         setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
                     }}>
@@ -234,7 +230,7 @@ function HikeForm(props) {
                     <Form.Label>Region:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required onChange={(event) => {
+                    <Form.Select className='region-input' required onChange={(event) => {
                         setRegionCode(event.target.value);
                         setRegion(State.getAllStates().filter(r => r.isoCode === event.target.value)[0].name);
                     }}>
@@ -245,7 +241,7 @@ function HikeForm(props) {
                     <Form.Label>City:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required onChange={(event) => {
+                    <Form.Select className='city-input' required onChange={(event) => {
                         setCity(event.target.value);
                         setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
                     }}>
@@ -354,7 +350,7 @@ function HikeForm(props) {
             }
             <Form.Group className="mb-3">
                 <Form.Label>Description:</Form.Label>
-                <Form.Control required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
+                <Form.Control className='description-input' required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
                 <Form.Control.Feedback>Valid description!</Form.Control.Feedback>
                 <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
             </Form.Group>
