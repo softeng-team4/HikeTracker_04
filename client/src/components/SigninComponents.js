@@ -1,6 +1,7 @@
 import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useState } from 'react';
 //import { Redirect } from 'react-router';
+import isEmail from 'validator/lib/isEmail';
 
 function SigninForm(props) {
   const [username, setUsername] = useState('');
@@ -21,6 +22,11 @@ function SigninForm(props) {
     if (username === '' || username.search('@') === -1 || password === '' || password.length < 6) {
       valid = false;
       setErrorMessage('Email cannot be empty and password must be at least six character long.');
+    }
+    let checkIfValidEmail = isEmail(username); // true for good email
+    if(!checkIfValidEmail){
+      valid = false;
+      setErrorMessage('Invalid email address.');
     }
     if (password !== confirmPassword) {
       valid = false;
