@@ -33,7 +33,7 @@ const FilterForm = (props) => {
             region: filters.geoArea.region.name === 'None' ? undefined : filters.geoArea.region.name,
             city: filters.geoArea.city.name === 'None' ? undefined : filters.geoArea.city.name,
             difficulty: filters.difficulty === 'None' ? undefined : filters.difficulty,
-            lenght: filters.lenghtRange,
+            length: filters.lenghtRange,
             ascent: filters.ascentRange,
             expectedTime: filters.expTimeRange
         }, 'hike').then(r => setHikeList(r));

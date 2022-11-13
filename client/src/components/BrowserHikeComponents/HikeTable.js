@@ -44,9 +44,9 @@ const HikeTable = () => {
                                 </Card.Body>
                                 <Card.Footer className='row d-flex justify-content-between' key={`card_footer_${idx}`}>
                                     <Col md={3} key={`hike_diff_${idx}`}><b>Difficulty:</b>&nbsp;{hike.difficulty}</Col>
-                                    <Col md={3} key={`hike_len_${idx}`}><b>Lenght:</b>&nbsp;{hike.lenght}</Col>
+                                    <Col md={3} key={`hike_len_${idx}`}><b>Length:</b>&nbsp;{hike.length}</Col>
                                     <Col md={3} key={`hike_asc_${idx}`}><b>Ascent:</b>&nbsp;{hike.ascent}</Col>
-                                    <Col md={3} key={`hike_time_${idx}`}><b>Estimated Time:</b>&nbsp;{hike.expected_time}</Col>
+                                    <Col md={3} key={`hike_time_${idx}`}><b>Estimated Time:</b>&nbsp;{hike.expectedTime}</Col>
                                 </Card.Footer>
                             </Card>
                             <Spacer height='1rem' key={`card_spacer_${idx}`} />

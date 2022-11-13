@@ -28,29 +28,29 @@ describe('testing the definition of a new hike by a local guide',()=>{
         })
 
         await firestore.setDoc(firestore.doc(testHikes, "1"), {
-            Ascent: 10, City: "Turin", Country: "Italy", Expected_time: 5.3, Length: 1000,
-            Region: "Piemonte", Difficulty: "Tourist", Title:"Hikes 1"});
+            ascent: 10, city: "Turin", country: "Italy", expectedTime: 5.3, length: 1000,
+            region: "Piemonte", difficulty: "Tourist", title:"Hikes 1"});
         await firestore.setDoc(firestore.doc(testHikes, "2"), {
-            Ascent: 11, City: "Turin", Country: "Italy", Expected_time: 2.6, Length: 3000,
-            Region: "Piemonte", Difficulty: "Pro", Title:"Hikes 2"});
+            ascent: 11, city: "Turin", country: "Italy", expectedTime: 2.6, length: 3000,
+            region: "Piemonte", difficulty: "Pro", title:"Hikes 2"});
         await firestore.setDoc(firestore.doc(testHikes, "3"), {
-            Ascent: 21, City: "Turin", Country: "Italy", Expected_time: 5.1, Length: 2800,
-            Region: "Piemonte", Difficulty: "Tourist", Title:"Hikes 3"});
+            ascent: 21, city: "Turin", country: "Italy", expectedTime: 5.1, length: 2800,
+            region: "Piemonte", difficulty: "Tourist", title:"Hikes 3"});
         await firestore.setDoc(firestore.doc(testHikes, "4"), {
-            Ascent: 24, City: "Turin", Country: "Italy", Expected_time: 3.4, Length: 1500,
-            Region: "Piemonte", Difficulty: "Pro", Title:"Hikes 4"});
+            ascent: 24, city: "Turin", country: "Italy", expectedTime: 3.4, length: 1500,
+            region: "Piemonte", difficulty: "Pro", title:"Hikes 4"});
         await firestore.setDoc(firestore.doc(testHikes, "5"), {
-            Ascent: 16, City: "Milan", Country: "Italy", Expected_time: 2.5, Length: 1800,
-            Region: "Lombardia", Difficulty: "Tourist", Title:"Hikes 5"});
+            ascent: 16, city: "Milan", country: "Italy", expectedTime: 2.5, length: 1800,
+            region: "Lombardia", difficulty: "Tourist", title:"Hikes 5"});
         await firestore.setDoc(firestore.doc(testHikes, "6"), {
-            Ascent: 17, City: "Milan", Country: "Italy", Expected_time: 9.5, Length: 4000,
-            Region: "Lombardia", Difficulty: "Pro", Title:"Hikes 6"});
+            ascent: 17, city: "Milan", country: "Italy", expectedTime: 9.5, length: 4000,
+            region: "Lombardia", difficulty: "Pro", title:"Hikes 6"});
         await firestore.setDoc(firestore.doc(testHikes, "7"), {
-            Ascent: 28, City: "Milan", Country: "Italy", Expected_time: 4.1, Length: 4200,
-            Region: "Lombardia", Difficulty: "Pro", Title:"Hikes 7"});
+            ascent: 28, city: "Milan", country: "Italy", expectedTime: 4.1, length: 4200,
+            region: "Lombardia", difficulty: "Pro", title:"Hikes 7"});
         await firestore.setDoc(firestore.doc(testHikes, "8"), {
-            Ascent: 19, City: "Milan", Country: "Italy", Expected_time: 4.5, Length: 800,
-            Region: "Lombardia", Difficulty: "Tourist", Title:"Hikes 8"});
+            ascent: 19, city: "Milan", country: "Italy", expectedTime: 4.5, length: 800,
+            region: "Lombardia", difficulty: "Tourist", title:"Hikes 8"});
 
     })
 

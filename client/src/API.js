@@ -98,7 +98,7 @@ const countryList = async () =>{
     const res = new Set();
     const querySnapshot = await firestore.getDocs(hikesRef);
     querySnapshot.forEach((doc)=>{
-        res.add(doc.data().Country);
+        res.add(doc.data().country);
     });
     return Array.from(res);
 }
@@ -107,10 +107,10 @@ const regionList = async (country) =>{
     console.log("Region list country: ", country);
     const hikesRef = firestore.collection(db, "hike");
     const res = new Set();
-    const q = firestore.query(hikesRef, firestore.where('Country', '==', country));
+    const q = firestore.query(hikesRef, firestore.where('country', '==', country));
     const querySnapshot = await firestore.getDocs(q);
     querySnapshot.forEach((doc)=>{
-        res.add(doc.data().Region);
+        res.add(doc.data().region);
     });
     return Array.from(res);
 }
@@ -119,10 +119,10 @@ const cityList = async (country, region) =>{
     const hikesRef = firestore.collection(db, "hike");
     console.log("City list country and region: ", country, region);
     const res = new Set();
-    const q = firestore.query(hikesRef, firestore.where('Country', '==', country), firestore.where('Region', '==', region));
+    const q = firestore.query(hikesRef, firestore.where('country', '==', country), firestore.where('region', '==', region));
     const querySnapshot = await firestore.getDocs(q);
     querySnapshot.forEach((doc)=>{
-        res.add(doc.data().City);
+        res.add(doc.data().city);
     });
     return Array.from(res);
 }
@@ -136,8 +136,8 @@ const cityList = async (country, region) =>{
 //  length:{min:0,max:8000},
 //  expectedTime:{min:0,max:24}
 //}
-const hikesList = async (filters,collection) =>{
-    console.log("Hikes List filters: ",filters);
+const hikesList = async (filters, collection) =>{
+    console.log("Hikes List filters: ", filters);
     const hikesRef = firestore.collection(db, collection);
     let q;
     let cont = 0;
@@ -145,22 +145,22 @@ const hikesList = async (filters,collection) =>{
     const values = [];
     const res = [];
     if(filters.country !== undefined){
-        names.push("Country");
+        names.push("country");
         values.push(filters.country);
         cont ++;
     }
     if(filters.region !== undefined){
-        names.push("Region");
+        names.push("region");
         values.push(filters.region);
         cont ++;
     }
     if(filters.city !== undefined){
-        names.push("City");
+        names.push("city");
         values.push(filters.city);
         cont ++;
     }
     if(filters.difficulty !== undefined){
-        names.push("Difficulty");
+        names.push("difficulty");
         values.push(filters.difficulty);
         cont ++;
     }
@@ -187,18 +187,19 @@ const hikesList = async (filters,collection) =>{
     if(cont === 0){
         const querySnapshot = await firestore.getDocs(hikesRef);
         querySnapshot.forEach((doc)=>{
-            if(doc.data().Expected_time>=filters.expectedTime.min && doc.data().Expected_time<=filters.expectedTime.max && doc.data().Length>=filters.length.min && doc.data().Length<=filters.length.max && doc.data().Ascent>=filters.ascent.min && doc.data().Ascent<=filters.ascent.max){
+            if(doc.data().expectedTime>=filters.expectedTime.min && doc.data().expectedTime<=filters.expectedTime.max && doc.data().length>=filters.length.min && doc.data().length<=filters.length.max && doc.data().ascent>=filters.ascent.min && doc.data().ascent<=filters.ascent.max){
                 res.push(doc.data());
             }
         });
     }else{
         const querySnapshot = await firestore.getDocs(q);
         querySnapshot.forEach((doc)=>{
-            if(doc.data().Expected_time>=filters.expectedTime.min && doc.data().Expected_time<=filters.expectedTime.max && doc.data().Length>=filters.length.min && doc.data().Length<=filters.length.max && doc.data().Ascent>=filters.ascent.min && doc.data().Ascent<=filters.ascent.max){
+            if(doc.data().expectedTime>=filters.expectedTime.min && doc.data().expectedTime<=filters.expectedTime.max && doc.data().length>=filters.length.min && doc.data().length<=filters.length.max && doc.data().ascent>=filters.ascent.min && doc.data().ascent<=filters.ascent.max){
                 res.push(doc.data());
             }
         });
     }
+    console.log(res);
     return res;
 }
 
