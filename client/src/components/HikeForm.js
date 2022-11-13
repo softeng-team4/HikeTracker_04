@@ -70,7 +70,7 @@ function HikeForm(props) {
             ascent: ascent, city: city, country: country, description: description, difficulty: difficulty, endPoint: endPoint, expectedTime: expectedTime,
             length: length, referencePoint: referencePoint, region: region, title: title, startPoint: startPoint
         }
-        await props.addNewHike(newHike);
+        await props.addNewHike(newHike,"hike");
         setValidated(true);
     };
 

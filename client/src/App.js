@@ -78,9 +78,9 @@ function App() {
     onLogout: logout
   };
 
-  const addNewHike = async (hike) => {
+  const addNewHike = async (hike,collection) => {
     try {
-      await API.addNewHike(hike);
+      await API.addNewHike(hike,collection);
     } catch (e) {
       console.log(e);
       throw (e);

@@ -28,7 +28,7 @@ describe('testing the definition of a new hike by a local guide',()=>{
 
     })
 
-    const hike = {title:'',length:10,expTime:0,ascent:0,difficulty:'',startPoint:'',endPoint:'',refPoints:'',description:''}
+    const hike = {title:'111',length:10,expTime:0,ascent:0,difficulty:2,startPoint:[45.555,34.222],endPoint:[78.999,22.111],refPoints:'',description:'222'}
     newHike(hike)
 })
 

@@ -84,6 +84,7 @@ const getUser = async (email) => {
 
 const addNewHike = async (hike,collection) =>{
     firestore.addDoc(firestore.collection(db,collection),hike);
+    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 
 const countryList = async () =>{
