@@ -36,7 +36,7 @@ const FilterForm = (props) => {
             lenght: filters.lenghtRange,
             ascent: filters.ascentRange,
             expectedTime: filters.expTimeRange
-        }).then(r => setHikeList(r));
+        }, 'hike').then(r => setHikeList(r));
     }, [filters, setHikeList]);
 
 
