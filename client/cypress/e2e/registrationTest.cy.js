@@ -4,7 +4,7 @@ describe('signin path', () => {
   })
 })
 
-describe('form render', () => {
+describe('registration form render', () => {
   it('should get form to register user', () => {
     cy.visit('/signup');
     cy.get('form');
@@ -12,7 +12,7 @@ describe('form render', () => {
 })
 
 describe('can fill all the fields', () => {
-  it('should get form to register user', () => {
+  it('should change all the text fields', () => {
     cy.visit('/signup');
     cy.get('input[id=username]').type('test').should('have.value', 'test');
     cy.get('input[id=password]').type('test').should('have.value', 'test');
@@ -23,7 +23,7 @@ describe('can fill all the fields', () => {
 })
 
 describe('can select all roles', () => {
-  it('should get form to register user', () => {
+  it('should select all available roles', () => {
     cy.visit('/signup');
     cy.get('select[id=role]').select('Local guide').should('have.value', 'Local guide');
     cy.get('select[id=role]').select('Hiker').should('have.value', 'Hiker');
@@ -31,19 +31,19 @@ describe('can select all roles', () => {
 })
 
 describe('email field empty', () => {
-  it('should get form to register user', () => {
+  it('should compare an alert', () => {
     cy.visit('/signup');
     cy.get('input[id=password]').type('notSoSafePassword1!');
     cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
     cy.get('input[id=firstName]').type('John');
     cy.get('input[id=lastName]').type('Doe');
     cy.get('form').submit();
-    cy.get('div[role=alert]').contains('Email cannot be empty and password must be at least six character long.');
+    cy.get('div[role=alert]').contains('Invalid email address.');
   })
 })
 
 describe('wrong email typed', () => {
-  it('should get form to register user', () => {
+  it('should compare an alert', () => {
     cy.visit('/signup');
     cy.get('input[id=username]').type('john.doe#polito.it');
     cy.get('input[id=password]').type('notSoSafePassword1!');
@@ -51,12 +51,12 @@ describe('wrong email typed', () => {
     cy.get('input[id=firstName]').type('John');
     cy.get('input[id=lastName]').type('Doe');
     cy.get('form').submit();
-    cy.get('div[role=alert]').contains('Email cannot be empty and password must be at least six character long.');
+    cy.get('div[role=alert]').contains('Invalid email address.');
   })
 })
 
 describe('password field empty', () => {
-  it('should get form to register user', () => {
+  it('should compare an alert', () => {
     cy.visit('/signup');
     cy.get('input[id=username]').type('john.doe@polito.it');
     cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
@@ -68,7 +68,7 @@ describe('password field empty', () => {
 })
 
 describe('password less than 6 chars', () => {
-  it('should get form to register user', () => {
+  it('should compare an alert', () => {
     cy.visit('/signup');
     cy.get('input[id=username]').type('john.doe@polito.it');
     cy.get('input[id=password]').type('jhon');
@@ -81,7 +81,7 @@ describe('password less than 6 chars', () => {
 })
 
 describe('first name field empty', () => {
-  it('should get form to register user', () => {
+  it('should compare an alert', () => {
     cy.visit('/signup');
     cy.get('input[id=username]').type('john.doe@polito.it');
     cy.get('input[id=password]').type('notSoSafePassword1!');
@@ -93,7 +93,7 @@ describe('first name field empty', () => {
 })
 
 describe('last name field empty', () => {
-  it('should get form to register user', () => {
+  it('should compare an alert', () => {
     cy.visit('/signup');
     cy.get('input[id=username]').type('john.doe@polito.it');
     cy.get('input[id=password]').type('notSoSafePassword1!');
@@ -101,5 +101,64 @@ describe('last name field empty', () => {
     cy.get('input[id=firstName]').type('John');
     cy.get('form').submit();
     cy.get('div[role=alert]').contains('Last name cannot be empty.');
+  })
+})
+
+describe('login path', () => {
+  it('should visit', () => {
+    cy.visit('/login');
+  })
+})
+
+describe('login form render', () => {
+  it('should get form to login user', () => {
+    cy.visit('/login');
+    cy.get('form');
+  })
+})
+
+describe('can fill all the login fields', () => {
+  it('should compare an alert', () => {
+    cy.visit('/login');
+    cy.get('input[id=username]').type('test').should('have.value', 'test');
+    cy.get('input[id=password]').type('test').should('have.value', 'test');
+  })
+})
+
+describe('login email field empty', () => {
+  it('should compare an alert', () => {
+    cy.visit('/login');
+    cy.get('input[id=password]').type('notSoSafePassword1!');
+    cy.get('form').submit();
+    cy.get('div[role=alert]').contains('Invalid email address.');
+  })
+})
+
+describe('login wrong email typed', () => {
+  it('should compare an alert', () => {
+    cy.visit('/login');
+    cy.get('input[id=username]').type('john.doe#polito.it');
+    cy.get('input[id=password]').type('notSoSafePassword1!');
+    cy.get('form').submit();
+    cy.get('div[role=alert]').contains('Invalid email address.');
+  })
+})
+
+describe('login password field empty', () => {
+  it('should compare an alert', () => {
+    cy.visit('/login');
+    cy.get('input[id=username]').type('john.doe@polito.it');
+    cy.get('form').submit();
+    cy.get('div[role=alert]').contains('Email cannot be empty and password must be at least six character long.');
+  })
+})
+
+describe('login password less than 6 chars', () => {
+  it('should compare an alert', () => {
+    cy.visit('/login');
+    cy.get('input[id=username]').type('john.doe@polito.it');
+    cy.get('input[id=password]').type('jhon');
+    cy.get('form').submit();
+    cy.get('div[role=alert]').contains('Email cannot be empty and password must be at least six character long.');
   })
 })
