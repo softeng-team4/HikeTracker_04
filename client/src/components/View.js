@@ -1,5 +1,3 @@
-import { Row, Col, Container } from 'react-bootstrap';
-import { Link, Outlet } from 'react-router-dom';
 import HikeTable from './BrowserHikeComponents/HikeTable'
 
 

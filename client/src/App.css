@@ -45,6 +45,24 @@ body {
   --bs-pagination-active-border-color: gray !important;
 }
 
+/* HikeTable */
+
+.hike-desc {
+  text-align: left;
+}
+
+.emty-hikeList {
+  text-align: center;
+}
+
+.emty-hikeList > div {
+  background-color: transparent;
+}
+
+.emty-hikeList > div > h5 {
+  color: gray;
+}
+
 .leaflet-container {
   width: 100wh; 
   height: 30vh;

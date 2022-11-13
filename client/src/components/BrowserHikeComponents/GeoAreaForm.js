@@ -2,66 +2,70 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
 import { FaSearchLocation } from 'react-icons/fa';
+import { Country, State, City } from 'country-state-city'
 
 
 const GeoAreaForm = (props) => {
 
-    // test variables
-    var testCountry = ['None', 'Italy', 'Germany', 'Spain', 'Brasil', 'Korea']
-    var testRegion = ['Piedmont', 'Lombardy', 'Sicily']
-    var testCity = ['Asti', 'Biella', 'Cuneo', 'Turin', 'Novara']
+
     // states to hold the list of geoAreas recieved from the server
-    const [countryList, setCountryList] = useState(testCountry)
-    const [regionList, setRegionList] = useState(undefined)
-    const [cityList, setCityList] = useState(undefined)
+    const countryList = [{ countryCode: "None", name: 'None' }, ...Country.getAllCountries().map((c, _) => ({ countryCode: c.isoCode, name: c.name }))];
+    const [regionList, setRegionList] = useState(undefined);
+    const [cityList, setCityList] = useState(undefined);
     // states to disable region and city
     const [countryIsSelected, setCountryIsSelected] = useState(false);
     const [regionIsSelected, setRegionIsSelected] = useState(false);
+    const [localGeoArea, setLocalGeoArea] = useState({ country: {countryCode: 'None', name: 'None'}, region: {countryCode: 'None', stateCode: 'None', name: 'None'}, city: {name: 'None'}});
 
 
     const retrieveRegions = (ev) => {
         ev.preventDefault();
-        const c = ev.target.value;
-        var ga = props.geoArea;
-        // API retrieve regions for event.target.value
-        if (c === 'None') {
-            ga.country = ga.region = ga.city = c
+        const cc_cn = ev.target.id.split('_');
+        const c = { countryCode: cc_cn[0], name: cc_cn[1] };
+        if (c.name === 'None') {
             setCountryIsSelected(false);
+            setRegionIsSelected(false);
             setRegionList(undefined);
             setCityList(undefined);
         } else {
-            ga.country = c
-            setRegionList(['None', ...testRegion]);
+            if (localGeoArea.country.name !== c.name) {
+                setCityList(undefined)
+                setRegionIsSelected(false);
+            }
+            setRegionList([{ countryCode: 'None', stateCode: 'None', name: 'None' }, ...State.getStatesOfCountry(c.countryCode).map((r, _) => ({ countryCode: c.countryCode, stateCode: r.isoCode, name: r.name }))]);
             setCountryIsSelected(true);
         }
-        props.setGeoArea(ga);
+        setLocalGeoArea({country: c, region: { countryCode: 'None', stateCode: 'None', name: 'None' }, city: {name: 'None'}});
     };
 
 
     const retrieveCities = (ev) => {
         ev.preventDefault();
-        const r = ev.target.value;
-        var ga = props.geoArea;
-        // API retrieve cities for event.target.value
-        if (r === 'None') {
-            ga.region = ga.city = r
+        const cc_sc_sn = ev.target.id.split('_');
+        const r = { countryCode: cc_sc_sn[0], stateCode: cc_sc_sn[1], name: cc_sc_sn[2] };
+        if (r.name === 'None') {
             setRegionIsSelected(false);
             setCityList(undefined)
         } else {
-            ga.region = r
-            setCityList(['None', ...testCity]);
+            if (localGeoArea.region.name !== r.name)
+            setCityList([{ name: 'None' }, ...City.getCitiesOfState(r.countryCode, r.stateCode).map((c, _) => ({ name: c.name }))]);
             setRegionIsSelected(true);
         }
-        props.setGeoArea(ga);
+        setLocalGeoArea({country: localGeoArea.country, region: r, city:{name: 'None'}});
     };
 
 
     const setCity = (ev) => {
         ev.preventDefault();
         const c = ev.target.value;
-        var ga = props.geoArea;
-        ga.city = c
-        props.setGeoArea(ga);
+        setLocalGeoArea({country: localGeoArea.country, region: localGeoArea.region, city:{name: c}});
+    };
+
+
+    const handleSubmit = () => {
+        if(props.geoArea !== localGeoArea) {
+            props.setGeoArea(localGeoArea);
+        }
     };
 
 
@@ -69,30 +73,30 @@ const GeoAreaForm = (props) => {
         <Form className='row d-flex justify-content-between'>
             <Form.Group className='col-md-4 p-2'>
                 <Form.Label htmlFor='CountrySelection'>Select a Country</Form.Label>
-                <Form.Select className='CountrySelection' value={props.geoArea.country} onChange={(ev) => { retrieveRegions(ev) }}>
+                <Form.Select className='CountrySelection' key={'countrySel'}>
                     {countryList ? countryList.map(c =>
-                        <option key={`co-${c}`} value={c}>{c}</option>
+                        <option key={`co-${c.countryCode}`} value={c.name} id={c.countryCode + '_' + c.name} onClick={(ev) => { retrieveRegions(ev) }}>{c.name}</option>
                     ) : null}
                 </Form.Select>
             </Form.Group>
             <Form.Group className='col-md-4 p-2'>
                 <Form.Label htmlFor='RegionSelection'>Select a Region</Form.Label>
-                <Form.Select className='RegionSelection' value={props.geoArea.region} {...countryIsSelected ? null : { disabled: true }} onChange={(ev) => { retrieveCities(ev) }}>
+                <Form.Select className='RegionSelection' key={'regionSel'} {...countryIsSelected ? null : { disabled: true }}>
                     {regionList ? regionList.map(r =>
-                        <option key={`r-${r}`} value={r}>{r}</option>
+                        <option key={`r-${r.countryCode + '_' + r.stateCode}`} value={r.name} id={r.countryCode + '_' + r.stateCode + '_' + r.name} onClick={(ev) => { retrieveCities(ev) }}>{r.name}</option>
                     ) : null}
                 </Form.Select>
             </Form.Group>
             <Form.Group className='col-md-4 p-2'>
                 <Form.Label htmlFor='CitySelection'>Select a City</Form.Label>
                 <InputGroup>
-                    <Form.Select className='CitySelection' value={props.geoArea.city} {...regionIsSelected ? null : { disabled: true }} onChange={(ev) => { setCity(ev) }}>
+                    <Form.Select className='CitySelection' key={'citySel'} {...regionIsSelected ? null : { disabled: true }} onChange={(ev) => { setCity(ev) }}>
                         {cityList ? cityList.map(c =>
-                            <option key={`ci-${c}`} value={c}>{c}</option>
+                            <option key={`ci-${c.name}`} value={c.name}>{c.name}</option>
                         ) : null}
                     </Form.Select>
-                    <InputGroup.Text className='button-geoArea' onClick={props.handleGeoAreaSubmit}>
-                        <FaSearchLocation/>
+                    <InputGroup.Text className='button-geoArea' onClick={handleSubmit}>
+                        <FaSearchLocation />
                     </InputGroup.Text>
                 </InputGroup>
             </Form.Group>
