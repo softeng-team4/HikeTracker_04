@@ -15,17 +15,17 @@ function HikeForm(props) {
 
     let navigate = useNavigate()
     const [pointIndex, setPointIndex] = useState('1');
-    const [title, setTitle] = useState(undefined);
-    const [length, setLength] = useState(undefined);
-    const [expectedTime, setExpectedTime] = useState(undefined);
-    const [ascent, setAscent] = useState(undefined);
-    const [difficulty, setDifficulty] = useState(undefined);
-    const [description, setDescription] = useState(undefined);
+    const [title, setTitle] = useState('');
+    const [length, setLength] = useState('');
+    const [expectedTime, setExpectedTime] = useState('');
+    const [ascent, setAscent] = useState('');
+    const [difficulty, setDifficulty] = useState('');
+    const [description, setDescription] = useState('');
     const [validated, setValidated] = useState(false);
     //const [positionData, setPositionData] = useState({ lat: 45.06294822296754, lng: 7.662272990156818 })
     const [startPoint, setStartPoint] = useState([])
     const [endPoint, setEndPoint] = useState([])
-    const [referencePoint, setReferencePoint] = useState([])
+    const [referencePoint, setReferencePoint] = useState('')
     const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
     const [countryCode, setCountryCode] = useState('')
     const [country, setCountry] = useState('')
@@ -128,9 +128,9 @@ function HikeForm(props) {
         var row = table.insertRow(rowCount);
         var cell = row.insertCell(0)
         cell = row.insertCell(1)
-        cell.innerHTML = position.lat
+        cell.innerHTML = position[0]
         cell = row.insertCell(2)
-        cell.innerHTML = position.lng
+        cell.innerHTML = position[1]
         /*for (var i = 0; i < cellCount; i++) {
               var cell = row.insertCell(i);
               if (i === 0 ) {
@@ -334,13 +334,13 @@ function HikeForm(props) {
                         <tbody>
                             <tr>
                                 <td>Start point</td>
-                                <td>{startPoint.lat}</td>
-                                <td>{startPoint.lng}</td>
+                                <td>{startPoint[0]}</td>
+                                <td>{startPoint[1]}</td>
                             </tr>
                             <tr>
                                 <td>End point</td>
-                                <td>{endPoint.lat}</td>
-                                <td>{endPoint.lng}</td>
+                                <td>{endPoint[0]}</td>
+                                <td>{endPoint[1]}</td>
                             </tr>
                             <tr>
                                 <td>Reference points</td>
