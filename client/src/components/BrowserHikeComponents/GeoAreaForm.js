@@ -23,24 +23,19 @@ const GeoAreaForm = (props) => {
         const cc_cn = ev.target.id.split('_');
         const c = { countryCode: cc_cn[0], name: cc_cn[1] };
         if (c.name === 'None') {
-            localGeoArea.country = c;
-            localGeoArea.region = { countryCode: 'None', stateCode: 'None', name: 'None' }
-            localGeoArea.city.name = 'None';
             setCountryIsSelected(false);
             setRegionIsSelected(false);
             setRegionList(undefined);
             setCityList(undefined);
         } else {
             if (localGeoArea.country.name !== c.name) {
-                localGeoArea.region = { countryCode: 'None', stateCode: 'None', name: 'None' }
-                localGeoArea.city.name = 'None';
                 setCityList(undefined)
                 setRegionIsSelected(false);
             }
-            localGeoArea.country = c
             setRegionList([{ countryCode: 'None', stateCode: 'None', name: 'None' }, ...State.getStatesOfCountry(c.countryCode).map((r, _) => ({ countryCode: c.countryCode, stateCode: r.isoCode, name: r.name }))]);
             setCountryIsSelected(true);
         }
+        setLocalGeoArea({country: c, region: { countryCode: 'None', stateCode: 'None', name: 'None' }, city: {name: 'None'}});
     };
 
 
@@ -49,34 +44,27 @@ const GeoAreaForm = (props) => {
         const cc_sc_sn = ev.target.id.split('_');
         const r = { countryCode: cc_sc_sn[0], stateCode: cc_sc_sn[1], name: cc_sc_sn[2] };
         if (r.name === 'None') {
-            localGeoArea.region = r;
-            localGeoArea.city.name = 'None';
             setRegionIsSelected(false);
             setCityList(undefined)
         } else {
             if (localGeoArea.region.name !== r.name)
-                localGeoArea.city.name = 'None';
-            localGeoArea.region = r
             setCityList([{ name: 'None' }, ...City.getCitiesOfState(r.countryCode, r.stateCode).map((c, _) => ({ name: c.name }))]);
             setRegionIsSelected(true);
         }
+        setLocalGeoArea({country: localGeoArea.country, region: r, city:{name: 'None'}});
     };
 
 
     const setCity = (ev) => {
         ev.preventDefault();
         const c = ev.target.value;
-        localGeoArea.city.name = c;
+        setLocalGeoArea({country: localGeoArea.country, region: localGeoArea.region, city:{name: c}});
     };
 
 
     const handleSubmit = () => {
         if(props.geoArea !== localGeoArea) {
-            var ga = localGeoArea;
-            ga.country.name = ga.country.name ? ga.country.name : undefined;
-            ga.region.name = ga.region.name ? ga.region.name : undefined;
-            ga.city.name = ga.city.name ? ga.city.name : undefined;
-            props.setGeoArea(ga);
+            props.setGeoArea(localGeoArea);
         }
     };
 

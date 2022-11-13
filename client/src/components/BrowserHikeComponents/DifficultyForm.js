@@ -15,7 +15,7 @@ const DifficultyForm = (props) => {
     const handleButtonClick = (key) => {
         if (selectedButton === key) {
             setSelectedButton(undefined);
-            key = undefined;
+            key = 'None';
         } else
             setSelectedButton(key);
         if (key === 'Pro Hiker')
