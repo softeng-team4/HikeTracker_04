@@ -78,9 +78,11 @@ function App() {
     onLogout: logout
   };
 
-  const addNewHike = async (hike,collection) => {
+  const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
+    length, referencePoint, region, title, startPoint) => {
     try {
-      await API.addNewHike(hike,collection);
+      await API.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
+        length, referencePoint, region, title, startPoint);
     } catch (e) {
       console.log(e);
       throw (e);

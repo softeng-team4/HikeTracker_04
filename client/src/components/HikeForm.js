@@ -49,9 +49,9 @@ function HikeForm(props) {
     }, [pointIndex])
 
     const handleSubmit = async (event) => {
+        event.preventDefault();
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
-            event.preventDefault();
             event.stopPropagation();
         }
         console.log("Title:" + title)
@@ -66,11 +66,12 @@ function HikeForm(props) {
         console.log("Start point:" + startPoint)
         console.log("End point:" + endPoint)
         console.log("Reference points:" + referencePoint)
-        const newHike = {
-            ascent: ascent, city: city, country: country, description: description, difficulty: difficulty, endPoint: endPoint, expectedTime: expectedTime,
-            length: length, referencePoint: referencePoint, region: region, title: title, startPoint: startPoint
-        }
-        await props.addNewHike(newHike,"hike");
+        // const newHike = {
+        //     ascent: ascent, city: city, country: country, description: description, difficulty: difficulty, endPoint: endPoint, expectedTime: expectedTime,
+        //     length: length, referencePoint: referencePoint, region: region, title: title, startPoint: startPoint
+        // }
+        await props.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
+            length, referencePoint, region, title, startPoint);
         setValidated(true);
     };
 
@@ -96,9 +97,9 @@ function HikeForm(props) {
     function LocationMarker(props) {
         const map = useMapEvents({
             async click(e) {
-                setPosition([e.latlng.lat,e.latlng.lng]);
+                setPosition([e.latlng.lat, e.latlng.lng]);
                 //await props.getPosition(position);
-                console.log('-----------',position,e.latlng.lat)
+                console.log('-----------', position, e.latlng.lat)
             },
             locationfound(e) {
                 // setPosition(e.latlng)
@@ -313,9 +314,9 @@ function HikeForm(props) {
                                         setReferencePoint([...referencePoint, position])
                                         addNewRow();
                                     }
-                                    console.log('start',startPoint)
-                                    console.log('end',endPoint)
-                                    console.log('ref',referencePoint)
+                                    console.log('start', startPoint)
+                                    console.log('end', endPoint)
+                                    console.log('ref', referencePoint)
                                 }
                                 }
                             >Save point
@@ -357,7 +358,7 @@ function HikeForm(props) {
                 <Form.Control.Feedback>Valid description!</Form.Control.Feedback>
                 <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
             </Form.Group>
-            <Button variant='success' type="submit">Submit form</Button>
+            <Button variant='success' type="submit" >Submit form</Button>
             <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
         </Form>
     )
