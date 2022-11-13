@@ -52,6 +52,7 @@ const HikeTable = () => {
                             <Spacer height='1rem' key={`card_spacer_${idx}`} />
                         </div>
                     )}
+                    {hikeList.length === 0 ? <Container className='emty-hikeList'><Spacer height='2rem'/><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem'/></Container> : null}
                     <HikePageHandler index={index}  pageNum={computeIndex()} handlePageChange={handlePageChange}/>
                 </Container>
             )}
