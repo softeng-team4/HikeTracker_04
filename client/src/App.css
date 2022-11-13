@@ -45,6 +45,12 @@ body {
   --bs-pagination-active-border-color: gray !important;
 }
 
+/* HikeTable */
+
+.hike-desc {
+  text-align: left;
+}
+
 .leaflet-container {
   width: 100wh; 
   height: 30vh;

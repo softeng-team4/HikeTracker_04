@@ -3,7 +3,6 @@ import 'rc-slider/assets/index.css';
 import Slider from 'rc-slider';
 import { Form, Col } from 'react-bootstrap';
 import Spacer from './Spacer';
-import { useState } from 'react';
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
@@ -19,7 +18,7 @@ const SliderForm = (props) => {
 
 
     const handleRange = (slider_num, range) => {
-        props.handleSliderSubmit({slider: slider_num, range:{min: range[0], max: (range[1] === dR[slider_num].max) ? 'inf' : range[1]}})
+        props.handleSliderSubmit({slider: slider_num, range:{min: range[0], max: (range[1] === dR[slider_num].max) ? Number.MAX_VALUE : range[1]}})
     };
 
 
