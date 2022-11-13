@@ -21,21 +21,21 @@ function App() {
 
   const auth = getAuth();
 
-  useEffect(()=>{
-    onAuthStateChanged(auth, async (currentUser)=>{
+  useEffect(() => {
+    onAuthStateChanged(auth, async (currentUser) => {
       setCurrentUser(currentUser);
-      if(currentUser){
+      if (currentUser) {
         try {
-          if(currentUser.emailVerified){
+          if (currentUser.emailVerified) {
             const userInfo = await API.getUser(currentUser.email);
             setAuthUser(userInfo);
           }
-        } catch(err) {
+        } catch (err) {
           setAuthErr(err);
         }
       }
     })
-  },[]);
+  }, []);
 
   //login and logut functions
   const login = async (email, password) => {
@@ -47,7 +47,7 @@ function App() {
       setAuthErr(err);
       setAuthUser(undefined);
       console.log(err);
-      throw(err);
+      throw (err);
     }
   }
   const logout = async () => {
@@ -55,10 +55,10 @@ function App() {
       await API.logOut();
       setAuthUser(undefined);
       setAuthErr(undefined);
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
-  }  
+  }
 
   const signup = async (email, password, firstName, lastName, role) => {
     try {
@@ -68,16 +68,24 @@ function App() {
       throw err;
     }
   }
-  
+
 
   //value for AuthenticationContext
-   let authObject = {
-     authUser: authUser,
-     authErr: authErr,
-     onLogin: login,
-     onLogout: logout
+  let authObject = {
+    authUser: authUser,
+    authErr: authErr,
+    onLogin: login,
+    onLogout: logout
   };
 
+  const addNewHike = async (hike) => {
+    try {
+      await API.addNewHike(hike);
+    } catch (e) {
+      console.log(e);
+      throw (e);
+    }
+  }
 
   return (
     <>
@@ -85,23 +93,23 @@ function App() {
         <BrowserRouter>
           <NavBar />
           <Container fluid className='PageContainer'>
-            <Row/>
+            <Row />
             <Row>
-              <Col xxl={2}/>
+              <Col xxl={2} />
               <Col>
                 <Routes>
 
-                  <Route path='/' element={<Navigate to='/home'/>}/>
-                  <Route path='/home' element={<BrowserHikes onLogOut={logout} loggedIn={login}/>}></Route>
-                  <Route path='/hikeform' element={<HikeForm />} />
-                  <Route path='/login' element={authUser ? <Navigate to='/home'/> : <LoginForm login={login} />}/>
-                  <Route path='/signup' element={<SigninForm signup={signup}/>}></Route>
+                  <Route path='/' element={<Navigate to='/home' />} />
+                  <Route path='/home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
+                  <Route path='/hikeform' element={<HikeForm addNewHike={addNewHike} />} />
+                  <Route path='/login' element={authUser ? <Navigate to='/home' /> : <LoginForm login={login} />} />
+                  <Route path='/signup' element={<SigninForm signup={signup} />}></Route>
 
                   <Route path='*' element={<DefaultRoute />} />
 
                 </Routes>
               </Col>
-              <Col xxl={2}/>
+              <Col xxl={2} />
             </Row>
           </Container>
         </BrowserRouter>

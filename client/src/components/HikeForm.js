@@ -8,6 +8,7 @@ import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 're
 import { GeoPoint } from '../model/GeoPoint'
 import L, { gridLayer } from 'leaflet'
 import { Country, State, City } from 'country-state-city';
+import Hike from "../model/Hike"
 
 
 function HikeForm(props) {
@@ -22,10 +23,10 @@ function HikeForm(props) {
     const [description, setDescription] = useState(undefined);
     const [validated, setValidated] = useState(false);
     //const [positionData, setPositionData] = useState({ lat: 45.06294822296754, lng: 7.662272990156818 })
-    const [startPoint, setStartPoint] = useState(new GeoPoint())
-    const [endPoint, setEndPoint] = useState(new GeoPoint())
+    const [startPoint, setStartPoint] = useState([])
+    const [endPoint, setEndPoint] = useState([])
     const [referencePoint, setReferencePoint] = useState([])
-    const [position, setPosition] = useState(['45.06294822296754', '7.662272990156818'])
+    const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
     const [countryCode, setCountryCode] = useState('')
     const [country, setCountry] = useState('')
     const [region, setRegion] = useState('')
@@ -58,10 +59,18 @@ function HikeForm(props) {
         console.log("Expected Time:" + expectedTime)
         console.log("Ascent:" + ascent)
         console.log("Difficulty:" + difficulty)
+        console.log("Country:" + country)
+        console.log("Region:" + region)
+        console.log("City:" + city)
         console.log("Description:" + description)
-        console.log("Start point:" + startPoint.lat)
-        console.log("End point:" + endPoint.lat)
-        console.log("Reference points:" + referencePoint.lat)
+        console.log("Start point:" + startPoint)
+        console.log("End point:" + endPoint)
+        console.log("Reference points:" + referencePoint)
+        const newHike = {
+            ascent: ascent, city: city, country: country, description: description, difficulty: difficulty, endPoint: endPoint, expectedTime: expectedTime,
+            length: length, referencePoint: referencePoint, region: region, title: title, startPoint: startPoint
+        }
+        await props.addNewHike(newHike);
         setValidated(true);
     };
 
@@ -87,9 +96,9 @@ function HikeForm(props) {
     function LocationMarker(props) {
         const map = useMapEvents({
             async click(e) {
-                setPosition(new GeoPoint(e.latlng.lat, e.latlng.lng));
+                setPosition([e.latlng.lat,e.latlng.lng]);
                 //await props.getPosition(position);
-                // console.log(position)
+                console.log('-----------',position,e.latlng.lat)
             },
             locationfound(e) {
                 // setPosition(e.latlng)
@@ -105,10 +114,10 @@ function HikeForm(props) {
         )
     }
 
-    function getPosition(data) {
-        setPosition(data);
-        console.log('parent', position)
-    }
+    // function getPosition(data) {
+    //     setPosition(data);
+    //     console.log('parent', position)
+    // }
 
     // setTimeout((e) => { setPoint(e); console.log('value', e, point) }, 0);
 
@@ -201,7 +210,7 @@ function HikeForm(props) {
                     <Form.Label>Difficulty:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required defaultValue={undefined} min={0} onChange={(event) => setDifficulty(event.target.value)}>
+                    <Form.Select required defaultValue={1} onChange={(event) => setDifficulty(event.target.value)}>
                         <option value={1}>Tourist (Easy)</option>
                         <option value={2}>Hiker (Medium)</option>
                         <option value={3}>Professional Hiker (Hard)</option>
@@ -213,7 +222,7 @@ function HikeForm(props) {
                     <Form.Label>Coutry:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required defaultValue={undefined} onChange={(event) => {
+                    <Form.Select required onChange={(event) => {
                         setCountryCode(event.target.value);
                         setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
                     }}>
@@ -224,7 +233,7 @@ function HikeForm(props) {
                     <Form.Label>Region:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required defaultValue={undefined} onChange={(event) => {
+                    <Form.Select required onChange={(event) => {
                         setRegionCode(event.target.value);
                         setRegion(State.getAllStates().filter(r => r.isoCode === event.target.value)[0].name);
                     }}>
@@ -235,7 +244,7 @@ function HikeForm(props) {
                     <Form.Label>City:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select required defaultValue={undefined} onChange={(event) => {
+                    <Form.Select required onChange={(event) => {
                         setCity(event.target.value);
                         setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
                     }}>
@@ -269,13 +278,13 @@ function HikeForm(props) {
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
-                                <LocationMarker getPosition={getPosition} />
-                                {startPoint.lat !== undefined ? <Marker position={startPoint}>
+                                <LocationMarker />
+                                {startPoint.length !== 0 ? <Marker position={startPoint}>
                                     <Popup>
                                         Start point
                                     </Popup>
                                 </Marker> : ''}
-                                {endPoint.lat !== undefined ? <Marker position={endPoint}>
+                                {endPoint.length !== 0 ? <Marker position={endPoint}>
                                     <Popup>
                                         End Point
                                     </Popup>
@@ -304,7 +313,9 @@ function HikeForm(props) {
                                         setReferencePoint([...referencePoint, position])
                                         addNewRow();
                                     }
-                                    console.log(referencePoint)
+                                    console.log('start',startPoint)
+                                    console.log('end',endPoint)
+                                    console.log('ref',referencePoint)
                                 }
                                 }
                             >Save point
