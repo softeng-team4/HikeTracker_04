@@ -15,18 +15,17 @@ const testUsers = firestore.collection(api.db,"users-test")
 
 describe('testing the creation of a new user',()=>{
 
+    const userInfo = {email: 'chicco.siviero@gmail.com',password:"chicco",firstName:"Federico",lastName:"Siviero",role:"local guide"}
     before(async () =>{
 
-        const userQuery = firestore.query(testUsers);
-        const querySnapshot = await firestore.getDocs(userQuery)
-        querySnapshot.forEach(async (doc) =>{
-            await fireAuth.deleteUser(doc.id)
-            await firestore.deleteDoc(firestore.doc(api.db,"user-test",doc.id))
-        })
+        await api.logIn(userInfo.email,userInfo.password);
+        const auth = fireAuth.getAuth();
+        const user = auth.currentUser;
+        await fireAuth.deleteUser(user)
+        await firestore.deleteDoc(firestore.doc(api.db,"users",userInfo.email))
     })
 
-    const user = {email: 'chicco.siviero@gmail.com',password:"chicco",firstName:"Federico",lastName:"Siviero",role:"local guide"}
-    newUser(user);
+    newUser(userInfo);
 })
 
 function newUser(user){

@@ -130,9 +130,9 @@ const cityList = async (country, region) =>{
 //  length:{min:0,max:8000},
 //  expectedTime:{min:0,max:24}
 //}
-const hikesList = async (filters) =>{
+const hikesList = async (filters,collection) =>{
     console.log("Hikes List filters: ",filters);
-    const hikesRef = firestore.collection(db, "hike");
+    const hikesRef = firestore.collection(db, collection);
     let q;
     let cont = 0;
     const names = [];
