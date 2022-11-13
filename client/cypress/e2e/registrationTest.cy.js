@@ -162,3 +162,14 @@ describe('login password less than 6 chars', () => {
     cy.get('div[role=alert]').contains('Email cannot be empty and password must be at least six character long.');
   })
 })
+
+describe('correct login', () => {
+  it('should login the user and render the home', () => {
+    cy.visit('/login');
+    cy.get('input[id=username]').type('gianmarcobell95@gmail.com');
+    cy.get('input[id=password]').type('password123');
+    cy.get('form').submit();
+    cy.get('h2').contains('Explore Hike');
+    cy.get('button').contains('GIANMARCO');
+  })
+})
