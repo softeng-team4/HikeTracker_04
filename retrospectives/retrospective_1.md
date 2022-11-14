@@ -27,31 +27,38 @@ sections:
 
 ### Detailed statistics
 
-| Story  | # Tasks | Points | Hours est. | Hours actual |
-|--------|---------|--------|------------|--------------|
-| _#0_   |         |       |            |              |
-| n      |         |        |            |              |
+| Story          | # Tasks | Points | Hours est. | Hours actual |
+| -------------- | ------- | ------ | ---------- | ------------ |
+| _#0_           | 6       |        | 32         | 21           |
+| Browse hikes   | 4       | 8      | 10         | 11.5         |
+| Describe hikes | 5       | 5      | 16         | 27.83        |
+| Register       | 5       | 13     | 14         | 13.33        |
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
 - Hours per task average, standard deviation (estimate and actual)
+  - Estimated hours per task: 72 / 20 = 3.6
+  - Actual hours per task: 73.66 / 20 = 3.683
+  - Estimated standard deviation: 
+  - Actual standard deviation: 
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1
+  - 72 / 73.66 -1 = -0.023
 
   
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated
-  - Total hours spent
-  - Nr of automated unit test cases 
-  - Coverage (if available)
+  - Total hours estimated : 7h
+  - Total hours spent : 7h 40m
+  - Nr of automated unit test cases : 
+  - Coverage (if available) :
 - E2E testing:
-  - Total hours estimated
-  - Total hours spent
+  - Total hours estimated : 7h
+  - Total hours spent : 5h 10m
 - Code review 
-  - Total hours estimated 
-  - Total hours spent
+  - Total hours estimated : 8h
+  - Total hours spent : 5h 10m
   
 
 
