@@ -19,14 +19,14 @@ function LoginForm(props) {
 
     if (valid) {
       props.login(username, password)
-      .catch((err) => { 
-        console.log(err);
-        if(err.message === "Email not verified!"){
-          setErrorMessage("Email not verified! (Check your spam)");
-        } else {
-          setErrorMessage("Error: " + err.code);
-        }
-      });
+        .catch((err) => {
+          console.log(err);
+          if (err.message === "Email not verified!") {
+            setErrorMessage("Email not verified! (Check your spam)");
+          } else {
+            setErrorMessage("Error: " + err.code);
+          }
+        });
     }
   };
 
@@ -35,14 +35,14 @@ function LoginForm(props) {
       <Form onSubmit={handleSubmit}>
         {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
         <Form.Group controlId='username'>
-          <Form.Label>Email</Form.Label>
-          <Form.Control type='email' value={username} onChange={ev => setUsername(ev.target.value)} />
+          <Form.Label >Email</Form.Label>
+          <Form.Control className='email-input' type='email' value={username} onChange={ev => setUsername(ev.target.value)} />
         </Form.Group>
         <Form.Group controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} autoComplete="on" />
+          <Form.Label >Password</Form.Label>
+          <Form.Control className='password-input' type='password' value={password} onChange={ev => setPassword(ev.target.value)} autoComplete="on" />
         </Form.Group>
-        <div align="right" style={{marginTop: 10}}>
+        <div align="right" style={{ marginTop: 10 }}>
           <Button type="submit">Login</Button>
         </div>
       </Form>
