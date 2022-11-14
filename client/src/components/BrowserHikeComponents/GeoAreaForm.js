@@ -91,8 +91,8 @@ const GeoAreaForm = (props) => {
                 <Form.Label htmlFor='CitySelection'>Select a City</Form.Label>
                 <InputGroup>
                     <Form.Select className='CitySelection' key={'citySel'} {...regionIsSelected ? null : { disabled: true }} onChange={(ev) => { setCity(ev) }}>
-                        {cityList ? cityList.map(c =>
-                            <option key={`ci-${c.name}`} value={c.name}>{c.name}</option>
+                        {cityList ? cityList.map((c, idx) =>
+                            <option key={`ci-${c.name}_${idx}`} value={c.name}>{c.name}</option>
                         ) : null}
                     </Form.Select>
                     <InputGroup.Text className='button-geoArea' onClick={handleSubmit}>

@@ -23,9 +23,6 @@ const FilterForm = (props) => {
     const [filters, setFilters] = useState({ geoArea: geoArea, difficulty: difficulty, lenghtRange: lenghtRange, ascentRange: ascentRange, expTimeRange: expTimeRange });
 
 
-    const setHikeList = props.setHikeList;
-
-
     useEffect(() => {
         console.log('I am here!');
         API.hikesList({
@@ -36,8 +33,8 @@ const FilterForm = (props) => {
             length: filters.lenghtRange,
             ascent: filters.ascentRange,
             expectedTime: filters.expTimeRange
-        }, 'hike').then(r => setHikeList(r));
-    }, [filters, setHikeList]);
+        }, 'hike').then(r => props.setHikeList(r));
+    }, [filters]);
 
 
     useEffect(() => {

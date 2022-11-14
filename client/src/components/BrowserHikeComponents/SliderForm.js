@@ -12,9 +12,9 @@ const SliderForm = (props) => {
     // labels of range sliders points
     const lenghtMarks = { 0: '0km', 5: '5km', 10: '10km', 15: '15km', 20: '20km', 25: '25+km' };
     const ascentMarks = { 0: '0m', 200: '200m', 400: '400m', 600: '600m', 800: '800m', 1000: '1000+m' };
-    const timeMarks = { 0: '0h', 2: '2h', 4: '4h', 6: '6h', 8: '8h', 10: '10+h' };
+    const timeMarks = { 0: '0h', 120: '2h', 240: '4h', 360: '6h', 480: '8h', 600: '10+h' };
     // default Ranges for Sliders values
-    const dR = {0: {min: 0, max: 25, step: 5}, 1: {min: 0, max: 1000, step: 200}, 2: {min: 0, max: 10, step: 2}}
+    const dR = {0: {min: 0, max: 25, step: 5}, 1: {min: 0, max: 1000, step: 200}, 2: {min: 0, max: 600, step: 120}}
 
 
     const handleRange = (slider_num, range) => {
