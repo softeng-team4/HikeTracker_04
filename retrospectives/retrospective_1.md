@@ -98,7 +98,9 @@ taken for granted
 
 > Propose one or two
 
-	- Apart from tasks assigned to multiple people, there hasn't been much communication among team member about the state of development. More meetings are probably needed to improve on that.
+  - Apart from tasks assigned to multiple people, there hasn't been much communication among team member about the state of development. More meetings are probably needed to improve on that. Also spent more time
+  at the beginning of the sprint to create a solid backbone between subtasks that need to be integrated in
+  future, with definition of clear constraints on data structures and interafaces. Maybe this infos could be shared in a document easily accessible by all scrum members. This approach will save more time in the end avoiding superflous fixes in the code.
 
 - One thing you are proud of as a Team!!
 
