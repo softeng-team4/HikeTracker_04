@@ -232,7 +232,7 @@ function HikeForm(props) {
                 <Col >
                     <Form.Select className='region-input' required onChange={(event) => {
                         setRegionCode(event.target.value);
-                        setRegion(State.getAllStates().filter(r => r.isoCode === event.target.value)[0].name);
+                        setRegion(State.getStatesOfCountry(countryCode).filter(r => r.isoCode === event.target.value)[0].name);
                     }}>
                         {State.getStatesOfCountry(countryCode).map((r, j) => <option key={j} value={r.isoCode}>{r.name}</option>)}
                     </Form.Select>
