@@ -45,9 +45,8 @@ describe('Browse Hikes', () => {
   it('Select difficulty: pro hiker', () => {
     cy.visit("http://localhost:3000/");
     cy.contains('Pro Hiker').click()
-    cy.get(".card").should("have.length", 3)
+    cy.get(".card").should("have.length", 2)
     cy.contains("Mottarone climb from Stresa")
-    cy.contains("e2e test")
     cy.contains("hike1")
   })
 
@@ -57,9 +56,8 @@ describe('Browse Hikes', () => {
     cy.get(':nth-child(1) > .rc-slider > .rc-slider-step > [style="left: 40%;"]').click()
     cy.get(':nth-child(1) > .rc-slider > .rc-slider-handle-2').click();
     cy.get(':nth-child(1) > .rc-slider > .rc-slider-step > [style="left: 80%;"]').click()
-    cy.get(".card").should("have.length", 3)
+    cy.get(".card").should("have.length", 2)
     cy.contains("Mottarone climb from Stresa")
-    cy.contains("e2e test")
     cy.contains("hike1")
   })
 
@@ -69,8 +67,7 @@ describe('Browse Hikes', () => {
     cy.get(':nth-child(3) > .rc-slider > .rc-slider-step > [style="left: 40%;"]').click()
     cy.get(':nth-child(3) > .rc-slider > .rc-slider-handle-2').click();
     cy.get(':nth-child(3) > .rc-slider > .rc-slider-step > [style="left: 80%;"]').click()
-    cy.get(".card").should("have.length", 2)
-    cy.contains("e2e test")
+    cy.get(".card").should("have.length", 1)
     cy.contains("hike1")
   })
 
@@ -80,9 +77,8 @@ describe('Browse Hikes', () => {
     cy.get(':nth-child(2) > .rc-slider > .rc-slider-step > [style="left: 40%;"]').click()
     cy.get(':nth-child(2) > .rc-slider > .rc-slider-handle-2').click();
     cy.get(':nth-child(2) > .rc-slider > .rc-slider-step > [style="left: 80%;"]').click()
-    cy.get(".card").should("have.length", 3)
+    cy.get(".card").should("have.length", 2)
     cy.contains("Mottarone climb from Stresa")
-    cy.contains("e2e test")
     cy.contains("hike1")
   })
 
@@ -121,7 +117,7 @@ describe('Browse Hikes', () => {
     cy.get(':nth-child(3) > .rc-slider > .rc-slider-handle-2').click();
     cy.get(':nth-child(3) > .rc-slider > .rc-slider-step > [style="left: 80%;"]').click()
     cy.get(".card").should("have.length", 1)
-    cy.contains("e2e test")
+    cy.contains("There are no hikes")
   }) 
 
   it("Select empty list", () => {
