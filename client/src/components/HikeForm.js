@@ -11,6 +11,7 @@ import { Country, State, City } from 'country-state-city';
 function HikeForm(props) {
 
     let navigate = useNavigate()
+    const [creationMethod, setCreationMethod] = useState(0);
     const [pointIndex, setPointIndex] = useState('1');
     const [title, setTitle] = useState('');
     const [length, setLength] = useState('');
@@ -196,7 +197,7 @@ function HikeForm(props) {
                     <Form.Label>Ascent:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control  className='ascent-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setAscent(event.target.value)} />
+                    <Form.Control className='ascent-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setAscent(event.target.value)} />
                     <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert the ascent. It must be a positive integer.</Form.Control.Feedback>
                 </Col>
@@ -249,7 +250,22 @@ function HikeForm(props) {
                     </Form.Select>
                 </Col>
             </Form.Group>
-            {cityMap[0] === undefined ? '' :
+            <Form.Group as={Row} className="mb-3">
+                <Col sm={2}>
+                    <Form.Label>Select creation method:</Form.Label>
+                </Col>
+                <Col >
+                    <ToggleButtonGroup type="radio" name="options" >
+                        <ToggleButton variant='outline-primary' id="tbg-radio-1" value={'1'} onChange={() => setCreationMethod(1)}>
+                            Upload GPX file
+                        </ToggleButton>
+                        <ToggleButton variant='outline-primary' id="tbg-radio-2" value={'2'} onChange={() => setCreationMethod(2)}>
+                            Select points in map
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </Col>
+            </Form.Group>
+            {cityMap[0] === undefined || creationMethod !== 2 ? '' :
                 <Form.Group as={Row} className="mb-3">
                     <Row>
                         <Col sm={2}>Choose Hike Points:</Col>
@@ -346,6 +362,12 @@ function HikeForm(props) {
                             </tr>
                         </tbody>
                     </Table>
+                </Form.Group>
+            }
+            {cityMap[0] === undefined || creationMethod !== 1 ? '' :
+                <Form.Group as={Row} controlId="formFile" className="mb-3">
+                    <Form.Label>GPX File</Form.Label>
+                    <Form.Control type="file" />
                 </Form.Group>
             }
             <Form.Group className="mb-3">

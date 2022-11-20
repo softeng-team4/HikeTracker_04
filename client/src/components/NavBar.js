@@ -28,7 +28,7 @@ const NavBar = (props) => {
                                                 <Dropdown.Item ><NavLink className='profile-link' to={`/${authObject.authUser.firstName.toLowerCase()}`} variant='dark'>Your profile</NavLink></Dropdown.Item>
                                                 <Dropdown.Divider /> 
                                                     {
-                                                    authObject.authUser.role==='Local guide' &&
+                                                    authObject.authUser.role.toLowerCase()==='local guide' &&
                                                     <><Dropdown.Item ><NavLink className='hike-form' to="/hikeform" variant='dark'>New Hike</NavLink> </Dropdown.Item>
                                                     <Dropdown.Divider /></>
                                                     }
