@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 import { Country, State, City } from 'country-state-city';
+let gpxParser = require('gpxparser');
+var gpx = new gpxParser();
 
 
 
@@ -217,6 +219,29 @@ function HikeForm(props) {
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
+                    <Form.Label>Select creation method:</Form.Label>
+                </Col>
+                <Col >
+                    <ToggleButtonGroup type="radio" name="options" >
+                        <ToggleButton variant='outline-primary' id="tbg-radio-1" value={'1'} onChange={() => setCreationMethod(1)}>
+                            Upload GPX file
+                        </ToggleButton>
+                        <ToggleButton variant='outline-primary' id="tbg-radio-2" value={'2'} onChange={() => setCreationMethod(2)}>
+                            Select points in map
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </Col>
+            </Form.Group>
+            {creationMethod !== 1 ? '' :
+                <Form.Group as={Row} controlId="formFile" className="mb-3">
+                    <Form.Label>GPX File</Form.Label>
+                    <Form.Control required type="file" />
+                    <Form.Control.Feedback>Invalid file!</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
+                </Form.Group>
+            }
+            <Form.Group as={Row} className="mb-3">
+                <Col sm={2}>
                     <Form.Label>Country:</Form.Label>
                 </Col>
                 <Col >
@@ -248,21 +273,6 @@ function HikeForm(props) {
                     }}>
                         {City.getCitiesOfState(countryCode, regionCode).map((ci, k) => <option key={k} value={ci.name}>{ci.name}</option>)}
                     </Form.Select>
-                </Col>
-            </Form.Group>
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Select creation method:</Form.Label>
-                </Col>
-                <Col >
-                    <ToggleButtonGroup type="radio" name="options" >
-                        <ToggleButton variant='outline-primary' id="tbg-radio-1" value={'1'} onChange={() => setCreationMethod(1)}>
-                            Upload GPX file
-                        </ToggleButton>
-                        <ToggleButton variant='outline-primary' id="tbg-radio-2" value={'2'} onChange={() => setCreationMethod(2)}>
-                            Select points in map
-                        </ToggleButton>
-                    </ToggleButtonGroup>
                 </Col>
             </Form.Group>
             {cityMap[0] === undefined || creationMethod !== 2 ? '' :
@@ -362,12 +372,6 @@ function HikeForm(props) {
                             </tr>
                         </tbody>
                     </Table>
-                </Form.Group>
-            }
-            {cityMap[0] === undefined || creationMethod !== 1 ? '' :
-                <Form.Group as={Row} controlId="formFile" className="mb-3">
-                    <Form.Label>GPX File</Form.Label>
-                    <Form.Control type="file" />
                 </Form.Group>
             }
             <Form.Group className="mb-3">
