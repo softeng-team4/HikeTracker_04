@@ -34,9 +34,6 @@ function HikeForm(props) {
     const [city, setCity] = useState('')
     const [cityMap, setCityMap] = useState([])
 
-
-    // getPoint();
-
     useEffect(() => {
         delete L.Icon.Default.prototype._getIconUrl;
 

@@ -101,13 +101,14 @@ function App() {
             <Row>
               <Col xxl={2} />
               <Col>
+
                 <Routes>
 
                   <Route path='/login' element={authUser ? <Navigate to='/home' /> : <LoginForm login={login} />} />
                   <Route path='/signup' element={<SigninForm signup={signup} />}></Route>
                   <Route path='/' element={<Navigate to='/home' />} />
-                  <Route path='home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
-                  <Route path='/hikeform' element={<HikeForm addNewHike={addNewHike} />} />
+                  <Route path='/home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
+                  <Route path='/hikeform' element={(authUser && authUser.role.toLowerCase()==='local guide')? <HikeForm addNewHike={addNewHike} /> : <Navigate to='/home'/>} />
 
 
                   <Route path='*' element={<DefaultRoute />} />
