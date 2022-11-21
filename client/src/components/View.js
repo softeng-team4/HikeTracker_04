@@ -1,4 +1,7 @@
+import { Container, Row, Col } from 'react-bootstrap';
+import { Outlet } from 'react-router';
 import HikeTable from './BrowserHikeComponents/HikeTable'
+import NavBar from './NavBar';
 
 
 function DefaultRoute() {
@@ -18,6 +21,26 @@ function BrowserHikes(props) {
     );
 }
 
+function AppLayout() {
+    return (
+        <>
+            <Container fluid className='PageContainer'>
+                <Row>
+                    <NavBar />
+
+                </Row>
+                <Row>
+                    <Col xxl={2} />
+                    <Col>
+                    <Outlet />
+                    </Col>
+                    <Col xxl={2} />
+
+                </Row>
+            </Container>
+        </>
+    )
+}
 
 
-export { DefaultRoute, BrowserHikes };
+export { DefaultRoute, BrowserHikes, AppLayout };

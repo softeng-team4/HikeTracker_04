@@ -7,6 +7,7 @@ const NavBar = (props) => {
 
     const location = useLocation();
     const path = location ? location.pathname : undefined;
+    console.log('path',location.pathname)
 
     return (
         <AuthenticationContext.Consumer>
