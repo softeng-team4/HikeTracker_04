@@ -12,6 +12,7 @@
     "country-state-city": "^3.1.2",
     "cypress": "^11.0.1",
     "firebase": "^9.13.0",
+    "gpxparser": "^3.0.8",
     "leaflet": "^1.9.2",
     "mocha": "^10.1.0",
     "rc-slider": "^9.6.5",

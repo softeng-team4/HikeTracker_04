@@ -2,12 +2,12 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { BrowserHikes, DefaultRoute } from './components/View';
+import { AppLayout, BrowserHikes, DefaultRoute } from './components/View';
 import { useEffect, useState } from 'react';
 import API from './API.js'
 import NavBar from './components/NavBar';
 import AuthenticationContext from './components/AuthenticationContext';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Alert } from 'react-bootstrap';
 import { LoginForm } from './components/LoginComponents';
 import { SigninForm } from './components/SigninComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
@@ -44,14 +44,16 @@ function App() {
       const user = await API.logIn(email, password);
       setAuthUser(user);
       setAuthErr(undefined);
+      // setMessage({ msg: 'Hello ' + authUser.role + ',' + authUser.firstName, type: 'success' })
     } catch (err) {
       setAuthErr(err);
       setAuthUser(undefined);
       console.log(err);
-      setMessage({ msg: err, type: 'danger' });
+      // setMessage({ msg: err, type: 'danger' });
       throw (err);
     }
   }
+  // console.log(authUser.firstName)
   const logout = async () => {
     try {
       await API.logOut();
@@ -79,6 +81,7 @@ function App() {
     onLogin: login,
     onLogout: logout
   };
+  // console.log(authUser.role.toLowerCase()==='local guide')
 
   const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
     length, referencePoint, region, title, startPoint) => {
@@ -94,29 +97,34 @@ function App() {
   return (
     <>
       <AuthenticationContext.Provider value={authObject}>
+        {/* {message && <Row>
+                    <Alert variant={message.type} onClose={() => setMessage('')} dismissible>{message.msg}</Alert>
+                  </Row>} */}
         <BrowserRouter>
-          <NavBar />
-          <Container fluid className='PageContainer'>
-            <Row />
-            <Row>
-              <Col xxl={2} />
-              <Col>
-                <Routes>
-
-                  <Route path='/login' element={authUser ? <Navigate to='/home' /> : <LoginForm login={login} />} />
-                  <Route path='/signup' element={<SigninForm signup={signup} />}></Route>
-                  <Route path='/' element={<Navigate to='/home' />} />
-                  <Route path='home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
-                  <Route path='/hikeform' element={<HikeForm addNewHike={addNewHike} />} />
 
 
-                  <Route path='*' element={<DefaultRoute />} />
+          <Routes>
 
-                </Routes>
-              </Col>
-              <Col xxl={2} />
-            </Row>
-          </Container>
+            <Route path='/login' element={authUser ? <Navigate replace to='/home' /> : <LoginForm login={login} />} />
+            <Route path='/signup' element={<SigninForm signup={signup} />}></Route>
+
+            {/* here are routes for visiters without login */}
+            <Route path='/' element={authUser ? <Navigate replace to='/home' /> : <AppLayout onLogOut={logout} loggedIn={login} />} >
+              <Route index element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
+              <Route></Route>
+            </Route>
+
+            {/* here are routes for user with login */}
+            {authUser && <Route path='/' element={<AppLayout onLogOut={logout} loggedIn={login} />} >
+              <Route path='home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
+              <Route path='hikeform' element={(authUser.role.toLowerCase() === 'local guide') ? <HikeForm addNewHike={addNewHike} /> : <Navigate to='/' />} />
+              <Route></Route>
+            </Route>}
+
+            <Route path='*' element={<DefaultRoute />} />
+
+          </Routes>
+
         </BrowserRouter>
       </AuthenticationContext.Provider>
     </>
