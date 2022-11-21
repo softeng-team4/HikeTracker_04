@@ -24,7 +24,6 @@ const HikeTable = () => {
 
     useEffect(() => {
         setSubHikeList(hikeList.slice(0, hike4page));
-        console.log('I am here dont loop pls')
     }, [hikeList]);
 
     
