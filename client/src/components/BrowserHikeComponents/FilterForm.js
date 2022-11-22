@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useEffect } from 'react';
-import { Row, Col, Button, Form } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import DifficultyForm from './DifficultyForm';
 import GeoAreaForm from './GeoAreaForm';
 import SliderForm from './SliderForm';
@@ -25,29 +25,28 @@ const FilterForm = (props) => {
     // state to hold point and radius of map filter
     const [pointRadius, setPointRadius] = useState({ coordinates: undefined, radius: undefined });
     // state to hold the entire list of filters
-    const [filters, setFilters] = useState({ geoArea: geoArea, difficulty: difficulty, lenghtRange: lenghtRange, ascentRange: ascentRange, expTimeRange: expTimeRange });
+    const [filters, setFilters] = useState({ geoArea: geoArea, pointRadius: pointRadius, difficulty: difficulty, lenghtRange: lenghtRange, ascentRange: ascentRange, expTimeRange: expTimeRange });
     // state to hold which geoAreaFilter display to the user
     const [geoAreaFilterType, setGeoAreaFilterType] = useState(true);
-    
+    const setHikeList = props.setHikeList;   
+
     
     useEffect(() => {
+        const success = (pos) => {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            const cM = centerMap;
+            cM.coordinates = [lat, lon];
+            setcenterMap(cM);
+        };
+    
+        const error = () => {
+            const cM = centerMap;
+            cM.coordinates = [45.46427, 9.18951]; // coord of Milan city
+            setcenterMap(cM);
+        };
         navigator.geolocation.getCurrentPosition(success, error);
-    }, []);
-
-
-    const success = (pos) => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-        const cM = centerMap;
-        cM.coordinates = [lat, lon];
-        setcenterMap(cM);
-    };
-
-    const error = () => {
-        const cM = centerMap;
-        cM.coordinates = [45.46427, 9.18951]; // coord of Milan city
-        setcenterMap(cM);
-    };
+    }, [centerMap]);
 
 
     useEffect(() => {
@@ -56,13 +55,13 @@ const FilterForm = (props) => {
             country: filters.geoArea.country.name === 'None' ? undefined : filters.geoArea.country.name,
             region: filters.geoArea.region.name === 'None' ? undefined : filters.geoArea.region.name,
             city: filters.geoArea.city.name === 'None' ? undefined : filters.geoArea.city.name,
-            pointRadius: pointRadius,
+            pointRadius: filters.pointRadius,
             difficulty: filters.difficulty === 'None' ? undefined : filters.difficulty,
             length: filters.lenghtRange,
             ascent: filters.ascentRange,
             expectedTime: filters.expTimeRange
-        }, 'hike').then(r => props.setHikeList(r));
-    }, [filters]);
+        }, 'hike').then(r => setHikeList(r));
+    }, [filters, setHikeList]);
 
 
     useEffect(() => {
