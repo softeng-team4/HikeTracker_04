@@ -2,6 +2,7 @@ import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useState } from 'react';
 //import { Redirect } from 'react-router';
 import isEmail from 'validator/lib/isEmail';
+import { Link } from 'react-router-dom';
 
 function SigninForm(props) {
   const [username, setUsername] = useState('');
@@ -24,7 +25,7 @@ function SigninForm(props) {
       setErrorMessage('Email cannot be empty and password must be at least six character long.');
     }
     let checkIfValidEmail = isEmail(username); // true for good email
-    if(!checkIfValidEmail){
+    if (!checkIfValidEmail) {
       valid = false;
       setErrorMessage('Invalid email address.');
     }
@@ -42,12 +43,12 @@ function SigninForm(props) {
     }
     if (valid) {
       props.signup(username, password, firstName, lastName, role)
-      .then(()=>{
-        setSubmitted(true);
-      }).catch((err) => {
-        console.log(err);
-        setErrorMessage("Error: " + err.code);
-      });
+        .then(() => {
+          setSubmitted(true);
+        }).catch((err) => {
+          console.log(err);
+          setErrorMessage("Error: " + err.code);
+        });
     }
   };
 
@@ -66,11 +67,11 @@ function SigninForm(props) {
             </Form.Group>
             <Form.Group controlId='password'>
               <Form.Label>Password</Form.Label>
-              <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} autoComplete="on"/>
+              <Form.Control type='password' value={password} onChange={ev => setPassword(ev.target.value)} autoComplete="on" />
             </Form.Group>
             <Form.Group controlId='confirm_password'>
               <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type='password' value={confirmPassword} onChange={ev => setConfirmPassword(ev.target.value)} autoComplete="on"/>
+              <Form.Control type='password' value={confirmPassword} onChange={ev => setConfirmPassword(ev.target.value)} autoComplete="on" />
             </Form.Group>
             <Form.Group controlId='firstName'>
               <Form.Label>First Name</Form.Label>
@@ -87,8 +88,13 @@ function SigninForm(props) {
                 <option value="Local guide">Local guide</option>
               </Form.Select>
             </Form.Group>
-            <div align="right" style={{marginTop: 10}}>
+            <div align="right" style={{ marginTop: 10 }}>
               <Button type="submit">Sign Up</Button>
+            </div>
+            <div align="left" style={{ marginTop: 10 }}>
+              <Link to='/'>
+                <Button variant='danger'> Back</Button>
+              </Link>
             </div>
           </Form>
         </Container>
