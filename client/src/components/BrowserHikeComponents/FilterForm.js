@@ -25,6 +25,7 @@ const FilterForm = (props) => {
 
     useEffect(() => {
         console.log('I am here!');
+        //API.deleteInvalidHikes().then(console.log("deleted!"))
         API.hikesList({
             country: filters.geoArea.country.name === 'None' ? undefined : filters.geoArea.country.name,
             region: filters.geoArea.region.name === 'None' ? undefined : filters.geoArea.region.name,

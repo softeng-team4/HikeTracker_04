@@ -64,7 +64,7 @@ function HikeForm(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
-        if (form.checkValidity() === false || checkFile() ===false) {
+        if (form.checkValidity() === false || (creationMethod===1 && checkFile() === false)) {
             event.stopPropagation();
         }
         /*console.log("Title:" + title)
