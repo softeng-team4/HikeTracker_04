@@ -21,16 +21,16 @@ const FilterForm = (props) => {
     // state to hold expected time data range
     const [expTimeRange, setExpTimeRange] = useState({ min: 0, max: Number.MAX_VALUE })
     // state to hold initial map location
-    const [centerMap, setcenterMap] = useState({ coordinates: [45.46427, 9.18951]});
+    const [centerMap, setcenterMap] = useState({ coordinates: [45.46427, 9.18951] });
     // state to hold point and radius of map filter
     const [pointRadius, setPointRadius] = useState({ coordinates: undefined, radius: undefined });
     // state to hold the entire list of filters
     const [filters, setFilters] = useState({ geoArea: geoArea, pointRadius: pointRadius, difficulty: difficulty, lenghtRange: lenghtRange, ascentRange: ascentRange, expTimeRange: expTimeRange });
     // state to hold which geoAreaFilter display to the user
     const [geoAreaFilterType, setGeoAreaFilterType] = useState(true);
-    const setHikeList = props.setHikeList;   
+    const setHikeList = props.setHikeList;
 
-    
+
     useEffect(() => {
         const success = (pos) => {
             const lat = pos.coords.latitude;
@@ -39,8 +39,9 @@ const FilterForm = (props) => {
             cM.coordinates = [lat, lon];
             setcenterMap(cM);
         };
-    
-        const error = () => {
+
+        const error = (error) => {
+            console.log(error);
             const cM = centerMap;
             cM.coordinates = [45.46427, 9.18951]; // coord of Milan city
             setcenterMap(cM);
