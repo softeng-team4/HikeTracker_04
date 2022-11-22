@@ -36,7 +36,7 @@ const NavBar = (props) => {
                                                         <Nav.Link href='/newPark'>New Park</Nav.Link>
                                                         <Nav.Link href='/newHut'>New Hut</Nav.Link>
                                                         {/* <Nav.Link href='/parks'>Park List</Nav.Link> */}
-                                                        {/* <Nav.Link href='/huts'>Hut List</Nav.Link> */}
+                                                        <Nav.Link href='/huts'>Explore huts</Nav.Link>
 
                                                     </>}
                                             </>

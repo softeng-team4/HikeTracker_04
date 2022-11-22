@@ -82,13 +82,12 @@ const getUser = async (email) => {
 
 //Queries for the hike collection
 
-const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
-    length, referencePoint, region, title, startPoint) => {
-    const hike = {
-        ascent: ascent, city: city, country: country, description: description, difficulty: difficulty, endPoint: endPoint, expectedTime: expectedTime,
-        length: length, referencePoint: JSON.stringify(referencePoint), region: region, title: title, startPoint: startPoint
+const addNewHike = async (hike,collection) => {
+    const staticHike = {
+        ascent: hike.ascent, city: hike.city, country: hike.country, description: hike.description, difficulty: hike.difficulty, endPoint: new firestore.GeoPoint(hike.endPoint[0],hike.endPoint[1]), expectedTime: hike.expectedTime,
+        length: hike.length, referencePoint: JSON.stringify(hike.referencePoint), region: hike.region, title: hike.title, startPoint: new firestore.GeoPoint(hike.startPoint[0],hike.startPoint[1])
     }
-    firestore.addDoc(firestore.collection(db, "hike"), hike);
+    firestore.addDoc(firestore.collection(db, collection), staticHike);
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 

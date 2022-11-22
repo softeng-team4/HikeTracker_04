@@ -67,6 +67,8 @@ function HikeForm(props) {
         if (form.checkValidity() === false || (creationMethod===1 && checkFile() === false)) {
             event.stopPropagation();
         }
+        const hike = {ascent: ascent, city:city, country:country, description:description, difficulty: difficulty, endPoint:endPoint, expectedTime:expectedTime, length: length,
+        referencePoint: referencePoint, region: region, title:title, startPoint:startPoint}
         /*console.log("Title:" + title)
         console.log("Length:" + length)
         console.log("Expected Time:" + expectedTime)
@@ -83,8 +85,7 @@ function HikeForm(props) {
         //     ascent: ascent, city: city, country: country, description: description, difficulty: difficulty, endPoint: endPoint, expectedTime: expectedTime,
         //     length: length, referencePoint: referencePoint, region: region, title: title, startPoint: startPoint
         // }
-        await props.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
-            length, referencePoint, region, title, startPoint);
+        await props.addNewHike(hike,"hike");
         setValidated(true);
         setAscent('');
         setCity('');

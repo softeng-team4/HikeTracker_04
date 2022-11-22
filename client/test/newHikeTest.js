@@ -28,13 +28,13 @@ describe('testing the definition of a new hike by a local guide',()=>{
 
     })
 
-    const hike = {title:'111',length:10,expTime:0,ascent:0,difficulty:2,startPoint:[45.555,34.222],endPoint:[78.999,22.111],refPoints:'',description:'222'}
+    const hike = {title:'111',city:"Milan",country:"Italy",region:"Lombardia",length:10,expectedTime:0,ascent:0,difficulty:2,startPoint:[45.555,34.222],endPoint:[78.999,22.111],referencePoint:'',description:'222'}
     newHike(hike)
 })
 
 function newHike(hike){
     it("Local guide defining a hike ",function(done){
-        api.addNewHike(hike,"hike-test")
+        api.addNewHike(hike,"test-hike")
         .then(()=>{
             firestore.getDoc(firestore.doc(api.db,"hike-test","1"))
             .then((doc) =>{

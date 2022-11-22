@@ -83,11 +83,9 @@ function App() {
   };
   // console.log(authUser.role.toLowerCase()==='local guide')
 
-  const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
-    length, referencePoint, region, title, startPoint) => {
+  const addNewHike = async (hike,collection) => {
     try {
-      await API.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
-        length, referencePoint, region, title, startPoint);
+      await API.addNewHike(hike,collection);
     } catch (e) {
       console.log(e);
       throw (e);
@@ -121,6 +119,7 @@ function App() {
               <Route path='hikeform' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' />} />
               <Route path='newPark' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewPark  /> : <Navigate to='/' />} />
               <Route path='newHut' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike  /> : <Navigate to='/' />} />
+              <Route path='huts' element={(authUser.role.toLowerCase()) ? <BrowserHuts  /> : <Navigate to='/' />} />
 
               <Route></Route>
             </Route>}
