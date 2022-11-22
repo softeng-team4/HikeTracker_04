@@ -14,6 +14,7 @@ function HikeForm(props) {
 
     let navigate = useNavigate()
     const [creationMethod, setCreationMethod] = useState(0);
+    const [validFile, setValidFile] = useState(false)
     const [pointIndex, setPointIndex] = useState('1');
     const [title, setTitle] = useState('');
     const [length, setLength] = useState('');
@@ -45,13 +46,28 @@ function HikeForm(props) {
         console.log("New point index:" + pointIndex)
     }, [pointIndex])
 
+    function checkFile() {
+        var fileElement = document.getElementById("formFile");
+        var fileExtension = "";
+        if (fileElement.value.lastIndexOf(".") > 0) {
+            fileExtension = fileElement.value.substring(fileElement.value.lastIndexOf(".") + 1, fileElement.value.length);
+        }
+        console.log(fileExtension)
+        if (fileExtension.toLowerCase() == "gpx") {
+            setValidFile(true);
+        }
+        else {
+            setValidFile(false);
+        }
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
+        if (form.checkValidity() === false || checkFile() ===false) {
             event.stopPropagation();
         }
-        console.log("Title:" + title)
+        /*console.log("Title:" + title)
         console.log("Length:" + length)
         console.log("Expected Time:" + expectedTime)
         console.log("Ascent:" + ascent)
@@ -62,7 +78,7 @@ function HikeForm(props) {
         console.log("Description:" + description)
         console.log("Start point:" + startPoint)
         console.log("End point:" + endPoint)
-        console.log("Reference points:" + referencePoint)
+        console.log("Reference points:" + referencePoint)*/
         // const newHike = {
         //     ascent: ascent, city: city, country: country, description: description, difficulty: difficulty, endPoint: endPoint, expectedTime: expectedTime,
         //     length: length, referencePoint: referencePoint, region: region, title: title, startPoint: startPoint
@@ -232,8 +248,8 @@ function HikeForm(props) {
             {creationMethod !== 1 ? '' :
                 <Form.Group as={Row} controlId="formFile" className="mb-3">
                     <Form.Label>GPX File</Form.Label>
-                    <Form.Control required type="file" />
-                    <Form.Control.Feedback>Invalid file!</Form.Control.Feedback>
+                    <Form.Control type="file" accept=".gpx" required onChange={()=>checkFile()} isValid={validFile} isInvalid={!validFile}/>
+                    {console.log("vf:" + validFile)}
                     <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
                 </Form.Group>
             }
