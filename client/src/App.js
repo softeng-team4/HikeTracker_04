@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AppLayout, BrowserHikes, DefaultRoute } from './components/View';
+import { AddNewHike, AddNewPark, AppLayout, BrowserHikes, DefaultRoute } from './components/View';
 import { useEffect, useState } from 'react';
 import API from './API.js'
 import NavBar from './components/NavBar';
@@ -117,7 +117,11 @@ function App() {
             {/* here are routes for user with login */}
             {authUser && <Route path='/' element={<AppLayout onLogOut={logout} loggedIn={login} />} >
               <Route path='home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
-              <Route path='hikeform' element={(authUser.role.toLowerCase() === 'local guide') ? <HikeForm addNewHike={addNewHike} /> : <Navigate to='/' />} />
+              {/* here are routes for local guide */}
+              <Route path='hikeform' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' />} />
+              <Route path='newPark' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewPark  /> : <Navigate to='/' />} />
+              <Route path='newHut' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike  /> : <Navigate to='/' />} />
+
               <Route></Route>
             </Route>}
 

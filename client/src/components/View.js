@@ -1,7 +1,12 @@
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Outlet } from 'react-router';
+import { Link } from 'react-router-dom';
+import AuthenticationContext from './AuthenticationContext';
 import HikeTable from './BrowserHikeComponents/HikeTable'
+import { HikeForm } from './HikeForm';
+import { HutForm } from './HutForm';
 import NavBar from './NavBar';
+import { ParkForm } from './ParkForm';
 
 
 function DefaultRoute() {
@@ -13,13 +18,7 @@ function DefaultRoute() {
     );
 }
 
-function BrowserHikes(props) {
-    return (
-        <>
-            <HikeTable />
-        </>
-    );
-}
+
 
 function AppLayout() {
     return (
@@ -32,7 +31,7 @@ function AppLayout() {
                 <Row>
                     <Col xxl={2} />
                     <Col>
-                    <Outlet />
+                        <Outlet />
                     </Col>
                     <Col xxl={2} />
 
@@ -42,5 +41,37 @@ function AppLayout() {
     )
 }
 
+function BrowserHikes(props) {
+    return (
+        <>
+            <HikeTable />
 
-export { DefaultRoute, BrowserHikes, AppLayout };
+        </>
+    );
+}
+
+function AddNewHike(props) {
+    return (
+        <>
+            <HikeForm addNewHike={props.addNewHike} />
+        </>
+    );
+}
+
+function AddNewPark(props) {
+    return (
+        <>
+            <ParkForm />
+        </>
+    );
+}
+
+function AddNewHut(props) {
+    return (
+        <>
+            <HutForm />
+        </>
+    );
+}
+
+export { DefaultRoute, BrowserHikes, AppLayout, AddNewHike, AddNewPark, AddNewHut };
