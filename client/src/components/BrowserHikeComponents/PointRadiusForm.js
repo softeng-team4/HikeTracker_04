@@ -1,6 +1,6 @@
-import { useState, useRef, useMemo, useCallback } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Circle } from 'react-leaflet';
-import L, { map } from 'leaflet';
+import { useState, useRef, useMemo } from "react";
+import { MapContainer, TileLayer, useMapEvents, Circle, Tooltip } from 'react-leaflet';
+import L from 'leaflet';
 import { Button, Col, Form } from "react-bootstrap";
 
 
@@ -10,6 +10,7 @@ const PointRadiusForm = (props) => {
     // state to hold the radius set by the user
     const radiusList = ['0.5 km', '1 km', '2 km', '5 km', '10 km', '20 km', '30 km', '50 km', '100 km', '200 km'];
     const [radius, setRadius] = useState(500);
+    const circleRef = useRef(null);
 
     L.Icon.Default.mergeOptions({
         iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -17,28 +18,14 @@ const PointRadiusForm = (props) => {
         shadowUrl: require("leaflet/dist/images/marker-shadow.png")
     });
 
-    function SelectCenter() {
-
-        const map = useMapEvents({
-            async click(e) {
-                const pR = props.pointRadius;
-                pR.radius = radius;
-                console.log(pR)
-                pR.coordinates = [e.latlng.lat, e.latlng.lng];
-                props.setPointRadius(pR);
-            },
-            locationfound(e) {
-
-            },
-        })
-        return !props.pointRadius.coordinates ? null : (
-            <DraggableCircle />
-        );
-    };
 
     function DraggableCircle() {
-        const circleRef = useRef(null)
-        const map = useMapEvents({});
+        const map = useMapEvents({
+            dragend: () => {
+                console.log('I am dragging!')
+                props.setPointRadius({ coordinates: [map.getCenter().lat, map.getCenter().lng], radius: radius })
+            }
+        });
         const [position, setPosition] = useState(props.pointRadius.coordinates ? props.pointRadius.coordinates : props.centerMap.coordinates);
         const eventHandlers = useMemo(
             () => ({
@@ -54,16 +41,17 @@ const PointRadiusForm = (props) => {
                     props.setPointRadius({ coordinates: [circleRef.current.getLatLng().lat, circleRef.current.getLatLng().lng], radius: radius })
                 }
             }),
-            [],
-        )
-
-        return (
-            <Circle
-                eventHandlers={eventHandlers}
+            [map],
+            )
+    
+            return (
+                <Circle
+                    eventHandlers={eventHandlers}
                 center={position}
                 radius={radius}
-                ref={circleRef}>
-
+                ref={circleRef}
+                color={props.pointRadius.coordinates ? 'blue' : 'red'}>
+                {!props.pointRadius.coordinates ? <Tooltip direction='top' permanent={true}>Move to select area!</Tooltip> : null}
             </Circle>
         )
     };
@@ -81,7 +69,7 @@ const PointRadiusForm = (props) => {
     return (
         <>
             <Col xl={10}>
-                <MapContainer center={props.centerMap.coordinates} zoom={11}>
+                <MapContainer center={props.centerMap.coordinates} zoom={13}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
