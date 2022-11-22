@@ -63,6 +63,13 @@ body {
   color: gray;
 }
 
+/* FilterForm */
+
+.btn-geoArea {
+  display: flex;
+  align-items: flex-end;
+}
+
 .leaflet-container {
   width: 100wh; 
   height: 30vh;

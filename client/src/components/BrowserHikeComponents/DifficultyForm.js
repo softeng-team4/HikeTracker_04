@@ -27,9 +27,9 @@ const DifficultyForm = (props) => {
     return (
         <Form className='row col-md d-flex justify-content-between'>
             <Form.Group className='row col-md p-2'>
-                <Form.Label className='' htmlFor='DifficultySelection'>Select a difficulty&nbsp;</Form.Label>
+                <Form.Label htmlFor='DifficultySelection'>Select a difficulty&nbsp;</Form.Label>
                 <Form.Text>
-                    <ButtonGroup className='DifficultySelection '>
+                    <ButtonGroup className='DifficultySelection'>
                         {difficultyList.map((d) =>
                             <Button key={d} active={d === selectedButton ? true : false} variant='light' onClick={(ev) => (handleButtonClick(d))}>{d}</Button>
                         )}
