@@ -72,7 +72,7 @@ function HikeForm(props) {
         setStartPoint(gpx.tracks[0].points[0])
         setEndPoint(gpx.tracks[0].points.pop())
         setReferencePoint(gpx.tracks[0].points)
-        /*console.log("ManageGpx:")
+        console.log("ManageGpx:")
         console.log("Title:" + title)
         console.log("Length:" + length)
         console.log("Expected Time:" + expectedTime)
@@ -84,7 +84,7 @@ function HikeForm(props) {
         console.log("Description:" + description)
         console.log("Start point:" + startPoint)
         console.log("End point:" + endPoint)
-        console.log("Reference points:" + referencePoint)*/
+        console.log("Reference points:" + referencePoint)
     }
 
     const handleSubmit = async (event) => {
@@ -200,7 +200,7 @@ function HikeForm(props) {
             table.deleteRow(rowCount - 1);
         }
     }
-    const handlePhoto = async (event) => {
+    const getTrackfromFile = async (event) => {
         if (event.target.files.length === 0) return;
         const file = event.target.files[0];
         console.log("file " + event.target.files[0])
@@ -211,6 +211,26 @@ function HikeForm(props) {
         };
         fr.readAsText(file)
     }
+
+    const getURLfromFile = async (event) => {
+		const files = [...event.target.files];
+		if (files.length === 0) return;
+		
+		let result = await Promise.all(
+			files.map(file => {
+				let url = null;
+				if (window.createObjectURL != undefined) {
+					url = window.createObjectURL(file)
+				} else if (window.URL != undefined) {
+					url = window.URL.createObjectURL(file)
+				} else if (window.webkitURL != undefined) {
+					url = window.webkitURL.createObjectURL(file)
+				}
+				return url;
+			})
+		);
+		console.log(result)  //现在你就可以根据这个结果做你想做的事了，通过上面的createObjectURL方法处理过，这个result里面的url你是可以直接放到img标签里面的src属性上了，就可以展示出来了。
+	}
 
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
@@ -243,7 +263,7 @@ function HikeForm(props) {
                         <Form.Label>Title:</Form.Label>
                     </Col>
                     <Col>
-                        <Form.Control className='title-input' required type='text' onChange={(event) => setTitle(event.target.value)} />
+                        <Form.Control className='title-input' required defaultValue={title} type='text' onChange={(event) => setTitle(event.target.value)} />
                         <Form.Control.Feedback>Valid title!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">Please insert a title.</Form.Control.Feedback>
                     </Col>
@@ -253,7 +273,7 @@ function HikeForm(props) {
                             <Form.Label>Length:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Control className='length-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setLength(event.target.value)} />
+                            <Form.Control className='length-input' defaultValue={length} required type='number' min={0} onChange={(event) => setLength(event.target.value)} />
                             <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
                             <Form.Control.Feedback type="invalid">Please insert the length. It must be a positive integer.</Form.Control.Feedback>
                         </Col>
@@ -264,7 +284,7 @@ function HikeForm(props) {
                             <Form.Label>Expected time:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Control className='expTime-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
+                            <Form.Control className='expTime-input' required defaultValue={expectedTime} type='number' min={0} onChange={(event) => setExpectedTime(event.target.value)} />
                             <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
                             <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>
                         </Col>
@@ -275,7 +295,7 @@ function HikeForm(props) {
                             <Form.Label>Ascent:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Control className='ascent-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setAscent(event.target.value)} />
+                            <Form.Control className='ascent-input' required defaultValue={ascent} type='number' min={0} onChange={(event) => setAscent(event.target.value)} />
                             <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
                             <Form.Control.Feedback type="invalid">Please insert the ascent. It must be a positive integer.</Form.Control.Feedback>
                         </Col>
