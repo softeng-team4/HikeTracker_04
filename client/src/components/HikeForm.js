@@ -73,6 +73,33 @@ function HikeForm(props) {
         }
     }
 
+    const manageGpx = (gpxfile) => {
+        var gpx = new gpxParser(); //Create gpxParser Object
+        console.log(gpxfile)
+        gpx.parse(gpxfile); //parse gpx file from string data
+        //console.log(gpx.tracks[0])
+        setLength(gpx.tracks[0].distance.total)
+        setTitle(gpx.tracks[0].name)
+        setAscent(gpx.tracks[0].elevation.pos)
+        setDescription(gpx.tracks[0].cmt)
+        setStartPoint(gpx.tracks[0].points[0])
+        setEndPoint(gpx.tracks[0].points.pop())
+        setReferencePoint(gpx.tracks[0].points)
+        console.log("ManageGpx:")
+        console.log("Title:" + title)
+        console.log("Length:" + length)
+        console.log("Expected Time:" + expectedTime)
+        console.log("Ascent:" + ascent)
+        console.log("Difficulty:" + difficulty)
+        console.log("Country:" + country)
+        console.log("Region:" + region)
+        console.log("City:" + city)
+        console.log("Description:" + description)
+        console.log("Start point:" + startPoint)
+        console.log("End point:" + endPoint)
+        console.log("Reference points:" + referencePoint)
+    }
+
     const loadGPXContent = (file) => {
         reader.readAsText(file[0]);
         reader.onloadend = () => {
@@ -114,6 +141,7 @@ function HikeForm(props) {
         const form = event.currentTarget;
         if (form.checkValidity() === false || (checkFile() === false)) {
             event.stopPropagation();
+            return
         }
         /*console.log("Title:" + title)
         console.log("Length:" + length)
@@ -217,6 +245,37 @@ function HikeForm(props) {
             table.deleteRow(rowCount - 1);
         }
     }
+    const getTrackfromFile = async (event) => {
+        if (event.target.files.length === 0) return;
+        const file = event.target.files[0];
+        console.log("file " + event.target.files[0])
+        let fr = new FileReader()
+        fr.onload = (evt) => {
+            console.log("GPX :" + fr.result)
+            manageGpx(fr.result)
+        };
+        fr.readAsText(file)
+    }
+
+    const getURLfromFile = async (event) => {
+		const files = [...event.target.files];
+		if (files.length === 0) return;
+		
+		let result = await Promise.all(
+			files.map(file => {
+				let url = null;
+				if (window.createObjectURL != undefined) {
+					url = window.createObjectURL(file)
+				} else if (window.URL != undefined) {
+					url = window.URL.createObjectURL(file)
+				} else if (window.webkitURL != undefined) {
+					url = window.webkitURL.createObjectURL(file)
+				}
+				return url;
+			})
+		);
+		console.log(result)  //现在你就可以根据这个结果做你想做的事了，通过上面的createObjectURL方法处理过，这个result里面的url你是可以直接放到img标签里面的src属性上了，就可以展示出来了。
+	}
 
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
@@ -284,11 +343,11 @@ function HikeForm(props) {
                     <Form.Label>Select creation method:</Form.Label>
                 </Col>
                 <Col >
-                    <ToggleButtonGroup type="radio" name="options" >
-                        <ToggleButton variant='outline-primary' id="tbg-radio-1" value={'1'} onChange={() => setCreationMethod(1)}>
+                    <ToggleButtonGroup type="radio" name="methods" >
+                        <ToggleButton variant='outline-primary' id="methods-1" value={'1'} onChange={() => setCreationMethod(1)}>
                             Upload GPX file
                         </ToggleButton>
-                        <ToggleButton variant='outline-primary' id="tbg-radio-2" value={'2'} onChange={() => setCreationMethod(2)}>
+                        <ToggleButton variant='outline-primary' id="methods-2" value={'2'} onChange={() => setCreationMethod(2)}>
                             Select points in map
                         </ToggleButton>
                     </ToggleButtonGroup>
