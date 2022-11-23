@@ -2,17 +2,15 @@
 import { useEffect, useState } from "react"
 import { Form, Row, Col, Table, Button, ToggleButtonGroup, ToggleButton } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
-import L from 'leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
+import L from 'leaflet-gpx'
 import { Country, State, City } from 'country-state-city';
 let gpxParser = require('gpxparser');
-var gpx = new gpxParser();
-
-
 
 function HikeForm(props) {
 
     let navigate = useNavigate()
+    var gpx = new gpxParser();
     const [creationMethod, setCreationMethod] = useState(0);
     const [validFile, setValidFile] = useState(false)
     const [pointIndex, setPointIndex] = useState('1');
@@ -23,7 +21,7 @@ function HikeForm(props) {
     const [difficulty, setDifficulty] = useState('');
     const [description, setDescription] = useState('');
     const [validated, setValidated] = useState(false);
-    //const [positionData, setPositionData] = useState({ lat: 45.06294822296754, lng: 7.662272990156818 })
+    const [positions, setPositions] = useState('')
     const [startPoint, setStartPoint] = useState([])
     const [endPoint, setEndPoint] = useState([])
     const [referencePoint, setReferencePoint] = useState('')
@@ -34,6 +32,13 @@ function HikeForm(props) {
     const [regionCode, setRegionCode] = useState('')
     const [city, setCity] = useState('')
     const [cityMap, setCityMap] = useState([])
+    const [center, setCenter] = useState({ lat: null, lng: null })
+    // const [url, setUrl] = useState('')
+    const reader = new FileReader();
+    const [GPX, setGPX] = useState("");
+    const [fileGPX, setFileGPX] = useState(null)
+    const [showMap, setShowMap] = useState(false)
+
 
     useEffect(() => {
         delete L.Icon.Default.prototype._getIconUrl;
@@ -44,7 +49,14 @@ function HikeForm(props) {
             shadowUrl: require("leaflet/dist/images/marker-shadow.png")
         });
         console.log("New point index:" + pointIndex)
-    }, [pointIndex])
+        if (fileGPX) {
+            getValuesFromGPX(fileGPX);
+            gpx.parse(fileGPX);
+
+        }
+    }, [fileGPX])
+
+
 
     function checkFile() {
         var fileElement = document.getElementById("formFile");
@@ -53,7 +65,7 @@ function HikeForm(props) {
             fileExtension = fileElement.value.substring(fileElement.value.lastIndexOf(".") + 1, fileElement.value.length);
         }
         console.log(fileExtension)
-        if (fileExtension.toLowerCase() == "gpx") {
+        if (fileExtension.toLowerCase() === "gpx") {
             setValidFile(true);
         }
         else {
@@ -61,10 +73,46 @@ function HikeForm(props) {
         }
     }
 
+    const loadGPXContent = (file) => {
+        reader.readAsText(file[0]);
+        reader.onloadend = () => {
+            setFileGPX(reader.result);
+        }
+    }
+
+    const getValuesFromGPX = (fileGPX) => {
+        gpx.parse(fileGPX);
+        const l = parseFloat(gpx.tracks[0].distance.total).toFixed(2);
+        const a = parseFloat(gpx.tracks[0].elevation.max - gpx.tracks[0].elevation.min).toFixed(2);
+
+
+        setLength(l);
+        setAscent(a);
+        setPositions(gpx.tracks[0].points.map(p => ({ lat: p.lat, lng: p.lon })).filter(p => p.lat && p.lng));
+
+        let point1 = gpx.tracks[0].points[0];
+
+        let point2 = gpx.tracks[0].points[gpx.tracks[0].points.length - 1];
+
+        setStartPoint({
+            latitude: point1.lat,
+            longitude: point1.lon,
+            altitude: point1.ele
+        });
+
+        setEndPoint({
+            latitude: point2.lat,
+            longitude: point2.lon,
+            altitude: point2.ele
+        });
+
+    }
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
-        if (form.checkValidity() === false || (creationMethod===1 && checkFile() === false)) {
+        if (form.checkValidity() === false || (checkFile() === false)) {
             event.stopPropagation();
         }
         /*console.log("Title:" + title)
@@ -79,12 +127,9 @@ function HikeForm(props) {
         console.log("Start point:" + startPoint)
         console.log("End point:" + endPoint)
         console.log("Reference points:" + referencePoint)*/
-        // const newHike = {
-        //     ascent: ascent, city: city, country: country, description: description, difficulty: difficulty, endPoint: endPoint, expectedTime: expectedTime,
-        //     length: length, referencePoint: referencePoint, region: region, title: title, startPoint: startPoint
-        // }
-        await props.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
-            length, referencePoint, region, title, startPoint);
+
+        await props.addNewHike(title, country, region, city, description, difficulty, expectedTime,
+            length, ascent, startPoint, endPoint, referencePoint);
         setValidated(true);
         setAscent('');
         setCity('');
@@ -120,7 +165,7 @@ function HikeForm(props) {
                 console.log('-----------', position, e.latlng.lat)
             },
             locationfound(e) {
-                // setPosition(e.latlng)
+                setPosition(e.latlng)
                 map.flyTo(e.latlng, map.getZoom())
             },
         })
@@ -172,25 +217,6 @@ function HikeForm(props) {
             table.deleteRow(rowCount - 1);
         }
     }
-    const handlePhoto = async (event) => {
-		const files = [...event.target.files];
-		if (files.length === 0) return;
-		
-		let result = await Promise.all(
-			files.map(file => {
-				let url = null;
-				if (window.createObjectURL != undefined) {
-					url = window.createObjectURL(file)
-				} else if (window.URL != undefined) {
-					url = window.URL.createObjectURL(file)
-				} else if (window.webkitURL != undefined) {
-					url = window.webkitURL.createObjectURL(file)
-				}
-				return url;
-			})
-		);
-		console.log(result)  //现在你就可以根据这个结果做你想做的事了，通过上面的createObjectURL方法处理过，这个result里面的url你是可以直接放到img标签里面的src属性上了，就可以展示出来了。
-	}
 
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
@@ -204,17 +230,7 @@ function HikeForm(props) {
                     <Form.Control.Feedback type="invalid">Please insert a title.</Form.Control.Feedback>
                 </Col>
             </Form.Group>
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Length:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Control className='length-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setLength(event.target.value)} />
-                    <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">Please insert the length. It must be a positive integer.</Form.Control.Feedback>
-                </Col>
-                <Col sm={1}>Km</Col>
-            </Form.Group>
+
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Expected time:</Form.Label>
@@ -226,17 +242,31 @@ function HikeForm(props) {
                 </Col>
                 <Col sm={1}>minutes</Col>
             </Form.Group>
+
+            <Form.Group as={Row} className="mb-3">
+                <Col sm={2}>
+                    <Form.Label>Length:</Form.Label>
+                </Col>
+                <Col >
+                    <Form.Control className='length-input' required disabled type='number' value={length} min={0} />
+                    <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Please upload gpx file to get the length.</Form.Control.Feedback>
+                </Col>
+                <Col sm={1}>Km</Col>
+            </Form.Group>
+
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Ascent:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control className='ascent-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setAscent(event.target.value)} />
+                    <Form.Control className='ascent-input' required disabled type='number' defaultValue={ascent} min={0} />
                     <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">Please insert the ascent. It must be a positive integer.</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Please upload gpx file to get the ascent. </Form.Control.Feedback>
                 </Col>
                 <Col sm={1}>m</Col>
             </Form.Group>
+
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Difficulty:</Form.Label>
@@ -249,7 +279,7 @@ function HikeForm(props) {
                     </Form.Select>
                 </Col>
             </Form.Group>
-            <Form.Group as={Row} className="mb-3">
+            {/* <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Select creation method:</Form.Label>
                 </Col>
@@ -263,15 +293,8 @@ function HikeForm(props) {
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Col>
-            </Form.Group>
-            {creationMethod !== 1 ? '' :
-                <Form.Group as={Row} controlId="formFile" className="mb-3">
-                    <Form.Label>GPX File</Form.Label>
-                    <Form.Control type="file" accept=".gpx" required onChange={(event)=>{checkFile();handlePhoto(event)}} isValid={validFile} isInvalid={!validFile}/>
-                    {console.log("vf:" + validFile)}
-                    <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
-                </Form.Group>
-            }
+            </Form.Group> */}
+            {/* {creationMethod !== 1 ? '' : */}
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Country:</Form.Label>
@@ -307,105 +330,154 @@ function HikeForm(props) {
                     </Form.Select>
                 </Col>
             </Form.Group>
-            {cityMap[0] === undefined || creationMethod !== 2 ? '' :
-                <Form.Group as={Row} className="mb-3">
-                    <Row>
-                        <Col sm={2}>Choose Hike Points:</Col>
-                        <Col>
-                            <ToggleButtonGroup type="radio" name="options" defaultValue={'1'} >
-                                <ToggleButton variant='outline-primary' id="tbg-radio-1" value={'1'} onChange={handlePoint}>
-                                    Start Point
-                                </ToggleButton>
-                                <ToggleButton variant='outline-primary' id="tbg-radio-2" value={'2'} onChange={handlePoint}>
-                                    End Point
-                                </ToggleButton>
-                                <ToggleButton variant='outline-primary' id="tbg-radio-3" value={'3'} onChange={handlePoint}>
-                                    Reference Points
-                                </ToggleButton>
-                            </ToggleButtonGroup>
+            <Form.Group as={Row} controlId="formFile" className="mb-3">
+                <Form.Label>GPX File</Form.Label>
+                <Form.Control type="file" accept=".gpx" value={GPX} required onChange={(event) => {
+                    checkFile();
+                    setGPX(event.target.value);
+                    loadGPXContent(event.target.files);
+                    setShowMap(true);
+
+                }} isValid={validFile} isInvalid={!validFile} />
+                {/* {console.log("vf:" + validFile)} */}
+                <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
+            </Form.Group>
+            {/* } */}
+            {(!fileGPX || positions === undefined || !showMap) ? '' :
+                <MapContainer center={[positions[0].lat, positions[0].lng]} zoom={13} scrollWheelZoom={false}>
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <LocationMarker />
+                    <Polyline
+                        pathOptions={{ fillColor: 'red', color: 'blue' }}
+                        positions={positions}
+                    />
+                    {startPoint.length !== 0 ? <Marker position={[startPoint.latitude, startPoint.longitude]}>
+                        <Popup>
+                            Start point
+                        </Popup>
+                    </Marker> : ''}
+                    {endPoint.length !== 0 ? <Marker position={[endPoint.latitude, endPoint.longitude]}>
+                        <Popup>
+                            End Point
+                        </Popup>
+                    </Marker> : ''}
+                </MapContainer>}
+            {/* <Form.Group as={Row} className="mb-3">
+                        <Col sm={2}>
+                            <Form.Label>referencePoint:</Form.Label>
                         </Col>
-                    </Row>
-                    <Row>
                         <Col >
+                            <Form.Select className='ref-input' onChange={(e) => { setReferencePoint(e.target.value) }}>
+                                {positions.map((p, i) => <option key={i} value={[p.latitude, p.longitude]}>{[p.latitude, p.longitude]}</option>)}
+                            </Form.Select>
+                        </Col>
+                    </Form.Group> */}
 
-                            <MapContainer center={cityMap} zoom={13} scrollWheelZoom={false}>
-                                <TileLayer
-                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                />
-                                <LocationMarker />
-                                {startPoint.length !== 0 ? <Marker position={startPoint}>
-                                    <Popup>
-                                        Start point
-                                    </Popup>
-                                </Marker> : ''}
-                                {endPoint.length !== 0 ? <Marker position={endPoint}>
-                                    <Popup>
+
+
+            {/* {
+                cityMap[0] === undefined || creationMethod !== 2 ? '' :
+                    <Form.Group as={Row} className="mb-3">
+                        <Row>
+                            <Col sm={2}>Choose Hike Points:</Col>
+                            <Col>
+                                <ToggleButtonGroup type="radio" name="options" defaultValue={'1'} >
+                                    <ToggleButton variant='outline-primary' id="tbg-radio-1" value={'1'} onChange={handlePoint}>
+                                        Start Point
+                                    </ToggleButton>
+                                    <ToggleButton variant='outline-primary' id="tbg-radio-2" value={'2'} onChange={handlePoint}>
                                         End Point
-                                    </Popup>
-                                </Marker> : ''}
-                                {referencePoint.length === 0 ? '' : referencePoint.map((rPoint, i) => <Marker key={i} position={rPoint}>
-                                    <Popup>
-                                        Reference Point {i + 1}
-                                    </Popup>
-                                </Marker>)}
-                            </MapContainer>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Button variant='primary'
-                                onClick={() => {
-                                    //add into db
-                                    //if ponit=1, add into start point
-                                    if (pointIndex === '1') {
-                                        setStartPoint(position)
-                                    }
-                                    if (pointIndex === '2') {
-                                        setEndPoint(position)
-                                    }
-                                    if (pointIndex === '3') {
-                                        setReferencePoint([...referencePoint, position])
-                                        addNewRow();
-                                    }
-                                    console.log('start', startPoint)
-                                    console.log('end', endPoint)
-                                    console.log('ref', referencePoint)
-                                }
-                                }
-                            >Save point
-                            </Button>
-                        </Col>
-                    </Row>
+                                    </ToggleButton>
+                                    <ToggleButton variant='outline-primary' id="tbg-radio-3" value={'3'} onChange={handlePoint}>
+                                        Reference Points
+                                    </ToggleButton>
+                                </ToggleButtonGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col >
 
-                    <Table id="point-table">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>latitude</th>
-                                <th>longitude</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Start point</td>
-                                <td>{startPoint[0]}</td>
-                                <td>{startPoint[1]}</td>
-                            </tr>
-                            <tr>
-                                <td>End point</td>
-                                <td>{endPoint[0]}</td>
-                                <td>{endPoint[1]}</td>
-                            </tr>
-                            <tr>
-                                <td>Reference points</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                </Form.Group>
-            }
+                                <MapContainer center={cityMap} zoom={13} scrollWheelZoom={false}>
+                                    <TileLayer
+                                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    />
+                                    <LocationMarker />
+                                    {startPoint.length !== 0 ? <Marker position={startPoint}>
+                                        <Popup>
+                                            Start point
+                                        </Popup>
+                                    </Marker> : ''}
+                                    {endPoint.length !== 0 ? <Marker position={endPoint}>
+                                        <Popup>
+                                            End Point
+                                        </Popup>
+                                    </Marker> : ''}
+                                    {referencePoint.length === 0 ? '' : referencePoint.map((rPoint, i) => <Marker key={i} position={rPoint}>
+                                        <Popup>
+                                            Reference Point {i + 1}
+                                        </Popup>
+                                    </Marker>)}
+                                </MapContainer>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Button variant='primary'
+                                    onClick={() => {
+                                        //add into db
+                                        //if ponit=1, add into start point
+                                        if (pointIndex === '1') {
+                                            setStartPoint(position)
+                                        }
+                                        if (pointIndex === '2') {
+                                            setEndPoint(position)
+                                        }
+                                        if (pointIndex === '3') {
+                                            setReferencePoint([...referencePoint, position])
+                                            addNewRow();
+                                        }
+                                        console.log('start', startPoint)
+                                        console.log('end', endPoint)
+                                        console.log('ref', referencePoint)
+                                    }
+                                    }
+                                >Save point
+                                </Button>
+                            </Col>
+                        </Row>
+
+                        <Table id="point-table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>latitude</th>
+                                    <th>longitude</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Start point</td>
+                                    <td>{startPoint[0]}</td>
+                                    <td>{startPoint[1]}</td>
+                                </tr>
+                                <tr>
+                                    <td>End point</td>
+                                    <td>{endPoint[0]}</td>
+                                    <td>{endPoint[1]}</td>
+                                </tr>
+                                <tr>
+                                    <td>Reference points</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </Form.Group>
+            } */}
             <Form.Group className="mb-3">
                 <Form.Label>Description:</Form.Label>
                 <Form.Control className='description-input' required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
@@ -414,7 +486,7 @@ function HikeForm(props) {
             </Form.Group>
             <Button variant='success' type="submit" >Submit form</Button>
             <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
-        </Form>
+        </Form >
     )
 }
 

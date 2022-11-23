@@ -85,8 +85,8 @@ const getUser = async (email) => {
 const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
     length, referencePoint, region, title, startPoint) => {
     const hike = {
-        ascent: ascent, city: city, country: country, description: description, difficulty: difficulty, endPoint: endPoint, expectedTime: expectedTime,
-        length: length, referencePoint: JSON.stringify(referencePoint), region: region, title: title, startPoint: startPoint
+        title: title, country: country, region: region, city: city, description: description, difficulty: difficulty, expectedTime: expectedTime,
+        length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: JSON.stringify(referencePoint)
     }
     firestore.addDoc(firestore.collection(db, "hike"), hike);
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
@@ -99,12 +99,12 @@ const deleteInvalidHikes = async () => {
     querySnapshot.forEach((doc) => {
         firestore.deleteDoc(doc.ref);
     });
-    q= firestore.query(hikesRef, firestore.where("country", '==', ''));
+    q = firestore.query(hikesRef, firestore.where("country", '==', ''));
     querySnapshot = await firestore.getDocs(q);
     querySnapshot.forEach((doc) => {
         firestore.deleteDoc(doc.ref);
     });
-    q= firestore.query(hikesRef, firestore.where("region", '==', ''));
+    q = firestore.query(hikesRef, firestore.where("region", '==', ''));
     querySnapshot = await firestore.getDocs(q);
     querySnapshot.forEach((doc) => {
         firestore.deleteDoc(doc.ref);
