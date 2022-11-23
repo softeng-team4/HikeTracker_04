@@ -12,6 +12,7 @@ import { LoginForm } from './components/LoginComponents';
 import { SigninForm } from './components/SigninComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { HikeForm } from './components/HikeForm';
+import {BrowserHuts} from './components/BrowserHuts'
 
 function App() {
   //states of authentication of an Admin
@@ -119,7 +120,7 @@ function App() {
               <Route path='hikeform' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' />} />
               <Route path='newPark' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewPark  /> : <Navigate to='/' />} />
               <Route path='newHut' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike  /> : <Navigate to='/' />} />
-              <Route path='huts' element={(authUser.role.toLowerCase()) ? <BrowserHuts  /> : <Navigate to='/' />} />
+              <Route path='huts' element={(authUser.role.toLowerCase() === 'local guide' || authUser.role.toLowerCase() === 'hiker') ? <BrowserHuts  /> : <Navigate to='/' />} />
 
               <Route></Route>
             </Route>}

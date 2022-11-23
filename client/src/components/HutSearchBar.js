@@ -1,11 +1,14 @@
-import { useHistory } from 'react-router-dom';
+import { useSearchParams} from 'react-router-dom';
 
 const HutSearchBar = (props) => {
 
-    const history = useHistory();
+    const [searchParams, setSearchParams] = useSearchParams()
+
     const onSubmit = e => {
-        history.push(`?s=${props.searchQuery}`)
         e.preventDefault()
+        searchParams.set('s',props.searchQuery);
+        setSearchParams(searchParams);
+    }
 
     return(<form action="/" method="get" autoComplete='off' onSubmit={onSubmit}>
         <label htmlFor="header-search">
@@ -21,6 +24,6 @@ const HutSearchBar = (props) => {
         />
         <button type="submit">Search</button>
     </form>
-    )}
+    )
 }
-export default HutSearchBar
+export {HutSearchBar}
