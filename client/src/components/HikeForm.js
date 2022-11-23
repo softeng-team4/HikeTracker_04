@@ -66,6 +66,7 @@ function HikeForm(props) {
         const form = event.currentTarget;
         if (form.checkValidity() === false || (creationMethod===1 && checkFile() === false)) {
             event.stopPropagation();
+            return
         }
         /*console.log("Title:" + title)
         console.log("Length:" + length)
