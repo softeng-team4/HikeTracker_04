@@ -42,7 +42,7 @@ describe('testing the definition of a new hut by a local guide',()=>{
 
 function newHunt(hut){
     it("Local guide defining a hut ",function(done){
-        api.addNewHunt(hut.name, hut.bedsNumber, hut.description, hut.hutPoint, hut.country, hut.region, hut.city,"huts-test")
+        api.addNewHut(hut.name, hut.bedsNumber, hut.description, hut.hutPoint, hut.country, hut.region, hut.city,"huts-test")
         .then(()=>{
             firestore.getDoc(firestore.doc(api.db,"huts-test", "1"))
             .then((doc) =>{
