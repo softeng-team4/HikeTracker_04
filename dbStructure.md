@@ -37,6 +37,9 @@ referencePoint is a string in a json format. This json is formed by and array of
 | Fields        | Type     |
 | :------------ | :------- |
 | name          | string   |
+| country       | string   |
+| region        | string   |
+| city          | string   |
 | position      | geopoint |
 | bedsNumber    | number   |
 | costPerNight  | number   |
@@ -51,6 +54,9 @@ referencePoint is a string in a json format. This json is formed by and array of
 | Fields        | Type     |
 | :------------ | :------- |
 | name          | string   |
+| country       | string   |
+| region        | string   |
+| city          | string   |
 | position      | geopoint |
 | lotsNumber    | number   |
 | costPerDay    | number   |

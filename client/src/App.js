@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AddNewHike, AddNewPark, AppLayout, BrowserHikes, DefaultRoute } from './components/View';
+import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute } from './components/View';
 import { useEffect, useState } from 'react';
 import API from './API.js'
 import NavBar from './components/NavBar';
@@ -94,6 +94,26 @@ function App() {
     }
   }
 
+  const addNewHut = async (name, bedsNumber, description, hutPoint, country, region, city) => {
+    console.log("Adding new hut!");
+    // try {
+    //   await API.addNewHut(name, bedsNumber, description, hutPoint, country, region, city);
+    // } catch (e) {
+    //   console.log(e);
+    //   throw (e);
+    // }
+  };
+
+  const addNewParkingLot = async (name, lotsNumber, description, parkPoint, country, region, city) => {
+    console.log("Adding new parking lot!");
+    // try {
+    //   await API.addNewParkingLot(name, lotsNumber, description, parkPoint, country, region, city);
+    // } catch (e) {
+    //   console.log(e);
+    //   throw (e);
+    // }
+  };
+
   return (
     <>
       <AuthenticationContext.Provider value={authObject}>
@@ -119,8 +139,8 @@ function App() {
               <Route path='home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
               {/* here are routes for local guide */}
               <Route path='hikeform' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' />} />
-              <Route path='newPark' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewPark  /> : <Navigate to='/' />} />
-              <Route path='newHut' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike  /> : <Navigate to='/' />} />
+              <Route path='newPark' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' />} />
+              <Route path='newHut' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' />} />
 
               <Route></Route>
             </Route>}

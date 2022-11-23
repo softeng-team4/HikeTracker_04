@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 import { Country, State, City } from 'country-state-city';
+import { LocationMarker } from "./LocationMarker"
 let gpxParser = require('gpxparser');
 var gpx = new gpxParser();
 
@@ -110,29 +111,6 @@ function HikeForm(props) {
         • Description
         • Point can be: address, name of location, GPS coordinates, hut, parking lot
     */
-
-
-    function LocationMarker(props) {
-        const map = useMapEvents({
-            async click(e) {
-                setPosition([e.latlng.lat, e.latlng.lng]);
-                //await props.getPosition(position);
-                console.log('-----------', position, e.latlng.lat)
-            },
-            locationfound(e) {
-                // setPosition(e.latlng)
-                map.flyTo(e.latlng, map.getZoom())
-            },
-        })
-
-        return position === null ? null : (
-
-            <Marker position={position}>
-            </Marker>
-
-        )
-    }
-
 
     /* This method will add a new row */
     function addNewRow() {
@@ -314,7 +292,7 @@ function HikeForm(props) {
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
-                                <LocationMarker />
+                                <LocationMarker position={position} setPosition={setPosition} />
                                 {startPoint.length !== 0 ? <Marker position={startPoint}>
                                     <Popup>
                                         Start point
