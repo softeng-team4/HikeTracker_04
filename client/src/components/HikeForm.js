@@ -252,7 +252,7 @@ function HikeForm(props) {
             {creationMethod === 1 &&
                 <Form.Group as={Row} controlId="formFile" className="mb-3">
                     <Form.Label>GPX File</Form.Label>
-                    <Form.Control type="file" accept=".gpx" required onChange={(event) => { checkFile(); if (validFile) { handlePhoto(event) } }} isValid={validFile} isInvalid={!validFile} />
+                    <Form.Control type="file" accept=".gpx" required onChange={(event) => { checkFile(); if (validFile) { getTrackfromFile(event) } }} isValid={validFile} isInvalid={!validFile} />
                     {console.log("vf:" + validFile)}
                     <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
                 </Form.Group>
