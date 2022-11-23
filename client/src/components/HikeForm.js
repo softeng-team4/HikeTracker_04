@@ -23,7 +23,6 @@ function HikeForm(props) {
     const [difficulty, setDifficulty] = useState('');
     const [description, setDescription] = useState('');
     const [validated, setValidated] = useState(false);
-    //const [positionData, setPositionData] = useState({ lat: 45.06294822296754, lng: 7.662272990156818 })
     const [startPoint, setStartPoint] = useState([])
     const [endPoint, setEndPoint] = useState([])
     const [referencePoint, setReferencePoint] = useState('')
@@ -275,11 +274,11 @@ function HikeForm(props) {
                     <Form.Label>Select creation method:</Form.Label>
                 </Col>
                 <Col >
-                    <ToggleButtonGroup type="radio" name="options" >
-                        <ToggleButton variant='outline-primary' id="tbg-radio-1" value={'1'} onChange={() => setCreationMethod(1)}>
+                    <ToggleButtonGroup type="radio" name="methods" >
+                        <ToggleButton variant='outline-primary' id="methods-1" value={'1'} onChange={() => setCreationMethod(1)}>
                             Upload GPX file
                         </ToggleButton>
-                        <ToggleButton variant='outline-primary' id="tbg-radio-2" value={'2'} onChange={() => setCreationMethod(2)}>
+                        <ToggleButton variant='outline-primary' id="methods-2" value={'2'} onChange={() => setCreationMethod(2)}>
                             Select points in map
                         </ToggleButton>
                     </ToggleButtonGroup>
@@ -288,7 +287,7 @@ function HikeForm(props) {
             {creationMethod !== 1 ? '' :
                 <Form.Group as={Row} controlId="formFile" className="mb-3">
                     <Form.Label>GPX File</Form.Label>
-                    <Form.Control type="file" accept=".gpx" required onChange={(event)=>{checkFile();handlePhoto(event)}} isValid={validFile} isInvalid={!validFile}/>
+                    <Form.Control type="file" accept=".gpx" required onChange={(event)=>{ checkFile(); if ( validFile ){handlePhoto(event)}}} isValid={validFile} isInvalid={!validFile}/>
                     {console.log("vf:" + validFile)}
                     <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
                 </Form.Group>
