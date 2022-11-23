@@ -237,7 +237,7 @@ function HikeForm(props) {
                     <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
                 </Form.Group>
             }
-            {creationMethod !== 0 &&
+            {((creationMethod === 1 && validFile) || creationMethod === 2) &&
                 <><Form.Group as={Row} className="mb-3">
                     <Col sm={2}>
                         <Form.Label>Title:</Form.Label>
