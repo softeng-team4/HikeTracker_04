@@ -5,7 +5,6 @@ const fireAuth = require('firebase/auth')
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -175,13 +174,27 @@ const cityList = async (country, region) => {
     });
     return Array.from(res);
 }
+//Spherical law of cosines distance
+function distance (lat1, lon1, lat2, lon2){
+	if ((lat1 == lat2) && (lon1 == lon2)) {
+		return 0;
+	}
+	else {
+        const R = 6371e3;
+        const p1 = lat1 * Math.PI/180;
+        const p2 = lat2 * Math.PI/180;
+        const deltaP = p2 - p1;
+        const deltaLon = lon2 - lon1;
+        const deltaLambda = (deltaLon * Math.PI) / 180;
+        const a = Math.sin(deltaP/2) * Math.sin(deltaP/2) +
+                  Math.cos(p1) * Math.cos(p2) *
+                  Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
+        const d = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)) * R;
+        return d;
+	}
+}
 
 const hikesList = async (filters, collection) =>{
-    //var from = L.latLng(48.8566, 2.3522);
-    //console.log("from", from);
-    //var to = L.latLng(50.0647, 19.9450);
-    //const dist = from.distanceTo(to);
-    //console.log(dist);
     console.log("Hikes List filters: ", filters);
     const hikesRef = firestore.collection(db, collection);
     let q;
@@ -235,10 +248,8 @@ const hikesList = async (filters, collection) =>{
             if(doc.data().expectedTime>=filters.expectedTime.min && doc.data().expectedTime<=filters.expectedTime.max && doc.data().length>=filters.length.min && doc.data().length<=filters.length.max && doc.data().ascent>=filters.ascent.min && doc.data().ascent<=filters.ascent.max){
                 if(filters.pointRadius.radius !== undefined){
                     if(doc.data().startPoint.length === 2){
-                        var from = L.latLng(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1]);
-                        var to = L.latLng(doc.data().startPoint[0], doc.data().startPoint[1]);
-                        console.log("I'm here", from, to);
-                        const dist = from.distanceTo(to);
+                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint[0], doc.data().startPoint[1]);
+                        console.log("Distance: ", dist);
                         if(dist <= filters.pointRadius.radius){
                             const hike = {
                                 id : doc.id, 
@@ -284,10 +295,8 @@ const hikesList = async (filters, collection) =>{
             if(doc.data().expectedTime>=filters.expectedTime.min && doc.data().expectedTime<=filters.expectedTime.max && doc.data().length>=filters.length.min && doc.data().length<=filters.length.max && doc.data().ascent>=filters.ascent.min && doc.data().ascent<=filters.ascent.max){
                 if(filters.pointRadius.radius !== undefined){
                     if(doc.data().startPoint.length === 2){
-                        var from = L.latLng(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1]);
-                        var to = L.latLng(doc.data().startPoint[0], doc.data().startPoint[1]);
-                        console.log("I'm here", from, to);
-                        const dist = from.distanceTo(to);
+                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint[0], doc.data().startPoint[1]);
+                        console.log(dist);
                         if(dist <= filters.pointRadius.radius){
                             const hike = {
                                 id : doc.id, 
