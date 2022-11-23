@@ -9,20 +9,28 @@
 
 # hike
 
-| Fields         | Type              |
-| :------------- | :---------------- |
-| title          | string            |
-| country        | string            |
-| region         | string            |
-| city           | string            |
-| description    | string            |
-| difficulty     | string            |
-| expectedTime   | number            |
-| length         | number            |
-| ascent         | number            |
-| startPoint     | geopoint          |
-| endPoint       | geopoint          |
-| referencePoint | array of geopoint |
+| Fields         | Type   |
+| :------------- | :----- |
+| title          | string |
+| country        | string |
+| region         | string |
+| city           | string |
+| description    | string |
+| difficulty     | string |
+| expectedTime   | number |
+| length         | number |
+| ascent         | number |
+| startPoint     | map    |
+| endPoint       | map    |
+| referencePoint | string |
+
+startPoint and endPoint are maps with the following elements:
+- ele: number
+- lat: number
+- lon: number
+- time: number
+
+referencePoint is a string in a json format. This json is formed by and array of objects that contains "ele", "lat", "lon", and "time" attributes.
 
 # huts
 
