@@ -1,6 +1,6 @@
 import { City, Country, State } from "country-state-city";
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Row, Table } from "react-bootstrap";
+import { Button, Col, Form, InputGroup, Row, Table } from "react-bootstrap";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
@@ -10,6 +10,11 @@ function ParkForm(props) {
     const [name, setName] = useState('');
     const [lotsNumber, setLotsNumber] = useState('');
     const [description, setDescription] = useState('');
+    const [costPerDay, setCostPerDay] = useState('');
+    const [openingHour, setOpeningHour] = useState('');
+    const [openingMinute, setOpeningMinute] = useState('');
+    const [closingHour, setClosingHour] = useState('');
+    const [closingMinute, setClosingMinute] = useState('');
     
     const [parkPoint, setParkPoint] = useState([]);
     const [position, setPosition] = useState([45.06294822296754, 7.662272990156818]);
@@ -29,13 +34,18 @@ function ParkForm(props) {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.stopPropagation();
+            setValidated(true);
             return;
         }
         
-        await props.addNewParkingLot(name, lotsNumber, description, parkPoint, country, region, city);
-        setValidated(true);
+        await props.addNewParkingLot(name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city);
         setLotsNumber('');
         setDescription('');
+        setCostPerDay('');
+        setOpeningHour('');
+        setOpeningMinute('');
+        setClosingHour('');
+        setClosingMinute('');
         setCountry('');
         setRegion('');
         setCity('');
@@ -71,6 +81,61 @@ function ParkForm(props) {
                     <Form.Control className='length-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setLotsNumber(event.target.value)} />
                     <Form.Control.Feedback>Valid number of lots!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert the number of lots. It must be a positive integer.</Form.Control.Feedback>
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+                <Col sm={2}>
+                    <Form.Label>Cost per day:</Form.Label>
+                </Col>
+                <Col >
+                    <InputGroup>
+                        <InputGroup.Text>€</InputGroup.Text>
+                        <Form.Control className='length-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setCostPerDay(event.target.value)} />
+                        <Form.Control.Feedback>Valid cost per day!</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please insert the cost per day. It must be a positive number.</Form.Control.Feedback>
+                    </InputGroup>
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+                <Col sm={2}>
+                    <Form.Label>Opening time:</Form.Label>
+                </Col>
+                <Col >
+                    <InputGroup>
+                        <Form.Control className='length-input' required type='number' defaultValue={undefined} min={0} max={23} onChange={(event) => setClosingHour(event.target.value)} />
+                        <InputGroup.Text>hour</InputGroup.Text>
+                        <Form.Control.Feedback>Valid hour!</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please insert the hour. It must be a positive integer between 0 and 23.</Form.Control.Feedback>
+                    </InputGroup>
+                </Col>
+                <Col >
+                    <InputGroup>
+                        <Form.Control className='length-input' required type='number' defaultValue={undefined} min={0} max={59} onChange={(event) => setClosingMinute(event.target.value)} />
+                        <InputGroup.Text>minute</InputGroup.Text>
+                        <Form.Control.Feedback>Valid minutes!</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please insert the minutes. It must be a positive integer between 0 and 59.</Form.Control.Feedback>
+                    </InputGroup>
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+                <Col sm={2}>
+                    <Form.Label>Closing time:</Form.Label>
+                </Col>
+                <Col >
+                    <InputGroup>
+                        <Form.Control className='length-input' required type='number' defaultValue={undefined} min={0} max={23} onChange={(event) => setClosingHour(event.target.value)} />
+                        <InputGroup.Text>hour</InputGroup.Text>
+                        <Form.Control.Feedback>Valid hour!</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please insert the hour. It must be a positive integer between 0 and 23.</Form.Control.Feedback>
+                    </InputGroup>
+                </Col>
+                <Col >
+                    <InputGroup>
+                        <Form.Control className='length-input' required type='number' defaultValue={undefined} min={0} max={59} onChange={(event) => setClosingMinute(event.target.value)} />
+                        <InputGroup.Text>minute</InputGroup.Text>
+                        <Form.Control.Feedback>Valid minutes!</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please insert the minutes. It must be a positive integer between 0 and 59.</Form.Control.Feedback>
+                    </InputGroup>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">

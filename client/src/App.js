@@ -104,10 +104,10 @@ function App() {
     // }
   };
 
-  const addNewParkingLot = async (name, lotsNumber, description, parkPoint, country, region, city) => {
+  const addNewParkingLot = async (name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city) => {
     console.log("Adding new parking lot!");
     // try {
-    //   await API.addNewParkingLot(name, lotsNumber, description, parkPoint, country, region, city);
+    //   await API.addNewParkingLot(name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city);
     // } catch (e) {
     //   console.log(e);
     //   throw (e);

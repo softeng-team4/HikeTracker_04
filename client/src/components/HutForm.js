@@ -29,11 +29,11 @@ function HutForm(props) {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.stopPropagation();
+            setValidated(true);
             return;
         }
         
         await props.addNewHut(name, bedsNumber, description, hutPoint, country, region, city);
-        setValidated(true);
         setBedsNumber('');
         setDescription('');
         setCountry('');
