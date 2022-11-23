@@ -61,10 +61,38 @@ function HikeForm(props) {
         }
     }
 
+    const manageGpx = (gpxfile) => {
+        var gpx = new gpxParser(); //Create gpxParser Object
+        console.log(gpxfile)
+        gpx.parse(gpxfile); //parse gpx file from string data
+        //console.log(gpx.tracks[0])
+        setLength(gpx.tracks[0].distance.total)
+        setTitle(gpx.tracks[0].name)
+        setAscent(gpx.tracks[0].elevation.pos)
+        setDescription(gpx.tracks[0].cmt)
+        setStartPoint(gpx.tracks[0].points[0])
+        setEndPoint(gpx.tracks[0].points.pop())
+        setReferencePoint(gpx.tracks[0].points)
+        /*console.log("ManageGpx:")
+        console.log("Title:" + title)
+        console.log("Length:" + length)
+        console.log("Expected Time:" + expectedTime)
+        console.log("Ascent:" + ascent)
+        console.log("Difficulty:" + difficulty)
+        console.log("Country:" + country)
+        console.log("Region:" + region)
+        console.log("City:" + city)
+        console.log("Description:" + description)
+        console.log("Start point:" + startPoint)
+        console.log("End point:" + endPoint)
+        console.log("Reference points:" + referencePoint)*/
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
-        if (form.checkValidity() === false || (creationMethod===1 && checkFile() === false)) {
+        checkFile()
+        if (form.checkValidity() === false || (creationMethod===1 && validFile === false)) {
             event.stopPropagation();
             return
         }
@@ -174,23 +202,15 @@ function HikeForm(props) {
         }
     }
     const handlePhoto = async (event) => {
-		const files = [...event.target.files];
-		if (files.length === 0) return;
-		
-		let result = await Promise.all(
-			files.map(file => {
-				let url = null;
-				if (window.createObjectURL != undefined) {
-					url = window.createObjectURL(file)
-				} else if (window.URL != undefined) {
-					url = window.URL.createObjectURL(file)
-				} else if (window.webkitURL != undefined) {
-					url = window.webkitURL.createObjectURL(file)
-				}
-				return url;
-			})
-		);
-		console.log(result)  //现在你就可以根据这个结果做你想做的事了，通过上面的createObjectURL方法处理过，这个result里面的url你是可以直接放到img标签里面的src属性上了，就可以展示出来了。
+		if (event.target.files.length === 0) return;
+		const file = event.target.files[0];
+        console.log("file " + event.target.files[0])
+        let fr = new FileReader()
+        fr.onload = (evt) => {
+            console.log("GPX :" +fr.result)  
+            manageGpx(fr.result)
+          };
+		fr.readAsText(file)
 	}
 
     return (
