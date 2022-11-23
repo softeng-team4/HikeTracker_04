@@ -11,6 +11,10 @@ function HikeForm(props) {
 
     let navigate = useNavigate()
     var gpx = new gpxParser();
+    const reader = new FileReader();
+    const [GPX, setGPX] = useState("");
+    const [fileGPX, setFileGPX] = useState(null)
+    const [showMap, setShowMap] = useState(false)
     const [creationMethod, setCreationMethod] = useState(0);
     const [validFile, setValidFile] = useState(false)
     const [pointIndex, setPointIndex] = useState('1');
@@ -33,11 +37,7 @@ function HikeForm(props) {
     const [city, setCity] = useState('')
     const [cityMap, setCityMap] = useState([])
     const [center, setCenter] = useState({ lat: null, lng: null })
-    // const [url, setUrl] = useState('')
-    const reader = new FileReader();
-    const [GPX, setGPX] = useState("");
-    const [fileGPX, setFileGPX] = useState(null)
-    const [showMap, setShowMap] = useState(false)
+
 
 
     useEffect(() => {
@@ -73,32 +73,32 @@ function HikeForm(props) {
         }
     }
 
-    const manageGpx = (gpxfile) => {
-        var gpx = new gpxParser(); //Create gpxParser Object
-        console.log(gpxfile)
-        gpx.parse(gpxfile); //parse gpx file from string data
-        //console.log(gpx.tracks[0])
-        setLength(gpx.tracks[0].distance.total)
-        setTitle(gpx.tracks[0].name)
-        setAscent(gpx.tracks[0].elevation.pos)
-        setDescription(gpx.tracks[0].cmt)
-        setStartPoint(gpx.tracks[0].points[0])
-        setEndPoint(gpx.tracks[0].points.pop())
-        setReferencePoint(gpx.tracks[0].points)
-        console.log("ManageGpx:")
-        console.log("Title:" + title)
-        console.log("Length:" + length)
-        console.log("Expected Time:" + expectedTime)
-        console.log("Ascent:" + ascent)
-        console.log("Difficulty:" + difficulty)
-        console.log("Country:" + country)
-        console.log("Region:" + region)
-        console.log("City:" + city)
-        console.log("Description:" + description)
-        console.log("Start point:" + startPoint)
-        console.log("End point:" + endPoint)
-        console.log("Reference points:" + referencePoint)
-    }
+    // const manageGpx = (gpxfile) => {
+    //     var gpx = new gpxParser(); //Create gpxParser Object
+    //     console.log(gpxfile)
+    //     gpx.parse(gpxfile); //parse gpx file from string data
+    //     //console.log(gpx.tracks[0])
+    //     setLength(gpx.tracks[0].distance.total)
+    //     setTitle(gpx.tracks[0].name)
+    //     setAscent(gpx.tracks[0].elevation.pos)
+    //     setDescription(gpx.tracks[0].cmt)
+    //     setStartPoint(gpx.tracks[0].points[0])
+    //     setEndPoint(gpx.tracks[0].points.pop())
+    //     setReferencePoint(gpx.tracks[0].points)
+    //     console.log("ManageGpx:")
+    //     console.log("Title:" + title)
+    //     console.log("Length:" + length)
+    //     console.log("Expected Time:" + expectedTime)
+    //     console.log("Ascent:" + ascent)
+    //     console.log("Difficulty:" + difficulty)
+    //     console.log("Country:" + country)
+    //     console.log("Region:" + region)
+    //     console.log("City:" + city)
+    //     console.log("Description:" + description)
+    //     console.log("Start point:" + startPoint)
+    //     console.log("End point:" + endPoint)
+    //     console.log("Reference points:" + referencePoint)
+    // }
 
     const loadGPXContent = (file) => {
         reader.readAsText(file[0]);
@@ -134,7 +134,7 @@ function HikeForm(props) {
         });
 
     }
-
+    console.log('pos', positions[0])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -166,10 +166,6 @@ function HikeForm(props) {
         setDifficulty('');
     };
 
-    //const pointRef = useRef('1')
-    const handlePoint = (e) => {
-        setPointIndex(e.target.value);
-    }
     /*
     Data format for a hike:
         • Title/label
@@ -245,17 +241,17 @@ function HikeForm(props) {
             table.deleteRow(rowCount - 1);
         }
     }
-    const getTrackfromFile = async (event) => {
-        if (event.target.files.length === 0) return;
-        const file = event.target.files[0];
-        console.log("file " + event.target.files[0])
-        let fr = new FileReader()
-        fr.onload = (evt) => {
-            console.log("GPX :" + fr.result)
-            manageGpx(fr.result)
-        };
-        fr.readAsText(file)
-    }
+    // const getTrackfromFile = async (event) => {
+    //     if (event.target.files.length === 0) return;
+    //     const file = event.target.files[0];
+    //     console.log("file " + event.target.files[0])
+    //     let fr = new FileReader()
+    //     fr.onload = (evt) => {
+    //         console.log("GPX :" + fr.result)
+    //         manageGpx(fr.result)
+    //     };
+    //     fr.readAsText(file)
+    // }
 
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
@@ -382,7 +378,7 @@ function HikeForm(props) {
                 <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
             </Form.Group>
             {/* } */}
-            {(!fileGPX || positions === undefined || !showMap) ? '' :
+            {(!fileGPX || positions === '' || !showMap) ? '' :
                 <MapContainer center={[positions[0].lat, positions[0].lng]} zoom={13} scrollWheelZoom={false}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
