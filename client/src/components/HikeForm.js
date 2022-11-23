@@ -172,6 +172,25 @@ function HikeForm(props) {
             table.deleteRow(rowCount - 1);
         }
     }
+    const handlePhoto = async (event) => {
+		const files = [...event.target.files];
+		if (files.length === 0) return;
+		
+		let result = await Promise.all(
+			files.map(file => {
+				let url = null;
+				if (window.createObjectURL != undefined) {
+					url = window.createObjectURL(file)
+				} else if (window.URL != undefined) {
+					url = window.URL.createObjectURL(file)
+				} else if (window.webkitURL != undefined) {
+					url = window.webkitURL.createObjectURL(file)
+				}
+				return url;
+			})
+		);
+		console.log(result)  //现在你就可以根据这个结果做你想做的事了，通过上面的createObjectURL方法处理过，这个result里面的url你是可以直接放到img标签里面的src属性上了，就可以展示出来了。
+	}
 
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
@@ -248,7 +267,7 @@ function HikeForm(props) {
             {creationMethod !== 1 ? '' :
                 <Form.Group as={Row} controlId="formFile" className="mb-3">
                     <Form.Label>GPX File</Form.Label>
-                    <Form.Control type="file" accept=".gpx" required onChange={()=>checkFile()} isValid={validFile} isInvalid={!validFile}/>
+                    <Form.Control type="file" accept=".gpx" required onChange={(event)=>{checkFile();handlePhoto(event)}} isValid={validFile} isInvalid={!validFile}/>
                     {console.log("vf:" + validFile)}
                     <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
                 </Form.Group>
