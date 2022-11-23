@@ -257,26 +257,6 @@ function HikeForm(props) {
         fr.readAsText(file)
     }
 
-    const getURLfromFile = async (event) => {
-		const files = [...event.target.files];
-		if (files.length === 0) return;
-		
-		let result = await Promise.all(
-			files.map(file => {
-				let url = null;
-				if (window.createObjectURL != undefined) {
-					url = window.createObjectURL(file)
-				} else if (window.URL != undefined) {
-					url = window.URL.createObjectURL(file)
-				} else if (window.webkitURL != undefined) {
-					url = window.webkitURL.createObjectURL(file)
-				}
-				return url;
-			})
-		);
-		console.log(result)  //现在你就可以根据这个结果做你想做的事了，通过上面的createObjectURL方法处理过，这个result里面的url你是可以直接放到img标签里面的src属性上了，就可以展示出来了。
-	}
-
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
             <Form.Group as={Row} className="mb-3">
