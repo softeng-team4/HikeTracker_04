@@ -25,7 +25,13 @@ const BrowserHuts = (props) =>{
     const computeIndex = () => parseInt(hutList.length / hut4page) + (hutList.length % hut4page ? 1 : 0)
 
     useEffect(()=>{
-        //API.hutList("hut").then(r => setHutList(r))
+        const filters={
+            name: undefined,
+            country: undefined,
+            region: undefined,
+            city: undefined
+        };
+        API.hutsList(filters).then(r => setHutList(r))
     },[])
 
     /*useEffect(() => {
