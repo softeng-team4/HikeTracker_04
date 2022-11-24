@@ -123,18 +123,20 @@ function HikeForm(props) {
         setStartPoint({
             latitude: point1.lat,
             longitude: point1.lon,
-            //altitude: point1.ele
+            altitude: point1.ele,
+            time: point1.time
         });
 
         setEndPoint({
             latitude: point2.lat,
             longitude: point2.lon,
-            //altitude: point2.ele
+            altitude: point2.ele,
+            time: point2.time
         });
 
         setReferencePoint(
             gpx.tracks[0].points.map(element => {
-                return { latitude: element.lat, longitude: element.lon }
+                return { latitude: element.lat, longitude: element.lon, altitude: element.ele, time: element.time}
             }).slice(1,10)  //The gpx tracks are too long, so I cut them and stroe only the first 10 points
         )
 
