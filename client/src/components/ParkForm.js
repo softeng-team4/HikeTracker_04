@@ -5,6 +5,7 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
 import L from 'leaflet'
+import ParkingLot from "../model/ParkingLot";
 
 function ParkForm(props) {
     const [name, setName] = useState('');
@@ -37,8 +38,10 @@ function ParkForm(props) {
             setValidated(true);
             return;
         }
+
+        const parkingLot = new ParkingLot(name, country, region, city, parkPoint, lotsNumber, costPerDay, description, openingHour, openingMinute, closingHour, closingMinute);
         
-        await props.addNewParkingLot(name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city);
+        await props.addNewParkingLot(parkingLot);
         setName('');
         setLotsNumber('');
         setDescription('');
@@ -221,7 +224,7 @@ function ParkForm(props) {
                             <Button variant='primary' onClick={() => {
                                 //add into db
                                 setParkPoint(position);
-                                console.log('hut', parkPoint);
+                                console.log('parkingLot', parkPoint);
                             } }>Save position
                             </Button>
                         </Col>

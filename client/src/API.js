@@ -1,7 +1,8 @@
 // Import the functions you need from the SDKs you need
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
-const fireAuth = require('firebase/auth')
+const fireAuth = require('firebase/auth');
+const { GeoPoint } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
@@ -341,42 +342,46 @@ const hikesList = async (filters, collection) =>{
     return res;
 }
 
-const addNewHut = async (name, bedsNumber, description, hutPoint, country, region, city, collection = "huts") => {
-    console.log("API add new hut values: ", name, bedsNumber, description, hutPoint, country, region, city);
+const addNewHut = async (hut, collection = "huts") => {
+    console.log("API add new hut: ", hut);
     const hutsRef = firestore.collection(db, collection);
-    const hut = {
-        name: name,
-        country: country,
-        region: region,
-        city: city, 
-        position: hutPoint,
-        bedsNumber: bedsNumber,
-        description: description
+    const obj = {
+        name: hut.name,
+        country: hut.country,
+        region: hut.region,
+        city: hut.city,
+        position: new GeoPoint(hut.position[0], hut.position[1]),
+        bedsNumber: hut.bedsNumber,
+        costPerNight: hut.costPerNight,
+        description: hut.description,
+        openingHour: hut.openingHour,
+        openingMinute: hut.openingMinute,
+        closingHour: hut.closingHour,
+        closingMinute: hut.closingMinute
     }
-    await firestore.addDoc(hutsRef, hut);
+    console.log(obj);
+    await firestore.addDoc(hutsRef, obj);
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 
-const addNewParkingLot = async (name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute,
-    parkPoint, country, region, city, collection = "parkingLots") => {
-    console.log("API add new parking lot values: ", name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute,
-                parkPoint, country, region, city);
+const addNewParkingLot = async (parkingLot, collection = "parkingLots") => {
+    console.log("API add new parking lot: ", parkingLot);
     const parkingLotsRef = firestore.collection(db, collection);
-    const parkingLot = {
-        name: name,
-        country: country,
-        region: region,
-        city: city, 
-        position: parkPoint,
-        lotsNumber: lotsNumber,
-        costPerDay: costPerDay,
-        description: description,
-        openingHour: openingHour,
-        openingMinute: openingMinute,
-        closingHour: closingHour,
-        closingMinute: closingMinute
+    const obj = {
+        name: parkingLot.name,
+        country: parkingLot.country,
+        region: parkingLot.region,
+        city: parkingLot.city,
+        position: new GeoPoint(parkingLot.position[0], parkingLot.position[1]),
+        lotsNumber: parkingLot.lotsNumber,
+        costPerDay: parkingLot.costPerDay,
+        description: parkingLot.description,
+        openingHour: parkingLot.openingHour,
+        openingMinute: parkingLot.openingMinute,
+        closingHour: parkingLot.closingHour,
+        closingMinute: parkingLot.closingMinute
     }
-    await firestore.addDoc(parkingLotsRef, parkingLot);
+    await firestore.addDoc(parkingLotsRef, obj);
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 

@@ -5,6 +5,7 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
 import L from 'leaflet'
+import Hut from '../model/Hut'
 
 function HutForm(props) {
     const [name, setName] = useState('');
@@ -33,7 +34,10 @@ function HutForm(props) {
             return;
         }
         
-        await props.addNewHut(name, bedsNumber, description, hutPoint, country, region, city);
+        const hut = new Hut(name, country, region, city, hutPoint, bedsNumber, null, description, null, null, null, null);
+
+        console.log(hut)
+        await props.addNewHut(hut);
         setValidated(false);
         setName('');
         setBedsNumber('');

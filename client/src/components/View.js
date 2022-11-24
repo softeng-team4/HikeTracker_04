@@ -61,7 +61,7 @@ function AddNewHike(props) {
 function AddNewPark(props) {
     return (
         <>
-            <ParkForm />
+            <ParkForm addNewParkingLot={props.addNewParkingLot}/>
         </>
     );
 }
