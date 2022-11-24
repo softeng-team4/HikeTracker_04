@@ -77,6 +77,7 @@ const BrowserHuts = (props) =>{
                         <div key={`div_${idx}`}>
                             <Card key={`card_${idx}`}>
                                 <Card.Header className='row d-flex justify-content-start' key={`card_header_${idx}`}>
+                                    {hut.author? <Col md={3}><b>Local guide:</b>&nbsp;{hut.author}</Col> : false}
                                     <Col md={3}><b>Name:</b>&nbsp;{hut.name}</Col>
                                     <Col md={3}><b>Latitude:</b>&nbsp;{hut.position[0]}</Col>
                                     <Col md={3}><b>Longitude:</b>&nbsp;{hut.position[1]}</Col>
