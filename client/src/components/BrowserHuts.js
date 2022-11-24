@@ -6,7 +6,7 @@ import AuthenticationContext from './AuthenticationContext';
 import HikePageHandler from './BrowserHikeComponents/HickePageHendler';
 import API from '../API';
 import {HutSearchBar} from './HutSearchBar';
-
+import { useSearchParams } from 'react-router-dom';
 
 const BrowserHuts = (props) =>{
 
@@ -18,6 +18,7 @@ const BrowserHuts = (props) =>{
     const hut4page = 4
     // state to hold list of hikes of current page
     const [subHutList, setSubHutList] = useState(hutList.length > hut4page? hutList.slice(0, hut4page) : hutList);
+    const [searchParams, setSearchParams] = useSearchParams()
     const { search } = window.location;
     const query = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(query || '');
@@ -33,6 +34,11 @@ const BrowserHuts = (props) =>{
         };
         API.hutsList(filters).then(r => setHutList(r))
     },[])
+
+    useEffect(()=>{
+        if(searchParams)
+            setSearchQuery(searchParams.get('s'))
+    },[searchParams])
 
     /*useEffect(() => {
         setSubHutList(hutList.slice(0, hut4page));
@@ -74,15 +80,18 @@ const BrowserHuts = (props) =>{
                                     <Col md={3}><b>Name:</b>&nbsp;{hut.name}</Col>
                                     <Col md={3}><b>Latitude:</b>&nbsp;{hut.position[0]}</Col>
                                     <Col md={3}><b>Longitude:</b>&nbsp;{hut.position[1]}</Col>
+                                    <Col md={3}><b>Country:</b>&nbsp;{hut.country}</Col>
+                                    <Col md={3}><b>Region:</b>&nbsp;{hut.region}</Col>
+                                    <Col md={3}><b>City:</b>&nbsp;{hut.city}</Col>
                                 </Card.Header> 
                                 <Card.Body className='row d-flex justify-content-start' key={`card_body_${idx}`}>
                                     <Col><b>Description:</b>&nbsp;<Col className='hut-desc'>{hut.description}</Col></Col>
                                 </Card.Body>
                                 <Card.Footer className='row d-flex justify-content-between' key={`card_footer_${idx}`}>
-                                    <Col md={3} key={`hut_beds_${idx}`}><b>Number of beds:</b>&nbsp;{hut.bedsNumber}</Col>
-                                    <Col md={3} key={`hut_cost_${idx}`}><b>Cost per night:</b>&nbsp;{hut.costPerNight}&nbsp;€</Col>
-                                    <Col md={3} key={`hut_opn_${idx}`}><b>Opening time:</b>&nbsp;{hut.openingHour}&nbsp;:&nbsp;{hut.openingMinute}</Col>
-                                    <Col md={3} key={`hut_cls_${idx}`}><b>Closing Time:</b>&nbsp;{hut.closingHour}&nbsp;:&nbsp;{hut.closingMinute}</Col>
+                                    {hut.bedsNumber? <Col md={3} key={`hut_beds_${idx}`}><b>Number of beds:</b>&nbsp;{hut.bedsNumber}</Col> : false}
+                                    {hut.costPerNight? <Col md={3} key={`hut_cost_${idx}`}><b>Cost per night:</b>&nbsp;{hut.costPerNight}&nbsp;€</Col> : false}
+                                    {hut.openingHour && hut.openingMinute ?<Col md={3} key={`hut_opn_${idx}`}><b>Opening time:</b>&nbsp;{hut.openingHour}&nbsp;:&nbsp;{hut.openingMinute}</Col> : false}
+                                    {hut.closingHour && hut.closingMinute ?<Col md={3} key={`hut_cls_${idx}`}><b>Closing Time:</b>&nbsp;{hut.closingHour}&nbsp;:&nbsp;{hut.closingMinute}</Col> : false}
                                 </Card.Footer>
                             </Card>
                             <Spacer height='1rem' key={`card_spacer_${idx}`} />
