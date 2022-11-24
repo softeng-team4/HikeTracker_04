@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
 import L from 'leaflet-gpx'
 import { Country, State, City } from 'country-state-city';
+import AuthenticationContext from "./AuthenticationContext"
 let gpxParser = require('gpxparser');
 
 function HikeForm(props) {
@@ -34,6 +35,7 @@ function HikeForm(props) {
     const [region, setRegion] = useState('')
     const [regionCode, setRegionCode] = useState('')
     const [city, setCity] = useState('')
+    const [email, setEmail] = useState('')
     const [cityMap, setCityMap] = useState([])
 
 
@@ -136,7 +138,7 @@ function HikeForm(props) {
         console.log("Reference points:" + referencePoint)*/
 
         await props.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
-            length, referencePoint, region, title, startPoint);
+            length, referencePoint, region, title, startPoint, email);
         setValidated(true);
         /*setAscent('');
         setCity('');
@@ -203,153 +205,154 @@ function HikeForm(props) {
           }*/
     }
 
-
-
     return (
-        <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Title:</Form.Label>
-                </Col>
-                <Col>
-                    <Form.Control className='title-input' required type='text' onChange={(event) => setTitle(event.target.value)} />
-                    <Form.Control.Feedback>Valid title!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">Please insert a title.</Form.Control.Feedback>
-                </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Expected time:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Control className='expTime-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
-                    <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>
-                </Col>
-                <Col sm={1}>minutes</Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Length:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Control className='length-input' required disabled type='number' value={length} min={0} />
-                    <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">Please upload gpx file to get the length.</Form.Control.Feedback>
-                </Col>
-                <Col sm={1}>Km</Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Ascent:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Control className='ascent-input' required disabled type='number' defaultValue={ascent} min={0} />
-                    <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">Please upload gpx file to get the ascent. </Form.Control.Feedback>
-                </Col>
-                <Col sm={1}>m</Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Difficulty:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Select className='difficulty-input' required defaultValue={1} onChange={(event) => setDifficulty(event.target.value)}>
-                        <option value={'Tourist'}>Tourist (Easy)</option>
-                        <option value={'Hiker'}>Hiker (Medium)</option>
-                        <option value={'Professional Hiker'}>Professional Hiker (Hard)</option>
-                    </Form.Select>
-                </Col>
-            </Form.Group>
-         
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Country:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Select className='country-input' required onChange={(event) => {
-                        setCountryCode(event.target.value);
-                        setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
-                    }}>
-                        {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
-                    </Form.Select>
-                </Col>
-                <Col sm={2}>
-                    <Form.Label>Region:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Select className='region-input' required onChange={(event) => {
-                        setRegionCode(event.target.value);
-                        setRegion(State.getStatesOfCountry(countryCode).filter(r => r.isoCode === event.target.value)[0].name);
-                    }}>
-                        {State.getStatesOfCountry(countryCode).map((r, j) => <option key={j} value={r.isoCode}>{r.name}</option>)}
-                    </Form.Select>
-                </Col>
-                <Col sm={2}>
-                    <Form.Label>City:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Select className='city-input' required onChange={(event) => {
-                        setCity(event.target.value);
-                        setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
-                    }}>
-                        {City.getCitiesOfState(countryCode, regionCode).map((ci, k) => <option key={k} value={ci.name}>{ci.name}</option>)}
-                    </Form.Select>
-                </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId="formFile" className="mb-3">
-                <Form.Label>GPX File</Form.Label>
-                <Form.Control type="file" accept=".gpx" value={GPX} required onChange={(event) => {
-                    checkFile();
-                    setGPX(event.target.value);
-                    loadGPXContent(event.target.files);
-                    setShowMap(true);
-
-                }} isValid={validFile} isInvalid={!validFile} />
-                
-                <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
-            </Form.Group>
-            
-            {(!fileGPX || positions === '' || !showMap) ? '' :
-                <MapContainer center={[positions[0].lat, positions[0].lng]} zoom={13} scrollWheelZoom={false}>
-                    <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <LocationMarker />
-                    <Polyline
-                        pathOptions={{ fillColor: 'red', color: 'blue' }}
-                        positions={positions}
-                    />
-                    {startPoint.length !== 0 ? <Marker position={[startPoint.latitude, startPoint.longitude]}>
-                        <Popup>
-                            Start point
-                        </Popup>
-                    </Marker> : ''}
-                    {endPoint.length !== 0 ? <Marker position={[endPoint.latitude, endPoint.longitude]}>
-                        <Popup>
-                            End Point
-                        </Popup>
-                    </Marker> : ''}
-                </MapContainer>}
-            {
-                !showMap ? '' :
-                 <Form.Group as={Row} className="mb-3">
+        <AuthenticationContext.Consumer>
+            {(authObject) => (
+                <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
+                    <Form.Group as={Row} className="mb-3">
                         <Col sm={2}>
-                            <Form.Label>StartPoint:</Form.Label>
+                            <Form.Label>Title:</Form.Label>
+                        </Col>
+                        <Col>
+                            <Form.Control className='title-input' required type='text' onChange={(event) => setTitle(event.target.value)} />
+                            <Form.Control.Feedback>Valid title!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please insert a title.</Form.Control.Feedback>
+                        </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="mb-3">
+                        <Col sm={2}>
+                            <Form.Label>Expected time:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Control className='show-start' required disabled type='text' defaultValue={{latitude:startPoint.latitude, longitude:startPoint.longitude}} min={0} />
+                            <Form.Control className='expTime-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
+                            <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>
+                        </Col>
+                        <Col sm={1}>minutes</Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="mb-3">
+                        <Col sm={2}>
+                            <Form.Label>Length:</Form.Label>
+                        </Col>
+                        <Col >
+                            <Form.Control className='length-input' required disabled type='number' value={length} min={0} />
+                            <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please upload gpx file to get the length.</Form.Control.Feedback>
+                        </Col>
+                        <Col sm={1}>Km</Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="mb-3">
+                        <Col sm={2}>
+                            <Form.Label>Ascent:</Form.Label>
+                        </Col>
+                        <Col >
+                            <Form.Control className='ascent-input' required disabled type='number' defaultValue={ascent} min={0} />
+                            <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please upload gpx file to get the ascent. </Form.Control.Feedback>
                         </Col>
                         <Col sm={1}>m</Col>
                     </Form.Group>
-            }
-            {/* <Form.Group as={Row} className="mb-3">
+
+                    <Form.Group as={Row} className="mb-3">
+                        <Col sm={2}>
+                            <Form.Label>Difficulty:</Form.Label>
+                        </Col>
+                        <Col >
+                            <Form.Select className='difficulty-input' required defaultValue={1} onChange={(event) => setDifficulty(event.target.value)}>
+                                <option value={'Tourist'}>Tourist (Easy)</option>
+                                <option value={'Hiker'}>Hiker (Medium)</option>
+                                <option value={'Professional Hiker'}>Professional Hiker (Hard)</option>
+                            </Form.Select>
+                        </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="mb-3">
+                        <Col sm={2}>
+                            <Form.Label>Country:</Form.Label>
+                        </Col>
+                        <Col >
+                            <Form.Select className='country-input' required onChange={(event) => {
+                                setCountryCode(event.target.value);
+                                setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
+                            }}>
+                                {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
+                            </Form.Select>
+                        </Col>
+                        <Col sm={2}>
+                            <Form.Label>Region:</Form.Label>
+                        </Col>
+                        <Col >
+                            <Form.Select className='region-input' required onChange={(event) => {
+                                setRegionCode(event.target.value);
+                                setRegion(State.getStatesOfCountry(countryCode).filter(r => r.isoCode === event.target.value)[0].name);
+                            }}>
+                                {State.getStatesOfCountry(countryCode).map((r, j) => <option key={j} value={r.isoCode}>{r.name}</option>)}
+                            </Form.Select>
+                        </Col>
+                        <Col sm={2}>
+                            <Form.Label>City:</Form.Label>
+                        </Col>
+                        <Col >
+                            <Form.Select className='city-input' required onChange={(event) => {
+                                setCity(event.target.value);
+                                setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
+                            }}>
+                                {City.getCitiesOfState(countryCode, regionCode).map((ci, k) => <option key={k} value={ci.name}>{ci.name}</option>)}
+                            </Form.Select>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} controlId="formFile" className="mb-3">
+                        <Form.Label>GPX File</Form.Label>
+                        <Form.Control type="file" accept=".gpx" value={GPX} required onChange={(event) => {
+                            checkFile();
+                            setGPX(event.target.value);
+                            loadGPXContent(event.target.files);
+                            setShowMap(true);
+                            setEmail(authObject.authUser.email);
+
+                        }} isValid={validFile} isInvalid={!validFile} />
+
+                        <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
+                    </Form.Group>
+
+                    {(!fileGPX || positions === '' || !showMap) ? '' :
+                        <MapContainer center={[positions[0].lat, positions[0].lng]} zoom={13} scrollWheelZoom={false}>
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                            <LocationMarker />
+                            <Polyline
+                                pathOptions={{ fillColor: 'red', color: 'blue' }}
+                                positions={positions}
+                            />
+                            {startPoint.length !== 0 ? <Marker position={[startPoint.latitude, startPoint.longitude]}>
+                                <Popup>
+                                    Start point
+                                </Popup>
+                            </Marker> : ''}
+                            {endPoint.length !== 0 ? <Marker position={[endPoint.latitude, endPoint.longitude]}>
+                                <Popup>
+                                    End Point
+                                </Popup>
+                            </Marker> : ''}
+                        </MapContainer>}
+                    {
+                        !showMap ? '' :
+                            <Form.Group as={Row} className="mb-3">
+                                <Col sm={2}>
+                                    <Form.Label>StartPoint:</Form.Label>
+                                </Col>
+                                <Col >
+                                    <Form.Control className='show-start' required disabled type='text' defaultValue={{ latitude: startPoint.latitude, longitude: startPoint.longitude }} min={0} />
+                                </Col>
+                                <Col sm={1}>m</Col>
+                            </Form.Group>
+                    }
+                    {/* <Form.Group as={Row} className="mb-3">
                         <Col sm={2}>
                             <Form.Label>referencePoint:</Form.Label>
                         </Col>
@@ -362,7 +365,7 @@ function HikeForm(props) {
 
 
 
-            {/* {
+                    {/* {
                 cityMap[0] === undefined || creationMethod !== 2 ? '' :
                     <Form.Group as={Row} className="mb-3">
                         <Row>
@@ -462,16 +465,18 @@ function HikeForm(props) {
                         </Table>
                     </Form.Group>
             } */}
-            <Form.Group className="mb-3">
-                <Form.Label>Description:</Form.Label>
-                <Form.Control className='description-input' required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
-                <Form.Control.Feedback>Valid description!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
-            </Form.Group>
-            <Button variant='success' type="submit" >Submit form</Button>
-            <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
-            {validated && <Alert variant="success">The hike has been added to the DB</Alert>}
-        </Form >
+                    <Form.Group className="mb-3">
+                        <Form.Label>Description:</Form.Label>
+                        <Form.Control className='description-input' required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
+                        <Form.Control.Feedback>Valid description!</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
+                    </Form.Group>
+                    <Button variant='success' type="submit" >Submit form</Button>
+                    <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
+                    {validated && <Alert variant="success">The hike has been added to the DB</Alert>}
+                </Form >
+            )}
+        </AuthenticationContext.Consumer>
     )
 }
 
