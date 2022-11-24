@@ -27,18 +27,26 @@ function HutForm(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
+        if (form.checkValidity() === false || hutPoint.length === 0) {
             event.stopPropagation();
             setValidated(true);
             return;
         }
         
+        console.log("Submitted!");
         await props.addNewHut(name, bedsNumber, description, hutPoint, country, region, city);
+        setValidated(false);
+        setName('');
         setBedsNumber('');
         setDescription('');
         setCountry('');
+        setCountryCode('');
         setRegion('');
+        setRegionCode('');
         setCity('');
+        setHutPoint([]);
+        setCityMap([]);
+        setPosition([45.06294822296754, 7.662272990156818]);
     };
     
     useEffect(() => {
@@ -58,7 +66,7 @@ function HutForm(props) {
                     <Form.Label>Name:</Form.Label>
                 </Col>
                 <Col>
-                    <Form.Control className='title-input' required type='text' onChange={(event) => setName(event.target.value)} />
+                    <Form.Control className='title-input' required type='text' value={name} onChange={(event) => setName(event.target.value)} />
                     <Form.Control.Feedback>Valid name!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert a name.</Form.Control.Feedback>
                 </Col>
@@ -68,7 +76,7 @@ function HutForm(props) {
                     <Form.Label>Number of beds:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control className='length-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setBedsNumber(event.target.value)} />
+                    <Form.Control className='length-input' required type='number' value={bedsNumber} defaultValue={undefined} min={0} onChange={(event) => setBedsNumber(event.target.value)} />
                     <Form.Control.Feedback>Valid number of beds!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert the number of beds. It must be a positive integer.</Form.Control.Feedback>
                 </Col>
@@ -78,7 +86,7 @@ function HutForm(props) {
                     <Form.Label>Country:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select className='country-input' required onChange={(event) => {
+                    <Form.Select className='country-input' value={countryCode} required onChange={(event) => {
                         setCountryCode(event.target.value);
                         setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
                     }}>
@@ -89,7 +97,7 @@ function HutForm(props) {
                     <Form.Label>Region:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select className='region-input' required onChange={(event) => {
+                    <Form.Select className='region-input' value={regionCode} required onChange={(event) => {
                         setRegionCode(event.target.value);
                         setRegion(State.getStatesOfCountry(countryCode).filter(r => r.isoCode === event.target.value)[0].name);
                     }}>
@@ -100,7 +108,7 @@ function HutForm(props) {
                     <Form.Label>City:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select className='city-input' required onChange={(event) => {
+                    <Form.Select className='city-input' value={city} required onChange={(event) => {
                         setCity(event.target.value);
                         setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
                     }}>
@@ -157,7 +165,7 @@ function HutForm(props) {
             }
             <Form.Group className="mb-3">
                 <Form.Label>Description:</Form.Label>
-                <Form.Control className='description-input' required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
+                <Form.Control className='description-input' required as='textarea' value={description} rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
                 <Form.Control.Feedback>Valid description!</Form.Control.Feedback>
                 <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
             </Form.Group>
