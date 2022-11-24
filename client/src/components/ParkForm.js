@@ -38,7 +38,7 @@ function ParkForm(props) {
             return;
         }
         
-        await props.addNewParkingLot(name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city);
+        //await props.addNewParkingLot(name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city);
         setName('');
         setLotsNumber('');
         setDescription('');
@@ -69,7 +69,7 @@ function ParkForm(props) {
     }, []);
 
     return (
-        <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
+        <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{marginBottom:10}}>
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Name:</Form.Label>
@@ -209,23 +209,33 @@ function ParkForm(props) {
                             </Button>
                         </Col>
                     </Row>
-
-                    <Table id="point-table">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>latitude</th>
-                                <th>longitude</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Hut point</td>
-                                <td>{parkPoint[0]}</td>
-                                <td>{parkPoint[1]}</td>
-                            </tr>
-                        </tbody>
-                    </Table>
+                    <div style={{paddingLeft:10, paddingRight:10}}>
+                        <Table id="point-table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>latitude</th>
+                                    <th>longitude</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Hut point</td>
+                                    <td>{parkPoint[0]}</td>
+                                    <td>{parkPoint[1]}</td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </div>
+                    { validated && parkPoint.length === 0 ?
+                        <p style={{color:"red"}}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                            </svg>{' '}
+                            Please select a position on the map!
+                        </p> : ''
+                    }
                 </Form.Group>
             }
             <Form.Group className="mb-3">
