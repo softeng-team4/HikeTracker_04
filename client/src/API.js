@@ -83,10 +83,10 @@ const getUser = async (email) => {
 //Queries for the hike collection
 
 const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
-    length, referencePoint, region, title, startPoint) => {
+    length, referencePoint, region, title, startPoint, author) => {
     const hike = {
         title: title, country: country, region: region, city: city, description: description, difficulty: difficulty, expectedTime: expectedTime,
-        length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: JSON.stringify(referencePoint)
+        length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: JSON.stringify(referencePoint), author: author 
     }
     firestore.addDoc(firestore.collection(db, "hike"), hike);
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);

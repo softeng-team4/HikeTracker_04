@@ -87,7 +87,7 @@ function App() {
     length, referencePoint, region, title, startPoint) => {
     try {
       await API.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
-        length, referencePoint, region, title, startPoint);
+        length, referencePoint, region, title, startPoint, authUser.email);
     } catch (e) {
       console.log(e);
       throw (e);
