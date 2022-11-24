@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useEffect } from 'react';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, Form } from 'react-bootstrap';
+import AuthenticationContext from '../AuthenticationContext';
 import DifficultyForm from './DifficultyForm';
 import GeoAreaForm from './GeoAreaForm';
 import SliderForm from './SliderForm';
@@ -92,28 +93,39 @@ const FilterForm = (props) => {
 
 
     return (
-        <>
-            <Row className='FilterForm'>
-                <Row>
-                    {geoAreaFilterType ?
-                        <>
-                            <Col lg={7} className='geoAreaFilter'>
-                                <GeoAreaForm geoArea={geoArea} setGeoArea={setGeoArea} />
-                            </Col>
-                            <Col lg={2} className='btn-geoArea p-3'>
-                                <Button size='sm' variant='success' onClick={handleGeoAreaSwitch}>switch to radius</Button>
-                            </Col>
-                        </>
-                        :
-                        <PointRadiusForm centerMap={centerMap} pointRadius={pointRadius} setPointRadius={setPointRadius} handleGeoAreaSwitch={handleGeoAreaSwitch} />
-                    }
-                    <DifficultyForm difficulty={difficulty} setDifficulty={setDifficulty} />
-                </Row>
-                <Row>
-                    <SliderForm handleSliderSubmit={handleSliderSubmit} />
-                </Row>
-            </Row>
-        </>
+        <AuthenticationContext.Consumer>
+            {(authObject) => (
+                <>
+                    <Row className='FilterForm'>
+                        <Row>
+                            {geoAreaFilterType ?
+                                <>
+                                    <Col lg={7} className='geoAreaFilter'>
+                                        <GeoAreaForm geoArea={geoArea} setGeoArea={setGeoArea} />
+                                    </Col>
+                                    <Col lg={2} className='btn-geoArea p-3'>
+                                        <Button size='sm' variant='success' onClick={handleGeoAreaSwitch}>switch to radius</Button>
+                                    </Col>
+                                </>
+                                :
+                                <PointRadiusForm centerMap={centerMap} pointRadius={pointRadius} setPointRadius={setPointRadius} handleGeoAreaSwitch={handleGeoAreaSwitch} />
+                            }
+                            <DifficultyForm difficulty={difficulty} setDifficulty={setDifficulty} />
+                        </Row>
+                        <Row>
+                            <SliderForm handleSliderSubmit={handleSliderSubmit} />
+                        </Row>
+                        {authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ?
+                            <Row>
+                                <Col className='d-flex justify-content-sm-end'>
+                                    <Form.Check type='switch' label='modify created hikes' reverse onChange={() => props.handleEmailFilter()} />
+                                </Col>
+                            </Row> : null
+                        }
+                    </Row>
+                </>
+            )}
+        </AuthenticationContext.Consumer>
     );
 };
 
