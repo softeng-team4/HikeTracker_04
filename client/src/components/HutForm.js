@@ -82,7 +82,7 @@ function HutForm(props) {
                     <Form.Label>Name:</Form.Label>
                 </Col>
                 <Col>
-                    <Form.Control className='title-input' required type='text' value={name} onChange={(event) => setName(event.target.value)} />
+                    <Form.Control className='name-input' required type='text' value={name} onChange={(event) => setName(event.target.value)} />
                     <Form.Control.Feedback>Valid name!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert a name.</Form.Control.Feedback>
                 </Col>
@@ -92,7 +92,7 @@ function HutForm(props) {
                     <Form.Label>Number of beds:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control className='length-input' required type='number' value={bedsNumber} defaultValue={undefined} min={0} onChange={(event) => setBedsNumber(event.target.value)} />
+                    <Form.Control className='beds-input' required type='number' value={bedsNumber} defaultValue={undefined} min={0} onChange={(event) => setBedsNumber(event.target.value)} />
                     <Form.Control.Feedback>Valid number of beds!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert the number of beds. It must be a positive integer.</Form.Control.Feedback>
                 </Col>

@@ -92,7 +92,7 @@ function ParkForm(props) {
                     <Form.Label>Name:</Form.Label>
                 </Col>
                 <Col>
-                    <Form.Control className='title-input' required type='text' value={name} onChange={(event) => setName(event.target.value)} />
+                    <Form.Control className='name-input' required type='text' value={name} onChange={(event) => setName(event.target.value)} />
                     <Form.Control.Feedback>Valid name!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert a name.</Form.Control.Feedback>
                 </Col>
@@ -102,7 +102,7 @@ function ParkForm(props) {
                     <Form.Label>Number of lots:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control className='length-input' required type='number' value={lotsNumber} defaultValue={undefined} min={0} onChange={(event) => setLotsNumber(event.target.value)} />
+                    <Form.Control className='lots-input' required type='number' value={lotsNumber} defaultValue={undefined} min={0} onChange={(event) => setLotsNumber(event.target.value)} />
                     <Form.Control.Feedback>Valid number of lots!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert the number of lots. It must be a positive integer.</Form.Control.Feedback>
                 </Col>
@@ -114,7 +114,7 @@ function ParkForm(props) {
                 <Col >
                     <InputGroup>
                         <InputGroup.Text>€</InputGroup.Text>
-                        <Form.Control className='length-input' required type='number' value={costPerDay} defaultValue={undefined} min={0} onChange={(event) => setCostPerDay(event.target.value)} />
+                        <Form.Control className='cost-input' required type='number' value={costPerDay} defaultValue={undefined} min={0} onChange={(event) => setCostPerDay(event.target.value)} />
                         <InputGroup.Text>.00</InputGroup.Text>
                         <Form.Control.Feedback>Valid cost per day!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">Please insert the cost per day. It must be a positive number.</Form.Control.Feedback>
@@ -127,7 +127,7 @@ function ParkForm(props) {
                 </Col>
                 <Col >
                     <InputGroup>
-                        <Form.Control className='length-input' required type='number' value={openingHour} defaultValue={undefined} min={0} max={23} onChange={(event) => setOpeningHour(event.target.value)} />
+                        <Form.Control className='openingHour-input' required type='number' value={openingHour} defaultValue={undefined} min={0} max={23} onChange={(event) => setOpeningHour(event.target.value)} />
                         <InputGroup.Text>hour</InputGroup.Text>
                         <Form.Control.Feedback>Valid hour!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">Please insert the hour. It must be a positive integer between 0 and 23.</Form.Control.Feedback>
@@ -135,7 +135,7 @@ function ParkForm(props) {
                 </Col>
                 <Col >
                     <InputGroup>
-                        <Form.Control className='length-input' required type='number' value={openingMinute} defaultValue={undefined} min={0} max={59} onChange={(event) => setOpeningMinute(event.target.value)} />
+                        <Form.Control className='openingMinute-input' required type='number' value={openingMinute} defaultValue={undefined} min={0} max={59} onChange={(event) => setOpeningMinute(event.target.value)} />
                         <InputGroup.Text>minute</InputGroup.Text>
                         <Form.Control.Feedback>Valid minutes!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">Please insert the minutes. It must be a positive integer between 0 and 59.</Form.Control.Feedback>
@@ -148,7 +148,7 @@ function ParkForm(props) {
                 </Col>
                 <Col >
                     <InputGroup>
-                        <Form.Control className='length-input' required type='number' value={closingHour} defaultValue={undefined} min={0} max={23} onChange={(event) => setClosingHour(event.target.value)} />
+                        <Form.Control className='closingHour-input' required type='number' value={closingHour} defaultValue={undefined} min={0} max={23} onChange={(event) => setClosingHour(event.target.value)} />
                         <InputGroup.Text>hour</InputGroup.Text>
                         <Form.Control.Feedback>Valid hour!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">Please insert the hour. It must be a positive integer between 0 and 23.</Form.Control.Feedback>
@@ -156,7 +156,7 @@ function ParkForm(props) {
                 </Col>
                 <Col >
                     <InputGroup>
-                        <Form.Control className='length-input' required type='number' value={closingMinute} defaultValue={undefined} min={0} max={59} onChange={(event) => setClosingMinute(event.target.value)} />
+                        <Form.Control className='closingMinute-input' required type='number' value={closingMinute} defaultValue={undefined} min={0} max={59} onChange={(event) => setClosingMinute(event.target.value)} />
                         <InputGroup.Text>minute</InputGroup.Text>
                         <Form.Control.Feedback>Valid minutes!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">Please insert the minutes. It must be a positive integer between 0 and 59.</Form.Control.Feedback>
@@ -217,12 +217,12 @@ function ParkForm(props) {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col align="right" style={{marginTop:5}}>
                             <Button variant='primary' onClick={() => {
                                 //add into db
                                 setParkPoint(position);
                                 console.log('hut', parkPoint);
-                            } }>Save point
+                            } }>Save position
                             </Button>
                         </Col>
                     </Row>
