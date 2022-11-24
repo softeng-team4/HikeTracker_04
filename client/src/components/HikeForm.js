@@ -123,28 +123,37 @@ function HikeForm(props) {
         if (form.checkValidity() === false || (checkFile() === false)) {
             event.stopPropagation();
             return
-        }
-        /*console.log("Title:" + title)
-        console.log("Length:" + length)
-        console.log("Expected Time:" + expectedTime)
-        console.log("Ascent:" + ascent)
-        console.log("Difficulty:" + difficulty)
-        console.log("Country:" + country)
-        console.log("Region:" + region)
-        console.log("City:" + city)
-        console.log("Description:" + description)
-        console.log("Start point:" + JSON.stringify(startPoint))
-        console.log("End point:" + endPoint)
-        console.log("Reference points:" + referencePoint)*/
+        } else {
+            /*console.log("Title:" + title)
+            console.log("Length:" + length)
+            console.log("Expected Time:" + expectedTime)
+            console.log("Ascent:" + ascent)
+            console.log("Difficulty:" + difficulty)
+            console.log("Country:" + country)
+            console.log("Region:" + region)
+            console.log("City:" + city)
+            console.log("Description:" + description)
+            console.log("Start point:" + JSON.stringify(startPoint))
+            console.log("End point:" + endPoint)
+            console.log("Reference points:" + referencePoint)*/
 
-        await props.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
-            length, referencePoint, region, title, startPoint, email);
-        setValidated(true);
-        /*setAscent('');
-        setCity('');
-        setCountry('');
-        setDescription('');
-        setDifficulty('');*/
+            await props.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
+                length, referencePoint, region, title, startPoint, email);
+            setValidated(true);
+            setAscent('');
+            setCity('');
+            setCountry('');
+            setDescription('');
+            setDifficulty('');
+            setStartPoint('');
+            setEndPoint('');
+            setExpectedTime('');
+            setLength('');
+            setReferencePoint('');
+            setRegion('');
+            setTitle('');
+            setEmail('');
+        }
     };
 
     /*
@@ -342,15 +351,30 @@ function HikeForm(props) {
                         </MapContainer>}
                     {
                         !showMap ? '' :
-                            <Form.Group as={Row} className="mb-3">
-                                <Col sm={2}>
-                                    <Form.Label>StartPoint:</Form.Label>
-                                </Col>
-                                <Col >
-                                    <Form.Control className='show-start' required disabled type='text' defaultValue={{ latitude: startPoint.latitude, longitude: startPoint.longitude }} min={0} />
-                                </Col>
-                                <Col sm={1}>m</Col>
-                            </Form.Group>
+                            <Table id="point-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>latitude</th>
+                                        <th>longitude</th>
+                                        <th>altitude</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Start point</td>
+                                        <td>{startPoint.latitude}</td>
+                                        <td>{startPoint.longitude}</td>
+                                        <td>{startPoint.altitude}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>End point</td>
+                                        <td>{endPoint.latitude}</td>
+                                        <td>{endPoint.longitude}</td>
+                                        <td>{endPoint.altitude}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
                     }
                     {/* <Form.Group as={Row} className="mb-3">
                         <Col sm={2}>
