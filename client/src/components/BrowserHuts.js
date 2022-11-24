@@ -89,7 +89,7 @@ const BrowserHuts = (props) =>{
                         </div>
                     )}
                     </Row>
-                    {hutList.length === 0 ? <Container className='emty-hutList'><Spacer height='2rem'/><Card><h5>No huts found!</h5></Card><Spacer height='2rem'/></Container> : null}
+                    {hutList.length === 0 || subHutList.length === 0 ? <Container className='emty-hutList'><Spacer height='2rem'/><Card><h5>No huts found!</h5></Card><Spacer height='2rem'/></Container> : null}
                     <HikePageHandler index={index}  pageNum={computeIndex()} handlePageChange={handlePageChange}/>
                 </Container>
             )}

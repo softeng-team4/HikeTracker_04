@@ -310,7 +310,12 @@ const hutsList = async (filters, collection = "huts") => {
                 city: doc.data().city, 
                 position: doc.data().position,
                 bedsNumber: doc.data().bedsNumber,
-                description: doc.data().description
+                description: doc.data().description,
+                costPerNight: doc.data().costPerNight,
+                openingHour: doc.data().openingHour,
+                openingMinute: doc.data().openingMinute,
+                closingHour: doc.data().closingHour,
+                closingMinute: doc.data().closingMinute
             }
             res.push(hut);
         });
@@ -325,7 +330,12 @@ const hutsList = async (filters, collection = "huts") => {
                 city: doc.data().city, 
                 position: doc.data().position,
                 bedsNumber: doc.data().bedsNumber,
-                description: doc.data().description
+                description: doc.data().description,
+                costPerNight: doc.data().costPerNight,
+                openingHour: doc.data().openingHour,
+                openingMinute: doc.data().openingMinute,
+                closingHour: doc.data().closingHour,
+                closingMinute: doc.data().closingMinute
             }
             res.push(hut);
         });
