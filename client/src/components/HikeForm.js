@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react"
-import { Form, Row, Col, Table, Button, ToggleButtonGroup, ToggleButton } from "react-bootstrap"
+import { Form, Row, Col, Table, Button, ToggleButtonGroup, ToggleButton, Alert } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
 import L from 'leaflet-gpx'
@@ -118,203 +118,208 @@ function HikeForm(props) {
         setPositions(gpx.tracks[0].points.map(p => ({ lat: p.lat, lng: p.lon })).filter(p => p.lat && p.lng));
 
         let point1 = gpx.tracks[0].points[0];
-
         let point2 = gpx.tracks[0].points[gpx.tracks[0].points.length - 1];
 
         setStartPoint({
             latitude: point1.lat,
             longitude: point1.lon,
-            altitude: point1.ele
+            //altitude: point1.ele
         });
 
         setEndPoint({
             latitude: point2.lat,
             longitude: point2.lon,
-            altitude: point2.ele
+            //altitude: point2.ele
         });
 
-    }
-    console.log('pos', positions[0])
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        if (form.checkValidity() === false || (checkFile() === false)) {
-            event.stopPropagation();
-            return
-        }
-        /*console.log("Title:" + title)
-        console.log("Length:" + length)
-        console.log("Expected Time:" + expectedTime)
-        console.log("Ascent:" + ascent)
-        console.log("Difficulty:" + difficulty)
-        console.log("Country:" + country)
-        console.log("Region:" + region)
-        console.log("City:" + city)
-        console.log("Description:" + description)
-        console.log("Start point:" + startPoint)
-        console.log("End point:" + endPoint)
-        console.log("Reference points:" + referencePoint)*/
-
-        await props.addNewHike(title, country, region, city, description, difficulty, expectedTime,
-            length, ascent, startPoint, endPoint, referencePoint);
-        setValidated(true);
-        setAscent('');
-        setCity('');
-        setCountry('');
-        setDescription('');
-        setDifficulty('');
-    };
-
-    /*
-    Data format for a hike:
-        • Title/label
-        • Length (kms)
-        • Expected time
-        • Ascent (meters)
-        • Difficulty (Tourist, Hiker, Professional hiker)
-        • Start point *
-        • End point *
-        • Reference points *
-        • Description
-        • Point can be: address, name of location, GPS coordinates, hut, parking lot
-    */
-
-
-    function LocationMarker(props) {
-        const map = useMapEvents({
-            async click(e) {
-                setPosition([e.latlng.lat, e.latlng.lng]);
-                //await props.getPosition(position);
-                console.log('-----------', position, e.latlng.lat)
-            },
-            locationfound(e) {
-                setPosition(e.latlng)
-                map.flyTo(e.latlng, map.getZoom())
-            },
-        })
-
-        return position === null ? null : (
-
-            <Marker position={position}>
-            </Marker>
-
+        setReferencePoint(
+            gpx.tracks[0].points.map(element => {
+                return { latitude: element.lat, longitude: element.lon }
+            }).slice(1,10)  //The gpx tracks are too long, so I cut them and stroe only the first 10 points
         )
+
+    console.log("Start and end points:" + startPoint.latitude + endPoint.latitude)
+}
+
+const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false || (checkFile() === false)) {
+        event.stopPropagation();
+        return
     }
+    /*console.log("Title:" + title)
+    console.log("Length:" + length)
+    console.log("Expected Time:" + expectedTime)
+    console.log("Ascent:" + ascent)
+    console.log("Difficulty:" + difficulty)
+    console.log("Country:" + country)
+    console.log("Region:" + region)
+    console.log("City:" + city)
+    console.log("Description:" + description)
+    console.log("Start point:" + JSON.stringify(startPoint))
+    console.log("End point:" + endPoint)
+    console.log("Reference points:" + referencePoint)*/
+
+    await props.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
+        length, referencePoint, region, title, startPoint);
+    setValidated(true);
+    /*setAscent('');
+    setCity('');
+    setCountry('');
+    setDescription('');
+    setDifficulty('');*/
+};
+
+/*
+Data format for a hike:
+    • Title/label
+    • Length (kms)
+    • Expected time
+    • Ascent (meters)
+    • Difficulty (Tourist, Hiker, Professional hiker)
+    • Start point *
+    • End point *
+    • Reference points *
+    • Description
+    • Point can be: address, name of location, GPS coordinates, hut, parking lot
+*/
 
 
-    /* This method will add a new row */
-    function addNewRow() {
-        var table = document.getElementById("point-table");
-        var rowCount = table.rows.length;
-        var row = table.insertRow(rowCount);
-        var cell = row.insertCell(0)
-        cell = row.insertCell(1)
-        cell.innerHTML = position[0]
-        cell = row.insertCell(2)
-        cell.innerHTML = position[1]
-        /*for (var i = 0; i < cellCount; i++) {
-              var cell = row.insertCell(i);
-              if (i === 0 ) {
-                  cell.innerHTML = '';
-              } else if (i===1 ){
-                  cell.innerHTML = referencePoint[referencePoint.length-1].lat;
-              } else {
-                  cell.innerHTML = referencePoint[referencePoint.length-1].lng;
-              }
-          }*/
+function LocationMarker(props) {
+    const map = useMapEvents({
+        async click(e) {
+            setPosition([e.latlng.lat, e.latlng.lng]);
+            //await props.getPosition(position);
+            console.log('-----------', position, e.latlng.lat)
+        },
+        locationfound(e) {
+            setPosition(e.latlng)
+            map.flyTo(e.latlng, map.getZoom())
+        },
+    })
+
+    return position === null ? null : (
+
+        <Marker position={position}>
+        </Marker>
+
+    )
+}
+
+
+/* This method will add a new row */
+function addNewRow() {
+    var table = document.getElementById("point-table");
+    var rowCount = table.rows.length;
+    var row = table.insertRow(rowCount);
+    var cell = row.insertCell(0)
+    cell = row.insertCell(1)
+    cell.innerHTML = position[0]
+    cell = row.insertCell(2)
+    cell.innerHTML = position[1]
+    /*for (var i = 0; i < cellCount; i++) {
+          var cell = row.insertCell(i);
+          if (i === 0 ) {
+              cell.innerHTML = '';
+          } else if (i===1 ){
+              cell.innerHTML = referencePoint[referencePoint.length-1].lat;
+          } else {
+              cell.innerHTML = referencePoint[referencePoint.length-1].lng;
+          }
+      }*/
+}
+
+/* This method will delete a row */
+function deleteRow(ele) {
+    var table = document.getElementById('point-table');
+    var rowCount = table.rows.length;
+    if (rowCount <= 1) {
+        alert("There is no row available to delete!");
+        return;
     }
-
-    /* This method will delete a row */
-    function deleteRow(ele) {
-        var table = document.getElementById('point-table');
-        var rowCount = table.rows.length;
-        if (rowCount <= 1) {
-            alert("There is no row available to delete!");
-            return;
-        }
-        if (ele) {
-            //delete specific row
-            ele.parentNode.parentNode.remove();
-        } else {
-            //delete last row
-            table.deleteRow(rowCount - 1);
-        }
+    if (ele) {
+        //delete specific row
+        ele.parentNode.parentNode.remove();
+    } else {
+        //delete last row
+        table.deleteRow(rowCount - 1);
     }
-    // const getTrackfromFile = async (event) => {
-    //     if (event.target.files.length === 0) return;
-    //     const file = event.target.files[0];
-    //     console.log("file " + event.target.files[0])
-    //     let fr = new FileReader()
-    //     fr.onload = (evt) => {
-    //         console.log("GPX :" + fr.result)
-    //         manageGpx(fr.result)
-    //     };
-    //     fr.readAsText(file)
-    // }
+}
+// const getTrackfromFile = async (event) => {
+//     if (event.target.files.length === 0) return;
+//     const file = event.target.files[0];
+//     console.log("file " + event.target.files[0])
+//     let fr = new FileReader()
+//     fr.onload = (evt) => {
+//         console.log("GPX :" + fr.result)
+//         manageGpx(fr.result)
+//     };
+//     fr.readAsText(file)
+// }
 
-    return (
-        <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Title:</Form.Label>
-                </Col>
-                <Col>
-                    <Form.Control className='title-input' required type='text' onChange={(event) => setTitle(event.target.value)} />
-                    <Form.Control.Feedback>Valid title!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">Please insert a title.</Form.Control.Feedback>
-                </Col>
-            </Form.Group>
+return (
+    <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
+        <Form.Group as={Row} className="mb-3">
+            <Col sm={2}>
+                <Form.Label>Title:</Form.Label>
+            </Col>
+            <Col>
+                <Form.Control className='title-input' required type='text' onChange={(event) => setTitle(event.target.value)} />
+                <Form.Control.Feedback>Valid title!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">Please insert a title.</Form.Control.Feedback>
+            </Col>
+        </Form.Group>
 
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Expected time:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Control className='expTime-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
-                    <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>
-                </Col>
-                <Col sm={1}>minutes</Col>
-            </Form.Group>
+        <Form.Group as={Row} className="mb-3">
+            <Col sm={2}>
+                <Form.Label>Expected time:</Form.Label>
+            </Col>
+            <Col >
+                <Form.Control className='expTime-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
+                <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>
+            </Col>
+            <Col sm={1}>minutes</Col>
+        </Form.Group>
 
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Length:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Control className='length-input' required disabled type='number' value={length} min={0} />
-                    <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">Please upload gpx file to get the length.</Form.Control.Feedback>
-                </Col>
-                <Col sm={1}>Km</Col>
-            </Form.Group>
+        <Form.Group as={Row} className="mb-3">
+            <Col sm={2}>
+                <Form.Label>Length:</Form.Label>
+            </Col>
+            <Col >
+                <Form.Control className='length-input' required disabled type='number' value={length} min={0} />
+                <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">Please upload gpx file to get the length.</Form.Control.Feedback>
+            </Col>
+            <Col sm={1}>Km</Col>
+        </Form.Group>
 
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Ascent:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Control className='ascent-input' required disabled type='number' defaultValue={ascent} min={0} />
-                    <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">Please upload gpx file to get the ascent. </Form.Control.Feedback>
-                </Col>
-                <Col sm={1}>m</Col>
-            </Form.Group>
+        <Form.Group as={Row} className="mb-3">
+            <Col sm={2}>
+                <Form.Label>Ascent:</Form.Label>
+            </Col>
+            <Col >
+                <Form.Control className='ascent-input' required disabled type='number' defaultValue={ascent} min={0} />
+                <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">Please upload gpx file to get the ascent. </Form.Control.Feedback>
+            </Col>
+            <Col sm={1}>m</Col>
+        </Form.Group>
 
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Difficulty:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Select className='difficulty-input' required defaultValue={1} onChange={(event) => setDifficulty(event.target.value)}>
-                        <option value={1}>Tourist (Easy)</option>
-                        <option value={2}>Hiker (Medium)</option>
-                        <option value={3}>Professional Hiker (Hard)</option>
-                    </Form.Select>
-                </Col>
-            </Form.Group>
-            {/* <Form.Group as={Row} className="mb-3">
+        <Form.Group as={Row} className="mb-3">
+            <Col sm={2}>
+                <Form.Label>Difficulty:</Form.Label>
+            </Col>
+            <Col >
+                <Form.Select className='difficulty-input' required defaultValue={1} onChange={(event) => setDifficulty(event.target.value)}>
+                    <option value={1}>Tourist (Easy)</option>
+                    <option value={2}>Hiker (Medium)</option>
+                    <option value={3}>Professional Hiker (Hard)</option>
+                </Form.Select>
+            </Col>
+        </Form.Group>
+        {/* <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Select creation method:</Form.Label>
                 </Col>
@@ -329,78 +334,78 @@ function HikeForm(props) {
                     </ToggleButtonGroup>
                 </Col>
             </Form.Group> */}
-            {/* {creationMethod !== 1 ? '' : */}
-            <Form.Group as={Row} className="mb-3">
-                <Col sm={2}>
-                    <Form.Label>Country:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Select className='country-input' required onChange={(event) => {
-                        setCountryCode(event.target.value);
-                        setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
-                    }}>
-                        {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
-                    </Form.Select>
-                </Col>
-                <Col sm={2}>
-                    <Form.Label>Region:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Select className='region-input' required onChange={(event) => {
-                        setRegionCode(event.target.value);
-                        setRegion(State.getStatesOfCountry(countryCode).filter(r => r.isoCode === event.target.value)[0].name);
-                    }}>
-                        {State.getStatesOfCountry(countryCode).map((r, j) => <option key={j} value={r.isoCode}>{r.name}</option>)}
-                    </Form.Select>
-                </Col>
-                <Col sm={2}>
-                    <Form.Label>City:</Form.Label>
-                </Col>
-                <Col >
-                    <Form.Select className='city-input' required onChange={(event) => {
-                        setCity(event.target.value);
-                        setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
-                    }}>
-                        {City.getCitiesOfState(countryCode, regionCode).map((ci, k) => <option key={k} value={ci.name}>{ci.name}</option>)}
-                    </Form.Select>
-                </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId="formFile" className="mb-3">
-                <Form.Label>GPX File</Form.Label>
-                <Form.Control type="file" accept=".gpx" value={GPX} required onChange={(event) => {
-                    checkFile();
-                    setGPX(event.target.value);
-                    loadGPXContent(event.target.files);
-                    setShowMap(true);
+        {/* {creationMethod !== 1 ? '' : */}
+        <Form.Group as={Row} className="mb-3">
+            <Col sm={2}>
+                <Form.Label>Country:</Form.Label>
+            </Col>
+            <Col >
+                <Form.Select className='country-input' required onChange={(event) => {
+                    setCountryCode(event.target.value);
+                    setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
+                }}>
+                    {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
+                </Form.Select>
+            </Col>
+            <Col sm={2}>
+                <Form.Label>Region:</Form.Label>
+            </Col>
+            <Col >
+                <Form.Select className='region-input' required onChange={(event) => {
+                    setRegionCode(event.target.value);
+                    setRegion(State.getStatesOfCountry(countryCode).filter(r => r.isoCode === event.target.value)[0].name);
+                }}>
+                    {State.getStatesOfCountry(countryCode).map((r, j) => <option key={j} value={r.isoCode}>{r.name}</option>)}
+                </Form.Select>
+            </Col>
+            <Col sm={2}>
+                <Form.Label>City:</Form.Label>
+            </Col>
+            <Col >
+                <Form.Select className='city-input' required onChange={(event) => {
+                    setCity(event.target.value);
+                    setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
+                }}>
+                    {City.getCitiesOfState(countryCode, regionCode).map((ci, k) => <option key={k} value={ci.name}>{ci.name}</option>)}
+                </Form.Select>
+            </Col>
+        </Form.Group>
+        <Form.Group as={Row} controlId="formFile" className="mb-3">
+            <Form.Label>GPX File</Form.Label>
+            <Form.Control type="file" accept=".gpx" value={GPX} required onChange={(event) => {
+                checkFile();
+                setGPX(event.target.value);
+                loadGPXContent(event.target.files);
+                setShowMap(true);
 
-                }} isValid={validFile} isInvalid={!validFile} />
-                {/* {console.log("vf:" + validFile)} */}
-                <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
-            </Form.Group>
-            {/* } */}
-            {(!fileGPX || positions === '' || !showMap) ? '' :
-                <MapContainer center={[positions[0].lat, positions[0].lng]} zoom={13} scrollWheelZoom={false}>
-                    <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <LocationMarker />
-                    <Polyline
-                        pathOptions={{ fillColor: 'red', color: 'blue' }}
-                        positions={positions}
-                    />
-                    {startPoint.length !== 0 ? <Marker position={[startPoint.latitude, startPoint.longitude]}>
-                        <Popup>
-                            Start point
-                        </Popup>
-                    </Marker> : ''}
-                    {endPoint.length !== 0 ? <Marker position={[endPoint.latitude, endPoint.longitude]}>
-                        <Popup>
-                            End Point
-                        </Popup>
-                    </Marker> : ''}
-                </MapContainer>}
-            {/* <Form.Group as={Row} className="mb-3">
+            }} isValid={validFile} isInvalid={!validFile} />
+            {/* {console.log("vf:" + validFile)} */}
+            <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
+        </Form.Group>
+        {/* } */}
+        {(!fileGPX || positions === '' || !showMap) ? '' :
+            <MapContainer center={[positions[0].lat, positions[0].lng]} zoom={13} scrollWheelZoom={false}>
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <LocationMarker />
+                <Polyline
+                    pathOptions={{ fillColor: 'red', color: 'blue' }}
+                    positions={positions}
+                />
+                {startPoint.length !== 0 ? <Marker position={[startPoint.latitude, startPoint.longitude]}>
+                    <Popup>
+                        Start point
+                    </Popup>
+                </Marker> : ''}
+                {endPoint.length !== 0 ? <Marker position={[endPoint.latitude, endPoint.longitude]}>
+                    <Popup>
+                        End Point
+                    </Popup>
+                </Marker> : ''}
+            </MapContainer>}
+        {/* <Form.Group as={Row} className="mb-3">
                         <Col sm={2}>
                             <Form.Label>referencePoint:</Form.Label>
                         </Col>
@@ -413,7 +418,7 @@ function HikeForm(props) {
 
 
 
-            {/* {
+        {/* {
                 cityMap[0] === undefined || creationMethod !== 2 ? '' :
                     <Form.Group as={Row} className="mb-3">
                         <Row>
@@ -513,16 +518,17 @@ function HikeForm(props) {
                         </Table>
                     </Form.Group>
             } */}
-            <Form.Group className="mb-3">
-                <Form.Label>Description:</Form.Label>
-                <Form.Control className='description-input' required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
-                <Form.Control.Feedback>Valid description!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
-            </Form.Group>
-            <Button variant='success' type="submit" >Submit form</Button>
-            <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
-        </Form >
-    )
+        <Form.Group className="mb-3">
+            <Form.Label>Description:</Form.Label>
+            <Form.Control className='description-input' required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
+            <Form.Control.Feedback>Valid description!</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
+        </Form.Group>
+        <Button variant='success' type="submit" >Submit form</Button>
+        <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
+        {validated && <Alert>The form has been validated</Alert>}
+    </Form >
+)
 }
 
 export { HikeForm }
