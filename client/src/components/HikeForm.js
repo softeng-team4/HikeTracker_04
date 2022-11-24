@@ -109,9 +109,10 @@ function HikeForm(props) {
         });
 
         setReferencePoint(
-            gpx.tracks[0].points.map(element => {
-                return { latitude: element.lat, longitude: element.lon, altitude: element.ele, time: element.time }
-            }).slice(1, 10)  //The gpx tracks are too long, so I cut them and stroe only the first 10 points
+            gpx.tracks[0].points.map(p => ({ lat: p.lat, lng: p.lon })).filter(p => p.lat && p.lng)
+            // gpx.tracks[0].points.map(element => {
+            //     return { latitude: element.lat, longitude: element.lon, altitude: element.ele, time: element.time }
+            // }).slice(1, 10)  //The gpx tracks are too long, so I cut them and stroe only the first 10 points
         )
 
         console.log("Start and end points:" + startPoint.latitude + endPoint.latitude)
