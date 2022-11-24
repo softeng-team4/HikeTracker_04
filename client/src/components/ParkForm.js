@@ -1,6 +1,6 @@
 import { City, Country, State } from "country-state-city";
 import { useEffect, useState } from "react";
-import { Button, Col, Form, InputGroup, Row, Table } from "react-bootstrap";
+import { Button, Col, Form, InputGroup, Modal, Row, Table } from "react-bootstrap";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
@@ -38,7 +38,7 @@ function ParkForm(props) {
             return;
         }
         
-        //await props.addNewParkingLot(name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city);
+        await props.addNewParkingLot(name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city);
         setName('');
         setLotsNumber('');
         setDescription('');
@@ -56,6 +56,7 @@ function ParkForm(props) {
         setParkPoint([]);
         setPosition([45.06294822296754, 7.662272990156818]);
         setValidated(false);
+        handleShow();
     };
     
     useEffect(() => {
@@ -68,7 +69,23 @@ function ParkForm(props) {
         });
     }, []);
 
-    return (
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    return (<>
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>New parking lot</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>The new parking lot has been saved successfully!</Modal.Body>
+            <Modal.Footer>
+                <Button variant="primary" onClick={handleClose}>
+                    Close
+                </Button>
+            </Modal.Footer>
+        </Modal>
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{marginBottom:10}}>
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
@@ -247,7 +264,7 @@ function ParkForm(props) {
             <Button variant='success' type="submit" >Submit form</Button>
             <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
         </Form>
-    );
+    </>);
 }
 
 export {ParkForm}

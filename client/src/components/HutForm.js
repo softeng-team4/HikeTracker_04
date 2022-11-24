@@ -1,6 +1,6 @@
 import { City, Country, State } from "country-state-city";
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Row, Table } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
@@ -33,7 +33,7 @@ function HutForm(props) {
             return;
         }
         
-        //await props.addNewHut(name, bedsNumber, description, hutPoint, country, region, city);
+        await props.addNewHut(name, bedsNumber, description, hutPoint, country, region, city);
         setValidated(false);
         setName('');
         setBedsNumber('');
@@ -46,6 +46,7 @@ function HutForm(props) {
         setHutPoint([]);
         setCityMap([]);
         setPosition([45.06294822296754, 7.662272990156818]);
+        handleShow();
     };
     
     useEffect(() => {
@@ -58,7 +59,23 @@ function HutForm(props) {
         });
     }, []);
 
-    return (
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    return (<>
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>New hut</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>The new hut has been saved successfully!</Modal.Body>
+            <Modal.Footer>
+                <Button variant="primary" onClick={handleClose}>
+                    Close
+                </Button>
+            </Modal.Footer>
+        </Modal>
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{marginBottom:10}}>
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
@@ -182,7 +199,7 @@ function HutForm(props) {
             <Button variant='success' type="submit" >Submit form</Button>
             <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
         </Form>
-    )
+    </>)
 }
 
 export {HutForm}
