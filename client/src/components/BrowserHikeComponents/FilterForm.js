@@ -29,6 +29,7 @@ const FilterForm = (props) => {
     // state to hold which geoAreaFilter display to the user
     const [geoAreaFilterType, setGeoAreaFilterType] = useState(true);
     const setHikeList = props.setHikeList;
+    const setIsLoading = props.setIsLoading;
 
 
     useEffect(() => {
@@ -52,6 +53,7 @@ const FilterForm = (props) => {
 
     useEffect(() => {
         console.log('I am here!');
+        setIsLoading(true);
         //API.deleteInvalidHikes().then(console.log("deleted!"))
         API.hikesList({
             country: filters.geoArea.country.name === 'None' ? undefined : filters.geoArea.country.name,

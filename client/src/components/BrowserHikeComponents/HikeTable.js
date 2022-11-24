@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Row, Col, Container, Card, Button, Overlay, Tooltip, OverlayTrigger } from 'react-bootstrap';
-import { useEffect, useRef, useState } from 'react';
+import { Row, Col, Container, Card, Button, Tooltip, OverlayTrigger, Spinner } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
 import Spacer from './Spacer';
 import FilterForm from './FilterForm';
 import AuthenticationContext from '../AuthenticationContext';
@@ -13,6 +13,8 @@ const HikeTable = () => {
 
     // state to hold list of hikes
     const [hikeList, setHikeList] = useState([])
+    //state to wait server response for retrieve hikeList
+    const [isLoading, setIsLoading] = useState(true);
     // state to hold current page index
     const [index, setIndex] = useState(0);
     // number of hikes visulaized for page
@@ -27,17 +29,21 @@ const HikeTable = () => {
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0)
 
 
+    // effect to select the hikes to show based on page number
     useEffect(() => {
         setSubHikeList(hikeList.slice(0, hike4page));
+        setIsLoading(false);
     }, [hikeList]);
 
 
+    // function to change page displayed
     const handlePageChange = (idx) => {
         setIndex(idx);
         setSubHikeList(hikeList.slice(idx * hike4page, idx * hike4page + hike4page));
     };
 
 
+    // function to display additional hike info modal
     const handleShowInfo = (event) => {
         event.preventDefault();
         setHikeId(event.target.key);
@@ -49,10 +55,11 @@ const HikeTable = () => {
         <AuthenticationContext.Consumer>
             {(authObject) => (
                 <>
+                    {isLoading && <div className='loading-overlay'><Spinner className='spinner' animation="border" variant="light" /></div>}
                     <Container fluid className='BrowserHikesContainer'>
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
-                        <FilterForm setHikeList={setHikeList} />
+                        <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} />
                         {subHikeList.map((hike, idx) =>
                             <div key={`div_${idx}`}>
                                 <Card key={`card_${idx}`}>
@@ -89,7 +96,7 @@ const HikeTable = () => {
                                 <Spacer height='1rem' key={`card_spacer_${idx}`} />
                             </div>
                         )}
-                        {hikeList.length === 0 ? <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem' /></Container> : null}
+                        {!isLoading && hikeList.length === 0 ? <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem' /></Container> : null}
                         <HikePageHandler index={index} pageNum={computeIndex()} handlePageChange={handlePageChange} />
                     </Container>
                     <AdditionalHikeInfoModal hikeId={hikeId} show={showInfoModal} onHide={() => setShowInfoModal(false)} />
