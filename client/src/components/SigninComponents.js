@@ -91,11 +91,6 @@ function SigninForm(props) {
             <div align="right" style={{ marginTop: 10 }}>
               <Button type="submit">Sign Up</Button>
             </div>
-            <div align="left" style={{ marginTop: 10 }}>
-              <Link to='/'>
-                <Button variant='danger'> Back</Button>
-              </Link>
-            </div>
           </Form>
         </Container>
     }</>)

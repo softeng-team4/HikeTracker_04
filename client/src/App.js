@@ -104,24 +104,18 @@ function App() {
 
           <Routes>
 
-            {/* here are routes for visiters without login */}
-            <Route path='/' element={authUser ? <Navigate replace to='/home' /> : <AppLayout onLogOut={logout} loggedIn={login} />} >
+            <Route path='/' element={<AppLayout onLogOut={logout} loggedIn={login} />} >
               <Route index element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
-              <Route path='login' element={authUser ? <Navigate replace to='/home' /> : <LoginForm login={login} />} />
+              <Route path='login' element={authUser ? <Navigate replace to='/' /> : <LoginForm login={login} />} />
               <Route path='signup' element={<SigninForm signup={signup} />}></Route>
+              {/* here are the routes with local guide */}
+              <Route path='hikeform' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' /> : ''} />
+              <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark /> : <Navigate to='/' /> : ''} />
+              <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut /> : <Navigate to='/' /> : ''} />
+
               <Route></Route>
             </Route>
 
-            {/* here are routes for user with login */}
-            {authUser && <Route path='/' element={<AppLayout onLogOut={logout} loggedIn={login} />} >
-              <Route path='home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
-              {/* here are routes for local guide */}
-              <Route path='hikeform' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' />} />
-              <Route path='newPark' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewPark /> : <Navigate to='/' />} />
-              <Route path='newHut' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHut /> : <Navigate to='/' />} />
-
-              <Route></Route>
-            </Route>}
 
             <Route path='*' element={<DefaultRoute />} />
 

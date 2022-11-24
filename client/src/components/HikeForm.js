@@ -202,7 +202,6 @@ function HikeForm(props) {
         )
     }
 
-
     /* This method will add a new row */
     function addNewRow() {
         var table = document.getElementById("point-table");
