@@ -96,22 +96,22 @@ function App() {
 
   const addNewHut = async (name, bedsNumber, description, hutPoint, country, region, city) => {
     console.log("Adding new hut!");
-    // try {
-    //   await API.addNewHut(name, bedsNumber, description, hutPoint, country, region, city);
-    // } catch (e) {
-    //   console.log(e);
-    //   throw (e);
-    // }
+    try {
+       await API.addNewHut(name, bedsNumber, description, hutPoint, country, region, city);
+     } catch (e) {
+       console.log(e);
+       throw (e);
+     }
   };
 
   const addNewParkingLot = async (name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city) => {
     console.log("Adding new parking lot!");
-    // try {
-    //   await API.addNewParkingLot(name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city);
-    // } catch (e) {
-    //   console.log(e);
-    //   throw (e);
-    // }
+    try {
+      await API.addNewParkingLot(name, lotsNumber, description, costPerDay, openingHour, openingMinute, closingHour, closingMinute, parkPoint, country, region, city);
+    } catch (e) {
+      console.log(e);
+      throw (e);
+    }
   };
 
   return (

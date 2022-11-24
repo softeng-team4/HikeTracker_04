@@ -54,12 +54,12 @@ describe('testing the definition of a new hike by a local guide',()=>{
 
     })
 
-    const filter1 = {country: undefined, region:undefined, city: undefined, difficulty: undefined, ascent:{min: 0, max: 8000}, length:{min:0,max:8000},expectedTime:{min:0,max:24}}
-    const filter2 = {country: undefined, region:undefined, city: 'Milan', difficulty: 'Pro', ascent:{min: 0, max: 8000}, length:{min:0,max:8000},expectedTime:{min:0,max:24}}
-    const filter3 = {country: 'Italy', region:'Lombardia', city: 'Milan', difficulty: undefined, ascent:{min: 0, max: 8000}, length:{min:0,max:8000},expectedTime:{min:5,max:24}}
-    const filter4 = {country: 'Italy', region: undefined, city: undefined, difficulty: 'Tourist', ascent:{min: 0, max: 8000}, length:{min:0,max:2000},expectedTime:{min:0,max:24}}
-    const filter5 = {country: 'Italy', region: undefined, city: undefined, difficulty: 'Tourist', ascent:{min: 0, max: 20}, length:{min:0,max:2000},expectedTime:{min:0,max:24}}
-    const filter6= {country: 'Italy', region: undefined, city: undefined, difficulty: 'Tourist', ascent:{min: 0, max: 20}, length:{min:0,max:2000},expectedTime:{min:0,max:1}}
+    const filter1 = {country: undefined, region:undefined, city: undefined, difficulty: undefined, ascent:{min: 0, max: 8000}, length:{min:0,max:8000},expectedTime:{min:0,max:24}, pointRadius:{coordinates:[], radius:undefined}};
+    const filter2 = {country: undefined, region:undefined, city: 'Milan', difficulty: 'Pro', ascent:{min: 0, max: 8000}, length:{min:0,max:8000},expectedTime:{min:0,max:24}, pointRadius:{coordinates:[], radius:undefined}};
+    const filter3 = {country: 'Italy', region:'Lombardia', city: 'Milan', difficulty: undefined, ascent:{min: 0, max: 8000}, length:{min:0,max:8000},expectedTime:{min:5,max:24}, pointRadius:{coordinates:[], radius:undefined}};
+    const filter4 = {country: 'Italy', region: undefined, city: undefined, difficulty: 'Tourist', ascent:{min: 0, max: 8000}, length:{min:0,max:2000},expectedTime:{min:0,max:24}, pointRadius:{coordinates:[], radius:undefined}};
+    const filter5 = {country: 'Italy', region: undefined, city: undefined, difficulty: 'Tourist', ascent:{min: 0, max: 20}, length:{min:0,max:2000},expectedTime:{min:0,max:24}, pointRadius:{coordinates:[], radius:undefined}};
+    const filter6= {country: 'Italy', region: undefined, city: undefined, difficulty: 'Tourist', ascent:{min: 0, max: 20}, length:{min:0,max:2000},expectedTime:{min:0,max:1}, pointRadius:{coordinates:[], radius:undefined}};
 
     testHikeList(filter1, 8);
     testHikeList(filter2, 2);
