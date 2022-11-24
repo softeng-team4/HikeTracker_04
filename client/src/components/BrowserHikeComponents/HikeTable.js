@@ -21,8 +21,8 @@ const HikeTable = () => {
     const hike4page = 4
     // state to hold list of hikes of current page
     const [subHikeList, setSubHikeList] = useState(hikeList.slice(0, hike4page));
-    // state to hold the selected hike id
-    const [hikeId, setHikeId] = useState(undefined);
+    // state to hold the selected hike
+    const [hike, setHike] = useState(undefined);
     // state to display modal with additional hike info
     const [showInfoModal, setShowInfoModal] = useState(false);
     // function to retrieve page index
@@ -46,7 +46,9 @@ const HikeTable = () => {
     // function to display additional hike info modal
     const handleShowInfo = (event) => {
         event.preventDefault();
-        setHikeId(event.target.key);
+        const key = event.target.id;
+        console.log(key)
+        setHike(hikeList.find((h) => h.title === key)); // TODO change with id on final version
         setShowInfoModal(true);
     }
 
@@ -70,7 +72,7 @@ const HikeTable = () => {
                                             <Col className='d-flex justify-content-md-end'>
                                                 <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
                                                     <Button
-                                                        key={hike.id}
+                                                        id={hike.title} //TODO change with id on final version
                                                         variant='success'
                                                         size='sm'
                                                         onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
@@ -99,7 +101,7 @@ const HikeTable = () => {
                         {!isLoading && hikeList.length === 0 ? <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem' /></Container> : null}
                         <HikePageHandler index={index} pageNum={computeIndex()} handlePageChange={handlePageChange} />
                     </Container>
-                    <AdditionalHikeInfoModal hikeId={hikeId} show={showInfoModal} onHide={() => setShowInfoModal(false)} />
+                    <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} />
                 </>
             )}
         </AuthenticationContext.Consumer>
