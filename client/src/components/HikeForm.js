@@ -528,7 +528,7 @@ return (
         </Form.Group>
         <Button variant='success' type="submit" >Submit form</Button>
         <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
-        {validated && <Alert>The form has been validated</Alert>}
+        {validated && <Alert variant="success">The hike has been added to the DB</Alert>}
     </Form >
 )
 }
