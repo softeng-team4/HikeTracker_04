@@ -66,7 +66,6 @@ const HikeTable = () => {
     const handleShowInfo = (event) => {
         event.preventDefault();
         const id = event.target.id;
-        console.log(id)
         setHike(hikeList.find((h) => h.title === id)); // TODO change with id on final version
         setShowInfoModal(true);
     }
@@ -81,7 +80,7 @@ const HikeTable = () => {
                     <Container fluid className='BrowserHikesContainer'>
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
-                        <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} handleEmailFilter={handleEmailFilter} />
+                        <FilterForm setHikeList={setHikeList} isLoading={isLoading} setIsLoading={setIsLoading} handleEmailFilter={handleEmailFilter} />
                         {subHikeList.map((hike, idx) =>
                             <div key={`div_${idx}`}>
                                 <Card key={`card_${idx}`}>
