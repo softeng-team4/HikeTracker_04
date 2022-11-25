@@ -11,6 +11,7 @@ const PointRadiusForm = (props) => {
     const radiusList = ['0.5 km', '1 km', '2 km', '5 km', '10 km', '20 km', '30 km', '50 km', '100 km', '200 km'];
     const [radius, setRadius] = useState(500);
     const circleRef = useRef(null);
+    
 
     L.Icon.Default.mergeOptions({
         iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -21,9 +22,6 @@ const PointRadiusForm = (props) => {
 
     function DraggableCircle() {
         const map = useMapEvents({
-            dragstart: () => {
-                if(props.isLoading) map.dragging.disable();
-            },
             dragend: () => {
                 console.log('I am dragging!')
                 props.setPointRadius({ coordinates: [map.getCenter().lat, map.getCenter().lng], radius: radius })
@@ -43,13 +41,11 @@ const PointRadiusForm = (props) => {
                     map.dragging.enable();
                     props.setPointRadius({ coordinates: [circleRef.current.getLatLng().lat, circleRef.current.getLatLng().lng], radius: radius })
                 }
-            }),
-            [map],
-            )
-    
-            return (
-                <Circle
-                    eventHandlers={eventHandlers}
+            }), [map])
+
+        return (
+            <Circle
+                eventHandlers={eventHandlers}
                 center={position}
                 radius={radius}
                 ref={circleRef}
