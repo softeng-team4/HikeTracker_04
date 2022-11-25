@@ -1,11 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Row, Col, Container, Card, Button, Tooltip, OverlayTrigger, Spinner } from 'react-bootstrap';
+import { Row, Col, Container, Card, ButtonGroup, Button, Tooltip, OverlayTrigger, Spinner } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import Spacer from './Spacer';
 import FilterForm from './FilterForm';
 import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
+import { FaRegEdit } from 'react-icons/fa';
 
 
 const HikeTable = () => {
@@ -27,8 +28,8 @@ const HikeTable = () => {
     const [hike, setHike] = useState(undefined);
     // state to display modal with additional hike info
     const [showInfoModal, setShowInfoModal] = useState(false);
-    // state to hold user email
-    const [email, setEmail] = useState(undefined);
+    // state to hold user email --> author of hike
+    const [author, setAuthor] = useState(undefined);
     // state to allow a local guide to modify his tasks
     const [filterByEmail, setFilterByEmail] = useState(false);
     // function to retrieve page index
@@ -43,9 +44,9 @@ const HikeTable = () => {
 
     const handleEmailFilter = () => {
         const hl = hikeList;
-        if(!filterByEmail) {
+        if (!filterByEmail) {
             setHikeListCopy(hikeList);
-            setHikeList(hl.filter((h) => (h.email === email)));
+            setHikeList(hl.filter((h) => (h.author === author)));
             setFilterByEmail(true);
         } else {
             setHikeList(hikeListCopy);
@@ -64,9 +65,9 @@ const HikeTable = () => {
     // function to display additional hike info modal
     const handleShowInfo = (event) => {
         event.preventDefault();
-        const key = event.target.id;
-        console.log(key)
-        setHike(hikeList.find((h) => h.title === key)); // TODO change with id on final version
+        const id = event.target.id;
+        console.log(id)
+        setHike(hikeList.find((h) => h.title === id)); // TODO change with id on final version
         setShowInfoModal(true);
     }
 
@@ -76,7 +77,7 @@ const HikeTable = () => {
             {(authObject) => (
                 <>
                     {isLoading && <div className='loading-overlay'><Spinner className='spinner' animation="border" variant="light" /></div>}
-                    {authObject.authUser && authObject.authUser.email ? setEmail(authObject.authUser.email) : null}
+                    {authObject.authUser && authObject.authUser.email ? setAuthor(authObject.authUser.email) : null}
                     <Container fluid className='BrowserHikesContainer'>
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
@@ -89,17 +90,18 @@ const HikeTable = () => {
                                             <Col md={5}><b>Title:</b>&nbsp;{hike.title}</Col>
                                             <Col md={5}><b>Location:</b>&nbsp;{hike.country},&nbsp;{hike.region},&nbsp;{hike.city}</Col>
                                             <Col className='d-flex justify-content-md-end'>
-                                                <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
-                                                    <Button
-                                                        id={hike.title} //TODO change with id on final version
-                                                        variant='success'
-                                                        size='sm'
-                                                        onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
-                                                        Show more info
-                                                    </Button>
-                                                </OverlayTrigger>
+                                                <ButtonGroup size='sm'>
+                                                    <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
+                                                        <Button
+                                                            id={hike.title} //TODO change with id on final version
+                                                            variant='success'
+                                                            onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
+                                                            Show more info
+                                                        </Button>
+                                                    </OverlayTrigger>
+                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='danger'><FaRegEdit /></Button> : null}
+                                                </ButtonGroup>
                                             </Col>
-                                            {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ?  <Col md={3}><Button>test</Button></Col> : null}
                                         </Row>
                                     </Card.Header>
                                     <Card.Body className='d-flex justify-content-start' key={`card_body_${idx}`}>
@@ -120,7 +122,7 @@ const HikeTable = () => {
                         {!isLoading && hikeList.length === 0 ? <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem' /></Container> : null}
                         <HikePageHandler index={index} pageNum={computeIndex()} handlePageChange={handlePageChange} />
                     </Container>
-                    <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} />
+                    {hike ? <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} /> : null}
                 </>
             )}
         </AuthenticationContext.Consumer>
