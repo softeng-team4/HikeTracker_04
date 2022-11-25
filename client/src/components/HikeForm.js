@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react"
-import { Form, Row, Col, Table, Button, ToggleButtonGroup, ToggleButton, Alert } from "react-bootstrap"
+import { Form, Row, Col, Table, Button, ToggleButtonGroup, ToggleButton, Alert, Modal, InputGroup } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
 import L from 'leaflet-gpx'
@@ -38,6 +38,7 @@ function HikeForm(props) {
     const [city, setCity] = useState('')
     const [email, setEmail] = useState('')
     const [cityMap, setCityMap] = useState([])
+    const [show, setShow] = useState(false);
 
 
 
@@ -125,6 +126,8 @@ function HikeForm(props) {
         console.log("Difficulty:" + difficulty)
         if (form.checkValidity() === false || validFile === false || difficulty === '') {
             event.stopPropagation();
+            setValidated(true)
+            setShow(true)
             return
         } else {
             /*console.log("Title:" + title)
@@ -142,7 +145,6 @@ function HikeForm(props) {
 
             await props.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
                 length, referencePoint, region, title, startPoint, email);
-            setValidated(true);
             setAscent('');
             setCity('');
             setCountry('');
@@ -156,6 +158,8 @@ function HikeForm(props) {
             setRegion('');
             setTitle('');
             setEmail('');
+            setValidated(false)
+            setShow(true)
         }
     };
 
@@ -219,7 +223,18 @@ function HikeForm(props) {
 
     return (
         <AuthenticationContext.Consumer>
-            {(authObject) => (
+            {(authObject) => (<>
+                <Modal show={show} onHide={() => setShow(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>New hike</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>{validated? "The hike hasn't been saved. Check out empty fields or wrong insertions!": "The new hike has been saved successfully!"}</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={() => setShow(false)}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
                 <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
                     <Form.Group as={Row} className="mb-3">
                         <Col sm={2}>
@@ -237,11 +252,13 @@ function HikeForm(props) {
                             <Form.Label>Expected time:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Control className='expTime-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
-                            <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
-                            <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>
+                            <InputGroup>
+                                <Form.Control className='expTime-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
+                                <InputGroup.Text>minutes</InputGroup.Text>
+                                <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
+                                <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>
+                            </InputGroup>
                         </Col>
-                        <Col sm={1}>minutes</Col>
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3">
@@ -249,11 +266,13 @@ function HikeForm(props) {
                             <Form.Label>Length:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Control className='length-input' required disabled type='number' value={length} min={0} />
-                            <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
-                            <Form.Control.Feedback type="invalid">Please upload gpx file to get the length.</Form.Control.Feedback>
+                            <InputGroup>
+                                <Form.Control className='length-input' required disabled type='number' value={length} min={0} />
+                                <InputGroup.Text>kilometers</InputGroup.Text>
+                                <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
+                                <Form.Control.Feedback type="invalid">Please upload gpx file to get the length.</Form.Control.Feedback>
+                            </InputGroup>
                         </Col>
-                        <Col sm={1}>Km</Col>
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3">
@@ -261,11 +280,13 @@ function HikeForm(props) {
                             <Form.Label>Ascent:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Control className='ascent-input' required disabled type='number' defaultValue={ascent} min={0} />
-                            <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
-                            <Form.Control.Feedback type="invalid">Please upload gpx file to get the ascent. </Form.Control.Feedback>
+                            <InputGroup>
+                                <Form.Control className='ascent-input' required disabled type='number' defaultValue={ascent} min={0} />
+                                <InputGroup.Text>meters</InputGroup.Text>
+                                <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
+                                <Form.Control.Feedback type="invalid">Please upload gpx file to get the ascent. </Form.Control.Feedback>
+                            </InputGroup>
                         </Col>
-                        <Col sm={1}>m</Col>
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3">
@@ -273,7 +294,7 @@ function HikeForm(props) {
                             <Form.Label>Difficulty:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='difficulty-input' required defaultValue='' onChange={(event) => setDifficulty(event.target.value)} isInvalid={difficulty===''}>
+                            <Form.Select className='difficulty-input' required defaultValue='' onChange={(event) => setDifficulty(event.target.value)} isInvalid={difficulty === ''}>
                                 <option value={''}>Select difficulty</option>
                                 <option value={'Tourist'}>Tourist (Easy)</option>
                                 <option value={'Hiker'}>Hiker (Medium)</option>
@@ -354,8 +375,8 @@ function HikeForm(props) {
                         //         </Popup>
                         //     </Marker> : ''}
                         // </MapContainer>
-                        <Map positions={positions} startPoint={startPoint} endPoint={endPoint}/>
-                        }
+                        <Map positions={positions} startPoint={startPoint} endPoint={endPoint} />
+                    }
                     {
                         !showMap ? '' :
                             <Table id="point-table">
@@ -504,8 +525,8 @@ function HikeForm(props) {
                     </Form.Group>
                     <Button variant='success' type="submit" >Submit form</Button>
                     <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
-                    {validated && <Alert variant="success">The hike has been added to the DB</Alert>}
                 </Form >
+            </>
             )}
         </AuthenticationContext.Consumer>
     )
