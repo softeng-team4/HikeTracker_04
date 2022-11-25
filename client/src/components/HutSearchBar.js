@@ -15,7 +15,7 @@ const HutSearchBar = (props) => {
             <span className="visually-hidden">Search huts</span>
         </label>
         <input
-            value={props.searchQuery}
+            value={props.searchQuery? props.searchQuery : ''}
             onInput={e => props.setSearchQuery(e.target.value)}
             type="text"
             id="header-search"

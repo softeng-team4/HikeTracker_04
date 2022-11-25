@@ -7,23 +7,25 @@ import HikePageHandler from './BrowserHikeComponents/HickePageHendler';
 import API from '../API';
 import {HutSearchBar} from './HutSearchBar';
 import { useSearchParams } from 'react-router-dom';
+import { GeoPoint} from 'firebase/firestore';
 
 const BrowserHuts = (props) =>{
 
     // state to hold list of huts
-    const [hutList, setHutList] = useState([{name:"hut test", bedsNumber:10, closingHour:22, closingMinute:45, costPerNight: 50, description:"modern small hotel", openingHour: 8, openingMinute: 30, position:[45.0,7.65]}])
+    const [hutList, setHutList] = useState([])
     // state to hold current page index
     const [index, setIndex] = useState(0);
     // number of hikes visulaized for page
     const hut4page = 4
     // state to hold list of hikes of current page
-    const [subHutList, setSubHutList] = useState(hutList.length > hut4page? hutList.slice(0, hut4page) : hutList);
+    const [subHutList, setSubHutList] = useState(hutList);
+    const [pageHutList, setPageHutList] = useState(hutList)
     const [searchParams, setSearchParams] = useSearchParams()
     const { search } = window.location;
     const query = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(query || '');
     // function to retrieve page index
-    const computeIndex = () => parseInt(hutList.length / hut4page) + (hutList.length % hut4page ? 1 : 0)
+    const computeIndex = () => parseInt(subHutList.length / hut4page) + (subHutList.length % hut4page ? 1 : 0)
 
     useEffect(()=>{
         const filters={
@@ -39,6 +41,10 @@ const BrowserHuts = (props) =>{
         if(searchParams)
             setSearchQuery(searchParams.get('s'))
     },[searchParams])
+
+    useEffect(()=>{
+            setPageHutList(subHutList.slice(index*hut4page, index*hut4page + hut4page))
+    },[subHutList,index])
 
     /*useEffect(() => {
         setSubHutList(hutList.slice(0, hut4page));
@@ -56,10 +62,11 @@ const BrowserHuts = (props) =>{
         })
     },[searchQuery,hutList])
 
+
     
     const handlePageChange = (idx) => {
         setIndex(idx);
-        setSubHutList(hutList.slice(idx*hut4page, idx*hut4page + hut4page));
+        setPageHutList(subHutList.slice(idx*hut4page, idx*hut4page + hut4page));
     };
 
 
@@ -73,14 +80,14 @@ const BrowserHuts = (props) =>{
                     <HutSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
                     </Row>
                     <Row className='mt-3'>
-                    {!(hutList)? false : subHutList.map((hut, idx) =>
+                    {!(hutList)? false : pageHutList.map((hut, idx) =>
                         <div key={`div_${idx}`}>
                             <Card key={`card_${idx}`}>
                                 <Card.Header className='row d-flex justify-content-start' key={`card_header_${idx}`}>
                                     {hut.author? <Col md={3}><b>Local guide:</b>&nbsp;{hut.author}</Col> : false}
                                     <Col md={3}><b>Name:</b>&nbsp;{hut.name}</Col>
-                                    <Col md={3}><b>Latitude:</b>&nbsp;{hut.position[0]}</Col>
-                                    <Col md={3}><b>Longitude:</b>&nbsp;{hut.position[1]}</Col>
+                                    <Col md={3}><b>Latitude:</b>&nbsp;{hut.position.latitude}</Col>
+                                    <Col md={3}><b>Longitude:</b>&nbsp;{hut.position.longitude}</Col>
                                     <Col md={3}><b>Country:</b>&nbsp;{hut.country}</Col>
                                     <Col md={3}><b>Region:</b>&nbsp;{hut.region}</Col>
                                     <Col md={3}><b>City:</b>&nbsp;{hut.city}</Col>
