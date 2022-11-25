@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from '
 import L from 'leaflet-gpx'
 import { Country, State, City } from 'country-state-city';
 import AuthenticationContext from "./AuthenticationContext"
+import { Map } from "./Map"
 let gpxParser = require('gpxparser');
 
 function HikeForm(props) {
@@ -329,27 +330,29 @@ function HikeForm(props) {
                     </Form.Group>
 
                     {(!fileGPX || positions === '' || !showMap) ? '' :
-                        <MapContainer center={[positions[0].lat, positions[0].lng]} zoom={13} scrollWheelZoom={false}>
-                            <TileLayer
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
-                            <LocationMarker />
-                            <Polyline
-                                pathOptions={{ fillColor: 'red', color: 'blue' }}
-                                positions={positions}
-                            />
-                            {startPoint.length !== 0 ? <Marker position={[startPoint.latitude, startPoint.longitude]}>
-                                <Popup>
-                                    Start point
-                                </Popup>
-                            </Marker> : ''}
-                            {endPoint.length !== 0 ? <Marker position={[endPoint.latitude, endPoint.longitude]}>
-                                <Popup>
-                                    End Point
-                                </Popup>
-                            </Marker> : ''}
-                        </MapContainer>}
+                        // <MapContainer center={[positions[0].lat, positions[0].lng]} zoom={13} scrollWheelZoom={false}>
+                        //     <TileLayer
+                        //         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        //         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        //     />
+                        //     <LocationMarker />
+                        //     <Polyline
+                        //         pathOptions={{ fillColor: 'red', color: 'blue' }}
+                        //         positions={positions}
+                        //     />
+                        //     {startPoint.length !== 0 ? <Marker position={[startPoint.latitude, startPoint.longitude]}>
+                        //         <Popup>
+                        //             Start point
+                        //         </Popup>
+                        //     </Marker> : ''}
+                        //     {endPoint.length !== 0 ? <Marker position={[endPoint.latitude, endPoint.longitude]}>
+                        //         <Popup>
+                        //             End Point
+                        //         </Popup>
+                        //     </Marker> : ''}
+                        // </MapContainer>
+                        <Map positions={positions} startPoint={startPoint} endPoint={endPoint}/>
+                        }
                     {
                         !showMap ? '' :
                             <Table id="point-table">
