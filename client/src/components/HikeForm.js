@@ -241,7 +241,7 @@ function HikeForm(props) {
                             <Form.Label>Title:</Form.Label>
                         </Col>
                         <Col>
-                            <Form.Control className='title-input' required type='text' onChange={(event) => setTitle(event.target.value)} />
+                            <Form.Control className='title-input' value={title} required type='text' onChange={(event) => setTitle(event.target.value)} />
                             <Form.Control.Feedback>Valid title!</Form.Control.Feedback>
                             <Form.Control.Feedback type="invalid">Please insert a title.</Form.Control.Feedback>
                         </Col>
@@ -253,7 +253,7 @@ function HikeForm(props) {
                         </Col>
                         <Col >
                             <InputGroup>
-                                <Form.Control className='expTime-input' required type='number' defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
+                                <Form.Control className='expTime-input' required type='number' value={expectedTime} defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
                                 <InputGroup.Text>minutes</InputGroup.Text>
                                 <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
                                 <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>
@@ -281,7 +281,7 @@ function HikeForm(props) {
                         </Col>
                         <Col >
                             <InputGroup>
-                                <Form.Control className='ascent-input' required disabled type='number' defaultValue={ascent} min={0} />
+                                <Form.Control className='ascent-input' required disabled type='number' value={ascent} defaultValue={ascent} min={0} />
                                 <InputGroup.Text>meters</InputGroup.Text>
                                 <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
                                 <Form.Control.Feedback type="invalid">Please upload gpx file to get the ascent. </Form.Control.Feedback>
@@ -294,7 +294,7 @@ function HikeForm(props) {
                             <Form.Label>Difficulty:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='difficulty-input' required defaultValue='' onChange={(event) => setDifficulty(event.target.value)} isInvalid={difficulty === ''}>
+                            <Form.Select className='difficulty-input' required value={difficulty} defaultValue='' onChange={(event) => setDifficulty(event.target.value)} isInvalid={difficulty === ''}>
                                 <option value={''}>Select difficulty</option>
                                 <option value={'Tourist'}>Tourist (Easy)</option>
                                 <option value={'Hiker'}>Hiker (Medium)</option>
@@ -309,7 +309,7 @@ function HikeForm(props) {
                             <Form.Label>Country:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='country-input' required onChange={(event) => {
+                            <Form.Select className='country-input' required  onChange={(event) => {
                                 setCountryCode(event.target.value);
                                 setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
                             }}>
@@ -519,7 +519,7 @@ function HikeForm(props) {
             } */}
                     <Form.Group className="mb-3">
                         <Form.Label>Description:</Form.Label>
-                        <Form.Control className='description-input' required as='textarea' rows={3} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
+                        <Form.Control className='description-input' required as='textarea' rows={3} value={description} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
                         <Form.Control.Feedback>Valid description!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
                     </Form.Group>
