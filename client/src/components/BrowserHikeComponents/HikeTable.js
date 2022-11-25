@@ -12,7 +12,9 @@ const HikeTable = () => {
 
 
     // state to hold list of hikes
-    const [hikeList, setHikeList] = useState([])
+    const [hikeList, setHikeList] = useState([]);
+    // state to hold a copy of hike list
+    const [hikeListCopy, setHikeListCopy] = useState([]);
     //state to wait server response for retrieve hikeList
     const [isLoading, setIsLoading] = useState(true);
     // state to hold current page index
@@ -25,6 +27,10 @@ const HikeTable = () => {
     const [hike, setHike] = useState(undefined);
     // state to display modal with additional hike info
     const [showInfoModal, setShowInfoModal] = useState(false);
+    // state to hold user email
+    const [email, setEmail] = useState(undefined);
+    // state to allow a local guide to modify his tasks
+    const [filterByEmail, setFilterByEmail] = useState(false);
     // function to retrieve page index
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0)
 
@@ -34,6 +40,18 @@ const HikeTable = () => {
         setSubHikeList(hikeList.slice(0, hike4page));
         setIsLoading(false);
     }, [hikeList]);
+
+    const handleEmailFilter = () => {
+        const hl = hikeList;
+        if(!filterByEmail) {
+            setHikeListCopy(hikeList);
+            setHikeList(hl.filter((h) => (h.email === email)));
+            setFilterByEmail(true);
+        } else {
+            setHikeList(hikeListCopy);
+            setFilterByEmail(false);
+        }
+    };
 
 
     // function to change page displayed
@@ -58,10 +76,11 @@ const HikeTable = () => {
             {(authObject) => (
                 <>
                     {isLoading && <div className='loading-overlay'><Spinner className='spinner' animation="border" variant="light" /></div>}
+                    {authObject.authUser && authObject.authUser.email ? setEmail(authObject.authUser.email) : null}
                     <Container fluid className='BrowserHikesContainer'>
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
-                        <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} />
+                        <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} handleEmailFilter={handleEmailFilter} />
                         {subHikeList.map((hike, idx) =>
                             <div key={`div_${idx}`}>
                                 <Card key={`card_${idx}`}>
@@ -80,6 +99,7 @@ const HikeTable = () => {
                                                     </Button>
                                                 </OverlayTrigger>
                                             </Col>
+                                            {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ?  <Col md={3}><Button>test</Button></Col> : null}
                                         </Row>
                                     </Card.Header>
                                     <Card.Body className='d-flex justify-content-start' key={`card_body_${idx}`}>
@@ -91,7 +111,6 @@ const HikeTable = () => {
                                             <Col md key={`hike_len_${idx}`}><b>Length:</b>&nbsp;{hike.length}&nbsp;km</Col>
                                             <Col md key={`hike_asc_${idx}`}><b>Ascent:</b>&nbsp;{hike.ascent}&nbsp;m</Col>
                                             <Col md key={`hike_time_${idx}`}><b>Estimated Time:</b>&nbsp;{hike.expectedTime}&nbsp;min</Col>
-                                            {/* {authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? //TODO modify button : null} */}
                                         </Row>
                                     </Card.Footer>
                                 </Card>
