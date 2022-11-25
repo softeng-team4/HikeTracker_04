@@ -80,6 +80,10 @@ describe('hutform e2e tset', () => {
         cy.contains('Close').click()
     });
 
+    it('the form is empty',()=>{
+        cy.contains('Submit form').click()
+        cy.contains('Please insert')
+    });
 });
 
 
