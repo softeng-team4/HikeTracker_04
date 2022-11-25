@@ -8,6 +8,7 @@ import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import { FaRegEdit } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { ModifyHike } from '../ModifyHike';
 
 
 const HikeTable = () => {
@@ -71,6 +72,12 @@ const HikeTable = () => {
         setShowInfoModal(true);
     }
 
+    const TurnModifyHikePage = (event) => {
+        event.preventDefault();
+        const id = event.target.id;
+        setHike(hikeList.find((h) => h.title === id)); // TODO change with id on final version
+        setShowInfoModal(true);
+    }
 
     return (
         <AuthenticationContext.Consumer>
@@ -99,7 +106,14 @@ const HikeTable = () => {
                                                             Show more info
                                                         </Button>
                                                     </OverlayTrigger>
-                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ?<Link to='/modifyHike'><Button variant='danger'><FaRegEdit /></Button></Link>  : null}
+                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ?
+                                                        // <Link to='/modifyHike' state={{ id: hike.id, title: hike.title }}>
+                                                            <Button variant='danger' id={hike.title}
+                                                                onClick={authObject.authUser ? (ev) => TurnModifyHikePage(ev) : null}>
+                                                                <FaRegEdit />{console.log(hike.id, hike.title)}
+                                                            </Button>
+                                                        // </Link>
+                                                         : null}
                                                 </ButtonGroup>
                                             </Col>
                                         </Row>
