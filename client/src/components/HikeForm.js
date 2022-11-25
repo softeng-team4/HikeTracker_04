@@ -122,7 +122,8 @@ function HikeForm(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
-        if (form.checkValidity() === false || (checkFile() === false)) {
+        console.log("Difficulty:" + difficulty)
+        if (form.checkValidity() === false || validFile === false || difficulty === '') {
             event.stopPropagation();
             return
         } else {
@@ -272,11 +273,13 @@ function HikeForm(props) {
                             <Form.Label>Difficulty:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='difficulty-input' required defaultValue={1} onChange={(event) => setDifficulty(event.target.value)}>
+                            <Form.Select className='difficulty-input' required defaultValue='' onChange={(event) => setDifficulty(event.target.value)} isInvalid={difficulty===''}>
+                                <option value={''}>Select difficulty</option>
                                 <option value={'Tourist'}>Tourist (Easy)</option>
                                 <option value={'Hiker'}>Hiker (Medium)</option>
                                 <option value={'Professional Hiker'}>Professional Hiker (Hard)</option>
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">Please select a difficulty. </Form.Control.Feedback>
                         </Col>
                     </Form.Group>
 
