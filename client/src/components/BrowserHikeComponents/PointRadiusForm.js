@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo } from "react";
 import { MapContainer, TileLayer, useMapEvents, Circle, Tooltip } from 'react-leaflet';
-import L from 'leaflet';
+import L, { map } from 'leaflet';
 import { Button, Col, Form } from "react-bootstrap";
 
 
@@ -21,6 +21,9 @@ const PointRadiusForm = (props) => {
 
     function DraggableCircle() {
         const map = useMapEvents({
+            dragstart: () => {
+                if(props.isLoading) map.dragging.disable();
+            },
             dragend: () => {
                 console.log('I am dragging!')
                 props.setPointRadius({ coordinates: [map.getCenter().lat, map.getCenter().lng], radius: radius })
