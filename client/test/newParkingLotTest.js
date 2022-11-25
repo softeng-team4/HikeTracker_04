@@ -10,6 +10,8 @@ chai.should();
 // Import the functions you need from the SDKs you need
 const firestore = require('firebase/firestore')
 const api = require('../src/API');
+const { GeoPoint } = require('firebase/firestore');
+
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
 //import {addNewHike} from "../src/API"
@@ -33,7 +35,7 @@ describe('testing the definition of a new parking lot by a local guide',()=>{
         country: "Italy",
         region: "Piedmont",
         city: "Turin",
-        parkPoint: [45.0661034, 7.6525989],
+        position: [45.0661034, 7.6525989],
         lotsNumber: 13,
         costPerDay: 3,
         description: "Parking lot in Turin centre",
@@ -47,13 +49,12 @@ describe('testing the definition of a new parking lot by a local guide',()=>{
 
 function newParkingLot(parkingLot){
     it("Local guide defining a parking lot ",function(done){
-        api.addNewParkingLot(parkingLot.name, parkingLot.lotsNumber, parkingLot.description, parkingLot.parkPoint, parkingLot.country, parkingLot.region, parkingLot.city,
-            parkingLot.costPerDay, parkingLot.openingHour, parkingLot.openingMinute, parkingLot.closingHour, parkingLot.closingMinute,"parkingLots-test")
+        api.addNewParkingLot(parkingLot, "parkingLots-test")
         .then(()=>{
             firestore.getDoc(firestore.doc(api.db,"parkingLots-test","1"))
             .then((doc) =>{
                 doc.data().name.should.equal(parkingLot.name);
-                doc.data().position.should.equal(parkingLot.position);
+                doc.data().position.should.equal(new GeoPoint(parkingLot.position[0], parkingLot.position[1]));
                 doc.data().lotsNumber.should.equal(parkingLot.lotsNumber);
                 doc.data().costPerDay.should.equal(parkingLot.costPerDay);
                 doc.data().description.should.equal(parkingLot.description);

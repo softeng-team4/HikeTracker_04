@@ -175,23 +175,24 @@ const cityList = async (country, region) => {
     });
     return Array.from(res);
 }
+
 //Spherical law of cosines distance
 function distance (lat1, lon1, lat2, lon2){
 	if ((lat1 == lat2) && (lon1 == lon2)) {
 		return 0;
 	}
 	else {
-		const R = 6371e3;
-		const p1 = lat1 * Math.PI/180;
-		const p2 = lat2 * Math.PI/180;
-		const deltaP = p2 - p1;
-		const deltaLon = lon2 - lon1;
-		const deltaLambda = (deltaLon * Math.PI) / 180;
-		const a = Math.sin(deltaP/2) * Math.sin(deltaP/2) +
-			  Math.cos(p1) * Math.cos(p2) *
-			  Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
-		const d = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)) * R;
-		return d;
+        const R = 6371e3;
+        const p1 = lat1 * Math.PI/180;
+        const p2 = lat2 * Math.PI/180;
+        const deltaP = p2 - p1;
+        const deltaLon = lon2 - lon1;
+        const deltaLambda = (deltaLon * Math.PI) / 180;
+        const a = Math.sin(deltaP/2) * Math.sin(deltaP/2) +
+                  Math.cos(p1) * Math.cos(p2) *
+                  Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
+        const d = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)) * R;
+        return d;
 	}
 }
 
@@ -248,8 +249,8 @@ const hikesList = async (filters, collection) =>{
         querySnapshot.forEach((doc)=>{
             if(doc.data().expectedTime>=filters.expectedTime.min && doc.data().expectedTime<=filters.expectedTime.max && doc.data().length>=filters.length.min && doc.data().length<=filters.length.max && doc.data().ascent>=filters.ascent.min && doc.data().ascent<=filters.ascent.max){
                 if(filters.pointRadius.radius !== undefined){
-                    if(doc.data().startPoint.length === 2){
-                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint[0], doc.data().startPoint[1]);
+                    if(doc.data().startPoint.latitude !== undefined && doc.data().startPoint.longitude !== undefined){
+                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint.latitude, doc.data().startPoint.longitude);
                         console.log("Distance: ", dist);
                         if(dist <= filters.pointRadius.radius){
                             const hike = {
@@ -265,7 +266,8 @@ const hikesList = async (filters, collection) =>{
                                 referencePoint : doc.data().referencePoint,
                                 region :  doc.data().region,
                                 title :  doc.data().title,
-                                startPoint : doc.data().startPoint};
+                                startPoint : doc.data().startPoint,
+                                email: doc.data().email};
                                 res.push(hike);
                         }
                     }else{
@@ -285,7 +287,8 @@ const hikesList = async (filters, collection) =>{
                         referencePoint : doc.data().referencePoint,
                         region :  doc.data().region,
                         title :  doc.data().title,
-                        startPoint : doc.data().startPoint};
+                        startPoint : doc.data().startPoint,
+                        email: doc.data().email};
                     res.push(hike);
                 }  
             }
@@ -295,8 +298,8 @@ const hikesList = async (filters, collection) =>{
         querySnapshot.forEach((doc)=>{
             if(doc.data().expectedTime>=filters.expectedTime.min && doc.data().expectedTime<=filters.expectedTime.max && doc.data().length>=filters.length.min && doc.data().length<=filters.length.max && doc.data().ascent>=filters.ascent.min && doc.data().ascent<=filters.ascent.max){
                 if(filters.pointRadius.radius !== undefined){
-                    if(doc.data().startPoint.length === 2){
-                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint[0], doc.data().startPoint[1]);
+                    if(doc.data().startPoint.latitude !== undefined && doc.data().startPoint.longitude !== undefined){
+                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint.latitude, doc.data().startPoint.longitude);
                         console.log(dist);
                         if(dist <= filters.pointRadius.radius){
                             const hike = {
@@ -312,7 +315,8 @@ const hikesList = async (filters, collection) =>{
                                 referencePoint : doc.data().referencePoint,
                                 region :  doc.data().region,
                                 title :  doc.data().title,
-                                startPoint : doc.data().startPoint};
+                                startPoint : doc.data().startPoint,
+                                email: doc.data().email};
                                 res.push(hike);
                         }
                     }else{
@@ -332,7 +336,8 @@ const hikesList = async (filters, collection) =>{
                         referencePoint : doc.data().referencePoint,
                         region :  doc.data().region,
                         title :  doc.data().title,
-                        startPoint : doc.data().startPoint};
+                        startPoint : doc.data().startPoint,
+                        email: doc.data().email};
                     res.push(hike);
                 }  
             }
