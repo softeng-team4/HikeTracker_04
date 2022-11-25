@@ -268,7 +268,7 @@ function HikeForm(props) {
                         <Col >
                             <InputGroup>
                                 <Form.Control className='length-input' required disabled type='number' value={length} min={0} />
-                                <InputGroup.Text>kilometers</InputGroup.Text>
+                                <InputGroup.Text>meters</InputGroup.Text>
                                 <Form.Control.Feedback>Valid length!</Form.Control.Feedback>
                                 <Form.Control.Feedback type="invalid">Please upload gpx file to get the length.</Form.Control.Feedback>
                             </InputGroup>
