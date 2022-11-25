@@ -7,7 +7,7 @@ import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import { FaRegEdit } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const HikeTable = () => {
@@ -34,7 +34,9 @@ const HikeTable = () => {
     // state to allow a local guide to modify his tasks
     const [filterByEmail, setFilterByEmail] = useState(false);
     // function to retrieve page index
-    const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0)
+    const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0);
+    // method to change page
+    const nav = useNavigate();
 
 
     // effect to select the hikes to show based on page number
@@ -99,7 +101,7 @@ const HikeTable = () => {
                                                             Show more info
                                                         </Button>
                                                     </OverlayTrigger>
-                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ?<Link to='/modifyHike'><Button variant='danger'><FaRegEdit /></Button></Link>  : null}
+                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='danger' onClick={() => (nav('/modifyHike'))}><FaRegEdit /></Button>  : null}
                                                 </ButtonGroup>
                                             </Col>
                                         </Row>
