@@ -71,6 +71,7 @@ body {
 }
 
 .leaflet-container {
+  position: sticky !important;
   width: 100wh; 
   height: 30vh;
 }
@@ -88,6 +89,7 @@ body {
   background-color: rgba(0,0,0,0.5); /* Black background with opacity */
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
+  pointer-events: none;
 }
 
 .spinner {

@@ -23,8 +23,8 @@ const AdditionalHikeInfoModal = (props) => {
             <Modal.Body>
                 <Col><strong>Description:</strong>&nbsp;{props.hike.description}</Col>
                 <Col><strong>Difficulty:</strong>&nbsp;{props.hike.difficulty}</Col>
-                <Col><strong>Length:</strong>&nbsp;{props.hike.length}&nbsp;km</Col>
-                <Col><strong>Ascent:</strong>&nbsp;{props.hike.ascent}&nbsp;m</Col>
+                <Col><strong>Length:</strong>&nbsp;{(parseFloat(props.hike.length) / 1000.).toFixed(1)}&nbsp;km</Col>
+                <Col><strong>Ascent:</strong>&nbsp;{parseInt(props.hike.ascent)}&nbsp;m</Col>
                 <Col><strong>Estimated Time:</strong>&nbsp;{props.hike.expectedTime}&nbsp;min</Col>
             </Modal.Body>
             <Modal.Footer>

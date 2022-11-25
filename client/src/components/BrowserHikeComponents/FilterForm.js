@@ -110,7 +110,7 @@ const FilterForm = (props) => {
                                     </Col>
                                 </>
                                 :
-                                <PointRadiusForm centerMap={centerMap} pointRadius={pointRadius} setPointRadius={setPointRadius} handleGeoAreaSwitch={handleGeoAreaSwitch} />
+                                <PointRadiusForm isLoading={props.isLoading} centerMap={centerMap} pointRadius={pointRadius} setPointRadius={setPointRadius} handleGeoAreaSwitch={handleGeoAreaSwitch} />
                             }
                             <DifficultyForm difficulty={difficulty} setDifficulty={setDifficulty} />
                         </Row>
