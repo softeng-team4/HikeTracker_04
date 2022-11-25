@@ -158,6 +158,8 @@ function HikeForm(props) {
             setRegion('');
             setTitle('');
             setEmail('');
+            setGPX('')
+            setShowMap(false);
             setValidated(false)
             setShow(true)
         }
@@ -309,7 +311,7 @@ function HikeForm(props) {
                             <Form.Label>Country:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='country-input' required  onChange={(event) => {
+                            <Form.Select className='country-input' required defaultValue={undefined} onChange={(event) => {
                                 setCountryCode(event.target.value);
                                 setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
                             }}>
@@ -320,7 +322,7 @@ function HikeForm(props) {
                             <Form.Label>Region:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='region-input' required onChange={(event) => {
+                            <Form.Select className='region-input' required defaultValue={undefined} onChange={(event) => {
                                 setRegionCode(event.target.value);
                                 setRegion(State.getStatesOfCountry(countryCode).filter(r => r.isoCode === event.target.value)[0].name);
                             }}>
@@ -331,7 +333,7 @@ function HikeForm(props) {
                             <Form.Label>City:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='city-input' required onChange={(event) => {
+                            <Form.Select className='city-input' required defaultValue={undefined} onChange={(event) => {
                                 setCity(event.target.value);
                                 setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
                             }}>
