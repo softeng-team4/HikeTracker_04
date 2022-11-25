@@ -19,7 +19,6 @@ const AdditionalHikeInfoModal = (props) => {
     const minLng = Math.min(...points.map(p => p.lng)) - 0.003;
     const maxLat = Math.max(...points.map(p => p.lat)) + 0.003;
     const maxLng = Math.max(...points.map(p => p.lng)) + 0.003;
-    console.log(minLat, minLng, maxLat, maxLng)
 
 
     const evaluateCenter = () => {
