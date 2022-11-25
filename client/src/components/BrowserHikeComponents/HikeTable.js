@@ -7,6 +7,7 @@ import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import { FaRegEdit } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 
 const HikeTable = () => {
@@ -98,7 +99,7 @@ const HikeTable = () => {
                                                             Show more info
                                                         </Button>
                                                     </OverlayTrigger>
-                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='danger'><FaRegEdit /></Button> : null}
+                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ?<Link to='/modifyHike'><Button variant='danger'><FaRegEdit /></Button></Link>  : null}
                                                 </ButtonGroup>
                                             </Col>
                                         </Row>
