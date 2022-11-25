@@ -19,14 +19,14 @@ describe('loginhutform e2e tset', () => {
         cy.get('.password-input').type('12345678')
     
         cy.contains('Login').click()
-        cy.url().should('include', '/home')
+        cy.url().should('include', '/')
     
     });
 });
 
 describe('hutform e2e tset', () => {
     it('access the webpage', () => {
-        cy.visit('http://localhost:3000/newPark')
+        cy.contains('New Park').click()
     });
   
     it('all info exist',()=>{
@@ -42,7 +42,7 @@ describe('hutform e2e tset', () => {
     
     it('exit button test',()=>{
         cy.contains('Exit without saving').click()
-        cy.url().should('include', '/home')
+        cy.url().should('include', '/')
     });
   
     it('access the webpage again', () => {
@@ -98,5 +98,6 @@ describe('logout e2e tset', () => {
     it('click on logout', () => {
         cy.contains('FRANCESCO').click()
         cy.contains('Sign out').click()
+        cy.url().should('include', '/')
     });
 });
