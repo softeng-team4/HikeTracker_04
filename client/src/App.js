@@ -94,6 +94,26 @@ function App() {
     }
   }
 
+  const addNewHut = async (hut) => {
+    console.log("Adding new hut!");
+    try {
+       await API.addNewHut(hut);
+     } catch (e) {
+       console.log(e);
+       throw (e);
+     }
+  };
+
+  const addNewParkingLot = async (parkingLot) => {
+    console.log("Adding new parking lot!");
+    try {
+      await API.addNewParkingLot(parkingLot);
+    } catch (e) {
+      console.log(e);
+      throw (e);
+    }
+  };
+
   return (
     <>
       <AuthenticationContext.Provider value={authObject}>
@@ -110,8 +130,8 @@ function App() {
               <Route path='signup' element={<SigninForm signup={signup} />}></Route>
               {/* here are the routes with local guide */}
               <Route path='hikeform' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' /> : ''} />
-              <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark /> : <Navigate to='/' /> : ''} />
-              <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut /> : <Navigate to='/' /> : ''} />
+              <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' /> : ''} />
+              <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
 
               <Route></Route>
             </Route>

@@ -61,7 +61,7 @@ function AddNewHike(props) {
 function AddNewPark(props) {
     return (
         <>
-            <ParkForm />
+            <ParkForm addNewParkingLot={props.addNewParkingLot}/>
         </>
     );
 }
@@ -69,7 +69,7 @@ function AddNewPark(props) {
 function AddNewHut(props) {
     return (
         <>
-            <HutForm />
+            <HutForm addNewHut={props.addNewHut} />
         </>
     );
 }

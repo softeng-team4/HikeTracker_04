@@ -1,11 +1,11 @@
 // Import the functions you need from the SDKs you need
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
-const fireAuth = require('firebase/auth')
+const fireAuth = require('firebase/auth');
+const { GeoPoint } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -347,4 +347,47 @@ const hikesList = async (filters, collection) =>{
     return res;
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db };
+const addNewHut = async (hut, collection = "huts") => {
+    console.log("API add new hut: ", hut);
+    const hutsRef = firestore.collection(db, collection);
+    const obj = {
+        name: hut.name,
+        country: hut.country,
+        region: hut.region,
+        city: hut.city,
+        position: new GeoPoint(hut.position[0], hut.position[1]),
+        bedsNumber: hut.bedsNumber,
+        costPerNight: hut.costPerNight,
+        description: hut.description,
+        openingHour: hut.openingHour,
+        openingMinute: hut.openingMinute,
+        closingHour: hut.closingHour,
+        closingMinute: hut.closingMinute
+    }
+    console.log(obj);
+    await firestore.addDoc(hutsRef, obj);
+    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
+}
+
+const addNewParkingLot = async (parkingLot, collection = "parkingLots") => {
+    console.log("API add new parking lot: ", parkingLot);
+    const parkingLotsRef = firestore.collection(db, collection);
+    const obj = {
+        name: parkingLot.name,
+        country: parkingLot.country,
+        region: parkingLot.region,
+        city: parkingLot.city,
+        position: new GeoPoint(parkingLot.position[0], parkingLot.position[1]),
+        lotsNumber: parkingLot.lotsNumber,
+        costPerDay: parkingLot.costPerDay,
+        description: parkingLot.description,
+        openingHour: parkingLot.openingHour,
+        openingMinute: parkingLot.openingMinute,
+        closingHour: parkingLot.closingHour,
+        closingMinute: parkingLot.closingMinute
+    }
+    await firestore.addDoc(parkingLotsRef, obj);
+    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
+}
+
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot };
