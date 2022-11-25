@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute } from './components/View';
+import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, ModifyHikeByAuthor } from './components/View';
 import { useEffect, useState } from 'react';
 import API from './API.js'
 import NavBar from './components/NavBar';
@@ -97,11 +97,11 @@ function App() {
   const addNewHut = async (hut) => {
     console.log("Adding new hut!");
     try {
-       await API.addNewHut(hut);
-     } catch (e) {
-       console.log(e);
-       throw (e);
-     }
+      await API.addNewHut(hut);
+    } catch (e) {
+      console.log(e);
+      throw (e);
+    }
   };
 
   const addNewParkingLot = async (parkingLot) => {
@@ -132,6 +132,7 @@ function App() {
               <Route path='hikeform' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' /> : ''} />
               <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' /> : ''} />
               <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
+              <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
 
               <Route></Route>
             </Route>
