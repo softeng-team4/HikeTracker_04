@@ -53,7 +53,6 @@ const FilterForm = (props) => {
 
 
     useEffect(() => {
-        console.log('I am here!');
         setIsLoading(true);
         //API.deleteInvalidHikes().then(console.log("deleted!"))
         API.hikesList({
