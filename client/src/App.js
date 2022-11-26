@@ -12,6 +12,7 @@ import { LoginForm } from './components/LoginComponents';
 import { SigninForm } from './components/SigninComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { HikeForm } from './components/HikeForm';
+import {BrowserHuts} from './components/BrowserHuts'
 
 function App() {
   //states of authentication of an Admin
@@ -83,9 +84,9 @@ function App() {
   };
   // console.log(authUser.role.toLowerCase()==='local guide')
 
-  const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
-    length, referencePoint, region, title, startPoint) => {
+  const addNewHike = async (hike,collection) => {
     try {
+
       await API.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
         length, referencePoint, region, title, startPoint, authUser.email);
     } catch (e) {
@@ -133,10 +134,10 @@ function App() {
               <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' /> : ''} />
               <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
               <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
-
+              <Route path='huts' element={authUser ? (authUser.role.toLowerCase() === 'local guide' || authUser.role.toLowerCase() === 'hiker') ? <BrowserHuts  /> : <Navigate to='/' /> : ''} />
+              
               <Route></Route>
             </Route>
-
 
             <Route path='*' element={<DefaultRoute />} />
 
