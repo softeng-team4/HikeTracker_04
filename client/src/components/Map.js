@@ -1,10 +1,22 @@
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import L from 'leaflet'
 
 
 function Map(props) {
 
     const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
+
+    useEffect(() => {
+        delete L.Icon.Default.prototype._getIconUrl;
+
+        L.Icon.Default.mergeOptions({
+            iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+            iconUrl: require("leaflet/dist/images/marker-icon.png"),
+            shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+        });
+    }, []);
+
     // map click component 
     function LocationMarker(props) {
         const map = useMapEvents({
@@ -34,7 +46,7 @@ function Map(props) {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <LocationMarker />
+                {/* <LocationMarker /> */}
                 <Polyline
                     pathOptions={{ fillColor: 'red', color: 'blue' }}
                     positions={props.positions}

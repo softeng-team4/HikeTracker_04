@@ -7,7 +7,7 @@ import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import { FaRegEdit } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ModifyHike } from '../ModifyHike';
 
 
@@ -36,7 +36,8 @@ const HikeTable = () => {
     const [filterByEmail, setFilterByEmail] = useState(false);
     // function to retrieve page index
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0)
-
+    // method to change page
+    const nav = useNavigate();
 
     // effect to select the hikes to show based on page number
     useEffect(() => {
@@ -76,7 +77,7 @@ const HikeTable = () => {
         event.preventDefault();
         const id = event.target.id;
         setHike(hikeList.find((h) => h.title === id)); // TODO change with id on final version
-        setShowInfoModal(true);
+
     }
 
     return (
@@ -106,14 +107,11 @@ const HikeTable = () => {
                                                             Show more info
                                                         </Button>
                                                     </OverlayTrigger>
-                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ?
-                                                        // <Link to='/modifyHike' state={{ id: hike.id, title: hike.title }}>
-                                                            <Button variant='danger' id={hike.title}
-                                                                onClick={authObject.authUser ? (ev) => TurnModifyHikePage(ev) : null}>
-                                                                <FaRegEdit />{console.log(hike.id, hike.title)}
-                                                            </Button>
-                                                        // </Link>
-                                                         : null}
+                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='danger'
+                                                        onClick={() =>
+                                                            (nav('/modifyHike',{state:{ hike: hike }}))
+                                                            // (console.log(hike))
+                                                        }><FaRegEdit /></Button> : null}
                                                 </ButtonGroup>
                                             </Col>
                                         </Row>
