@@ -37,6 +37,20 @@ function Map(props) {
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
+    const hutIcon = L.AwesomeMarkers.icon({ 
+        icon: 'house', 
+        markerColor: 'blue', 
+        prefix: 'fa', 
+        iconColor: 'black',
+        extraClasses: 'fas fa-2x'
+    });
+    const parkIcon = L.AwesomeMarkers.icon({ 
+        icon: 'parking', 
+        markerColor: 'blue', 
+        prefix: 'fa', 
+        iconColor: 'black',
+        extraClasses: 'fas fa-2x'
+    });
 
 
     // map click component 
