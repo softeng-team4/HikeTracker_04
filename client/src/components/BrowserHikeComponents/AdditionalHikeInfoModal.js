@@ -1,31 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Card, Button, Row, Col } from 'react-bootstrap';
-import { useEffect } from 'react';
-import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
-import L, { Map } from 'leaflet';
+import { Modal, Button, Col } from 'react-bootstrap';
+import { Map } from '../Map';
 
 
 const AdditionalHikeInfoModal = (props) => {
 
-    L.Icon.Default.mergeOptions({
-        iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-        iconUrl: require("leaflet/dist/images/marker-icon.png"),
-        shadowUrl: require("leaflet/dist/images/marker-shadow.png")
-    });
-
 
     const points = JSON.parse(props.hike.referencePoint);
-    const minLat = Math.min(...points.map(p => p.lat)) - 0.003;
-    const minLng = Math.min(...points.map(p => p.lng)) - 0.003;
-    const maxLat = Math.max(...points.map(p => p.lat)) + 0.003;
-    const maxLng = Math.max(...points.map(p => p.lng)) + 0.003;
-
-
-    const evaluateCenter = () => {
-        return points.reduce((sum, point) => (
-            [point.lat + sum[0], point.lng + sum[1]]
-        ), [0., 0.]).map(v => v / points.length);
-    };
 
 
     return (
@@ -33,28 +14,7 @@ const AdditionalHikeInfoModal = (props) => {
             <Modal.Header className='m-0'>
                 <Col>
                     <Modal.Title>Hike:&nbsp;{props.hike.title}</Modal.Title>
-                    <MapContainer center={evaluateCenter()} bounds={L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng))}>
-                        <TileLayer
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Polyline
-                            pathOptions={{ fillColor: 'red', color: 'blue' }}
-                            positions={points}
-                        />
-                        <Marker position={points[0]} fillColor='green'>
-                            <Popup>
-                                {(points[0].lat === points[points.length - 1].lat && points[0].lng === points[points.length - 1].lng) ? 'Start/End' : 'Start'}
-                            </Popup>
-                        </Marker>
-                        {!(points[0].lat === points[points.length - 1].lat && points[0].lng === points[points.length - 1].lng) ?
-                            <Marker position={points[points.length - 1]} fillColor='red'>
-                                <Popup >
-                                    End
-                                </Popup>
-                            </Marker> : null
-                        }
-                    </MapContainer>
+                    <Map positions={points} startPoint={points.map(p => ({latitude: p.lat, longitude: p.lng}))[0]} endPoint={points.map(p => ({latitude: p.lat, longitude: p.lng}))[points.length - 1]} />
                 </Col>
             </Modal.Header>
             <Modal.Body>
