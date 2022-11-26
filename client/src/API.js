@@ -1,11 +1,11 @@
 // Import the functions you need from the SDKs you need
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
-const fireAuth = require('firebase/auth')
+const fireAuth = require('firebase/auth');
+const { GeoPoint } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -82,10 +82,12 @@ const getUser = async (email) => {
 
 //Queries for the hike collection
 
-const addNewHike = async (hike,collection) => {
-    const staticHike = {
-        ascent: hike.ascent, city: hike.city, country: hike.country, description: hike.description, difficulty: hike.difficulty, endPoint: new firestore.GeoPoint(hike.endPoint[0],hike.endPoint[1]), expectedTime: hike.expectedTime,
-        length: hike.length, referencePoint: JSON.stringify(hike.referencePoint), region: hike.region, title: hike.title, startPoint: new firestore.GeoPoint(hike.startPoint[0],hike.startPoint[1])
+
+const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
+    length, referencePoint, region, title, startPoint, author) => {
+    const hike = {
+        title: title, country: country, region: region, city: city, description: description, difficulty: difficulty, expectedTime: expectedTime,
+        length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: JSON.stringify(referencePoint), author: author 
     }
     firestore.addDoc(firestore.collection(db, collection), staticHike);
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
@@ -98,12 +100,12 @@ const deleteInvalidHikes = async () => {
     querySnapshot.forEach((doc) => {
         firestore.deleteDoc(doc.ref);
     });
-    q= firestore.query(hikesRef, firestore.where("country", '==', ''));
+    q = firestore.query(hikesRef, firestore.where("country", '==', ''));
     querySnapshot = await firestore.getDocs(q);
     querySnapshot.forEach((doc) => {
         firestore.deleteDoc(doc.ref);
     });
-    q= firestore.query(hikesRef, firestore.where("region", '==', ''));
+    q = firestore.query(hikesRef, firestore.where("region", '==', ''));
     querySnapshot = await firestore.getDocs(q);
     querySnapshot.forEach((doc) => {
         firestore.deleteDoc(doc.ref);
@@ -175,16 +177,27 @@ const cityList = async (country, region) => {
     return Array.from(res);
 }
 
-//filters example
-//const filter1 = {country: undefined, 
-//  region:undefined, 
-//  city: undefined, 
-//  difficulty: undefined, 
-//  ascent:{min: 0, max: 8000}, 
-//  length:{min:0,max:8000},
-//  expectedTime:{min:0,max:24}
-//}
-const hikesList = async (filters, collection) => {
+//Spherical law of cosines distance
+function distance (lat1, lon1, lat2, lon2){
+	if ((lat1 == lat2) && (lon1 == lon2)) {
+		return 0;
+	}
+	else {
+        const R = 6371e3;
+        const p1 = lat1 * Math.PI/180;
+        const p2 = lat2 * Math.PI/180;
+        const deltaP = p2 - p1;
+        const deltaLon = lon2 - lon1;
+        const deltaLambda = (deltaLon * Math.PI) / 180;
+        const a = Math.sin(deltaP/2) * Math.sin(deltaP/2) +
+                  Math.cos(p1) * Math.cos(p2) *
+                  Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
+        const d = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)) * R;
+        return d;
+	}
+}
+
+const hikesList = async (filters, collection) =>{
     console.log("Hikes List filters: ", filters);
     const hikesRef = firestore.collection(db, collection);
     let q;
@@ -192,64 +205,149 @@ const hikesList = async (filters, collection) => {
     const names = [];
     const values = [];
     const res = [];
-    if (filters.country !== undefined) {
+    if(filters.country !== undefined){
         names.push("country");
         values.push(filters.country);
-        cont++;
+        cont ++;
     }
-    if (filters.region !== undefined) {
+    if(filters.region !== undefined){
         names.push("region");
         values.push(filters.region);
-        cont++;
+        cont ++;
     }
-    if (filters.city !== undefined) {
+    if(filters.city !== undefined){
         names.push("city");
         values.push(filters.city);
-        cont++;
+        cont ++;
     }
-    if (filters.difficulty !== undefined) {
+    if(filters.difficulty !== undefined){
         names.push("difficulty");
         values.push(filters.difficulty);
-        cont++;
+        cont ++;
     }
-    switch (cont) {
+    switch (cont){
         case 1:
-            console.log(cont);
+            //console.log(cont);
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]));
             break;
         case 2:
-            console.log(cont);
+            //console.log(cont);
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]));
             break;
         case 3:
-            console.log(cont);
+            //console.log(cont);
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
             break;
         case 4:
-            console.log(cont);
+            //console.log(cont);
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
             break;
         default:
             break;
     }
-    if (cont === 0) {
+    if(cont === 0){
         const querySnapshot = await firestore.getDocs(hikesRef);
-        querySnapshot.forEach((doc) => {
-            if (doc.data().expectedTime >= filters.expectedTime.min && doc.data().expectedTime <= filters.expectedTime.max && doc.data().length >= filters.length.min && doc.data().length <= filters.length.max && doc.data().ascent >= filters.ascent.min && doc.data().ascent <= filters.ascent.max) {
-                res.push(doc.data());
+        querySnapshot.forEach((doc)=>{
+            if(doc.data().expectedTime>=filters.expectedTime.min && doc.data().expectedTime<=filters.expectedTime.max && doc.data().length>=filters.length.min && doc.data().length<=filters.length.max && doc.data().ascent>=filters.ascent.min && doc.data().ascent<=filters.ascent.max){
+                if(filters.pointRadius.radius !== undefined){
+                    if(doc.data().startPoint.latitude !== undefined && doc.data().startPoint.longitude !== undefined){
+                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint.latitude, doc.data().startPoint.longitude);
+                        console.log("Distance: ", dist);
+                        if(dist <= filters.pointRadius.radius){
+                            const hike = {
+                                id : doc.id, 
+                                ascent : doc.data().ascent, 
+                                city : doc.data().city, 
+                                country : doc.data().country, 
+                                description : doc.data().description, 
+                                difficulty : doc.data().difficulty,
+                                endPoint : doc.data().endPoint, 
+                                expectedTime :  doc.data().expectedTime,
+                                length : doc.data().length,
+                                referencePoint : doc.data().referencePoint,
+                                region :  doc.data().region,
+                                title :  doc.data().title,
+                                startPoint : doc.data().startPoint,
+                                author: doc.data().author};
+                                res.push(hike);
+                        }
+                    }else{
+                        console.log("Starting point is undefined.");
+                    }
+                }else{
+                    const hike = {
+                        id : doc.id, 
+                        ascent : doc.data().ascent, 
+                        city : doc.data().city, 
+                        country : doc.data().country, 
+                        description : doc.data().description, 
+                        difficulty : doc.data().difficulty,
+                        endPoint : doc.data().endPoint, 
+                        expectedTime :  doc.data().expectedTime,
+                        length : doc.data().length,
+                        referencePoint : doc.data().referencePoint,
+                        region :  doc.data().region,
+                        title :  doc.data().title,
+                        startPoint : doc.data().startPoint,
+                        author: doc.data().author};
+                    res.push(hike);
+                }  
             }
         });
-    } else {
+    }else{
         const querySnapshot = await firestore.getDocs(q);
-        querySnapshot.forEach((doc) => {
-            if (doc.data().expectedTime >= filters.expectedTime.min && doc.data().expectedTime <= filters.expectedTime.max && doc.data().length >= filters.length.min && doc.data().length <= filters.length.max && doc.data().ascent >= filters.ascent.min && doc.data().ascent <= filters.ascent.max) {
-                res.push(doc.data());
+        querySnapshot.forEach((doc)=>{
+            if(doc.data().expectedTime>=filters.expectedTime.min && doc.data().expectedTime<=filters.expectedTime.max && doc.data().length>=filters.length.min && doc.data().length<=filters.length.max && doc.data().ascent>=filters.ascent.min && doc.data().ascent<=filters.ascent.max){
+                if(filters.pointRadius.radius !== undefined){
+                    if(doc.data().startPoint.latitude !== undefined && doc.data().startPoint.longitude !== undefined){
+                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint.latitude, doc.data().startPoint.longitude);
+                        console.log(dist);
+                        if(dist <= filters.pointRadius.radius){
+                            const hike = {
+                                id : doc.id, 
+                                ascent : doc.data().ascent, 
+                                city : doc.data().city, 
+                                country : doc.data().country, 
+                                description : doc.data().description, 
+                                difficulty : doc.data().difficulty,
+                                endPoint : doc.data().endPoint, 
+                                expectedTime :  doc.data().expectedTime,
+                                length : doc.data().length,
+                                referencePoint : doc.data().referencePoint,
+                                region :  doc.data().region,
+                                title :  doc.data().title,
+                                startPoint : doc.data().startPoint,
+                                author: doc.data().author};
+                                res.push(hike);
+                        }
+                    }else{
+                        console.log("Starting point is undefined.");
+                    }
+                }else{
+                    const hike = {
+                        id : doc.id, 
+                        ascent : doc.data().ascent, 
+                        city : doc.data().city, 
+                        country : doc.data().country, 
+                        description : doc.data().description, 
+                        difficulty : doc.data().difficulty,
+                        endPoint : doc.data().endPoint, 
+                        expectedTime :  doc.data().expectedTime,
+                        length : doc.data().length,
+                        referencePoint : doc.data().referencePoint,
+                        region :  doc.data().region,
+                        title :  doc.data().title,
+                        startPoint : doc.data().startPoint,
+                        author: doc.data().author};
+                    res.push(hike);
+                }  
             }
         });
     }
     console.log(res);
     return res;
 }
+
 
 const hutsList = async (filters, collection = "huts") => {
     console.log("Huts List filters: ", filters);
@@ -344,4 +442,47 @@ const hutsList = async (filters, collection = "huts") => {
     return res;
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, hutsList };
+const addNewHut = async (hut, collection = "huts") => {
+    console.log("API add new hut: ", hut);
+    const hutsRef = firestore.collection(db, collection);
+    const obj = {
+        name: hut.name,
+        country: hut.country,
+        region: hut.region,
+        city: hut.city,
+        position: new GeoPoint(hut.position[0], hut.position[1]),
+        bedsNumber: hut.bedsNumber,
+        costPerNight: hut.costPerNight,
+        description: hut.description,
+        openingHour: hut.openingHour,
+        openingMinute: hut.openingMinute,
+        closingHour: hut.closingHour,
+        closingMinute: hut.closingMinute
+    }
+    console.log(obj);
+    await firestore.addDoc(hutsRef, obj);
+    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
+}
+
+const addNewParkingLot = async (parkingLot, collection = "parkingLots") => {
+    console.log("API add new parking lot: ", parkingLot);
+    const parkingLotsRef = firestore.collection(db, collection);
+    const obj = {
+        name: parkingLot.name,
+        country: parkingLot.country,
+        region: parkingLot.region,
+        city: parkingLot.city,
+        position: new GeoPoint(parkingLot.position[0], parkingLot.position[1]),
+        lotsNumber: parkingLot.lotsNumber,
+        costPerDay: parkingLot.costPerDay,
+        description: parkingLot.description,
+        openingHour: parkingLot.openingHour,
+        openingMinute: parkingLot.openingMinute,
+        closingHour: parkingLot.closingHour,
+        closingMinute: parkingLot.closingMinute
+    }
+    await firestore.addDoc(parkingLotsRef, obj);
+    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
+}
+
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, hutsList };

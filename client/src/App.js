@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AddNewHike, AddNewPark, AppLayout, BrowserHikes, DefaultRoute } from './components/View';
+import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, ModifyHikeByAuthor } from './components/View';
 import { useEffect, useState } from 'react';
 import API from './API.js'
 import NavBar from './components/NavBar';
@@ -86,12 +86,34 @@ function App() {
 
   const addNewHike = async (hike,collection) => {
     try {
-      await API.addNewHike(hike,collection);
+
+      await API.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
+        length, referencePoint, region, title, startPoint, authUser.email);
     } catch (e) {
       console.log(e);
       throw (e);
     }
   }
+
+  const addNewHut = async (hut) => {
+    console.log("Adding new hut!");
+    try {
+      await API.addNewHut(hut);
+    } catch (e) {
+      console.log(e);
+      throw (e);
+    }
+  };
+
+  const addNewParkingLot = async (parkingLot) => {
+    console.log("Adding new parking lot!");
+    try {
+      await API.addNewParkingLot(parkingLot);
+    } catch (e) {
+      console.log(e);
+      throw (e);
+    }
+  };
 
   return (
     <>
@@ -101,29 +123,21 @@ function App() {
                   </Row>} */}
         <BrowserRouter>
 
-
           <Routes>
 
-            <Route path='/login' element={authUser ? <Navigate replace to='/home' /> : <LoginForm login={login} />} />
-            <Route path='/signup' element={<SigninForm signup={signup} />}></Route>
-
-            {/* here are routes for visiters without login */}
-            <Route path='/' element={authUser ? <Navigate replace to='/home' /> : <AppLayout onLogOut={logout} loggedIn={login} />} >
+            <Route path='/' element={<AppLayout onLogOut={logout} loggedIn={login} />} >
               <Route index element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
+              <Route path='login' element={authUser ? <Navigate replace to='/' /> : <LoginForm login={login} />} />
+              <Route path='signup' element={<SigninForm signup={signup} />}></Route>
+              {/* here are the routes with local guide */}
+              <Route path='hikeform' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' /> : ''} />
+              <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' /> : ''} />
+              <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
+              <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
+              <Route path='huts' element={authUser ? (authUser.role.toLowerCase() === 'local guide' || authUser.role.toLowerCase() === 'hiker') ? <BrowserHuts  /> : <Navigate to='/' /> : ''} />
+              
               <Route></Route>
             </Route>
-
-            {/* here are routes for user with login */}
-            {authUser && <Route path='/' element={<AppLayout onLogOut={logout} loggedIn={login} />} >
-              <Route path='home' element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
-              {/* here are routes for local guide */}
-              <Route path='hikeform' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' />} />
-              <Route path='newPark' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewPark  /> : <Navigate to='/' />} />
-              <Route path='newHut' element={(authUser.role.toLowerCase() === 'local guide') ? <AddNewHike  /> : <Navigate to='/' />} />
-              <Route path='huts' element={(authUser.role.toLowerCase() === 'local guide' || authUser.role.toLowerCase() === 'hiker') ? <BrowserHuts  /> : <Navigate to='/' />} />
-
-              <Route></Route>
-            </Route>}
 
             <Route path='*' element={<DefaultRoute />} />
 

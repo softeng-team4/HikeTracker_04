@@ -5,6 +5,7 @@ import AuthenticationContext from './AuthenticationContext';
 import HikeTable from './BrowserHikeComponents/HikeTable'
 import { HikeForm } from './HikeForm';
 import { HutForm } from './HutForm';
+import { ModifyHike } from './ModifyHike';
 import NavBar from './NavBar';
 import { ParkForm } from './ParkForm';
 
@@ -61,7 +62,7 @@ function AddNewHike(props) {
 function AddNewPark(props) {
     return (
         <>
-            <ParkForm />
+            <ParkForm addNewParkingLot={props.addNewParkingLot} />
         </>
     );
 }
@@ -69,9 +70,17 @@ function AddNewPark(props) {
 function AddNewHut(props) {
     return (
         <>
-            <HutForm />
+            <HutForm addNewHut={props.addNewHut} />
         </>
     );
 }
 
-export { DefaultRoute, BrowserHikes, AppLayout, AddNewHike, AddNewPark, AddNewHut };
+function ModifyHikeByAuthor(props) {
+    return (
+        <>
+            <ModifyHike />
+        </>
+    );
+}
+
+export { DefaultRoute, BrowserHikes, AppLayout, AddNewHike, AddNewPark, AddNewHut, ModifyHikeByAuthor };
