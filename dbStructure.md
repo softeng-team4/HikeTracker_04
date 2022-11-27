@@ -25,12 +25,16 @@
 | referencePoint | string |
 
 startPoint and endPoint are maps with the following elements:
-- ele: number
-- lat: number
-- lon: number
-- time: number
+- altitude: number
+- latitude: number
+- longitude: number
+- time: timestamp
 
-referencePoint is a string in a json format. This json is formed by and array of objects that contains "ele", "lat", "lon", and "time" attributes.
+The field referencePoint is a string in a json format that contains all the points in the track. It is formed by and array of objects that contains:
+- lat: number
+- lng: number
+- name: string
+The "name" attribute is present only if that point is actually a reference point.
 
 # huts
 

@@ -69,23 +69,23 @@ const GeoAreaForm = (props) => {
         <Form className='row d-flex justify-content-between'>
             <Form.Group className='col-md-4 p-2'>
                 <Form.Label htmlFor='CountrySelection'>Select a Country</Form.Label>
-                <Form.Select className='CountrySelection' onChange={(event) => (retrieveRegions(event))}>
+                <Form.Select className='CountrySelection' style={{cursor:"pointer"}} onChange={(event) => (retrieveRegions(event))}>
                     {countryList}
                 </Form.Select>
             </Form.Group>
             <Form.Group className='col-md-4 p-2'>
                 <Form.Label htmlFor='RegionSelection'>Select a Region</Form.Label>
-                <Form.Select className='RegionSelection' ref={regionSelect} onChange={(event) => (retrieveCities(event))} {...countryIsSelected ? { disabled: false } : { disabled: true }}>
+                <Form.Select className='RegionSelection' style={countryIsSelected ? {cursor:"pointer"} : {}} ref={regionSelect} onChange={(event) => (retrieveCities(event))} {...countryIsSelected ? { disabled: false } : { disabled: true }}>
                     {regionList}
                 </Form.Select>
             </Form.Group>
             <Form.Group className='col-md-4 p-2'>
                 <Form.Label htmlFor='CitySelection'>Select a City</Form.Label>
                 <InputGroup>
-                    <Form.Select className='CitySelection' ref={citySelect} onChange={(event) => (setCity(event))} {...regionIsSelected ? { disabled: false } : { disabled: true }}>
+                    <Form.Select className='CitySelection' style={regionIsSelected ? {cursor:"pointer"} : {}} ref={citySelect} onChange={(event) => (setCity(event))} {...regionIsSelected ? { disabled: false } : { disabled: true }}>
                         {cityList}
                     </Form.Select>
-                    <InputGroup.Text className='button-geoArea' onClick={handleSubmit}>
+                    <InputGroup.Text className='button-geoArea' style={{cursor:"pointer"}} onClick={handleSubmit}>
                         <FaSearchLocation />
                     </InputGroup.Text>
                 </InputGroup>

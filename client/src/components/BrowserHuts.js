@@ -75,9 +75,9 @@ const BrowserHuts = (props) =>{
             {(authObject) => (
                 <Container fluid className='BrowserHutssContainer'>
                     <Spacer height='2rem' />
-                    <h2>Explore Huts</h2>
                     <Row className='mt-3'>
-                    <HutSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                        <Col><h2>Explore Huts</h2></Col>
+                        <Col align="right"><HutSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} /></Col>
                     </Row>
                     <Row className='mt-3'>
                     {!(hutList)? false : pageHutList.map((hut, idx) =>
