@@ -1,19 +1,33 @@
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline, useMap } from 'react-leaflet';
-import { useEffect, useState } from 'react';
-import L, { divIcon, marker } from 'leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, Rectangle } from 'react-leaflet';
+import L from 'leaflet';
 import './leaflet.awesome-markers';
+import 'leaflet/dist/leaflet.css';
+import { Button } from 'react-bootstrap';
 
 
 function Map(props) {
 
 
-    const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
+    // const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
     const points = props.positions;
     // values to bounds the map
     const minLat = Math.min(...points.map(p => p.lat)) - 0.003;
     const minLng = Math.min(...points.map(p => p.lng)) - 0.003;
     const maxLat = Math.max(...points.map(p => p.lat)) + 0.003;
     const maxLng = Math.max(...points.map(p => p.lng)) + 0.003;
+    const huts = props.huts ? props.huts : [];
+    const filteredHuts = huts.filter(h => {
+        return !points.every(p => {
+            const maxDistance = 2500; // max distance of a hut to the hike to be linked now is 2.5km
+            const from = L.latLng([h.position._lat, h.position._long]);
+            const to = L.latLng([p.lat, p.lng]);
+            const d = from.distanceTo(to);
+            if (d <= maxDistance) {
+                return false;
+            }
+            return true;
+        });
+    });
     // custom icons for the map markers
     const startIcon = L.AwesomeMarkers.icon({
         icon: 'play-circle',
@@ -21,7 +35,6 @@ function Map(props) {
         prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x',
-
     });
     const endIcon = L.AwesomeMarkers.icon({
         icon: 'stop-circle',
@@ -38,7 +51,7 @@ function Map(props) {
         extraClasses: 'fas fa-2x'
     });
     const hutIcon = L.AwesomeMarkers.icon({
-        icon: 'house',
+        icon: 'home',
         markerColor: 'blue',
         prefix: 'fa',
         iconColor: 'black',
@@ -53,27 +66,38 @@ function Map(props) {
     });
 
 
+    const handleHutClick = (ev) => {
+        ev.preventDefault();
+        const id = ev.target.id;
+        console.log('I click on popup with id=' + id);
+        props.handleLinkHut(id);
+    };
+
+
+    props.handleNohutsCloseToHike && filteredHuts.length === 0 && huts.length !== 0 && props.handleNohutsCloseToHike();
+
+
     // map click component 
-    function LocationMarker(props) {
-        const map = useMapEvents({
-            async click(e) {
-                setPosition([e.latlng.lat, e.latlng.lng]);
-                //await props.getPosition(position);
-                console.log('-----------', position, e.latlng.lat)
-            },
-            locationfound(e) {
-                setPosition(e.latlng)
-                map.flyTo(e.latlng, map.getZoom())
-            },
-        })
+    // function LocationMarker(props) {
+    //     const map = useMapEvents({
+    //         async click(e) {
+    //             setPosition([e.latlng.lat, e.latlng.lng]);
+    //             //await props.getPosition(position);
+    //             console.log('-----------', position, e.latlng.lat)
+    //         },
+    //         locationfound(e) {
+    //             setPosition(e.latlng)
+    //             map.flyTo(e.latlng, map.getZoom())
+    //         },
+    //     })
 
-        return position === null ? null : (
+    //     return position === null ? null : (
 
-            <Marker position={position}>
-            </Marker>
+    //         <Marker position={position}>
+    //         </Marker>
 
-        )
-    }
+    //     )
+    // }
 
 
     // function to center the gps track
@@ -93,7 +117,7 @@ function Map(props) {
                 {/* <LocationMarker /> */}
                 <Polyline
                     pathOptions={{ fillColor: 'red', color: 'blue' }}
-                    positions={props.positions}
+                    positions={points}
                 />
                 {props.startPoint.length !== 0 ? <Marker position={[props.startPoint.latitude, props.startPoint.longitude]} icon={startIcon}>
                     <Popup>
@@ -105,6 +129,13 @@ function Map(props) {
                         End Point
                     </Popup>
                 </Marker> : ''}
+                {filteredHuts && filteredHuts.map((h) =>
+                    h.position._lat && h.position._long && <Marker key={`mark_${h.name}`} position={[h.position._lat, h.position._long]} icon={hutIcon}>
+                        <Popup key={`pop_${h.name}`}>
+                            <Button key={`btn_${h.name}`} variant='link' id={h.id} onClick={(ev) => handleHutClick(ev)}>{`Link ${h.name} to hike`}</Button>
+                        </Popup>
+                    </Marker>
+                )}
             </MapContainer>
         </>
     )
