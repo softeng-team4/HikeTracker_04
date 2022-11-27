@@ -483,7 +483,7 @@ const hutsList = async (filters, collection = "huts") => {
     return res;
 }
 
-const modifyReferencePoints = async (hike, referencePoints) => {
+const modifyReferencePoints = async (hike, referencePoints, collection = "hike") => {
     const oldRefPoints = JSON.parse(hike.referencePoint);
     const newRefPoints = oldRefPoints.map(orp => {
         let name = "";
@@ -499,7 +499,7 @@ const modifyReferencePoints = async (hike, referencePoints) => {
         return orp;
     });
 
-    const docRef = doc(db, "hike", hike.id);
+    const docRef = doc(db, collection, hike.id);
     await updateDoc(docRef, {
         referencePoint: JSON.stringify(newRefPoints)
     });
