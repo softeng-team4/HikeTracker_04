@@ -96,12 +96,15 @@ describe('test the linking of a hut/parking lot to a start/end point of a hike',
 
 })
 
-function testLinkHut(huts){
+function testLinkHut(huts,hikeId){
     it('linking huts to a hike',function(done){
-        api.linkHut(huts,firestore.doc(api.db,"hike-test","1")).then(
-            firestore.getDoc(firestore.doc(api.db,"hike-test","1")).then(
-
-            )
+        api.linkHuts(huts,hikeId,"hike-test").then(
+            firestore.getDoc(firestore.doc(api.db,"hike-test",hikeId)).then(res =>{
+                res.data.linkHuts.length.should.equal(huts.length)
+                for(let i=0; i < huts.length; i++){
+                    res.data.linkedHuts[i].should.equal(huts[i])
+                }
+            })
         )
         .then(() => done(), done)
         .catch((error) => {
