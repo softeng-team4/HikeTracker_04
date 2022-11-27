@@ -33,7 +33,7 @@ describe('test the linking of a hut/parking lot to a start/end point of a hike',
             altitude: 1164,
             latitude: 45.15,
             longitude: 6.96,
-            time: undefined
+            time: ''
         },
         expectedTime: '123',
         length: '16233.1',
@@ -43,7 +43,7 @@ describe('test the linking of a hut/parking lot to a start/end point of a hike',
             altitude: 1164,
             latitude: 45.15,
             longitude: 6.91,
-            time: undefined
+            time: ''
         },
         title: "Col Clapier from Val Carea"
 
@@ -52,14 +52,14 @@ describe('test the linking of a hut/parking lot to a start/end point of a hike',
     const hut1 = {
         bedsNumber: 20,
         city: "Alagna",
-        closingHour: undefined,
-        closingMinute: undefined,
-        costPerNight: undefined,
+        closingHour: '',
+        closingMinute: '',
+        costPerNight: '',
         country: "Italy",
         description: "hut1",
         name: "hut1",
-        openingHour: undefined,
-        openingMinute: undefined,
+        openingHour: '',
+        openingMinute: '',
         position: new GeoPoint(47.5,26.02),
         region: "Piedmont"
 
@@ -68,14 +68,14 @@ describe('test the linking of a hut/parking lot to a start/end point of a hike',
     const hut2 = {
         bedsNumber: 10,
         city: "Petralia Sottana",
-        closingHour: undefined,
-        closingMinute: undefined,
-        costPerNight: undefined,
+        closingHour: '',
+        closingMinute: '',
+        costPerNight: '',
         country: "Italy",
         description: "hut2",
         name: "hut1",
-        openingHour: undefined,
-        openingMinute: undefined,
+        openingHour: '',
+        openingMinute: '',
         position: new GeoPoint(37.5,14.02),
         region: "Sicily"
 
@@ -85,23 +85,26 @@ describe('test the linking of a hut/parking lot to a start/end point of a hike',
         const hutQuery = firestore.query(testHuts);
         const querySnapshot = await firestore.getDocs(hutQuery)
         querySnapshot.forEach(async (doc) =>{
-            await firestore.deleteDoc(firestore.doc(db,"hut-test",doc.id))
+            await firestore.deleteDoc(firestore.doc(api.db,"hut-test",doc.id))
         })
         await firestore.addDoc(testHikes,hike)
         await firestore.addDoc(testHuts,hut1)
         await firestore.addDoc(testHuts,hut2)
     })
 
-    testLinkHut([hut1,hut2])
+    testLinkHut([hut1,hut2],"1")
 
 })
 
-function testLinkHut(huts){
+function testLinkHut(huts,hikeId){
     it('linking huts to a hike',function(done){
-        api.linkHut(huts,firestore.doc(api.db,"hike-test","1")).then(
-            firestore.getDoc(firestore.doc(api.db,"hike-test","1")).then(
-
-            )
+        api.linkHuts(huts,hikeId,"hike-test").then(
+            firestore.getDoc(firestore.doc(api.db,"hike-test",hikeId)).then(res =>{
+                res.data.linkHuts.length.should.equal(huts.length)
+                for(let i=0; i < huts.length; i++){
+                    res.data.linkedHuts[i].should.equal(huts[i])
+                }
+            })
         )
         .then(() => done(), done)
         .catch((error) => {

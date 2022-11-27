@@ -15,7 +15,7 @@ const api = require('../src/API');
 //import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
 //import {addNewHike} from "../src/API"
 
-const testHuts = firestore.collection(api.db,"huts-test")
+const testHuts = firestore.collection(api.db,"hut-test")
 
 describe('test the searching for huts by a hiker',() =>{
 
@@ -37,7 +37,7 @@ describe('test the searching for huts by a hiker',() =>{
         const hutQuery = firestore.query(testHuts);
         const querySnapshot = await firestore.getDocs(hutQuery)
         querySnapshot.forEach(async (doc) =>{
-            await firestore.deleteDoc(firestore.doc(db,"hut-test",doc.id))
+            await firestore.deleteDoc(firestore.doc(api.db,"hut-test",doc.id))
         })
 
         await firestore.setDoc(firestore.doc(testHuts, "1"), hut1);
