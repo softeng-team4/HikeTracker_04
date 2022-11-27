@@ -234,7 +234,7 @@ function HikeForm(props) {
                     <Modal.Header closeButton>
                         <Modal.Title>New hike</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>{validated? "The hike hasn't been saved. Check out empty fields or wrong insertions!": "The new hike has been saved successfully!"}</Modal.Body>
+                    <Modal.Body>{validated ? "The hike hasn't been saved. Check out empty fields or wrong insertions!" : "The new hike has been saved successfully!"}</Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={() => setShow(false)}>
                             Close
@@ -260,7 +260,7 @@ function HikeForm(props) {
                         </Col>
                         <Col >
                             <InputGroup>
-                                <Form.Control className='expTime-input' required type='number' value={expectedTime} defaultValue={undefined} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
+                                <Form.Control className='expTime-input' required type='number' value={expectedTime} min={0} onChange={(event) => setExpectedTime(event.target.value)} />
                                 <InputGroup.Text>minutes</InputGroup.Text>
                                 <Form.Control.Feedback>Valid time!</Form.Control.Feedback>
                                 <Form.Control.Feedback type="invalid">Please insert the expected time. It must be a positive integer.</Form.Control.Feedback>
@@ -288,7 +288,7 @@ function HikeForm(props) {
                         </Col>
                         <Col >
                             <InputGroup>
-                                <Form.Control className='ascent-input' required disabled type='number' value={ascent} defaultValue={ascent} min={0} />
+                                <Form.Control className='ascent-input' required disabled type='number' value={ascent} min={0} />
                                 <InputGroup.Text>meters</InputGroup.Text>
                                 <Form.Control.Feedback>Valid ascent!</Form.Control.Feedback>
                                 <Form.Control.Feedback type="invalid">Please upload gpx file to get the ascent. </Form.Control.Feedback>
@@ -301,7 +301,7 @@ function HikeForm(props) {
                             <Form.Label>Difficulty:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='difficulty-input' style={{cursor:"pointer"}} required value={difficulty} defaultValue='' onChange={(event) => setDifficulty(event.target.value)}>
+                            <Form.Select className='difficulty-input' style={{ cursor: "pointer" }} required value={difficulty} onChange={(event) => setDifficulty(event.target.value)}>
                                 <option value={''}>Select difficulty</option>
                                 <option value={'Tourist'}>Tourist (Easy)</option>
                                 <option value={'Hiker'}>Hiker (Medium)</option>
@@ -316,7 +316,7 @@ function HikeForm(props) {
                             <Form.Label>Country:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='country-input' style={{cursor:"pointer"}} required defaultValue={undefined} onChange={(event) => {
+                            <Form.Select className='country-input' style={{ cursor: "pointer" }} required defaultValue={undefined} onChange={(event) => {
                                 if (event.target.value === "") {
                                     setCountryCode('');
                                     setCountry('');
@@ -341,7 +341,7 @@ function HikeForm(props) {
                             <Form.Label>Region:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='region-input' style={countryCode ? {cursor:"pointer"} : {}}  disabled={countryCode ? false : true} required defaultValue={undefined} onChange={(event) => {
+                            <Form.Select className='region-input' style={countryCode ? { cursor: "pointer" } : {}} disabled={countryCode ? false : true} required defaultValue={undefined} onChange={(event) => {
                                 if (event.target.value === "") {
                                     setRegionCode('');
                                     setRegion('');
@@ -362,7 +362,7 @@ function HikeForm(props) {
                             <Form.Label>City:</Form.Label>
                         </Col>
                         <Col >
-                            <Form.Select className='city-input' style={regionCode ? {cursor:"pointer"} : {}} disabled={regionCode ? false : true} required defaultValue={undefined} onChange={(event) => {
+                            <Form.Select className='city-input' style={regionCode ? { cursor: "pointer" } : {}} disabled={regionCode ? false : true} required defaultValue={undefined} onChange={(event) => {
                                 if (event.target.value === "") {
                                     setCity('');
                                     setCityMap('');
@@ -560,7 +560,7 @@ function HikeForm(props) {
                         <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
                     </Form.Group>
                     <Button variant='success' type="submit" >Submit form</Button>
-                    <Button variant='danger' style={{marginLeft: 5}} onClick={() => navigate(`/`)}>Exit without saving</Button>
+                    <Button variant='danger' style={{ marginLeft: 5 }} onClick={() => navigate(`/`)}>Exit without saving</Button>
                 </Form >
             </>
             )}
