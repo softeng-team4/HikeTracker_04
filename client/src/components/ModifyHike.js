@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Form, InputGroup, Modal, Row, Table } from "react-bootstrap";
+import { Button, Col, Form, Modal, Table } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { Map } from "./Map";
 import StaticHikeInfo from "./StaticHikeInfo";
@@ -28,7 +28,7 @@ function ModifyHike(props) {
         };
         API.hutsList(filters).then(r => setHutList(r))
         API.getAllParkingLots().then(p => setParkingList(p.filter(p => p.city === hike.city)))
-    }, [])
+    }, [hike])
     console.log('hut', hutList)
     console.log('park', parkingList)
     console.log('\\', startPoint, endPoint)

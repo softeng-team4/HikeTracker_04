@@ -71,7 +71,7 @@ const HikeTable = () => {
     const handleShowInfo = (event) => {
         event.preventDefault();
         const id = event.target.id;
-        setHike(hikeList.find((h) => h.title === id)); // TODO change with id on final version
+        setHike(hikeList.find((h) => h.id === id)); // TODO change with id on final version
         setShowInfoModal(true);
     }
 

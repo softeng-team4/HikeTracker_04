@@ -9,7 +9,7 @@ const GeoAreaForm = (props) => {
 
 
     // states to hold the list of geoAreas recieved from the server
-    const [countryList, setCountryList] = useState([<option key={'None'} value={'None'}>{'None'}</option>, ...Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)]);
+    const countryList = [<option key={'None'} value={'None'}>{'None'}</option>, ...Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)];
     const [regionList, setRegionList] = useState([<option key={'None'} value={'None'}>{'None'}</option>]);
     const [cityList, setCityList] = useState([<option key={'None'} value={'None'}>{'None'}</option>]);
     // states to disable region and city

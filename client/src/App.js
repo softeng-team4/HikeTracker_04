@@ -5,13 +5,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, ModifyHikeByAuthor } from './components/View';
 import { useEffect, useState } from 'react';
 import API from './API.js'
-import NavBar from './components/NavBar';
 import AuthenticationContext from './components/AuthenticationContext';
-import { Container, Row, Col, Alert } from 'react-bootstrap';
 import { LoginForm } from './components/LoginComponents';
 import { SigninForm } from './components/SigninComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
-import { HikeForm } from './components/HikeForm';
 import {BrowserHuts} from './components/BrowserHuts'
 
 function App() {
@@ -19,7 +16,6 @@ function App() {
   const [authUser, setAuthUser] = useState(undefined);
   const [authErr, setAuthErr] = useState(undefined);
   const [currentUser, setCurrentUser] = useState({});
-  const [message, setMessage] = useState('');
 
   const auth = getAuth();
 
@@ -37,7 +33,7 @@ function App() {
         }
       }
     })
-  }, []);
+  }, [auth]);
 
   //login and logut functions
   const login = async (email, password) => {
@@ -115,16 +111,6 @@ function App() {
     }
   };
 
-  const modifyHike = async (id, ascent, city, country, description, difficulty, endPoint, expectedTime,
-    length, referencePoint, region, title, startPoint, author)=>{
-      try{
-        await API.modifyHike(id, ascent, city, country, description, difficulty, endPoint, expectedTime,
-          length, referencePoint, region, title, startPoint, author);
-      }catch(e){
-        console.log(e);
-        throw(e);
-      }
-    }
 
   return (
     <>

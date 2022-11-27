@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, Polyline, Rectangle } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import './leaflet.awesome-markers';
 import 'leaflet/dist/leaflet.css';
@@ -43,13 +43,13 @@ function Map(props) {
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
-    const refIcon = L.AwesomeMarkers.icon({
-        icon: 'info-circle',
-        markerColor: 'blue',
-        prefix: 'fa',
-        iconColor: 'black',
-        extraClasses: 'fas fa-2x'
-    });
+    // const refIcon = L.AwesomeMarkers.icon({
+    //     icon: 'info-circle',
+    //     markerColor: 'blue',
+    //     prefix: 'fa',
+    //     iconColor: 'black',
+    //     extraClasses: 'fas fa-2x'
+    // });
     const hutIcon = L.AwesomeMarkers.icon({
         icon: 'home',
         markerColor: 'blue',
@@ -57,13 +57,13 @@ function Map(props) {
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
-    const parkIcon = L.AwesomeMarkers.icon({
-        icon: 'parking',
-        markerColor: 'blue',
-        prefix: 'fa',
-        iconColor: 'black',
-        extraClasses: 'fas fa-2x'
-    });
+    // const parkIcon = L.AwesomeMarkers.icon({
+    //     icon: 'parking',
+    //     markerColor: 'blue',
+    //     prefix: 'fa',
+    //     iconColor: 'black',
+    //     extraClasses: 'fas fa-2x'
+    // });
 
 
     const handleHutClick = (ev) => {

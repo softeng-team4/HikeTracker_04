@@ -1,14 +1,13 @@
 import { Navbar, DropdownButton, Dropdown, Button, Container, Row, Col, Nav } from 'react-bootstrap';
-import { Navigate, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle, FaHiking } from 'react-icons/fa'
 import AuthenticationContext from './AuthenticationContext';
 
 const NavBar = (props) => {
 
-    const location = useLocation();
-    const path = location ? location.pathname : undefined;
-    console.log('path', location.pathname);
+
     const navigate = useNavigate();
+
 
     return (
         <AuthenticationContext.Consumer>

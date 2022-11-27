@@ -71,6 +71,7 @@ body {
 }
 
 .leaflet-container {
+  position: sticky !important;
   width: 100wh;
   height: 30vh;
 }

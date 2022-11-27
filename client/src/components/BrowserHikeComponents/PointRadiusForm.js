@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo } from "react";
 import { MapContainer, TileLayer, useMapEvents, Circle, Tooltip } from 'react-leaflet';
-import L, { map } from 'leaflet';
+import L from 'leaflet';
 import { Button, Col, Form } from "react-bootstrap";
 
 
@@ -27,7 +27,7 @@ const PointRadiusForm = (props) => {
                 props.setPointRadius({ coordinates: [map.getCenter().lat, map.getCenter().lng], radius: radius })
             }
         });
-        const [position, setPosition] = useState(props.pointRadius.coordinates ? props.pointRadius.coordinates : props.centerMap.coordinates);
+        const position = props.pointRadius.coordinates ? props.pointRadius.coordinates : props.centerMap.coordinates;
         const eventHandlers = useMemo(
             () => ({
                 mousedown: () => {

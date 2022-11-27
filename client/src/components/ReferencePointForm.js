@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { LocationMarker } from "./LocationMarker";
-import API, { modifyReferencePoints } from '../API';
+import { modifyReferencePoints } from '../API';
 import StaticHikeInfo from './StaticHikeInfo';
 
 

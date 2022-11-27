@@ -2,7 +2,7 @@
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth');
-const { GeoPoint, updateDoc, doc, collection, deleteDoc } = require('firebase/firestore');
+const { GeoPoint, updateDoc, doc, deleteDoc } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
@@ -179,7 +179,7 @@ const cityList = async (country, region) => {
 
 //Spherical law of cosines distance
 function distance(lat1, lon1, lat2, lon2) {
-    if ((lat1 == lat2) && (lon1 == lon2)) {
+    if ((lat1 === lat2) && (lon1 === lon2)) {
         return 0;
     }
     else {
@@ -544,7 +544,7 @@ const modifyHike = async (id, ascent, city, country, description, difficulty, en
         title: title, country: country, region: region, city: city, description: description, difficulty: difficulty, expectedTime: expectedTime,
         length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: referencePoint, author: author
     }
-    const hikeRef = firestore.collection(db, 'hike')
+    // const hikeRef = firestore.collection(db, 'hike')
     await firestore.setDoc(doc(db, 'hike', id), hike);
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
