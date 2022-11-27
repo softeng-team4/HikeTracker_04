@@ -16,7 +16,7 @@ const HutSearchBar = (props) => {
         </label>
         <input
             value={props.searchQuery? props.searchQuery : ''}
-            onInput={e => props.setSearchQuery(e.target.value)}
+            onInput={e => props.setSearchQuery(e.target.value.toLowerCase())}
             type="text"
             id="header-search"
             placeholder="Search huts"
