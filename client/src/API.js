@@ -549,5 +549,11 @@ const modifyHike = async (id, ascent, city, country, description, difficulty, en
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 
+const linkHuts = async(huts, hikeID, collection = "hike")=>{
+    console.log("API linkHuts: ", huts, hikeID);
+    await firestore.updateDoc(firestore.doc(db, collection, hikeID),{
+        linkedHuts: huts
+    });
+}
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike,  modifyReferencePoints };
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike,  modifyReferencePoints, linkHuts };
