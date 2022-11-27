@@ -87,9 +87,9 @@ const addNewHike = async (ascent, city, country, description, difficulty, endPoi
     length, referencePoint, region, title, startPoint, author) => {
     const hike = {
         title: title, country: country, region: region, city: city, description: description, difficulty: difficulty, expectedTime: expectedTime,
-        length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: JSON.stringify(referencePoint), author: author 
+        length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: JSON.stringify(referencePoint), author: author
     }
-    firestore.addDoc(firestore.collection(db, collection), staticHike);
+    firestore.addDoc(firestore.collection(db, "hike"), hike);
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 

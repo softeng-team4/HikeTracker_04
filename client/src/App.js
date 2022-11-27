@@ -84,9 +84,9 @@ function App() {
   };
   // console.log(authUser.role.toLowerCase()==='local guide')
 
-  const addNewHike = async (hike,collection) => {
+  const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
+    length, referencePoint, region, title, startPoint) => {
     try {
-
       await API.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
         length, referencePoint, region, title, startPoint, authUser.email);
     } catch (e) {
