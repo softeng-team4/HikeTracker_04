@@ -72,13 +72,13 @@ const StaticHikeInfo = (props) => {
                     <Form.Label>Region:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control className='region-input' required disabled value={hike.country} />
+                    <Form.Control className='region-input' required disabled value={hike.region} />
                 </Col>
                 <Col sm={2}>
                     <Form.Label>City:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Control className='city-input' required disabled value={hike.country} />
+                    <Form.Control className='city-input' required disabled value={hike.city} />
                 </Col>
             </Form.Group>
         </>
