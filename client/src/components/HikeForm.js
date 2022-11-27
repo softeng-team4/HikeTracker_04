@@ -7,6 +7,7 @@ import L from 'leaflet-gpx'
 import { Country, State, City } from 'country-state-city';
 import AuthenticationContext from "./AuthenticationContext"
 import { Map } from "./Map"
+import Spacer from "./BrowserHikeComponents/Spacer"
 let gpxParser = require('gpxparser');
 
 function HikeForm(props) {
@@ -241,8 +242,9 @@ function HikeForm(props) {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+                <Spacer height='2rem' />
                 <h2>Add A New Hike</h2>
-                <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
+                <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{marginBottom:10}}>
                     <Form.Group as={Row} className="mb-3">
                         <Col sm={2}>
                             <Form.Label>Title:</Form.Label>
@@ -378,15 +380,17 @@ function HikeForm(props) {
                     </Form.Group>
                     <Form.Group as={Row} controlId="formFile" className="mb-3">
                         <Form.Label>GPX File</Form.Label>
-                        <Form.Control type="file" accept=".gpx" value={GPX} required onChange={(event) => {
-                            checkFile();
-                            setGPX(event.target.value);
-                            loadGPXContent(event.target.files);
-                            setShowMap(true);
-                            setEmail(authObject.authUser.email);
-                        }} />
+                        <div style={{paddingRight:10, paddingLeft: 10}}>
+                            <Form.Control type="file" accept=".gpx" value={GPX} required onChange={(event) => {
+                                checkFile();
+                                setGPX(event.target.value);
+                                loadGPXContent(event.target.files);
+                                setShowMap(true);
+                                setEmail(authObject.authUser.email);
+                            }} />
 
-                        <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please insert a .GPX file.</Form.Control.Feedback>
+                        </div>
                     </Form.Group>
 
                     {(!fileGPX || positions === '' || !showMap) ? '' :

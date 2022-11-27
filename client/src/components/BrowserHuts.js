@@ -7,9 +7,10 @@ import HikePageHandler from './BrowserHikeComponents/HickePageHendler';
 import API from '../API';
 import {HutSearchBar} from './HutSearchBar';
 import { useSearchParams } from 'react-router-dom';
-import { GeoPoint} from 'firebase/firestore';
 
 const BrowserHuts = (props) =>{
+
+    const [geoArea, setGeoArea] = useState({ country: { countryCode: 'None', name: 'None' }, region: { countryCode: 'None', stateCode: 'None', name: 'None' }, city: { name: 'None' } });
 
     // state to hold list of huts
     const [hutList, setHutList] = useState([])
@@ -30,12 +31,12 @@ const BrowserHuts = (props) =>{
     useEffect(()=>{
         const filters={
             name: undefined,
-            country: undefined,
-            region: undefined,
-            city: undefined
+            country: geoArea.country.name !== 'None' ? geoArea.country.name : undefined,
+            region: geoArea.region.name !== 'None' ? geoArea.region.name : undefined,
+            city: geoArea.city.name !== 'None' ? geoArea.city.name : undefined
         };
         API.hutsList(filters).then(r => setHutList(r))
-    },[])
+    },[geoArea])
 
     useEffect(()=>{
         if(searchParams)
@@ -76,8 +77,10 @@ const BrowserHuts = (props) =>{
                 <Container fluid className='BrowserHutssContainer'>
                     <Spacer height='2rem' />
                     <Row className='mt-3'>
-                        <Col><h2>Explore Huts</h2></Col>
-                        <Col align="right"><HutSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} /></Col>
+                        <h2>Explore Huts</h2>
+                    </Row>
+                    <Row className='mt-3'>
+                        <HutSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} geoArea={geoArea} setGeoArea={setGeoArea} />
                     </Row>
                     <Row className='mt-3'>
                     {!(hutList)? false : pageHutList.map((hut, idx) =>
@@ -106,7 +109,7 @@ const BrowserHuts = (props) =>{
                         </div>
                     )}
                     </Row>
-                    {hutList.length === 0 || subHutList.length === 0 ? <Container className='emty-hutList'><Spacer height='2rem'/><Card><h5>No huts found!</h5></Card><Spacer height='2rem'/></Container> : null}
+                    {hutList.length === 0 || subHutList.length === 0 ? <Container className='emty-hutList'><Spacer height='2rem'/><Card style={{padding: 10}}><div align='center'><h5>No huts found!</h5></div></Card><Spacer height='2rem'/></Container> : null}
                     <HikePageHandler index={index}  pageNum={computeIndex()} handlePageChange={handlePageChange}/>
                 </Container>
             )}

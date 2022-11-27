@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
 import L from 'leaflet'
 import Hut from '../model/Hut'
+import Spacer from "./BrowserHikeComponents/Spacer";
 
 function HutForm(props) {
     const [name, setName] = useState('');
@@ -80,6 +81,7 @@ function HutForm(props) {
                 </Button>
             </Modal.Footer>
         </Modal>
+        <Spacer height='2rem' />
         <h2>Add A New Hut</h2>
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{marginBottom:10}}>
             <Form.Group as={Row} className="mb-3">
