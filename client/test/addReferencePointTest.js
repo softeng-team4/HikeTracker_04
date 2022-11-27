@@ -17,7 +17,7 @@ const api = require('../src/API');
 
 const testHikes = firestore.collection(api.db,"hike-test-reference-points")
 
-describe('testing the addition of reference points a local guide',()=>{
+describe('testing the addition of reference points by a local guide',()=>{
 
     before(async ()=>{
 
@@ -82,7 +82,7 @@ describe('testing the addition of reference points a local guide',()=>{
             lat: 45.179357,
             lng: 7.1644689},
         {
-            name : "Test point1",
+            name : "Test point2",
             lat: 45.1792792,
             lng: 7.1646235
         }
@@ -91,7 +91,7 @@ describe('testing the addition of reference points a local guide',()=>{
 })
 
 function testAddRefPoint(hike, refPoint){
-    it("Check reference points addtion ",function(done){
+    it("Check reference points addition ",function(done){
         api.modifyReferencePoints(hike, refPoint,"hike-test-reference-points")
         .then(()=>{
             firestore.getDoc(firestore.doc(api.db,"hike-test-reference-points","1"))
