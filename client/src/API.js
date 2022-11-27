@@ -2,7 +2,7 @@
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth');
-const { GeoPoint } = require('firebase/firestore');
+const { GeoPoint, updateDoc, doc } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
@@ -179,7 +179,7 @@ const cityList = async (country, region) => {
 
 //Spherical law of cosines distance
 function distance (lat1, lon1, lat2, lon2){
-	if ((lat1 == lat2) && (lon1 == lon2)) {
+	if ((lat1 === lat2) && (lon1 === lon2)) {
 		return 0;
 	}
 	else {
@@ -485,8 +485,26 @@ const addNewParkingLot = async (parkingLot, collection = "parkingLots") => {
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 
-const modifyReferencePoints = async (hikeID, hike, referencePoints) => {
+const modifyReferencePoints = async (hike, referencePoints) => {
+    const oldRefPoints = JSON.parse(hike.referencePoint);
+    const newRefPoints = oldRefPoints.map(orp => {
+        let name = "";
+        for (const nrp of referencePoints) {
+            if (orp.lat === nrp.lat && orp.lng === nrp.lng) {
+                name = nrp.name;
+                break;
+            }
+        }
+        if (name !== "") {
+            return {name: name, lat: orp.lat, lng: orp.lng};
+        }
+        return orp;
+    });
 
+    const docRef = doc(db, "hike", hike.id);
+    await updateDoc(docRef, {
+        referencePoint: JSON.stringify(newRefPoints)
+    });
 }
 
 module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, hutsList, modifyReferencePoints };
