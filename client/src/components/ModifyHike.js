@@ -3,6 +3,7 @@ import { Button, Col, Form, InputGroup, Modal, Row, Table } from "react-bootstra
 import { useNavigate } from "react-router";
 import { Map } from "./Map";
 import StaticHikeInfo from "./StaticHikeInfo";
+import API from '../API';
 
 function ModifyHike(props) {
 
