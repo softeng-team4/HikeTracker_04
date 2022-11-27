@@ -100,14 +100,18 @@ function HikeForm(props) {
             latitude: point1.lat,
             longitude: point1.lon,
             altitude: point1.ele,
-            time: point1.time
+            time: point1.time,
+            id:null,
+            name:null
         });
 
         setEndPoint({
             latitude: point2.lat,
             longitude: point2.lon,
             altitude: point2.ele,
-            time: point2.time
+            time: point2.time,
+            id:null,
+            name:null
         });
 
         setReferencePoint(
@@ -237,6 +241,7 @@ function HikeForm(props) {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+                <h2>Add A New Hike</h2>
                 <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
                     <Form.Group as={Row} className="mb-3">
                         <Col sm={2}>

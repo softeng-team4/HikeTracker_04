@@ -115,6 +115,17 @@ function App() {
     }
   };
 
+  const modifyHike = async (id, ascent, city, country, description, difficulty, endPoint, expectedTime,
+    length, referencePoint, region, title, startPoint, author)=>{
+      try{
+        await API.modifyHike(id, ascent, city, country, description, difficulty, endPoint, expectedTime,
+          length, referencePoint, region, title, startPoint, author);
+      }catch(e){
+        console.log(e);
+        throw(e);
+      }
+    }
+
   return (
     <>
       <AuthenticationContext.Provider value={authObject}>
@@ -133,7 +144,7 @@ function App() {
               <Route path='hikeform' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' /> : ''} />
               <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' /> : ''} />
               <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
-              <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
+              <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor modifyHike={modifyHike} /> : <Navigate to='/' /> : ''} />
               <Route path='huts' element={authUser ? (authUser.role.toLowerCase() === 'local guide' || authUser.role.toLowerCase() === 'hiker') ? <BrowserHuts  /> : <Navigate to='/' /> : ''} />
               
               <Route></Route>

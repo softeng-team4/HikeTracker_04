@@ -80,6 +80,7 @@ function HutForm(props) {
                 </Button>
             </Modal.Footer>
         </Modal>
+        <h2>Add A New Hut</h2>
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{marginBottom:10}}>
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>

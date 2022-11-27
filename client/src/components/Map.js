@@ -6,7 +6,7 @@ import './leaflet.awesome-markers';
 
 function Map(props) {
 
-    
+
     const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
     const points = props.positions;
     // values to bounds the map
@@ -15,39 +15,39 @@ function Map(props) {
     const maxLat = Math.max(...points.map(p => p.lat)) + 0.003;
     const maxLng = Math.max(...points.map(p => p.lng)) + 0.003;
     // custom icons for the map markers
-    const startIcon = L.AwesomeMarkers.icon({ 
-        icon: 'play-circle', 
+    const startIcon = L.AwesomeMarkers.icon({
+        icon: 'play-circle',
         markerColor: 'green',
-        prefix: 'fa',  
+        prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x',
-        
+
     });
-    const endIcon = L.AwesomeMarkers.icon({ 
-        icon: 'stop-circle', 
-        markerColor: 'red', 
-        prefix: 'fa', 
+    const endIcon = L.AwesomeMarkers.icon({
+        icon: 'stop-circle',
+        markerColor: 'red',
+        prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
-    const refIcon = L.AwesomeMarkers.icon({ 
-        icon: 'info-circle', 
-        markerColor: 'blue', 
-        prefix: 'fa', 
+    const refIcon = L.AwesomeMarkers.icon({
+        icon: 'info-circle',
+        markerColor: 'blue',
+        prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
-    const hutIcon = L.AwesomeMarkers.icon({ 
-        icon: 'house', 
-        markerColor: 'blue', 
-        prefix: 'fa', 
+    const hutIcon = L.AwesomeMarkers.icon({
+        icon: 'house',
+        markerColor: 'blue',
+        prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
-    const parkIcon = L.AwesomeMarkers.icon({ 
-        icon: 'parking', 
-        markerColor: 'blue', 
-        prefix: 'fa', 
+    const parkIcon = L.AwesomeMarkers.icon({
+        icon: 'parking',
+        markerColor: 'blue',
+        prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
@@ -82,7 +82,6 @@ function Map(props) {
             [point.lat + sum[0], point.lng + sum[1]]
         ), [0., 0.]).map(v => v / points.length);
     };
-
 
     return (
         <>

@@ -78,7 +78,7 @@ function AddNewHut(props) {
 function ModifyHikeByAuthor(props) {
     return (
         <>
-            <ModifyHike />
+            <ModifyHike modifyHike={props.modifyHike} />
         </>
     );
 }

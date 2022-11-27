@@ -2,7 +2,7 @@
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth');
-const { GeoPoint, collection } = require('firebase/firestore');
+const { GeoPoint, collection, doc, deleteDoc } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
@@ -409,7 +409,7 @@ const hutsList = async (filters, collection = "huts") => {
                 name: doc.data().name,
                 country: doc.data().country,
                 region: doc.data().region,
-                city: doc.data().city, 
+                city: doc.data().city,
                 position: doc.data().position,
                 bedsNumber: doc.data().bedsNumber,
                 description: doc.data().description,
@@ -429,7 +429,7 @@ const hutsList = async (filters, collection = "huts") => {
                 name: doc.data().name,
                 country: doc.data().country,
                 region: doc.data().region,
-                city: doc.data().city, 
+                city: doc.data().city,
                 position: doc.data().position,
                 bedsNumber: doc.data().bedsNumber,
                 description: doc.data().description,
@@ -490,11 +490,13 @@ const addNewParkingLot = async (parkingLot, collection = "parkingLots") => {
 }
 
 const getAllParkingLots = async (collection = "parkingLots") => {
-    const querySnapshot = await firestore.getDocs(collection(db, collection));
+    const parkingLotsRef = firestore.collection(db, collection)
+    const querySnapshot = await firestore.getDocs(parkingLotsRef);
     const res = [];
     querySnapshot.forEach((doc) => {
         console.log(doc.id, " => ", doc.data());
         const obj = {
+            id: doc.id,
             name: doc.data().name,
             country: doc.data().country,
             region: doc.data().region,
@@ -513,7 +515,17 @@ const getAllParkingLots = async (collection = "parkingLots") => {
     console.log(res);
     return res;
 }
+const modifyHike = async (id, ascent, city, country, description, difficulty, endPoint, expectedTime,
+    length, referencePoint, region, title, startPoint, author) => {
+    await deleteDoc(doc(db, "hike", id));
+    const hike = {
+        title: title, country: country, region: region, city: city, description: description, difficulty: difficulty, expectedTime: expectedTime,
+        length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: referencePoint, author: author
+    }
+    const hikeRef = firestore.collection(db, 'hike')
+    await firestore.setDoc(doc(db, 'hike', id), hike);
+    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
+}
 
 
-
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots , hutsList};
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike };
