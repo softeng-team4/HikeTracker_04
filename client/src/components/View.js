@@ -1,11 +1,9 @@
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { Outlet } from 'react-router';
-import { Link } from 'react-router-dom';
-import AuthenticationContext from './AuthenticationContext';
 import HikeTable from './BrowserHikeComponents/HikeTable'
+import HandleModifyPage from './HandleModifyPage';
 import { HikeForm } from './HikeForm';
 import { HutForm } from './HutForm';
-import { ModifyHike } from './ModifyHike';
 import NavBar from './NavBar';
 import { ParkForm } from './ParkForm';
 
@@ -78,7 +76,7 @@ function AddNewHut(props) {
 function ModifyHikeByAuthor(props) {
     return (
         <>
-            <ModifyHike />
+            <HandleModifyPage />
         </>
     );
 }
