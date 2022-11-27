@@ -3,7 +3,7 @@ import { Tab, Tabs } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import LinkHuts from "./LinkHuts";
 import { ModifyHike } from "./ModifyHike";
-
+import ReferencePointForm from './ReferencePointForm';
 
 
 const HandleModifyPage = () => {
@@ -27,7 +27,7 @@ const HandleModifyPage = () => {
                 <LinkHuts hike={state.hike} />
             </Tab>
             <Tab eventKey='refPoints' title='Define reference points'>
-                {/* TODO: add component of ref points */}
+                <ReferencePointForm hike={state.hike}/>
             </Tab>
         </Tabs>
     );
