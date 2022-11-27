@@ -485,4 +485,8 @@ const addNewParkingLot = async (parkingLot, collection = "parkingLots") => {
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, hutsList };
+const modifyReferencePoints = async (hikeID, hike, referencePoints) => {
+
+}
+
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, hutsList, modifyReferencePoints };
