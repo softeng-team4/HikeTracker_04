@@ -103,7 +103,6 @@ const HikeTable = () => {
                                                     {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='danger'
                                                         onClick={() =>
                                                             (nav('/modifyHike',{state:{ hike: hike }}))
-                                                            // (console.log(hike))
                                                         }><FaRegEdit /></Button> : null}
                                                 </ButtonGroup>
                                             </Col>

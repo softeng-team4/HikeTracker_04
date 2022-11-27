@@ -136,15 +136,15 @@ function App() {
 
           <Routes>
 
-            <Route path='/' element={<AppLayout onLogOut={logout} loggedIn={login} />} >
-              <Route index element={<BrowserHikes onLogOut={logout} loggedIn={login} />}></Route>
+            <Route path='/' element={<AppLayout />} >
+              <Route index element={<BrowserHikes />}></Route>
               <Route path='login' element={authUser ? <Navigate replace to='/' /> : <LoginForm login={login} />} />
               <Route path='signup' element={<SigninForm signup={signup} />}></Route>
               {/* here are the routes with local guide */}
               <Route path='hikeform' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' /> : ''} />
               <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' /> : ''} />
               <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
-              <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor modifyHike={modifyHike} /> : <Navigate to='/' /> : ''} />
+              <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor /> : <Navigate to='/' /> : ''} />
               <Route path='huts' element={authUser ? (authUser.role.toLowerCase() === 'local guide' || authUser.role.toLowerCase() === 'hiker') ? <BrowserHuts  /> : <Navigate to='/' /> : ''} />
               
               <Route></Route>
