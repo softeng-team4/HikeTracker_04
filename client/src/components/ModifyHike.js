@@ -41,8 +41,8 @@ function ModifyHike(props) {
                 location.state.hike.description, location.state.hike.difficulty, end, location.state.hike.expectedTime,
                 location.state.hike.length, location.state.hike.referencePoint, location.state.hike.region, location.state.hike.title, location.state.hike.startPoint,
                 location.state.hike.author);
-        //save start to db
-        //await 
+        setStart('')
+        setEnd('')
 
         handleClose();
     }
@@ -59,7 +59,7 @@ function ModifyHike(props) {
                                 <Form.Label>Hut List:</Form.Label>
                             </Col>
                             <Col>
-                                {modal === 'start' ? <Form.Select value={start} defaultValue='' onChange={(event) => setStart({
+                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => setStart({
                                     latitude: location.state.hike.startPoint.latitude,
                                     longitude: location.state.hike.startPoint.longitude,
                                     altitude: location.state.hike.startPoint.altitude,
@@ -70,7 +70,7 @@ function ModifyHike(props) {
                                     <option value={''}>Select hut</option>
                                     {hutList.map((h, i) => <option key={i} value={h.id}>{h.name}</option>)}
                                 </Form.Select> :
-                                    <Form.Select value={end} defaultValue='' onChange={(event) => setEnd({
+                                    <Form.Select value={end} onChange={(event) => setEnd({
                                         latitude: location.state.hike.startPoint.latitude,
                                         longitude: location.state.hike.startPoint.longitude,
                                         altitude: location.state.hike.startPoint.altitude,
@@ -89,7 +89,7 @@ function ModifyHike(props) {
                                 <Form.Label>Parking Lot List:</Form.Label>
                             </Col>
                             <Col>
-                                {modal === 'start' ? <Form.Select value={start} defaultValue='' onChange={(event) => setStart({
+                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => setStart({
                                     latitude: location.state.hike.startPoint.latitude,
                                     longitude: location.state.hike.startPoint.longitude,
                                     altitude: location.state.hike.startPoint.altitude,
@@ -100,7 +100,7 @@ function ModifyHike(props) {
                                     <option value={''}>Select Park</option>
                                     {parkingList.map((p, j) => <option key={j} value={p.id}>{p.name}</option>)}
                                 </Form.Select> :
-                                    <Form.Select value={end} defaultValue='' onChange={(event) => setEnd({
+                                    <Form.Select value={end} onChange={(event) => setEnd({
                                         latitude: location.state.hike.startPoint.latitude,
                                         longitude: location.state.hike.startPoint.longitude,
                                         altitude: location.state.hike.startPoint.altitude,
