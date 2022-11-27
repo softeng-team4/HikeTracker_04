@@ -1,5 +1,5 @@
 import { Navbar, DropdownButton, Dropdown, Button, Container, Row, Col, Nav } from 'react-bootstrap';
-import { Navigate, NavLink, useLocation } from 'react-router-dom';
+import { Navigate, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle, FaHiking } from 'react-icons/fa'
 import AuthenticationContext from './AuthenticationContext';
 
@@ -7,7 +7,8 @@ const NavBar = (props) => {
 
     const location = useLocation();
     const path = location ? location.pathname : undefined;
-    console.log('path', location.pathname)
+    console.log('path', location.pathname);
+    const navigate = useNavigate();
 
     return (
         <AuthenticationContext.Consumer>
@@ -18,7 +19,7 @@ const NavBar = (props) => {
                             <Col xxl={2} />
                             <Col>
                                 <Navbar expand="sm">
-                                    <Navbar.Brand className='d-flex' href="/">
+                                    <Navbar.Brand className='d-flex' style={{cursor:"pointer"}} onClick={() => navigate('/')}>
                                         <h3><FaHiking className='nav-icon' />Hike Tracker</h3>
                                     </Navbar.Brand>
                                     <Navbar.Toggle aria-controls="nav-toggle" />
@@ -26,18 +27,18 @@ const NavBar = (props) => {
 
                                         <Navbar.Collapse className='justify-content-end' id="nav-toggle">
                                             {/* all user could see with login */}
-                                            <Nav.Link href="/">Hike List</Nav.Link>
+                                            <Nav.Link onClick={() => navigate('/')}>Hike List</Nav.Link>
 
                                             {/* local guide navbar */}
 
                                             {authObject.authUser &&
                                                 <>
-                                                  <Nav.Link href='/huts'>Explore huts</Nav.Link>
+                                                  <Nav.Link onClick={() => navigate('/huts')}>Explore huts</Nav.Link>
                                                     {authObject.authUser.role.toLowerCase() === 'local guide' &&
                                                         <>
-                                                            <Nav.Link href="/hikeform">New Hike</Nav.Link>
-                                                            <Nav.Link href='/newPark'>New Park</Nav.Link>
-                                                            <Nav.Link href='/newHut'>New Hut</Nav.Link>
+                                                            <Nav.Link onClick={() => navigate('/hikeform')}>New Hike</Nav.Link>
+                                                            <Nav.Link onClick={() => navigate('/newPark')}>New Park</Nav.Link>
+                                                            <Nav.Link onClick={() => navigate('/newHut')}>New Hut</Nav.Link>
                                                             {/* <Nav.Link href='/parks'>Park List</Nav.Link> */}
                                                             
 

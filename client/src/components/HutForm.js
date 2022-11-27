@@ -106,10 +106,24 @@ function HutForm(props) {
                     <Form.Label>Country:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select className='country-input' value={countryCode} required onChange={(event) => {
+                    <Form.Select className='country-input' style={{cursor:"pointer"}} value={countryCode} required onChange={(event) => {
+                        if (event.target.value === "") {
+                            setCountryCode('');
+                            setCountry('');
+                            setRegionCode('');
+                            setRegion('');
+                            setCity('');
+                            setCityMap('');
+                            return;
+                        }
                         setCountryCode(event.target.value);
-                        setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name)
+                        setCountry(Country.getAllCountries().filter(c => c.isoCode === event.target.value)[0].name);
+                        setRegionCode('');
+                        setRegion('');
+                        setCity('');
+                        setCityMap('');
                     }}>
+                        <option key={'None'} value={''}>{'None'}</option>
                         {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
                     </Form.Select>
                 </Col>
@@ -117,10 +131,20 @@ function HutForm(props) {
                     <Form.Label>Region:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select className='region-input' value={regionCode} required onChange={(event) => {
+                    <Form.Select className='region-input' style={countryCode ? {cursor:"pointer"} : {}} disabled={countryCode ? false : true} value={regionCode} required onChange={(event) => {
+                        if (event.target.value === "") {
+                            setRegionCode('');
+                            setRegion('');
+                            setCity('');
+                            setCityMap('');
+                            return;
+                        }
                         setRegionCode(event.target.value);
                         setRegion(State.getStatesOfCountry(countryCode).filter(r => r.isoCode === event.target.value)[0].name);
+                        setCity('');
+                        setCityMap('');
                     }}>
+                        <option key={'None'} value={''}>{'None'}</option>
                         {State.getStatesOfCountry(countryCode).map((r, j) => <option key={j} value={r.isoCode}>{r.name}</option>)}
                     </Form.Select>
                 </Col>
@@ -128,10 +152,16 @@ function HutForm(props) {
                     <Form.Label>City:</Form.Label>
                 </Col>
                 <Col >
-                    <Form.Select className='city-input' value={city} required onChange={(event) => {
+                    <Form.Select className='city-input' style={regionCode ? {cursor:"pointer"} : {}} disabled={regionCode ? false : true} value={city} required onChange={(event) => {
+                        if (event.target.value === "") {
+                            setCity('');
+                            setCityMap('');
+                            return;
+                        }
                         setCity(event.target.value);
                         setCityMap([City.getAllCities().filter(c => c.name === event.target.value)[0].latitude, City.getAllCities().filter(c => c.name === event.target.value)[0].longitude])
                     }}>
+                        <option key={'None'} value={''}>{'None'}</option>
                         {City.getCitiesOfState(countryCode, regionCode).map((ci, k) => <option key={k} value={ci.name}>{ci.name}</option>)}
                     </Form.Select>
                 </Col>
@@ -201,7 +231,7 @@ function HutForm(props) {
                 <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
             </Form.Group>
             <Button variant='success' type="submit" >Submit form</Button>
-            <Button variant='danger' onClick={() => navigate(`/`)}>Exit without saving</Button>
+            <Button variant='danger' style={{marginLeft: 5}} onClick={() => navigate(`/`)}>Exit without saving</Button>
         </Form>
     </>)
 }
