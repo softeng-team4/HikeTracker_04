@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { LocationMarker } from "./LocationMarker";
+import API, { modifyReferencePoints } from '../API';
 
 
 function ReferencePointForm(props) {
@@ -83,6 +84,8 @@ function ReferencePointForm(props) {
         event.preventDefault();
         console.log("Points: ", refPointList);
         handleShow();
+        await modifyReferencePoints(props.hike, refPointList);
+        setRefPointList([]);
     };
     
     useEffect(() => {
