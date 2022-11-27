@@ -24,8 +24,6 @@ const NavBar = (props) => {
                                     <Navbar.Toggle aria-controls="nav-toggle" />
                                     <Nav className="justify-content-end flex-grow-1 pe-3">
 
-
-
                                         <Navbar.Collapse className='justify-content-end' id="nav-toggle">
                                             {/* all user could see with login */}
                                             <Nav.Link href="/">Hike List</Nav.Link>
@@ -34,13 +32,14 @@ const NavBar = (props) => {
 
                                             {authObject.authUser &&
                                                 <>
+                                                  <Nav.Link href='/huts'>Explore huts</Nav.Link>
                                                     {authObject.authUser.role.toLowerCase() === 'local guide' &&
                                                         <>
                                                             <Nav.Link href="/hikeform">New Hike</Nav.Link>
                                                             <Nav.Link href='/newPark'>New Park</Nav.Link>
                                                             <Nav.Link href='/newHut'>New Hut</Nav.Link>
                                                             {/* <Nav.Link href='/parks'>Park List</Nav.Link> */}
-                                                            {/* <Nav.Link href='/huts'>Hut List</Nav.Link> */}
+                                                            
 
                                                         </>}
                                                 </>

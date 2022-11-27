@@ -82,6 +82,7 @@ const getUser = async (email) => {
 
 //Queries for the hike collection
 
+
 const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
     length, referencePoint, region, title, startPoint, author) => {
     const hike = {
@@ -351,6 +352,100 @@ const hikesList = async (filters, collection) => {
     return res;
 }
 
+
+const hutsList = async (filters, collection = "huts") => {
+    console.log("Huts List filters: ", filters);
+    const hutsRef = firestore.collection(db, collection);
+    let q;
+    let cont = 0;
+    const names = [];
+    const values = [];
+    const res = [];
+    if (filters.country !== undefined) {
+        names.push("country");
+        values.push(filters.country);
+        cont++;
+    }
+    if (filters.region !== undefined) {
+        names.push("region");
+        values.push(filters.region);
+        cont++;
+    }
+    if (filters.city !== undefined) {
+        names.push("city");
+        values.push(filters.city);
+        cont++;
+    }
+    if (filters.name !== undefined) {
+        names.push("name");
+        values.push(filters.difficulty);
+        cont++;
+    }
+    switch (cont) {
+        case 1:
+            console.log(cont);
+            q = firestore.query(hutsRef, firestore.where(names[0], '==', values[0]));
+            break;
+        case 2:
+            console.log(cont);
+            q = firestore.query(hutsRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]));
+            break;
+        case 3:
+            console.log(cont);
+            q = firestore.query(hutsRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
+            break;
+        case 4:
+            console.log(cont);
+            q = firestore.query(hutsRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
+            break;
+        default:
+            break;
+    }
+    if (cont === 0) {
+        const querySnapshot = await firestore.getDocs(hutsRef);
+        querySnapshot.forEach((doc) => {
+            const hut = {
+                id: doc.id,
+                name: doc.data().name,
+                country: doc.data().country,
+                region: doc.data().region,
+                city: doc.data().city, 
+                position: doc.data().position,
+                bedsNumber: doc.data().bedsNumber,
+                description: doc.data().description,
+                costPerNight: doc.data().costPerNight,
+                openingHour: doc.data().openingHour,
+                openingMinute: doc.data().openingMinute,
+                closingHour: doc.data().closingHour,
+                closingMinute: doc.data().closingMinute
+            }
+            res.push(hut);
+        });
+    } else {
+        const querySnapshot = await firestore.getDocs(q);
+        querySnapshot.forEach((doc) => {
+            const hut = {
+                id: doc.id,
+                name: doc.data().name,
+                country: doc.data().country,
+                region: doc.data().region,
+                city: doc.data().city, 
+                position: doc.data().position,
+                bedsNumber: doc.data().bedsNumber,
+                description: doc.data().description,
+                costPerNight: doc.data().costPerNight,
+                openingHour: doc.data().openingHour,
+                openingMinute: doc.data().openingMinute,
+                closingHour: doc.data().closingHour,
+                closingMinute: doc.data().closingMinute
+            }
+            res.push(hut);
+        });
+    }
+    console.log(res);
+    return res;
+}
+
 const addNewHut = async (hut, collection = "huts") => {
     console.log("API add new hut: ", hut);
     const hutsRef = firestore.collection(db, collection);
@@ -421,4 +516,4 @@ const getAllParkingLots = async (collection = "parkingLots") => {
 
 
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots };
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots , hutsList};

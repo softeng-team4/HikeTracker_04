@@ -7,8 +7,7 @@ import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import { FaRegEdit } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
-import { ModifyHike } from '../ModifyHike';
+import { useNavigate } from 'react-router-dom';
 
 
 const HikeTable = () => {
@@ -73,12 +72,6 @@ const HikeTable = () => {
         setShowInfoModal(true);
     }
 
-    const TurnModifyHikePage = (event) => {
-        event.preventDefault();
-        const id = event.target.id;
-        setHike(hikeList.find((h) => h.title === id)); // TODO change with id on final version
-
-    }
 
     return (
         <AuthenticationContext.Consumer>
@@ -86,7 +79,7 @@ const HikeTable = () => {
                 <>
                     {isLoading && <div className='loading-overlay'><Spinner className='spinner' animation="border" variant="light" /></div>}
                     {authObject.authUser && authObject.authUser.email ? setAuthor(authObject.authUser.email) : null}
-                    <Container fluid className='BrowserHikesContainer'>
+                    <Container fluid className='BrowserHikesContainer' style={isLoading ? {pointerEvents: 'none'} : null}>
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
                         <FilterForm setHikeList={setHikeList} isLoading={isLoading} setIsLoading={setIsLoading} handleEmailFilter={handleEmailFilter} />
@@ -101,7 +94,7 @@ const HikeTable = () => {
                                                 <ButtonGroup size='sm'>
                                                     <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
                                                         <Button
-                                                            id={hike.title} //TODO change with id on final version
+                                                            id={hike.id} //TODO change with id on final version
                                                             variant='success'
                                                             onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
                                                             Show more info
