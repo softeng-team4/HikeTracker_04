@@ -1,7 +1,8 @@
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline, useMap } from 'react-leaflet';
-import { useEffect, useState } from 'react';
-import L, { divIcon, marker } from 'leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet';
+import { useState } from 'react';
+import L from 'leaflet';
 import './leaflet.awesome-markers';
+import { Button } from 'react-bootstrap';
 
 
 function Map(props) {
@@ -54,12 +55,12 @@ function Map(props) {
     });
 
 
-    function MultipleMarkers() {
-        const map = useMap();
-        huts.length > 0 && huts.map((h) => {
-            h.position._lat && h.position._long && L.marker([h.position._lat, h.position._long], { icon: hutIcon}).bindPopup(h.name).addTo(map);
-        });
-    }
+    const handleHutClick = (ev) => {
+        ev.preventDefault();
+        const id = ev.target.id;
+        console.log('I click on popup with id=' + id);
+        props.handleLinkHut(id);
+    };
 
 
     // map click component 
@@ -115,7 +116,14 @@ function Map(props) {
                         End Point
                     </Popup>
                 </Marker> : ''}
-                <MultipleMarkers />
+                {huts && huts.map((h) =>
+                    h.position._lat && h.position._long && <Marker key={`mark_${h.name}`} position={[h.position._lat, h.position._long]} icon={hutIcon}>
+                        <Popup key={`pop_${h.name}`}>
+                            <Button key={`btn_${h.name}`} variant='link' id={h.id} onClick={(ev) => handleHutClick(ev)}>{`Link ${h.name} to hike`}</Button>
+                        </Popup>
+                    </Marker>
+                )
+                }
             </MapContainer>
         </>
     )

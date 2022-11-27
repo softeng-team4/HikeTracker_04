@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Form, InputGroup, Row, Table } from "react-bootstrap";
+import { Alert, Button, Col, Form, InputGroup, Row, Table } from "react-bootstrap";
 import { useLocation } from "react-router";
 import API from '../API';
 import { Map } from "./Map";
+import { FaRegTimesCircle } from 'react-icons/fa';
 
 function ModifyHike(props) {
     const location = useLocation();
     const points = JSON.parse(location.state.hike.referencePoint)
     // state to hold list of huts
     const [hutList, setHutList] = useState([])
+    // selected hut list
+    const [selectedHutList, setSelectedHutList] = useState([])
+    // list to hold button colors
+    const buttonColor = [
+        'outline-primary',
+        'outline-secondary',
+        'outline-success',
+        'outline-danger',
+        'outline-warning',
+        'outline-info',
+    ]
 
     useEffect(() => {
         const filters = {
@@ -20,7 +32,22 @@ function ModifyHike(props) {
         API.hutsList(filters).then(r => setHutList(r))
     }, []);
 
-    console.log(hutList)
+
+    const handleLinkHut = (hutId) => {
+        let tmp = hutList.find(h => h.id === hutId);
+        setSelectedHutList([...selectedHutList, tmp]);
+        setHutList(hutList.filter(h => h.id !== hutId));
+    };
+
+
+    const handleUnlinkHut = (ev) => {
+        ev.preventDefault();
+        const hutId = ev.currentTarget.id;
+        let tmp = selectedHutList.find(h => h.id === hutId);
+        setSelectedHutList(selectedHutList.filter(h => h.id !== hutId));
+        setHutList([...hutList, tmp]);
+    };
+
 
     return (
         <>
@@ -100,7 +127,8 @@ function ModifyHike(props) {
                     </Col>
                 </Form.Group>
 
-                {location.state.referencePoint !== '' ? <Map positions={points} startPoint={location.state.hike.startPoint} endPoint={location.state.hike.endPoint} huts={hutList} /> : ''}
+                {selectedHutList.length === 0 && <Alert variant='danger'>To link a hut to the hike select it on the map</Alert>}
+                {location.state.referencePoint !== '' ? <Map positions={points} startPoint={location.state.hike.startPoint} endPoint={location.state.hike.endPoint} huts={hutList} handleLinkHut={handleLinkHut} /> : ''}
 
                 {/* or show the parks and huts in the map, give a button in popup to select them as start or end or ref */}
 
@@ -130,7 +158,20 @@ function ModifyHike(props) {
                         </tr>
                     </tbody>
                 </Table>
-
+                <h5>Linked huts:</h5>
+                <Row>
+                    <Col>
+                        {selectedHutList.map((h, idx) => <Button 
+                                                            id={h.id} 
+                                                            key={`btn_${h.id}`} 
+                                                            className='m-1' 
+                                                            size='sm' 
+                                                            onClick={(ev) => handleUnlinkHut(ev)} 
+                                                            variant={buttonColor[idx < buttonColor.length ? idx : idx % buttonColor.length]}>
+                                                                {h.name}{' '}<FaRegTimesCircle key={`times_${h.id}`}/>
+                                                        </Button>)}
+                    </Col>
+                </Row>
             </Form>
         </>
     );
