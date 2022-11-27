@@ -33,8 +33,11 @@ const HikeTable = () => {
     const [author, setAuthor] = useState(undefined);
     // state to allow a local guide to modify his tasks
     const [filterByEmail, setFilterByEmail] = useState(false);
+    // state to hold touch swipe
+    const [touchStart, setTouchStart] = useState(0);
+    const [touchEnd, setTouchEnd] = useState(0);
     // function to retrieve page index
-    const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0)
+    const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0);
     // method to change page
     const nav = useNavigate();
 
@@ -73,18 +76,40 @@ const HikeTable = () => {
     }
 
 
+    const handleTouchStart = (e) => {
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchMove = (e) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+        if (touchStart - touchEnd > 150) {
+            // do your stuff here for left swipe
+            handlePageChange(index !== computeIndex() - 1 ? index+1 : 0);
+        }
+
+        if (touchStart - touchEnd < -150) {
+            // do your stuff here for right swipe
+            handlePageChange(index !== 0 ? index-1 : computeIndex() - 1);
+            
+        }
+    };
+
+
     return (
         <AuthenticationContext.Consumer>
             {(authObject) => (
                 <>
                     {isLoading && <div className='loading-overlay'><Spinner className='spinner' animation="border" variant="light" /></div>}
                     {authObject.authUser && authObject.authUser.email ? setAuthor(authObject.authUser.email) : null}
-                    <Container fluid className='BrowserHikesContainer' style={isLoading ? {pointerEvents: 'none'} : null}>
+                    <Container fluid className='BrowserHikesContainer' style={isLoading ? { pointerEvents: 'none' } : null}>
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
                         <FilterForm setHikeList={setHikeList} isLoading={isLoading} setIsLoading={setIsLoading} handleEmailFilter={handleEmailFilter} />
                         {subHikeList.map((hike, idx) =>
-                            <div key={`div_${idx}`}>
+                            <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                                 <Card key={`card_${idx}`}>
                                     <Card.Header key={`card_header_${idx}`}>
                                         <Row md={10}>
@@ -102,7 +127,7 @@ const HikeTable = () => {
                                                     </OverlayTrigger>
                                                     {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='danger'
                                                         onClick={() =>
-                                                            (nav('/modifyHike',{state:{ hike: hike }}))
+                                                            (nav('/modifyHike', { state: { hike: hike } }))
                                                         }><FaRegEdit /></Button> : null}
                                                 </ButtonGroup>
                                             </Col>

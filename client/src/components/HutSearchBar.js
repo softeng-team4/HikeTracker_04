@@ -13,8 +13,8 @@ const HutSearchBar = (props) => {
     }
 
     return(<Row>
-        <Col><GeoAreaForm geoArea={props.geoArea} setGeoArea={props.setGeoArea}/></Col>
-        <Col className='col-md-4 p-2'>
+        <Col xl={8}><GeoAreaForm geoArea={props.geoArea} setGeoArea={props.setGeoArea}/></Col>
+        <Col xl={4} className='col-md-4 p-2'>
             <Form action="/" method="get" autoComplete='off' onSubmit={onSubmit}>
                 <Row>
                     <Form.Label htmlFor="header-search">
