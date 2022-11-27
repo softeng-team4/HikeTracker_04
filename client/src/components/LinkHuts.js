@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
 import { FaRegTimesCircle } from 'react-icons/fa';
 import { useNavigate } from "react-router";
-import API from '../API';
+import API, { linkHuts } from '../API';
 import Spacer from "./BrowserHikeComponents/Spacer";
 import ConfirmModal from "./ConfirmModal";
 import { Map } from "./Map";
@@ -80,7 +80,7 @@ const LinkHuts = (props) => {
     // function to send changes of the hike
     const submitChanges = () => {
         selectedHutList.map(h => ({hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long}))
-        //API
+        linkHuts(selectedHutList.map(h => ({hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long})), props.hike.id);
         nav('/');
     }
 

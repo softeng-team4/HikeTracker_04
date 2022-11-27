@@ -2,7 +2,7 @@
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth');
-const { GeoPoint } = require('firebase/firestore');
+const { GeoPoint, getDoc, updateDoc } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
@@ -483,4 +483,11 @@ const hutsList = async (filters, collection = "huts") => {
     return res;
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, hutsList };
+const linkHuts = async(huts, hikeID, collection = "hike")=>{
+    console.log("API linkHuts: ", huts, hikeID);
+    await firestore.updateDoc(firestore.doc(db, collection, hikeID),{
+        linkedHuts: huts
+    });
+}
+
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, hutsList, linkHuts };
