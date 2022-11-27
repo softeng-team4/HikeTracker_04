@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
 import L from 'leaflet'
 import ParkingLot from "../model/ParkingLot";
+import Spacer from "./BrowserHikeComponents/Spacer";
 
 function ParkForm(props) {
     const [name, setName] = useState('');
@@ -89,6 +90,7 @@ function ParkForm(props) {
                 </Button>
             </Modal.Footer>
         </Modal>
+        <Spacer height='2rem' />
         <h2>Add A New Parking Lot</h2>
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{marginBottom:10}}>
             <Form.Group as={Row} className="mb-3">
