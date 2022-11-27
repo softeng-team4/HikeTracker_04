@@ -1,11 +1,26 @@
+import { useEffect, useState } from "react";
 import { Button, Col, Form, InputGroup, Row, Table } from "react-bootstrap";
 import { useLocation } from "react-router";
+import API from '../API';
 import { Map } from "./Map";
 
 function ModifyHike(props) {
     const location = useLocation();
-    console.log(location.state.hike.referencePoint)
     const points = JSON.parse(location.state.hike.referencePoint)
+    // state to hold list of huts
+    const [hutList, setHutList] = useState([])
+
+    useEffect(() => {
+        const filters = {
+            name: undefined,
+            country: undefined,
+            region: undefined,
+            city: undefined
+        };
+        API.hutsList(filters).then(r => setHutList(r))
+    }, []);
+
+    console.log(hutList)
 
     return (
         <>
@@ -85,8 +100,8 @@ function ModifyHike(props) {
                     </Col>
                 </Form.Group>
 
-                {location.state.referencePoint !== '' ? <Map positions={points} startPoint={location.state.hike.startPoint} endPoint={location.state.hike.endPoint} /> : ''}
-                
+                {location.state.referencePoint !== '' ? <Map positions={points} startPoint={location.state.hike.startPoint} endPoint={location.state.hike.endPoint} huts={hutList} /> : ''}
+
                 {/* or show the parks and huts in the map, give a button in popup to select them as start or end or ref */}
 
                 <Table id="point-table">

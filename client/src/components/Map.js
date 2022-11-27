@@ -6,51 +6,60 @@ import './leaflet.awesome-markers';
 
 function Map(props) {
 
-    
+
     const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
     const points = props.positions;
+    const huts = props.huts ? props.huts : [];
     // values to bounds the map
     const minLat = Math.min(...points.map(p => p.lat)) - 0.003;
     const minLng = Math.min(...points.map(p => p.lng)) - 0.003;
     const maxLat = Math.max(...points.map(p => p.lat)) + 0.003;
     const maxLng = Math.max(...points.map(p => p.lng)) + 0.003;
     // custom icons for the map markers
-    const startIcon = L.AwesomeMarkers.icon({ 
-        icon: 'play-circle', 
+    const startIcon = L.AwesomeMarkers.icon({
+        icon: 'play-circle',
         markerColor: 'green',
-        prefix: 'fa',  
+        prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x',
-        
+
     });
-    const endIcon = L.AwesomeMarkers.icon({ 
-        icon: 'stop-circle', 
-        markerColor: 'red', 
-        prefix: 'fa', 
+    const endIcon = L.AwesomeMarkers.icon({
+        icon: 'stop-circle',
+        markerColor: 'red',
+        prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
-    const refIcon = L.AwesomeMarkers.icon({ 
-        icon: 'info-circle', 
-        markerColor: 'blue', 
-        prefix: 'fa', 
+    const refIcon = L.AwesomeMarkers.icon({
+        icon: 'info-circle',
+        markerColor: 'blue',
+        prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
-    const hutIcon = L.AwesomeMarkers.icon({ 
-        icon: 'house', 
-        markerColor: 'blue', 
-        prefix: 'fa', 
+    const hutIcon = L.AwesomeMarkers.icon({
+        icon: 'home',
+        markerColor: 'blue',
+        prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
-    const parkIcon = L.AwesomeMarkers.icon({ 
-        icon: 'parking', 
-        markerColor: 'blue', 
-        prefix: 'fa', 
+    const parkIcon = L.AwesomeMarkers.icon({
+        icon: 'parking',
+        markerColor: 'blue',
+        prefix: 'fa',
         iconColor: 'black',
         extraClasses: 'fas fa-2x'
     });
+
+
+    function MultipleMarkers() {
+        const map = useMap();
+        huts.length > 0 && huts.map((h) => {
+            h.position._lat && h.position._long && L.marker([h.position._lat, h.position._long], { icon: hutIcon}).bindPopup(h.name).addTo(map);
+        });
+    }
 
 
     // map click component 
@@ -106,6 +115,7 @@ function Map(props) {
                         End Point
                     </Popup>
                 </Marker> : ''}
+                <MultipleMarkers />
             </MapContainer>
         </>
     )
