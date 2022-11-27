@@ -1,32 +1,33 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, InputGroup, Modal, Row, Table } from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { Map } from "./Map";
+import StaticHikeInfo from "./StaticHikeInfo";
 import API from '../API';
 
-
 function ModifyHike(props) {
-    const location = useLocation();
+
+    const hike = props.hike;
+    const points = JSON.parse(hike.referencePoint);
     const navigate = useNavigate();
-    const points = JSON.parse(location.state.hike.referencePoint)
     const [hutList, setHutList] = useState([])
     const [parkingList, setParkingList] = useState([])
     const [show, setShow] = useState(false);
     const [start, setStart] = useState('')
     const [end, setEnd] = useState('')
-    const [startPoint, setStartPoint] = useState(location.state.hike.startPoint)
-    const [endPoint, setEndPoint] = useState(location.state.hike.endPoint)
+    const [startPoint, setStartPoint] = useState(hike.startPoint)
+    const [endPoint, setEndPoint] = useState(hike.endPoint)
     const [modal, setModal] = useState('')
 
     useEffect(() => {
         const filters = {
             name: undefined,
-            country: location.state.hike.country,
-            region: location.state.hike.region,
-            city: location.state.hike.city
+            country: hike.country,
+            region: hike.region,
+            city: hike.city
         };
         API.hutsList(filters).then(r => setHutList(r))
-        API.getAllParkingLots().then(p => setParkingList(p.filter(p => p.city === location.state.hike.city)))
+        API.getAllParkingLots().then(p => setParkingList(p.filter(p => p.city === hike.city)))
     }, [])
     console.log('hut', hutList)
     console.log('park', parkingList)
@@ -45,15 +46,15 @@ function ModifyHike(props) {
         modal === 'start' ? setStartPoint({
             latitude: currentStart.position.latitude,
             longitude: currentStart.position.longitude,
-            altitude: location.state.hike.startPoint.altitude,
-            time: location.state.hike.startPoint.time,
+            altitude: hike.startPoint.altitude,
+            time: hike.startPoint.time,
             id: start,
             name: currentStart.name
         }) : setEndPoint({
             latitude: currentEnd.position.latitude,
             longitude: currentEnd.position.longitude,
-            altitude: location.state.hike.startPoint.altitude,
-            time: location.state.hike.startPoint.time,
+            altitude: hike.startPoint.altitude,
+            time: hike.startPoint.time,
             id: end,
             name: currentEnd.name
         })
@@ -63,10 +64,10 @@ function ModifyHike(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        await props.modifyHike(location.state.hike.id, location.state.hike.ascent, location.state.hike.city, location.state.hike.country,
-            location.state.hike.description, location.state.hike.difficulty, endPoint, location.state.hike.expectedTime,
-            location.state.hike.length, location.state.hike.referencePoint, location.state.hike.region, location.state.hike.title, startPoint,
-            location.state.hike.author)
+        await props.modifyHike(hike.id, hike.ascent, hike.city, hike.country,
+            hike.description, hike.difficulty, endPoint, hike.expectedTime,
+            hike.length, hike.referencePoint, hike.region, hike.title, startPoint,
+            hike.author)
         setStart('')
         setEnd('')
         setModal('')
@@ -127,83 +128,11 @@ function ModifyHike(props) {
                     </Button>}
                 </Modal.Footer>
             </Modal>
+            
             <Form noValidate className="mt-3">
-                <Form.Group as={Row} className="mb-3">
-                    <Col sm={2}>
-                        <Form.Label>Title:</Form.Label>
-                    </Col>
-                    <Col>
-                        <Form.Control className='title-input' value={location.state.hike.title} required disabled type='text' />
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Col sm={2}>
-                        <Form.Label>Difficulty:</Form.Label>
-                    </Col>
-                    <Col >
-                        <Form.Control className='difficulty-input' required disabled value={location.state.hike.difficulty} />
-                    </Col><Col sm={2}>
-                        <Form.Label>Expected time:</Form.Label>
-                    </Col>
-                    <Col >
-                        <InputGroup>
-                            <Form.Control className='expTime-input' required disabled type='number' value={location.state.hike.expectedTime} />
-                            <InputGroup.Text>minutes</InputGroup.Text>
-                        </InputGroup>
-                    </Col>
+                <StaticHikeInfo hike={hike} />
 
-                </Form.Group>
-
-
-
-                <Form.Group as={Row} className="mb-3">
-                    <Col sm={2}>
-                        <Form.Label>Length:</Form.Label>
-                    </Col>
-                    <Col >
-                        <InputGroup>
-                            <Form.Control className='length-input' required disabled type='number' value={location.state.hike.length} />
-                            <InputGroup.Text>meters</InputGroup.Text>
-                        </InputGroup>
-                    </Col><Col sm={2}>
-                        <Form.Label>Ascent:</Form.Label>
-                    </Col>
-                    <Col >
-                        <InputGroup>
-                            <Form.Control className='ascent-input' required disabled type='number' value={location.state.hike.ascent} />
-                            <InputGroup.Text>meters</InputGroup.Text>
-                        </InputGroup>
-                    </Col>
-                </Form.Group>
-
-
-
-                <Form.Group as={Row} className="mb-3">
-
-                </Form.Group>
-
-                <Form.Group as={Row} className="mb-3">
-                    <Col sm={2}>
-                        <Form.Label>Country:</Form.Label>
-                    </Col>
-                    <Col >
-                        <Form.Control className='country-input' required disabled value={location.state.hike.country} />
-                    </Col>
-                    <Col sm={2}>
-                        <Form.Label>Region:</Form.Label>
-                    </Col>
-                    <Col >
-                        <Form.Control className='region-input' required disabled value={location.state.hike.country} />
-                    </Col>
-                    <Col sm={2}>
-                        <Form.Label>City:</Form.Label>
-                    </Col>
-                    <Col >
-                        <Form.Control className='city-input' required disabled value={location.state.hike.country} />
-                    </Col>
-                </Form.Group>
-
-                {location.state.referencePoint !== '' ?
+                {hike.referencePoint !== '' ?
                     <Map positions={points} startPoint={startPoint} endPoint={endPoint} hutList={hutList} parkingList={parkingList} />
                     : <div>No Track Inside</div>}
 
@@ -222,17 +151,17 @@ function ModifyHike(props) {
                     <tbody>
                         <tr>
                             <td>Start point</td>
-                            <td>{location.state.hike.startPoint.latitude}</td>
-                            <td>{location.state.hike.startPoint.longitude}</td>
-                            <td>{location.state.hike.startPoint.altitude}</td>
+                            <td>{hike.startPoint.latitude}</td>
+                            <td>{hike.startPoint.longitude}</td>
+                            <td>{hike.startPoint.altitude}</td>
                             <td>{startPoint.name === null ? '' : startPoint.name}</td>
                             <td><Button onClick={(event) => { handleShow(); setModal('start') }}>Link</Button></td>
                         </tr>
                         <tr>
                             <td>End point</td>
-                            <td>{location.state.hike.endPoint.latitude}</td>
-                            <td>{location.state.hike.endPoint.longitude}</td>
-                            <td>{location.state.hike.endPoint.altitude}</td>
+                            <td>{hike.endPoint.latitude}</td>
+                            <td>{hike.endPoint.longitude}</td>
+                            <td>{hike.endPoint.altitude}</td>
                             <td>{endPoint.name === null ? '' : endPoint.name}</td>
                             <td><Button onClick={(event) => { handleShow(); setModal('end') }}>Link</Button></td>
                         </tr>
