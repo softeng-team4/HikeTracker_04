@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Form, Button, Row, Col, Alert } from 'react-bootstrap';
+import { Modal, Form, Button, Row, Col, Alert, Table } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
@@ -35,7 +35,7 @@ function ReferencePointForm(props) {
         ), [0., 0.]).map(v => v / points.length);
     };
 
-    const checkPosInsideTrack = async(r = 5)=>{
+    const checkPosInsideTrack = async(r = 50)=>{
         var min = 100;
         var p = undefined;
         points.forEach((pos)=>{
@@ -158,6 +158,24 @@ function ReferencePointForm(props) {
                 <LocationMarker position={position} setPosition={setPosition} />
             </MapContainer>
             {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
+            <Table id="ref_point-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>latitude</th>
+                        <th>longitude</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {refPointList.map(rp =>
+                        <tr key={rp.name}>
+                            <td>{rp.name}</td>
+                            <td>{rp.lat}</td>
+                            <td>{rp.lng}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </Table>
             <Button type="submit" onClick={(ev) => AddRefPoint(ev)}>Add point</Button>
             <Button variant='success' type="submit" >Submit changes</Button>
         </Form>
