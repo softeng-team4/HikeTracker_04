@@ -151,16 +151,16 @@ function ModifyHike(props) {
                     <tbody>
                         <tr>
                             <td>Start point</td>
-                            <td>{hike.startPoint.latitude}</td>
-                            <td>{hike.startPoint.longitude}</td>
+                            <td>{startPoint.latitude}</td>
+                            <td>{startPoint.longitude}</td>
                             <td>{hike.startPoint.altitude}</td>
                             <td>{startPoint.name === null ? '' : startPoint.name}</td>
                             <td><Button onClick={(event) => { handleShow(); setModal('start') }}>Link</Button></td>
                         </tr>
                         <tr>
                             <td>End point</td>
-                            <td>{hike.endPoint.latitude}</td>
-                            <td>{hike.endPoint.longitude}</td>
+                            <td>{endPoint.latitude}</td>
+                            <td>{endPoint.longitude}</td>
                             <td>{hike.endPoint.altitude}</td>
                             <td>{endPoint.name === null ? '' : endPoint.name}</td>
                             <td><Button onClick={(event) => { handleShow(); setModal('end') }}>Link</Button></td>
