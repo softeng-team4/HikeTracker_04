@@ -538,14 +538,15 @@ const getAllParkingLots = async (collection = "parkingLots") => {
     return res;
 }
 const modifyHike = async (id, ascent, city, country, description, difficulty, endPoint, expectedTime,
-    length, referencePoint, region, title, startPoint, author) => {
-    await deleteDoc(doc(db, "hike", id));
+    length, referencePoint, region, title, startPoint, author, collection="hike") => {
+    await deleteDoc(doc(db, collection, id));
     const hike = {
         title: title, country: country, region: region, city: city, description: description, difficulty: difficulty, expectedTime: expectedTime,
         length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: referencePoint, author: author
     }
+    console.log("Hike:"+ hike)
     // const hikeRef = firestore.collection(db, 'hike')
-    await firestore.setDoc(doc(db, 'hike', id), hike);
+    await firestore.setDoc(doc(db, collection, id), hike);
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 
