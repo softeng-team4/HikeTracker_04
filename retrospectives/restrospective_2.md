@@ -22,7 +22,7 @@ sections:
 
 - Nr of hours planned vs. spent (as a team)
 
-72h 45m planned vs. 72h 15m spent
+72h 45m planned vs. 72h 25m spent
 
 **Remember**a story is done ONLY if it fits the Definition of Done:
  
@@ -35,12 +35,19 @@ sections:
 
 ### Detailed statistics
 
-| Story | # Tasks | Points | Hours est. | Hours actual |
-| ----- | ------- | ------ | ---------- | ------------ |
-| _#0_  |         |        |            |              |
-| n     |         |        |            |              |
+| Story                   | # Tasks | Points | Hours est. | Hours actual |
+| ----------------------- | ------- | ------ | ---------- | ------------ |
+| _#0_                    | 20      |        | 32h 45m    | 34h 45m      |
+| See hikes' details      | 2       | 5      | 3h         | 3h 15m       |
+| Describe hut            | 4       | 8      | 5h         | 5h 5m        |
+| Describe parking        | 4       | 8      | 4h 30m     | 4h 45m       |
+| Search hut              | 4       | 5      | 7h         | 7h 15m       |
+| Link start/arrival      | 4       | 8      | 8h 30m     | 7h           |
+| Link hut                | 4       | 8      | 4h 30m     | 4h 10m       |
+| Define reference points | 4       | 5      | 7h 30m     | 6h 10m       |
    
 
+> Note that issue fix and docker setup are included in story `#0`.
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
 - Hours per task average, standard deviation (estimate and actual)
