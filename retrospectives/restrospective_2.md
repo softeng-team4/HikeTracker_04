@@ -13,8 +13,16 @@ sections:
 ### Macro statistics
 
 - Number of stories committed vs. done 
+
+7 stories committed vs. 7 stories done
+
 - Total points committed vs. done 
+
+47 points committed vs. 47 points done
+
 - Nr of hours planned vs. spent (as a team)
+
+72h 45m planned vs. 72h 15m spent
 
 **Remember**a story is done ONLY if it fits the Definition of Done:
  
@@ -27,10 +35,10 @@ sections:
 
 ### Detailed statistics
 
-| Story  | # Tasks | Points | Hours est. | Hours actual |
-|--------|---------|--------|------------|--------------|
-| _#0_   |         |       |            |              |
-| n      |         |        |            |              |
+| Story | # Tasks | Points | Hours est. | Hours actual |
+| ----- | ------- | ------ | ---------- | ------------ |
+| _#0_  |         |        |            |              |
+| n     |         |        |            |              |
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
@@ -63,8 +71,7 @@ The late development start caused some of the horizontal tasks (especially those
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
-The sprint planning phase needs to be much swifter, even at the cost of some accuracy in estimation. During this sprint, the yearning for accurate estimation
-caused a delay of the whole development phase. This resulted in a rather rushed development and few time available for coordination activities
+The sprint planning phase needs to be much swifter, even at the cost of some accuracy in estimation. During this sprint, the yearning for accurate estimation caused a delay of the whole development phase. This resulted in a rather rushed development and few time available for coordination activities
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
 
@@ -72,8 +79,7 @@ It has been made better use of some basic form of internal documentation to bett
   
 - Which ones you were not able to achieve? Why?
 
-There hasn't been a tangible improvement in the communication department, since the late start put the team into a hurry to complete the tasks defined in the 
-planning phase.
+There hasn't been a tangible improvement in the communication department, since the late start put the team into a hurry to complete the tasks defined in the planning phase.
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
