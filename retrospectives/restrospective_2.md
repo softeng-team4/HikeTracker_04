@@ -51,22 +51,27 @@ sections:
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
 - Hours per task average, standard deviation (estimate and actual)
+  - Estimated hours per task = 1.58
+  - Actual hours per task = 1.57
+  - Estimated standard deviation = 0.90
+  - Actual standard deviation = 1.39
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1
+  - TER = 0.01
 
   
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated
-  - Total hours spent
-  - Nr of automated unit test cases 
+  - Total hours estimated: 7.75
+  - Total hours spent: 5.50
+  - Nr of automated unit test cases: 6
   - Coverage (if available)
 - E2E testing:
-  - Total hours estimated
-  - Total hours spent
+  - Total hours estimated: 7.25
+  - Total hours spent: 3.75
 - Code review 
-  - Total hours estimated 
-  - Total hours spent
+  - Total hours estimated: 3 
+  - Total hours spent: 3.083
   
 
 
