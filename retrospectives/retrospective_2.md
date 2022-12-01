@@ -24,7 +24,7 @@ sections:
 
 72h planned vs. 72h 25m spent
 
-**Remember**a story is done ONLY if it fits the Definition of Done:
+**Remember** a story is done ONLY if it fits the Definition of Done:
  
 - Unit Tests passing
 - Code review completed
