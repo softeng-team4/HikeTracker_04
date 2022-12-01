@@ -1,4 +1,4 @@
-TEMPLATE FOR RETROSPECTIVE (Team ##)
+TEMPLATE FOR RETROSPECTIVE (Team 4)
 =====================================
 
 The retrospective should include _at least_ the following
@@ -22,7 +22,7 @@ sections:
 
 - Nr of hours planned vs. spent (as a team)
 
-72h 45m planned vs. 72h 25m spent
+72h planned vs. 72h 25m spent
 
 **Remember**a story is done ONLY if it fits the Definition of Done:
  
