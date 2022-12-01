@@ -96,6 +96,7 @@ There hasn't been a tangible improvement in the communication department, since 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
  - Have a quicker estimation phase in order to start the development earlier. This would give ideas more time to be properly shaped and discussed among the team and would let the team have an easier time planning coordination activities 
+ - When planning, think carefully about the composition of each page and have a general style. When assigning tasks, in this sprint, develop their priorities. The parent task should have a deadline to facilitate the start and progress of the following tasks.
 
 - One thing you are proud of as a Team!!
 
