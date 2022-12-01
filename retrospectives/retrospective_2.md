@@ -41,7 +41,7 @@ sections:
 | See hikes' details      | 2       | 5      | 3h         | 3h 15m       |
 | Describe hut            | 4       | 8      | 5h         | 5h 5m        |
 | Describe parking        | 4       | 8      | 4h 30m     | 4h 45m       |
-| Search hut              | 4       | 5      | 7h         | 7h 15m       |
+| Search hut              | 4       | 5      | 6h 15m     | 7h 15m       |
 | Link start/arrival      | 4       | 8      | 8h 30m     | 7h           |
 | Link hut                | 4       | 8      | 4h 30m     | 4h 10m       |
 | Define reference points | 4       | 5      | 7h 30m     | 6h 10m       |
@@ -51,12 +51,12 @@ sections:
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
 - Hours per task average, standard deviation (estimate and actual)
-  - Estimated hours per task = 1.58
-  - Actual hours per task = 1.57
+  - Estimated hours per task = 72/46 = 1.57
+  - Actual hours per task = 72.42/46 = 1.57
   - Estimated standard deviation = 0.90
   - Actual standard deviation = 1.39
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1
-  - TER = 0.01
+  - TER = -0.01
 
   
 ## QUALITY MEASURES 
