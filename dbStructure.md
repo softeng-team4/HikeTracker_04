@@ -6,6 +6,22 @@
 | firstName | string |
 | lastName  | string |
 | role      | string |
+| reqRole   | string |
+| reqStatus | string |
+| reqDocumentation | string |
+| respDate      | string |
+| hut       | string |
+
+**reqRole possible values:** "hut worker", "local guide"
+
+**reqStatus possible values:** "pending", "accepted", "rejected"
+
+**reqDocumentaion:** data that goes along with the request, it can be represented by an image or by a json object
+
+**respDate:** date of rejection/approval of the last request
+
+**hut:** name of the hut that a hut worker works to, written upon approval of a request for a hut worker account (hut worker exclusive)
+
 
 # hike
 
@@ -23,6 +39,14 @@
 | startPoint     | map    |
 | endPoint       | map    |
 | referencePoint | string |
+| linkedHuts     | string |
+| condition      | string |
+| condDetails    | string |
+
+**condition possible values:** "open","closed","partly blocked","requires special gear"
+
+**condDetails:** only available if the afromentioned condition has a value different than "open"
+
 
 startPoint and endPoint are maps with the following elements:
 - altitude: number
@@ -45,6 +69,10 @@ The "name" attribute is present only if that point is actually a reference point
 | region        | string   |
 | city          | string   |
 | position      | geopoint |
+| altitude      | number   |
+| phone         | string   |
+| email         | string   |
+| website       | string   |
 | bedsNumber    | number   |
 | costPerNight  | number   |
 | description   | string   |
@@ -52,6 +80,8 @@ The "name" attribute is present only if that point is actually a reference point
 | openingMinute | number   |
 | closingHour   | number   |
 | closingMinute | number   |
+
+**website:** this field is optional
 
 # parkingLots
 
