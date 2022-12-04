@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import API from './API.js'
 import AuthenticationContext from './components/AuthenticationContext';
 import { LoginForm } from './components/LoginComponents';
-import { SigninForm } from './components/SigninComponents';
+import { SignupForm } from './components/SignupComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import {BrowserHuts} from './components/BrowserHuts'
 
@@ -125,7 +125,7 @@ function App() {
             <Route path='/' element={<AppLayout />} >
               <Route index element={<BrowserHikes />}></Route>
               <Route path='login' element={authUser ? <Navigate replace to='/' /> : <LoginForm login={login} />} />
-              <Route path='signup' element={<SigninForm signup={signup} />}></Route>
+              <Route path='signup' element={<SignupForm signup={signup} />}></Route>
               {/* here are the routes with local guide */}
               <Route path='hikeform' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' /> : ''} />
               <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' /> : ''} />
