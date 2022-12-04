@@ -97,3 +97,9 @@ body {
   top: 50%;
   left: 50%;
 }
+
+/* AdditionalHikeInfoModal */
+
+.addInfo {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
