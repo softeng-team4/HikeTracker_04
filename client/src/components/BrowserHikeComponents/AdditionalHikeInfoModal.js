@@ -11,7 +11,7 @@ const AdditionalHikeInfoModal = (props) => {
 
     return (
         <Modal {...props} size='lg' aria-labelledby="contained-modal-title-vcenter" centered>
-            <Modal.Header className='m-0'>
+            <Modal.Header className='addInfo m-0'>
                 <Col>
                     <Modal.Title>Hike:&nbsp;{props.hike.title}</Modal.Title>
                     <Map positions={points} startPoint={props.hike.startPoint} endPoint={props.hike.endPoint} huts={props.hike.linkedHuts ? props.hike.linkedHuts : []} isDisplay={true} />
@@ -26,7 +26,7 @@ const AdditionalHikeInfoModal = (props) => {
                 {props.hike.startPoint.name && <Col><strong>Start Point:</strong>&nbsp;{props.hike.startPoint.name}</Col>}
                 {props.hike.endPoint.name && <Col><strong>End Point:</strong>&nbsp;{props.hike.endPoint.name}</Col>}
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer className='addInfo'>
                 <Button size='sm' onClick={props.onHide}>Close</Button>
             </Modal.Footer>
         </Modal>
