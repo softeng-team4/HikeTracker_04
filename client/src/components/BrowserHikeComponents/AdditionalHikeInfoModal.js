@@ -52,8 +52,8 @@ const AdditionalHikeInfoModal = (props) => {
                     <Col><strong>Length:</strong>&nbsp;{(parseFloat(props.hike.length) / 1000.).toFixed(1)}&nbsp;km</Col>
                     <Col><strong>Ascent:</strong>&nbsp;{parseInt(props.hike.ascent)}&nbsp;m</Col>
                     <Col><strong>Estimated Time:</strong>&nbsp;{props.hike.expectedTime}&nbsp;min</Col>
-                    {props.hike.startPoint.name && <Col><strong>Start Point:</strong>&nbsp;<Button variant='link' onClick={() => {handleClickOnStartEndPoint(props.hike.startPoint)}}>{props.hike.startPoint.name}</Button></Col>}
-                    {props.hike.endPoint.name && <Col><strong>End Point:</strong>&nbsp;<Button  variant='link' onClick={() => {handleClickOnStartEndPoint(props.hike.endPoint)}}>{props.hike.endPoint.name}</Button></Col>}
+                    {props.hike.startPoint.name && <Col><strong>Start Point:</strong>&nbsp;<span className='mylink' onClick={() => {handleClickOnStartEndPoint(props.hike.startPoint)}}>{props.hike.startPoint.name}</span></Col>}
+                    {props.hike.endPoint.name && <Col><strong>End Point:</strong>&nbsp;<span className='mylink' onClick={() => {handleClickOnStartEndPoint(props.hike.endPoint)}}>{props.hike.endPoint.name}</span></Col>}
                 </Modal.Body>
                 <Modal.Footer className='addInfo'>
                     <Button size='sm' onClick={props.onHide}>Close</Button>

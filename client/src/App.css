@@ -63,6 +63,15 @@ body {
   color: gray;
 }
 
+.mylink {
+  text-decoration: underline !important;
+  color: blue !important;
+}
+
+.mylink:hover {
+  cursor: pointer;
+}
+
 /* FilterForm */
 
 .btn-geoArea {
