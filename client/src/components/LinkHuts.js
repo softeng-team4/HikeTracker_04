@@ -16,7 +16,6 @@ const LinkHuts = (props) => {
     const nav = useNavigate();
     // hike to be modified
     const hike = props.hike;
-    console.log(hike)
     // coordinates of the hike track
     const points = JSON.parse(hike.referencePoint);
     // state to hold list of huts
