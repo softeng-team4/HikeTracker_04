@@ -89,7 +89,7 @@ const LinkHuts = (props) => {
     // function to send changes of the hike
     const submitChanges = () => {
         selectedHutList.map(h => ({hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long}))
-        linkHuts(selectedHutList.map(h => ({hutId: h.id, name: h.name, position: h.position})), props.hike.id);
+        linkHuts(selectedHutList.map(h => ({id: h.id, name: h.name, position: h.position})), props.hike.id);
         nav('/');
     }
 
