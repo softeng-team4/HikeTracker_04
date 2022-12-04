@@ -6,7 +6,6 @@ import { Map } from '../Map';
 const HutOrParkLotModal = (props) => {
 
     const hOrP = props.hutOrParkLot;
-    console.log(hOrP);
 
     return (
         <Modal {...props} size='lg' aria-labelledby="contained-modal-title-vcenter" centered>
