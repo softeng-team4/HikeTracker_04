@@ -14,7 +14,7 @@ const AdditionalHikeInfoModal = (props) => {
             <Modal.Header className='m-0'>
                 <Col>
                     <Modal.Title>Hike:&nbsp;{props.hike.title}</Modal.Title>
-                    <Map positions={points} startPoint={points.map(p => ({latitude: p.lat, longitude: p.lng}))[0]} endPoint={points.map(p => ({latitude: p.lat, longitude: p.lng}))[points.length - 1]} />
+                    <Map positions={points} startPoint={props.hike.startPoint} endPoint={props.hike.endPoint} huts={props.hike.linkedHuts ? props.hike.linkedHuts : []} isDisplay={true} />
                 </Col>
             </Modal.Header>
             <Modal.Body>
@@ -23,6 +23,8 @@ const AdditionalHikeInfoModal = (props) => {
                 <Col><strong>Length:</strong>&nbsp;{(parseFloat(props.hike.length) / 1000.).toFixed(1)}&nbsp;km</Col>
                 <Col><strong>Ascent:</strong>&nbsp;{parseInt(props.hike.ascent)}&nbsp;m</Col>
                 <Col><strong>Estimated Time:</strong>&nbsp;{props.hike.expectedTime}&nbsp;min</Col>
+                {props.hike.startPoint.name && <Col><strong>Start Point:</strong>&nbsp;{props.hike.startPoint.name}</Col>}
+                {props.hike.endPoint.name && <Col><strong>End Point:</strong>&nbsp;{props.hike.endPoint.name}</Col>}
             </Modal.Body>
             <Modal.Footer>
                 <Button size='sm' onClick={props.onHide}>Close</Button>
