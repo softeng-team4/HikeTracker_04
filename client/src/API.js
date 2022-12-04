@@ -557,11 +557,11 @@ const linkHuts = async (huts, hikeID, collection = "hike") => {
     });
 }
 
-const updateCoditin = async (condition, condDetails, hikeID, collection = "hike") => {
+const updateCondition = async (condition, condDetails, hikeID, collection = "hike") => {
     await firestore.updateDoc(firestore.doc(db, collection, hikeID), {
         condition: condition,
         condDetails: condDetails
     });
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCoditin };
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition };
