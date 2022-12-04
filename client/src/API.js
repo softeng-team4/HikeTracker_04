@@ -2,7 +2,7 @@
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth');
-const { GeoPoint, updateDoc, doc, deleteDoc } = require('firebase/firestore');
+const { GeoPoint, updateDoc, doc, deleteDoc, collection } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
@@ -450,6 +450,10 @@ const hutsList = async (filters, collection = "huts") => {
     return res;
 }
 
+const getHutById = async (hutID, collection = 'huts') => {
+    return {id: hutID, ...(await firestore.getDoc(firestore.doc(db, collection, hutID))).data()};
+}
+
 const addNewHut = async (hut, collection = "huts") => {
     console.log("API add new hut: ", hut);
     const hutsRef = firestore.collection(db, collection);
@@ -541,6 +545,11 @@ const getAllParkingLots = async (collection = "parkingLots") => {
     console.log(res);
     return res;
 }
+
+const getParkingLotById = async (parkID, collection = 'parkingLots') => {
+    return {id: parkID, ...(await firestore.getDoc(firestore.doc(db, collection, parkID))).data()};
+}
+
 const modifyHike = async (id, ascent, city, country, description, difficulty, endPoint, expectedTime,
     length, referencePoint, region, title, startPoint, author, collection="hike") => {
     await deleteDoc(doc(db, collection, id));
@@ -561,4 +570,4 @@ const linkHuts = async(huts, hikeID, collection = "hike")=>{
     });
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike,  modifyReferencePoints, linkHuts };
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike,  modifyReferencePoints, linkHuts, getHutById, getParkingLotById };
