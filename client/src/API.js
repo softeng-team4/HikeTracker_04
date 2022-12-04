@@ -268,7 +268,8 @@ const hikesList = async (filters, collection) => {
                                 region: doc.data().region,
                                 title: doc.data().title,
                                 startPoint: doc.data().startPoint,
-                                author: doc.data().author
+                                author: doc.data().author,
+                                linkedHuts: doc.data().linkedHuts
                             };
                             res.push(hike);
                         }
@@ -290,7 +291,8 @@ const hikesList = async (filters, collection) => {
                         region: doc.data().region,
                         title: doc.data().title,
                         startPoint: doc.data().startPoint,
-                        author: doc.data().author
+                        author: doc.data().author,
+                        linkedHuts: doc.data().linkedHuts
                     };
                     res.push(hike);
                 }
@@ -319,7 +321,8 @@ const hikesList = async (filters, collection) => {
                                 region: doc.data().region,
                                 title: doc.data().title,
                                 startPoint: doc.data().startPoint,
-                                author: doc.data().author
+                                author: doc.data().author,
+                                linkedHuts: doc.data().linkedHuts
                             };
                             res.push(hike);
                         }
@@ -341,7 +344,8 @@ const hikesList = async (filters, collection) => {
                         region: doc.data().region,
                         title: doc.data().title,
                         startPoint: doc.data().startPoint,
-                        author: doc.data().author
+                        author: doc.data().author,
+                        linkedHuts: doc.data().linkedHuts
                     };
                     res.push(hike);
                 }
