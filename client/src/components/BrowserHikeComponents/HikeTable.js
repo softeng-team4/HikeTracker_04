@@ -7,6 +7,7 @@ import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import { FaRegEdit } from 'react-icons/fa';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -87,13 +88,13 @@ const HikeTable = () => {
     const handleTouchEnd = () => {
         if (touchStart - touchEnd > 150) {
             // do your stuff here for left swipe
-            handlePageChange(index !== computeIndex() - 1 ? index+1 : 0);
+            handlePageChange(index !== computeIndex() - 1 ? index + 1 : 0);
         }
 
         if (touchStart - touchEnd < -150) {
             // do your stuff here for right swipe
-            handlePageChange(index !== 0 ? index-1 : computeIndex() - 1);
-            
+            handlePageChange(index !== 0 ? index - 1 : computeIndex() - 1);
+
         }
     };
 
@@ -125,10 +126,14 @@ const HikeTable = () => {
                                                             Show more info
                                                         </Button>
                                                     </OverlayTrigger>
-                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='danger'
+                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='primary'
                                                         onClick={() =>
                                                             (nav('/modifyHike', { state: { hike: hike } }))
                                                         }><FaRegEdit /></Button> : null}
+                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='danger'
+                                                    // onClick={() =>
+                                                    //     (nav('/modifyHike', { state: { hike: hike } }))}
+                                                    ><RiDeleteBin6Line /></Button> : null}
                                                 </ButtonGroup>
                                             </Col>
                                         </Row>
