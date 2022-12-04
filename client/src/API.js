@@ -537,6 +537,7 @@ const getAllParkingLots = async (collection = "parkingLots") => {
     console.log(res);
     return res;
 }
+
 const modifyHike = async (id, ascent, city, country, description, difficulty, endPoint, expectedTime,
     length, referencePoint, region, title, startPoint, author, collection = "hike") => {
     await deleteDoc(doc(db, collection, id));
@@ -564,4 +565,35 @@ const updateCondition = async (condition, condDetails, hikeID, collection = "hik
     });
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition };
+const getHikesByLinkHutWorker = async (hutId, collection = "hike") => {
+    const hikesRef = firestore.collection(db, collection)
+    const q = firestore.query(hikesRef, firestore.where('linkHuts', 'in', hutId));
+    const querySnapshot = await firestore.getDocs(q);
+    const res = [];
+    querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        const hike = {
+            id: doc.id,
+            ascent: doc.data().ascent,
+            city: doc.data().city,
+            country: doc.data().country,
+            description: doc.data().description,
+            difficulty: doc.data().difficulty,
+            endPoint: doc.data().endPoint,
+            expectedTime: doc.data().expectedTime,
+            length: doc.data().length,
+            referencePoint: doc.data().referencePoint,
+            region: doc.data().region,
+            title: doc.data().title,
+            startPoint: doc.data().startPoint,
+            author: doc.data().author,
+            condition: doc.data().condition,
+            condDetails: doc.data().condDetails
+        };
+        res.push(hike)
+    });
+    console.log(res);
+    return res;
+}
+
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, getHikesByLinkHutWorker };
