@@ -67,10 +67,7 @@ function ModifyHike(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        await API.modifyHike(hike.id, hike.ascent, hike.city, hike.country,
-            hike.description, hike.difficulty, endPoint, hike.expectedTime,
-            hike.length, hike.referencePoint, hike.region, hike.title, startPoint,
-            hike.author)
+        await API.modifyHike(hike.id, startPoint, endPoint)
         setStart('')
         setEnd('')
         setModal('')

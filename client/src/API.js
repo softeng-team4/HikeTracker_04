@@ -550,17 +550,12 @@ const getParkingLotById = async (parkID, collection = 'parkingLots') => {
     return {id: parkID, ...(await firestore.getDoc(firestore.doc(db, collection, parkID))).data()};
 }
 
-const modifyHike = async (id, ascent, city, country, description, difficulty, endPoint, expectedTime,
-    length, referencePoint, region, title, startPoint, author, collection="hike") => {
-    await deleteDoc(doc(db, collection, id));
-    const hike = {
-        title: title, country: country, region: region, city: city, description: description, difficulty: difficulty, expectedTime: expectedTime,
-        length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: referencePoint, author: author
-    }
-    console.log("Hike:"+ hike)
-    // const hikeRef = firestore.collection(db, 'hike')
-    await firestore.setDoc(doc(db, collection, id), hike);
-    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
+const modifyHike = async (hikeID, startPoint, endPoint, collection="hike") => {
+    await updateDoc(doc(db, collection, hikeID), {
+        startPoint: startPoint,
+        endPoint: endPoint
+    });
+    
 }
 
 const linkHuts = async(huts, hikeID, collection = "hike")=>{
