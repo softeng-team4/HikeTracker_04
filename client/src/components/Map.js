@@ -16,9 +16,9 @@ function Map(props) {
     const maxLat = Math.max(...points.map(p => p.lat)) + 0.003;
     const maxLng = Math.max(...points.map(p => p.lng)) + 0.003;
     const huts = props.huts ? props.huts : [];
-    const filteredHuts = huts.filter(h => {
+    const filteredHuts = !props.isDisplay ? huts.filter(h => {
         return !points.every(p => {
-            const maxDistance = 2500; // max distance of a hut to the hike to be linked now is 2.5km
+            const maxDistance = 5000; // max distance of a hut to the hike to be linked now is 2.5km
             const from = L.latLng([h.position._lat, h.position._long]);
             const to = L.latLng([p.lat, p.lng]);
             const d = from.distanceTo(to);
@@ -27,7 +27,7 @@ function Map(props) {
             }
             return true;
         });
-    });
+    }) : huts;
     // custom icons for the map markers
     const startIcon = L.AwesomeMarkers.icon({
         icon: 'play-circle',
@@ -130,9 +130,13 @@ function Map(props) {
                     </Popup>
                 </Marker> : ''}
                 {filteredHuts && filteredHuts.map((h) =>
-                    h.position._lat && h.position._long && <Marker key={`mark_${h.name}`} position={[h.position._lat, h.position._long]} icon={hutIcon}>
+                    <Marker key={`mark_${h.name}`} position={[h.position._lat, h.position._long]} icon={hutIcon}>
                         <Popup key={`pop_${h.name}`}>
-                            <Button key={`btn_${h.name}`} variant='link' id={h.id} onClick={(ev) => handleHutClick(ev)}>{`Link ${h.name} to hike`}</Button>
+                            {props.isDisplay ?
+                                <>{h.name}</>
+                                :
+                                <Button key={`btn_${h.name}`} variant='link' id={h.id} onClick={(ev) => handleHutClick(ev)}>{`Link ${h.name} to hike`}</Button>
+                            }
                         </Popup>
                     </Marker>
                 )}
