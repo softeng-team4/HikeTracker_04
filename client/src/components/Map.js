@@ -119,16 +119,28 @@ function Map(props) {
                     pathOptions={{ fillColor: 'red', color: 'blue' }}
                     positions={points}
                 />
-                {props.startPoint.length !== 0 ? <Marker position={[props.startPoint.latitude, props.startPoint.longitude]} icon={startIcon}>
-                    <Popup>
-                        Start point
-                    </Popup>
-                </Marker> : ''}
-                {props.endPoint.length !== 0 ? <Marker position={[props.endPoint.latitude, props.endPoint.longitude]} icon={endIcon}>
-                    <Popup>
-                        End Point
-                    </Popup>
-                </Marker> : ''}
+                {props.startPoint.length !== 0 && <Marker position={[props.startPoint.latitude, props.startPoint.longitude]} icon={startIcon}>
+                        <Popup>
+                            Start point
+                        </Popup>
+                    </Marker>
+                }
+                {(props.startPoint.latitude !== points[0].lat || props.startPoint.longitude !== points[0].lng) && 
+                    <Polyline pathOptions={{color: 'grey', dashArray: '4'}}
+                              positions={[[props.startPoint.latitude, props.startPoint.longitude],[points[0].lat, points[0].lng]]}
+                    />
+                }
+                {props.endPoint.length !== 0 && <Marker position={[props.endPoint.latitude, props.endPoint.longitude]} icon={endIcon}>
+                        <Popup>
+                            End Point
+                        </Popup>
+                    </Marker>
+                }
+                {(props.endPoint.latitude !== points[points.length - 1].lat || props.endPoint.longitude !== points[points.length - 1].lng) && 
+                    <Polyline pathOptions={{color: 'grey', dashArray: '4', }}
+                              positions={[[props.endPoint.latitude, props.endPoint.longitude],[points[points.length - 1].lat, points[points.length - 1].lng]]}
+                    />
+                }
                 {filteredHuts && filteredHuts.map((h) =>
                     <Marker key={`mark_${h.name}`} position={[h.position._lat, h.position._long]} icon={hutIcon}>
                         <Popup key={`pop_${h.name}`}>
