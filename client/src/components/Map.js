@@ -70,7 +70,7 @@ function Map(props) {
         ev.preventDefault();
         const id = ev.target.id;
         console.log('I click on popup with id=' + id);
-        props.handleLinkHut(id);
+        props.handleHutClickOnMap(id);
     };
 
 

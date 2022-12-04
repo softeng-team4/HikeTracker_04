@@ -108,7 +108,7 @@ const LinkHuts = (props) => {
                 <StaticHikeInfo hike={hike} />
                 {!showNoCloseHuts && selectedHutList.length === 0 && <Alert variant='danger'>To link a hut to the hike select it on the map</Alert>}
                 {showNoCloseHuts && <Alert variant='danger'>There are not available huts close to this hike to be linked</Alert>}
-                {hike.referencePoint && <Map positions={points} startPoint={hike.startPoint} endPoint={hike.endPoint} huts={hutList} handleLinkHut={handleLinkHut} handleNohutsCloseToHike={handleNohutsCloseToHike} />}
+                {hike.referencePoint && <Map positions={points} startPoint={hike.startPoint} endPoint={hike.endPoint} huts={hutList} handleHutClickOnMap={handleLinkHut} handleNohutsCloseToHike={handleNohutsCloseToHike} />}
                 <Spacer height='1rem' />
                 <h5>Linked huts:</h5>
                 <Row>
