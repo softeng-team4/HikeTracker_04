@@ -6,6 +6,7 @@ import { HikeForm } from './HikeForm';
 import { HutForm } from './HutForm';
 import NavBar from './NavBar';
 import { ParkForm } from './ParkForm';
+import { PlatformManager } from './PlatformManager';
 
 
 function DefaultRoute() {
@@ -81,4 +82,12 @@ function ModifyHikeByAuthor(props) {
     );
 }
 
-export { DefaultRoute, BrowserHikes, AppLayout, AddNewHike, AddNewPark, AddNewHut, ModifyHikeByAuthor };
+function ManagerPage(props) {
+    return (
+        <>
+            <PlatformManager />
+        </>
+    );
+}
+
+export { DefaultRoute, BrowserHikes, AppLayout, AddNewHike, AddNewPark, AddNewHut, ModifyHikeByAuthor, ManagerPage };

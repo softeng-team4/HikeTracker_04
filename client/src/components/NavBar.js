@@ -18,7 +18,7 @@ const NavBar = (props) => {
                             <Col xxl={2} />
                             <Col>
                                 <Navbar expand="sm">
-                                    <Navbar.Brand className='d-flex' style={{cursor:"pointer"}} onClick={() => navigate('/')}>
+                                    <Navbar.Brand className='d-flex' style={{ cursor: "pointer" }} onClick={() => navigate('/')}>
                                         <h3><FaHiking className='nav-icon' />Hike Tracker</h3>
                                     </Navbar.Brand>
                                     <Navbar.Toggle aria-controls="nav-toggle" />
@@ -28,19 +28,23 @@ const NavBar = (props) => {
                                             {/* all user could see with login */}
                                             <Nav.Link onClick={() => navigate('/')}>Hike List</Nav.Link>
 
-                                            {/* local guide navbar */}
+
 
                                             {authObject.authUser &&
                                                 <>
-                                                  <Nav.Link onClick={() => navigate('/huts')}>Explore huts</Nav.Link>
+                                                    <Nav.Link onClick={() => navigate('/huts')}>Explore huts</Nav.Link>
+                                                    {/* local guide navbar */}
                                                     {authObject.authUser.role.toLowerCase() === 'local guide' &&
                                                         <>
                                                             <Nav.Link onClick={() => navigate('/hikeform')}>New Hike</Nav.Link>
                                                             <Nav.Link onClick={() => navigate('/newPark')}>New Park</Nav.Link>
                                                             <Nav.Link onClick={() => navigate('/newHut')}>New Hut</Nav.Link>
                                                             {/* <Nav.Link href='/parks'>Park List</Nav.Link> */}
-                                                            
 
+                                                        </>}
+                                                    {authObject.authUser.role.toLowerCase() === 'manager' &&
+                                                        <>
+                                                            <Nav.Link onClick={() => navigate('/manager')}>Manager Users</Nav.Link>
                                                         </>}
                                                 </>
                                             }
