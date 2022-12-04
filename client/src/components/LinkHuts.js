@@ -79,8 +79,8 @@ const LinkHuts = (props) => {
 
     // function to send changes of the hike
     const submitChanges = () => {
-        selectedHutList.map(h => ({hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long}))
-        linkHuts(selectedHutList.map(h => ({hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long})), props.hike.id);
+        selectedHutList.map(h => ({ hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long }))
+        linkHuts(selectedHutList.map(h => ({ hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long })), props.hike.id);
         nav('/');
     }
 
@@ -96,7 +96,7 @@ const LinkHuts = (props) => {
     return (
         <>
             <Form noValidate className="mt-3">
-                <StaticHikeInfo hike={hike} />
+                <StaticHikeInfo hike={hike} status={props.status} />
                 {!showNoCloseHuts && selectedHutList.length === 0 && <Alert variant='danger'>To link a hut to the hike select it on the map</Alert>}
                 {showNoCloseHuts && <Alert variant='danger'>There are not available huts close to this hike to be linked</Alert>}
                 {hike.referencePoint && <Map positions={points} startPoint={hike.startPoint} endPoint={hike.endPoint} huts={hutList} handleLinkHut={handleLinkHut} handleNohutsCloseToHike={handleNohutsCloseToHike} />}
@@ -105,15 +105,15 @@ const LinkHuts = (props) => {
                 <Row>
                     <Col>
                         <Card><Card.Body>
-                        {selectedHutList.map((h, idx) => <Button
-                            id={h.id}
-                            key={`btn_${h.id}`}
-                            className='m-1'
-                            size='sm'
-                            onClick={(ev) => handleUnlinkHut(ev)}
-                            variant={buttonColor[idx < buttonColor.length ? idx : idx % buttonColor.length]}>
-                            {h.name}{' '}<FaRegTimesCircle key={`times_${h.id}`} />
-                        </Button>)}
+                            {selectedHutList.map((h, idx) => <Button
+                                id={h.id}
+                                key={`btn_${h.id}`}
+                                className='m-1'
+                                size='sm'
+                                onClick={(ev) => handleUnlinkHut(ev)}
+                                variant={buttonColor[idx < buttonColor.length ? idx : idx % buttonColor.length]}>
+                                {h.name}{' '}<FaRegTimesCircle key={`times_${h.id}`} />
+                            </Button>)}
                         </Card.Body>
                         </Card>
                     </Col>

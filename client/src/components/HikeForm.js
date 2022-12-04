@@ -559,7 +559,7 @@ function HikeForm(props) {
             } */}
                     <Form.Group className="mb-3">
                         <Form.Label>Description:</Form.Label>
-                        <Form.Control className='description-input' required as='textarea' rows={3} value={description} defaultValue={undefined} onChange={(event) => setDescription(event.target.value)} />
+                        <Form.Control className='description-input' required as='textarea' rows={3} value={description} onChange={(event) => setDescription(event.target.value)} />
                         <Form.Control.Feedback>Valid description!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">Please insert a description.</Form.Control.Feedback>
                     </Form.Group>

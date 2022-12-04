@@ -14,7 +14,7 @@ function ReferencePointForm(props) {
     const [validated, setValidated] = useState(false);
     const [refPointList, setRefPointList] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-    
+
     L.Icon.Default.mergeOptions({
         iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
         iconUrl: require("leaflet/dist/images/marker-icon.png"),
@@ -35,21 +35,21 @@ function ReferencePointForm(props) {
         ), [0., 0.]).map(v => v / points.length);
     };
 
-    const checkPosInsideTrack = async(r = 50)=>{
+    const checkPosInsideTrack = async (r = 50) => {
         var min = 100;
         var p = undefined;
-        points.forEach((pos)=>{
+        points.forEach((pos) => {
             var from = L.latLng(position[0], position[1]);
             var to = L.latLng(pos.lat, pos.lng);
             const d = from.distanceTo(to);
-            if( d <= r){
-                if(d < min){
+            if (d <= r) {
+                if (d < min) {
                     min = d;
                     p = pos;
                 }
             }
         });
-        if(p !== undefined){
+        if (p !== undefined) {
             console.log(position, "=>", [p.lat, p.lng], "distance: ", min);
             const rp = {
                 name: name,
@@ -73,9 +73,9 @@ function ReferencePointForm(props) {
         }
 
         const validPos = await checkPosInsideTrack();
-        if(validPos){
+        if (validPos) {
             console.log("Point added");
-        }else{
+        } else {
             setErrorMessage("Invalid position. Select a position on the track");
             console.log("Invalid position. Select a position on the track");
         }
@@ -88,7 +88,7 @@ function ReferencePointForm(props) {
         await modifyReferencePoints(props.hike, refPointList);
         setRefPointList([]);
     };
-    
+
     useEffect(() => {
         delete L.Icon.Default.prototype._getIconUrl;
 
@@ -103,7 +103,7 @@ function ReferencePointForm(props) {
         setPosition([45.06294822296754, 7.662272990156818]);
         setName('');
         setErrorMessage('');
-      }, [refPointList]);
+    }, [refPointList]);
 
     const [show, setShow] = useState(false);
 
@@ -122,8 +122,8 @@ function ReferencePointForm(props) {
                 </Button>
             </Modal.Footer>
         </Modal>
-        <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{marginBottom:10}}>
-            <StaticHikeInfo hike={props.hike} />
+        <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{ marginBottom: 10 }}>
+            <StaticHikeInfo hike={props.hike} status={props.status} />
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Name:</Form.Label>
@@ -133,7 +133,7 @@ function ReferencePointForm(props) {
                     <Form.Control.Feedback>Valid name!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">Please insert a name.</Form.Control.Feedback>
                 </Col>
-                </Form.Group>
+            </Form.Group>
             <MapContainer center={evaluateCenter()} bounds={L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng))}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

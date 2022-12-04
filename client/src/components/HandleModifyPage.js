@@ -3,6 +3,7 @@ import { Tab, Tabs } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import LinkHuts from "./LinkHuts";
 import { ModifyHike } from "./ModifyHike";
+import ModifyHikeInfo from "./ModifyHikeInfo";
 import ReferencePointForm from './ReferencePointForm';
 
 
@@ -21,13 +22,16 @@ const HandleModifyPage = () => {
             fill
         >
             <Tab eventKey='LinkStartEndpoints' title='Link start/arrival'>
-                <ModifyHike hike={state.hike} />
+                <ModifyHike hike={state.hike} status='static' />
             </Tab>
             <Tab eventKey='LinkHuts' title='Link huts'>
-                <LinkHuts hike={state.hike} />
+                <LinkHuts hike={state.hike} status='static' />
             </Tab>
             <Tab eventKey='refPoints' title='Define reference points'>
-                <ReferencePointForm hike={state.hike}/>
+                <ReferencePointForm hike={state.hike} status='static' />
+            </Tab>
+            <Tab eventKey='modify' title='Modify Hike Description'>
+                <ModifyHikeInfo hike={state.hike} status='modify' />
             </Tab>
         </Tabs>
     );

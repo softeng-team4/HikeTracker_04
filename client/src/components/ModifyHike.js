@@ -128,9 +128,9 @@ function ModifyHike(props) {
                     </Button>}
                 </Modal.Footer>
             </Modal>
-            
+
             <Form noValidate className="mt-3">
-                <StaticHikeInfo hike={hike} />
+                <StaticHikeInfo hike={hike} status={props.status} />
 
                 {hike.referencePoint !== '' ?
                     <Map positions={points} startPoint={startPoint} endPoint={endPoint} hutList={hutList} parkingList={parkingList} />
