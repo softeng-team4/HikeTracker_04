@@ -18,6 +18,9 @@ function ModifyHike(props) {
     const [startPoint, setStartPoint] = useState(hike.startPoint)
     const [endPoint, setEndPoint] = useState(hike.endPoint)
     const [modal, setModal] = useState('')
+    const [startType, setStartType] = useState('')
+    const [endType, setEndType] = useState('')
+    const [type, setType] = useState('')
 
     useEffect(() => {
         const filters = {
@@ -29,36 +32,36 @@ function ModifyHike(props) {
         API.hutsList(filters).then(r => setHutList(r))
         API.getAllParkingLots().then(p => setParkingList(p.filter(p => p.city === hike.city)))
     }, [hike])
-    console.log('hut', hutList)
-    console.log('park', parkingList)
-    console.log('\\', startPoint, endPoint)
-
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleChange = async (event) => {
         event.preventDefault();
         const lists = hutList.concat(parkingList);
-        console.log("list", lists)
+
         const currentStart = lists.filter((l) => l.id === start)[0];
         const currentEnd = lists.filter((l) => l.id === end)[0];
-        console.log('current', currentStart.position.latitude, 'end', currentEnd)
+
         modal === 'start' ? setStartPoint({
             latitude: currentStart.position.latitude,
             longitude: currentStart.position.longitude,
             altitude: hike.startPoint.altitude,
             time: hike.startPoint.time,
             id: start,
-            name: currentStart.name
+            name: currentStart.name,
+            type: type
         }) : setEndPoint({
             latitude: currentEnd.position.latitude,
             longitude: currentEnd.position.longitude,
             altitude: hike.startPoint.altitude,
             time: hike.startPoint.time,
             id: end,
-            name: currentEnd.name
+            name: currentEnd.name,
+            type: type
         })
         setModal('')
+        setStartType('')
+        setEndType('')
         handleClose();
     }
     const handleSubmit = async (event) => {
@@ -88,11 +91,11 @@ function ModifyHike(props) {
                                 <Form.Label>Hut List:</Form.Label>
                             </Col>
                             <Col>
-                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => setStart(event.target.value)}>
+                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => {setStart(event.target.value); setType('hut')}}>
                                     <option value={''}>Select hut</option>
                                     {hutList.map((h, i) => <option key={i} value={h.id}>{h.name}</option>)}
                                 </Form.Select> :
-                                    <Form.Select value={end} onChange={(event) => setEnd(event.target.value)}>
+                                    <Form.Select value={end} onChange={(event) => {setEnd(event.target.value); setType('hut')}}>
                                         <option value={''}>Select hut</option>
                                         {hutList.map((h, i) => <option key={i} value={h.id}>{h.name}</option>)}
                                     </Form.Select>}
@@ -104,11 +107,11 @@ function ModifyHike(props) {
                                 <Form.Label>Parking Lot List:</Form.Label>
                             </Col>
                             <Col>
-                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => setStart(event.target.value)}>
+                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => {setStart(event.target.value); setType('parking lot')}}>
                                     <option value={''}>Select Park</option>
                                     {parkingList.map((p, j) => <option key={j} value={p.id}>{p.name}</option>)}
                                 </Form.Select> :
-                                    <Form.Select value={end} onChange={(event) => setEnd(event.target.value)}>
+                                    <Form.Select value={end} onChange={(event) => {setEnd(event.target.value); setType('parking lot')}}>
                                         <option value={''}>Select Park</option>
                                         {parkingList.map((p, j) => <option key={j} value={p.id}>{p.name}</option>)}
                                     </Form.Select>}
@@ -128,7 +131,7 @@ function ModifyHike(props) {
                     </Button>}
                 </Modal.Footer>
             </Modal>
-            
+
             <Form noValidate className="mt-3">
                 <StaticHikeInfo hike={hike} />
 
@@ -136,7 +139,6 @@ function ModifyHike(props) {
                     <Map positions={points} startPoint={startPoint} endPoint={endPoint} hutList={hutList} parkingList={parkingList} />
                     : <div>No Track Inside</div>}
 
-                {/* or show the parks and huts in the map, give a button in popup to select them as start or end or ref */}
 
                 <Table id="point-table">
                     <thead>
