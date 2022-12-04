@@ -45,6 +45,7 @@ const HikeTable = () => {
     useEffect(() => {
         setSubHikeList(hikeList.slice(0, hike4page));
         setIsLoading(false);
+        setIndex(0);
     }, [hikeList]);
 
     const handleEmailFilter = () => {
@@ -57,6 +58,7 @@ const HikeTable = () => {
             setHikeList(hikeListCopy);
             setFilterByEmail(false);
         }
+        setIndex(0);
     };
 
 

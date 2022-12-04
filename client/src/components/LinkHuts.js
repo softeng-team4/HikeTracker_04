@@ -16,6 +16,7 @@ const LinkHuts = (props) => {
     const nav = useNavigate();
     // hike to be modified
     const hike = props.hike;
+    console.log(hike)
     // coordinates of the hike track
     const points = JSON.parse(hike.referencePoint);
     // state to hold list of huts
@@ -51,10 +52,10 @@ const LinkHuts = (props) => {
         };
         API.hutsList(filters).then(r => {
             let hutsTmp = r;
-            let selectedHutsTmp = hike.linkedHuts ? r.filter(h => hike.linkedHuts.some(lh => lh.hutId === h.id)) : [];
+            let selectedHutsTmp = hike.linkedHuts ? r.filter(h => hike.linkedHuts.some(lh => lh.id === h.id)) : [];
             hutsTmp = hike.startPoint.id ? hutsTmp.filter(h => h.id !== hike.startPoint.id ) : hutsTmp;
             hutsTmp = hike.endPoint.id ? hutsTmp.filter(h => h.id !== hike.endPoint.id ) : hutsTmp;
-            hutsTmp = hike.linkedHuts ? hutsTmp.filter(h => !hike.linkedHuts.some(lh => lh.hutId === h.id)) : hutsTmp;
+            hutsTmp = hike.linkedHuts ? hutsTmp.filter(h => !hike.linkedHuts.some(lh => lh.id === h.id)) : hutsTmp;
             setHutList(hutsTmp);
             setSelectedHutList(selectedHutsTmp);
             setInitialState([hutsTmp, selectedHutsTmp])
@@ -87,9 +88,8 @@ const LinkHuts = (props) => {
 
 
     // function to send changes of the hike
-    const submitChanges = () => {
-        selectedHutList.map(h => ({hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long}))
-        linkHuts(selectedHutList.map(h => ({id: h.id, name: h.name, position: h.position})), props.hike.id);
+    const submitChanges = async () => {
+        await linkHuts(selectedHutList.map(h => ({id: h.id, name: h.name, position: h.position})), props.hike.id);
         nav('/');
     }
 
