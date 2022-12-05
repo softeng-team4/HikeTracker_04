@@ -2,12 +2,15 @@ import { Navbar, DropdownButton, Dropdown, Button, Container, Row, Col, Nav } fr
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle, FaHiking } from 'react-icons/fa'
 import AuthenticationContext from './AuthenticationContext';
+import { useState } from 'react';
+import ProfileOffCanvas from './UserProfileComponents/ProfileOffCanvas';
 
 const NavBar = (props) => {
 
 
     const navigate = useNavigate();
-
+    // state to show the offcanvas of user profile
+    const [showProfileOffCanvas, setShowProfileOffCanvas] = useState(false);
 
     return (
         <AuthenticationContext.Consumer>
@@ -18,7 +21,7 @@ const NavBar = (props) => {
                             <Col xxl={2} />
                             <Col>
                                 <Navbar expand="sm">
-                                    <Navbar.Brand className='d-flex' style={{cursor:"pointer"}} onClick={() => navigate('/')}>
+                                    <Navbar.Brand className='d-flex' style={{ cursor: "pointer" }} onClick={() => navigate('/')}>
                                         <h3><FaHiking className='nav-icon' />Hike Tracker</h3>
                                     </Navbar.Brand>
                                     <Navbar.Toggle aria-controls="nav-toggle" />
@@ -32,14 +35,14 @@ const NavBar = (props) => {
 
                                             {authObject.authUser &&
                                                 <>
-                                                  <Nav.Link onClick={() => navigate('/huts')}>Explore huts</Nav.Link>
+                                                    <Nav.Link onClick={() => navigate('/huts')}>Explore huts</Nav.Link>
                                                     {authObject.authUser.role.toLowerCase() === 'local guide' &&
                                                         <>
                                                             <Nav.Link onClick={() => navigate('/hikeform')}>New Hike</Nav.Link>
                                                             <Nav.Link onClick={() => navigate('/newPark')}>New Park</Nav.Link>
                                                             <Nav.Link onClick={() => navigate('/newHut')}>New Hut</Nav.Link>
                                                             {/* <Nav.Link href='/parks'>Park List</Nav.Link> */}
-                                                            
+
 
                                                         </>}
                                                 </>
@@ -50,7 +53,13 @@ const NavBar = (props) => {
                                             {authObject.authUser &&
                                                 <div>
                                                     <DropdownButton className='d-flex align-items-center' title={<><FaRegUserCircle className='react-icon align-self-center' />{'   '}{authObject.authUser.firstName.toUpperCase()}</>} variant='outline-dark' align={{ sm: 'end' }} menuVariant='dark'>
-                                                        <Dropdown.Item ><NavLink className='profile-link' to={`/${authObject.authUser.firstName.toLowerCase()}`} variant='dark'>Your profile</NavLink></Dropdown.Item>
+                                                        <Dropdown.Item
+                                                            className='nav-profile-link'
+                                                            variant='link'
+                                                            onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}
+                                                        >
+                                                            Your profile
+                                                        </Dropdown.Item>
                                                         <Dropdown.Divider />
                                                         {/* {
                                                         authObject.authUser.role.toLowerCase() === 'local guide' &&
@@ -74,6 +83,7 @@ const NavBar = (props) => {
                             <Col xxl={2} />
                         </Row>
                     </Container>
+                    {authObject.authUser && <ProfileOffCanvas show={showProfileOffCanvas} onHide={() => setShowProfileOffCanvas(false)} />}
                 </>
             )}
         </AuthenticationContext.Consumer>

@@ -11,17 +11,24 @@ body {
   color: #292b2c !important;
 }
 
-.nav-dropdown-link {
-  color: lightgray;
-  text-decoration: none;
+.nav-dropdown-link, .nav-profile-link {
+  color: lightgray !important;
+  text-decoration: none !important;
 }
 
-.nav-dropdown-link:hover {
+.nav-dropdown-link:hover, .nav-profile-link:hover {
   color: lightgray !important;
 }
 
 .nav-icon {
   transform: translateY(-4px)
+}
+
+/* offcanvas */
+.offcanvas {
+  background-color: rgba(0,0,0,0.1) !important;
+  border-color: transparent !important;
+  width: 17% !important;
 }
 
 /* geoAreaForm */
