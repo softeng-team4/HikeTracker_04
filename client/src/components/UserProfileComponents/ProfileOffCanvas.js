@@ -9,9 +9,10 @@ const ProfileOffCanvas = (props) => {
     return (
         <AuthenticationContext.Consumer>
             {(authObject) =>
-                <Offcanvas backdropClassName='col-xxl-2' {...props} placement='end' scroll={true} backdrop={false}>
-                    <Offcanvas.Header className='justify-content-end' closeButton closeLabel='closeButton-Offcanvas' />
+                <Offcanvas {...props} placement='end' scroll={true} backdrop={false}>
+                    <Offcanvas.Header className='justify-content-end' closeButton />
                     <Offcanvas.Body>
+                        <Spacer height='3rem' />
                         <Card>
                             <Card.Header>
                                 <Card.Title className='d-flex justify-content-center'>
