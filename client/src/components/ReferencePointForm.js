@@ -3,6 +3,7 @@ import { Modal, Form, Button, Row, Col, Alert, Table } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
 import { modifyReferencePoints } from '../API';
 import StaticHikeInfo from './StaticHikeInfo';
@@ -15,6 +16,7 @@ function ReferencePointForm(props) {
     const [validated, setValidated] = useState(false);
     const [refPointList, setRefPointList] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
     
     L.Icon.Default.mergeOptions({
         iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -117,6 +119,8 @@ function ReferencePointForm(props) {
         handleShow();
         await modifyReferencePoints(props.hike, refPointList);
         setRefPointList([]);
+        navigate('/')
+
     };
     
     useEffect(() => {
