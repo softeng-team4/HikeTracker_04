@@ -2,10 +2,12 @@ import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import API from '../API';
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { Map } from "./Map";
 
 const StaticHikeInfo = (props) => {
 
     const hike = props.hike;
+    const points = JSON.parse(props.hike.referencePoint);
     const navigate = useNavigate();
     const [difficulty, setDifficulty] = useState(hike.difficulty);
     const [description, setDescription] = useState(hike.description);
@@ -110,7 +112,9 @@ const StaticHikeInfo = (props) => {
                     <Form.Control className='region-input' required disabled={props.status === 'static'} value={description} onChange={(event) => setDescription(event.target.value)} />
                 </Col>
             </Form.Group>
-
+            {props.status === 'modify' ? props.hike.referencePoint !== '' ?
+                <Map positions={points} startPoint={props.hike.startPoint} endPoint={props.hike.endPoint} />
+                : <div>No Track Inside</div> : ''}
             {props.status === 'modify' ? <div align="right" style={{ marginTop: 10 }}><Button onClick={handleSubmit}>Confirm</Button></div> : ''}
         </>
     );
