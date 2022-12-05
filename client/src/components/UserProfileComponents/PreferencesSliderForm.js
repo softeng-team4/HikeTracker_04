@@ -48,6 +48,7 @@ const PreferencesSliderForm = (props) => {
         if (preferences !== user.preferences) {
             API.modifyUserPreferences(user.email, preferences).then(() => {
                 setShowSubmitAlert(true);
+                user.preferences = preferences;
             });
         }
     };
