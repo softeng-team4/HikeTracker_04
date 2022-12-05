@@ -26,9 +26,17 @@ body {
 
 /* offcanvas */
 .offcanvas {
-  background-color: rgba(0,0,0,0.1) !important;
+  background-color: rgba(211,211,211,0.9) !important;
   border-color: transparent !important;
-  width: 17% !important;
+} 
+.btn-close {
+  background-color: gray !important;
+}
+
+@media screen and (min-width: 1400px) {
+  .offcanvas {
+    width: 17% !important;
+  }
 }
 
 /* geoAreaForm */
