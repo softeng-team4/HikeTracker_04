@@ -17,10 +17,7 @@ const StaticHikeInfo = (props) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        await API.modifyHike(hike.id, hike.ascent, hike.city, hike.country,
-            description, difficulty, hike.endPoint, expectedTime,
-            hike.length, hike.referencePoint, hike.region, title, hike.startPoint,
-            hike.author)
+        await API.UpdateHikeDescription(title, expectedTime, difficulty, description, hike.id)
         setDescription('');
         setDifficulty('');
         setExpectedTime('');
