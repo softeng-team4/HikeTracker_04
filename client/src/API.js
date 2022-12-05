@@ -558,11 +558,17 @@ const modifyHike = async (hikeID, startPoint, endPoint, collection="hike") => {
     
 }
 
-const linkHuts = async(huts, hikeID, collection = "hike")=>{
+const linkHuts = async(huts, hikeID, collection = "hike") => {
     console.log("API linkHuts: ", huts, hikeID);
     await firestore.updateDoc(firestore.doc(db, collection, hikeID),{
         linkedHuts: huts
     });
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike,  modifyReferencePoints, linkHuts, getHutById, getParkingLotById };
+const modifyUserPreferences = async (email, preferences, collection = "users") => {
+    await firestore.updateDoc(firestore.doc(db, collection, email), {
+        preferences: preferences
+    });
+}
+
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike,  modifyReferencePoints, linkHuts, getHutById, getParkingLotById, modifyUserPreferences };

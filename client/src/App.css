@@ -39,6 +39,19 @@ body {
   }
 }
 
+.redirect-to-profile {
+  cursor: pointer;
+}
+
+.redirect-to-profile:hover > .redirect-text {
+  text-decoration: underline;
+  color: cornflowerblue;
+}
+
+.redirect-to-profile:hover > div > .redirect-icon {
+  padding-left: 10%;
+}
+
 /* geoAreaForm */
 
 .button-geoArea {
