@@ -1,4 +1,4 @@
-import { Col, Container, Form, InputGroup, Row } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import AuthenticationContext from "../AuthenticationContext";
 import Spacer from "../BrowserHikeComponents/Spacer";
 import PreferencesSliderForm from "./PreferencesSliderForm";
