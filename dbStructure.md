@@ -20,7 +20,7 @@
 
 **respDate:** date of rejection/approval of the last request
 
-**hut:** name of the hut that a hut worker works to, written upon approval of a request for a hut worker account (hut worker exclusive)
+**hut:** id of the hut that a hut worker works to, written upon approval of a request for a hut worker account (hut worker exclusive)
 
 
 # hike
