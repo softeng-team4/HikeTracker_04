@@ -29,7 +29,7 @@ const NavBar = (props) => {
                                     <Nav className="justify-content-end flex-grow-1 pe-3">
 
                                         <Navbar.Collapse className='row justify-content-sm-end' id="nav-toggle">
-                                                <Col sm={9} className='d-sm-flex justify-content-sm-start'>
+                                            <Col sm={9} className='d-sm-flex justify-content-sm-start'>
                                                 {/* all user could see with login */}
                                                 <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/')}>Hike List</Nav.Link>
 
@@ -47,53 +47,58 @@ const NavBar = (props) => {
                                                             </>}
                                                     </>
                                                 }
-                                                </Col>
-                                                <hr className='d-sm-none' style={{width: '95%', margin: 'auto'}}/>
-                                                {/* hiker navbar */}
-                                                {/* show on display larger than sm */}
-                                                <Col sm={3} className='d-none d-sm-flex justify-content-sm-end'>
-                                                    {authObject.authUser &&
-                                                        <DropdownButton
-                                                            variant='outline-dark'
-                                                            drop='down'
-                                                            align='end'
-                                                            menuVariant='dark'
-                                                            title={<><FaRegUserCircle className='react-icon align-self-center' />{'   '}{authObject.authUser.firstName.toUpperCase()}</>}
-                                                        >
-                                                            <Dropdown.Item
-                                                                className='nav-profile-link'
-                                                                variant='link'
-                                                                onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}
-                                                            >
-                                                                Your profile
-                                                            </Dropdown.Item>
-                                                            <Dropdown.Divider />
-                                                            <Dropdown.Item onClick={() => {authObject.onLogout(); navigate('/');}}>Sign out</Dropdown.Item>
-                                                        </DropdownButton>
-                                                    }
-                                                    {!authObject.authUser &&
-                                                        <>
-                                                            {path !== '/login' && <NavLink to='/login'><Button variant='link-dark'>Sign In</Button></NavLink>}
-                                                            {path !== '/signup' && <NavLink to='/signup'><Button variant='outline-dark'>Sign Up</Button></NavLink>}
-                                                        </>
-                                                    }
-                                                </Col>
-                                                {/* show on small display */}
-                                                <Col className='d-sm-none'>
-                                                    {authObject.authUser &&
-                                                        <>
-                                                            <Nav.Link className='d-flex justify-content-center' onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}>Your profile</Nav.Link>
-                                                            <Nav.Link className='d-flex justify-content-center' onClick={() => authObject.onLogout()}>Sign out</Nav.Link>
-                                                        </>
-                                                    }
-                                                    {!authObject.authUser &&
-                                                        <>
-                                                            {path !== '/login' && <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/login')}>Sign In</Nav.Link>}
-                                                            {path !== '/signup' && <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/signup')}>Sign Up</Nav.Link>}
-                                                        </>
-                                                    }
-                                                </Col>
-                                                <hr className='d-sm-none' style={{width: '95%', margin: 'auto'}}/>
+                                            </Col>
+                                            <hr className='d-sm-none' style={{ width: '95%', margin: 'auto' }} />
+                                            {/* hiker navbar */}
+                                            {/* show on display larger than sm */}
+                                            <Col sm={3} className='d-none d-sm-flex justify-content-sm-end'>
+                                                {authObject.authUser &&
+                                                    <DropdownButton
+                                                        variant='outline-dark'
+                                                        drop='down'
+                                                        align='end'
+                                                        menuVariant='dark'
+                                                        title={<><FaRegUserCircle className='mb-1' />{'   '}{authObject.authUser.firstName.toUpperCase()}</>}
+                                                    >
+                                                        {!path.startsWith('/profile/') &&
+                                                            <>
+                                                                <Dropdown.Item
+                                                                    className='nav-profile-link'
+                                                                    variant='link'
+                                                                    onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}
+                                                                >
+                                                                    Your profile
+                                                                </Dropdown.Item>
+                                                                <Dropdown.Divider />
+                                                            </>
+                                                        }
+                                                        <Dropdown.Item onClick={() => { authObject.onLogout(); navigate('/'); }}>Sign out</Dropdown.Item>
+                                                    </DropdownButton>
+                                                }
+                                                {!authObject.authUser &&
+                                                    <>
+                                                        {path !== '/login' && <NavLink to='/login'><Button variant='link-dark'>Sign In</Button></NavLink>}
+                                                        {path !== '/signup' && <NavLink to='/signup'><Button variant='outline-dark'>Sign Up</Button></NavLink>}
+                                                    </>
+                                                }
+                                            </Col>
+                                            {/* show on small display */}
+                                            <Col className='d-sm-none'>
+                                                {authObject.authUser &&
+                                                    <>
+                                                        {!path.startsWith('/profile/') &&
+                                                            <Nav.Link className='d-flex justify-content-center' onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}>Your profile</Nav.Link>}
+                                                        <Nav.Link className='d-flex justify-content-center' onClick={() => authObject.onLogout()}>Sign out</Nav.Link>
+                                                    </>
+                                                }
+                                                {!authObject.authUser &&
+                                                    <>
+                                                        {path !== '/login' && <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/login')}>Sign In</Nav.Link>}
+                                                        {path !== '/signup' && <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/signup')}>Sign Up</Nav.Link>}
+                                                    </>
+                                                }
+                                            </Col>
+                                            <hr className='d-sm-none' style={{ width: '95%', margin: 'auto' }} />
                                         </Navbar.Collapse>
                                     </Nav>
                                 </Navbar>
