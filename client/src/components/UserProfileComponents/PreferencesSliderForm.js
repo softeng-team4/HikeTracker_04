@@ -21,8 +21,9 @@ const PreferencesSliderForm = (props) => {
     // default Ranges for Sliders values
     const dR = { 0: { min: 0, max: 25, step: 5 }, 1: { min: 0, max: 1000, step: 200 }, 2: { min: 0, max: 600, step: 120 } }
     // user data
-    const user = useContext(AuthenticationContext).authUser
-    user.preferences = user.preferences ? { ascentRange: user.preferences.ascentRange, lengthRange: user.preferences.lengthRange, timeRange: user.preferences.timeRange } : undefined
+    const authObject = useContext(AuthenticationContext);
+    const user = authObject.authUser;
+    user.preferences = user.preferences ? { ascentRange: user.preferences.ascentRange, lengthRange: user.preferences.lengthRange, timeRange: user.preferences.timeRange } : undefined;
     // state to hold value of lenght range
     const [lengthRange, setLengthRange] = useState(
         user && user.preferences ? user.preferences.lengthRange : { min: dR[0].min, max: dR[0].max }
@@ -36,10 +37,7 @@ const PreferencesSliderForm = (props) => {
         user && user.preferences ? user.preferences.timeRange : { min: dR[2].min, max: dR[2].max }
     );
     // current preferences
-    const preferences = { ascentRange: ascentRange, lengthRange: lengthRange, timeRange: timeRange }
-    console.log(JSON.stringify(user.preferences) === JSON.stringify(preferences))
-    console.log(JSON.stringify(user.preferences))
-    console.log(JSON.stringify(preferences))
+    const preferences = { ascentRange: ascentRange, lengthRange: lengthRange, timeRange: timeRange };
     // state to show submit alert
     const [showSubmitAlert, setShowSubmitAlert] = useState(false);
 
@@ -48,7 +46,7 @@ const PreferencesSliderForm = (props) => {
         if (preferences !== user.preferences) {
             API.modifyUserPreferences(user.email, preferences).then(() => {
                 setShowSubmitAlert(true);
-                user.preferences = preferences;
+                authObject.onUpdateUserData();
             });
         }
     };
