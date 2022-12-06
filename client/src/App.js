@@ -15,18 +15,16 @@ function App() {
   //states of authentication of an Admin
   const [authUser, setAuthUser] = useState(undefined);
   const [authErr, setAuthErr] = useState(undefined);
-  const [currentUser, setCurrentUser] = useState({});
-
   const auth = getAuth();
 
   useEffect(() => {
     onAuthStateChanged(auth, async (currentUser) => {
-      setCurrentUser(currentUser);
       if (currentUser) {
         try {
           if (currentUser.emailVerified) {
             const userInfo = await API.getUser(currentUser.email);
             setAuthUser(userInfo);
+            console.log('and here')
           }
         } catch (err) {
           setAuthErr(err);
@@ -61,6 +59,12 @@ function App() {
     }
   }
 
+  // function to trigger update of authUser data
+  const updateUserData = async () => {
+    setAuthUser(await API.getUser(authUser.email))
+    console.log('here')
+  };
+
   const signup = async (email, password, firstName, lastName, role) => {
     try {
       const user = await API.signUp(email, password, firstName, lastName, role);
@@ -76,7 +80,8 @@ function App() {
     authUser: authUser,
     authErr: authErr,
     onLogin: login,
-    onLogout: logout
+    onLogout: logout,
+    onUpdateUserData: updateUserData
   };
   // console.log(authUser.role.toLowerCase()==='local guide')
 
