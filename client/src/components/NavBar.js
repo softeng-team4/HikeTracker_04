@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle, FaHiking } from 'react-icons/fa'
 import AuthenticationContext from './AuthenticationContext';
 import { useState } from 'react';
-import ProfileOffCanvas from './UserProfileComponents/ProfileOffCanvas';
+import UserProfileOffCanvas from './UserProfileComponents/UserProfileOffCanvas';
 
 const NavBar = (props) => {
 
@@ -101,7 +101,7 @@ const NavBar = (props) => {
                             <Col xxl={2} />
                         </Row>
                     </Container>
-                    {authObject.authUser && <ProfileOffCanvas show={showProfileOffCanvas} onHide={() => setShowProfileOffCanvas(false)} />}
+                    {authObject.authUser && <UserProfileOffCanvas show={showProfileOffCanvas} onHide={() => setShowProfileOffCanvas(false)} />}
                 </>
             )}
         </AuthenticationContext.Consumer>
