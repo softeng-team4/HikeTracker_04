@@ -93,6 +93,11 @@ const FilterForm = (props) => {
     };
 
 
+    const handleCustomFilters = () => {
+
+    };
+
+
     return (
         <AuthenticationContext.Consumer>
             {(authObject) => (
@@ -116,13 +121,16 @@ const FilterForm = (props) => {
                         <Row>
                             <SliderForm handleSliderSubmit={handleSliderSubmit} />
                         </Row>
-                        {authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ?
                             <Row>
-                                <Col className='d-flex justify-content-sm-end'>
-                                    <Form.Check type='switch' label='modify created hikes' reverse onChange={() => props.handleEmailFilter()} />
+                                <Col className={authObject.authUser && authObject.authUser.preferences ? 'd-flex justify-content-sm-between' : 'd-flex justify-content-sm-end'}>
+                                {authObject.authUser && authObject.authUser.preferences && 
+                                    <Form.Check type='checkbox' label='apply custom filters' onChange={() => handleCustomFilters()} />  
+                                }
+                                {authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' &&
+                                    <Form.Check type='switch' label='modify created hikes' reverse onChange={() => props.handleEmailFilter()} />  
+                                }
                                 </Col>
-                            </Row> : null
-                        }
+                            </Row>
                     </Row>
                 </>
             )}
