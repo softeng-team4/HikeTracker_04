@@ -117,7 +117,7 @@ const BrowserHuts = (props) => {
                                             <Col md={4}><b>Email:</b>&nbsp;{hut.email}</Col>
                                             <Col md={4}><b>Latitude:</b>&nbsp;{parseFloat(hut.position.latitude).toFixed(6)}</Col>
                                             <Col md={4}><b>Longitude:</b>&nbsp;{parseFloat(hut.position.longitude).toFixed(6)}</Col>
-                                            <Col md={4}><b>Altitude:</b>&nbsp;{hut.altitude}</Col>
+                                            <Col md={4}><b>Altitude:</b>&nbsp;{hut.altitude}&nbsp;m</Col>
                                             <Col md={4}><b>Country:</b>&nbsp;{hut.country}</Col>
                                             <Col md={4}><b>Region:</b>&nbsp;{hut.region}</Col>
                                             <Col md={4}><b>City:</b>&nbsp;{hut.city}</Col>

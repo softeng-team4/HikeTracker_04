@@ -1,6 +1,6 @@
 import { City, Country, State } from "country-state-city";
 import { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Form, InputGroup, Modal, Row, Table } from "react-bootstrap";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
@@ -89,11 +89,11 @@ function HutForm(props) {
                 </Button>
             </Modal.Footer>
         </Modal>
-        <Container fluid style={{marginBottom: 20}}>
+        <Container fluid style={{ marginBottom: 20 }}>
             <Spacer height='2rem' />
             <h2>Add A New Hut</h2>
             <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
-            <Form.Group as={Row} className="mb-3">
+                <Form.Group as={Row} className="mb-3">
                     <Col sm={2}>
                         <Form.Label>Name:</Form.Label>
                     </Col>
@@ -136,10 +136,13 @@ function HutForm(props) {
                     <Col sm={2}>
                         <Form.Label>Altitude:</Form.Label>
                     </Col>
-                    <Col >
-                        <Form.Control className='altitude-input' required type='number' value={altitude} defaultValue={undefined} min={0} onChange={(event) => setAltitude(event.target.value)} />
-                        <Form.Control.Feedback>Valid altitude!</Form.Control.Feedback>
-                        <Form.Control.Feedback type="invalid">Please insert the altitude. It must be a positive integer.</Form.Control.Feedback>
+                    <Col>
+                        <InputGroup>
+                            <Form.Control className='altitude-input' required type='number' value={altitude} defaultValue={undefined} min={0} onChange={(event) => setAltitude(event.target.value)} />
+                            <InputGroup.Text>meters</InputGroup.Text>
+                            <Form.Control.Feedback>Valid altitude!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please insert the altitude. It must be a positive integer.</Form.Control.Feedback>
+                        </InputGroup>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
