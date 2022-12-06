@@ -49,11 +49,13 @@ const PreferencesSliderForm = (props) => {
 
     // function to compare user saved preferances and displayed ones
     const comparePreferences = (p1, p2) => {
+        if(!p1)
+            return false;
         if (p1.lengthRange.min !== p2.lengthRange.min || p1.lengthRange.max !== p2.lengthRange.max ||
             p1.ascentRange.min !== p2.ascentRange.min || p1.ascentRange.max !== p2.ascentRange.max ||
             p1.timeRange.min !== p2.timeRange.min || p1.timeRange.max !== p2.timeRange.max)
-            return false
-        return true
+            return false;
+        return true;
     };
 
 
