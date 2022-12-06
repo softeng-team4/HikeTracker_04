@@ -8,6 +8,7 @@
 | role      | string |
 | reqRole   | string |
 | reqStatus | string |
+| reqHut    | string |
 | reqDocumentation | string |
 | respDate      | string |
 | hut       | string |
@@ -17,6 +18,8 @@
 **reqStatus possible values:** "pending", "accepted", "rejected"
 
 **reqDocumentaion:** data that goes along with the request, it can be represented by an image or by a json object
+
+**reqHut:** name of the hut that the user is requesting to work for (only available if reqRole = "hut worker")
 
 **respDate:** date of rejection/approval of the last request
 
