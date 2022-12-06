@@ -101,9 +101,7 @@ const BrowserHuts = (props) => {
             {(authObject) => (
                 <Container fluid className='BrowserHutssContainer'>
                     <Spacer height='2rem' />
-                    <Row className='mt-3'>
-                        <h2>Explore Huts</h2>
-                    </Row>
+                    <h2>Explore Huts</h2>
                     <Row className='mt-3'>
                         <HutSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} geoArea={geoArea} setGeoArea={setGeoArea} />
                     </Row>
@@ -115,11 +113,15 @@ const BrowserHuts = (props) => {
                                         <Row md={10} className='row d-flex justify-content-between'>
                                             {hut.author ? <Col md={4}><b>Local guide:</b>&nbsp;{hut.author}</Col> : false}
                                             <Col md={4}><b>Name:</b>&nbsp;{hut.name}</Col>
+                                            <Col md={4}><b>Phone:</b>&nbsp;{hut.phone}</Col>
+                                            <Col md={4}><b>Email:</b>&nbsp;{hut.email}</Col>
                                             <Col md={4}><b>Latitude:</b>&nbsp;{parseFloat(hut.position.latitude).toFixed(6)}</Col>
                                             <Col md={4}><b>Longitude:</b>&nbsp;{parseFloat(hut.position.longitude).toFixed(6)}</Col>
+                                            <Col md={4}><b>Altitude:</b>&nbsp;{hut.altitude}</Col>
                                             <Col md={4}><b>Country:</b>&nbsp;{hut.country}</Col>
                                             <Col md={4}><b>Region:</b>&nbsp;{hut.region}</Col>
                                             <Col md={4}><b>City:</b>&nbsp;{hut.city}</Col>
+                                            { hut.website !== '' && <Col md={12}><b>Website:</b>&nbsp;{hut.website}</Col> }
                                         </Row>
                                     </Card.Header>
                                     <Card.Body key={`card_body_${idx}`}>

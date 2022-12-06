@@ -12,7 +12,7 @@ const HutSearchBar = (props) => {
         setSearchParams(searchParams);
     }
 
-    return(<Row>
+    return(<>
         <Col xl={8}><GeoAreaForm geoArea={props.geoArea} setGeoArea={props.setGeoArea}/></Col>
         <Col xl={4} className='col-md-4 p-2'>
             <Form action="/" method="get" autoComplete='off' onSubmit={onSubmit}>
@@ -40,6 +40,6 @@ const HutSearchBar = (props) => {
                 </Row>
             </Form>
         </Col>
-    </Row>)
+    </>)
 }
 export {HutSearchBar}

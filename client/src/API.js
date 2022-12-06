@@ -407,6 +407,10 @@ const hutsList = async (filters, collection = "huts") => {
             const hut = {
                 id: doc.id,
                 name: doc.data().name,
+                phone: doc.data().phone,
+                email: doc.data().email,
+                website: doc.data().website,
+                altitude: doc.data().altitude,
                 country: doc.data().country,
                 region: doc.data().region,
                 city: doc.data().city,
@@ -427,6 +431,10 @@ const hutsList = async (filters, collection = "huts") => {
             const hut = {
                 id: doc.id,
                 name: doc.data().name,
+                phone: doc.data().phone,
+                email: doc.data().email,
+                website: doc.data().website,
+                altitude: doc.data().altitude,
                 country: doc.data().country,
                 region: doc.data().region,
                 city: doc.data().city,
@@ -451,6 +459,9 @@ const addNewHut = async (hut, collection = "huts") => {
     const hutsRef = firestore.collection(db, collection);
     const obj = {
         name: hut.name,
+        email: hut.email,
+        phone: hut.phone,
+        website: hut.website,
         country: hut.country,
         region: hut.region,
         city: hut.city,
