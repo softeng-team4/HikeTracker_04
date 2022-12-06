@@ -67,7 +67,7 @@ function App() {
 
   const signup = async (email, password, firstName, lastName, role) => {
     try {
-      const user = await API.signUp(email, password, firstName, lastName, role);
+      await API.signUp(email, password, firstName, lastName, role);
     } catch (err) {
       console.log(err);
       throw err;
