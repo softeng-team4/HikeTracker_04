@@ -24,7 +24,6 @@ function App() {
           if (currentUser.emailVerified) {
             const userInfo = await API.getUser(currentUser.email);
             setAuthUser(userInfo);
-            console.log('and here')
           }
         } catch (err) {
           setAuthErr(err);
@@ -61,8 +60,9 @@ function App() {
 
   // function to trigger update of authUser data
   const updateUserData = async () => {
-    setAuthUser(await API.getUser(authUser.email))
-    console.log('here')
+    const userData = await API.getUser(authUser.email);
+    setAuthUser(userData);
+    return userData;
   };
 
   const signup = async (email, password, firstName, lastName, role) => {
