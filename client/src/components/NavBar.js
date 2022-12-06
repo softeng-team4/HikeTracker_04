@@ -4,10 +4,7 @@ import { FaRegUserCircle, FaHiking } from 'react-icons/fa'
 import AuthenticationContext from './AuthenticationContext';
 
 const NavBar = (props) => {
-
-
     const navigate = useNavigate();
-
 
     return (
         <AuthenticationContext.Consumer>
@@ -18,7 +15,7 @@ const NavBar = (props) => {
                             <Col xxl={2} />
                             <Col>
                                 <Navbar expand="sm">
-                                    <Navbar.Brand className='d-flex' style={{cursor:"pointer"}} onClick={() => navigate('/')}>
+                                    <Navbar.Brand className='d-flex' style={{ cursor: "pointer" }} onClick={() => navigate('/')}>
                                         <h3><FaHiking className='nav-icon' />Hike Tracker</h3>
                                     </Navbar.Brand>
                                     <Navbar.Toggle aria-controls="nav-toggle" />
@@ -32,14 +29,14 @@ const NavBar = (props) => {
 
                                             {authObject.authUser &&
                                                 <>
-                                                  <Nav.Link onClick={() => navigate('/huts')}>Explore huts</Nav.Link>
+                                                    <Nav.Link onClick={() => navigate('/huts')}>Explore huts</Nav.Link>
                                                     {authObject.authUser.role.toLowerCase() === 'local guide' &&
                                                         <>
                                                             <Nav.Link onClick={() => navigate('/hikeform')}>New Hike</Nav.Link>
                                                             <Nav.Link onClick={() => navigate('/newPark')}>New Park</Nav.Link>
                                                             <Nav.Link onClick={() => navigate('/newHut')}>New Hut</Nav.Link>
                                                             {/* <Nav.Link href='/parks'>Park List</Nav.Link> */}
-                                                            
+
 
                                                         </>}
                                                 </>
