@@ -3,9 +3,10 @@ import Slider from 'rc-slider'; import { Col, Form, InputGroup, Row } from 'reac
 import { useSearchParams } from 'react-router-dom';
 import GeoAreaForm from './BrowserHikeComponents/GeoAreaForm';
 
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+const Range = createSliderWithTooltip(Slider.Range);
+
 const HutSearchBar = (props) => {
-    const createSliderWithTooltip = Slider.createSliderWithTooltip;
-    const Range = createSliderWithTooltip(Slider.Range);
     // default Range for Slider values
     const dR = { min: 0, max: 750, step: 150 };
     // labels of range slider points
@@ -53,7 +54,7 @@ const HutSearchBar = (props) => {
         </Col>
         <Col xl={8}>
             <Form style={{ margin: 10 }}>
-                <Form.Label htmlFor='AltitudeRange'>Select altitude range</Form.Label>
+                <Form.Label htmlFor='AltitudeRange'>Select an altitude range</Form.Label>
                 <Range className='AltitudeRange' min={dR.min} max={dR.max} step={dR.step} marks={altitudeMarks} allowCross={false} defaultValue={[dR.min, dR.max]} onAfterChange={(range) => handleRange(range)} />
             </Form>
         </Col>
