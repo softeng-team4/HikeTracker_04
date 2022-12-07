@@ -39,7 +39,7 @@ function HutForm(props) {
             return;
         }
 
-        const hut = new Hut(name, phone, email, website, altitude, country, region, city, hutPoint, bedsNumber, null, description, null, null, null, null);
+        const hut = new Hut(name, phone, email, website, parseInt(altitude), country, region, city, hutPoint, parseInt(bedsNumber), null, description, null, null, null, null);
 
         console.log(hut)
         await props.addNewHut(hut);

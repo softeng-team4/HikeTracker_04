@@ -40,7 +40,7 @@ function ParkForm(props) {
             return;
         }
 
-        const parkingLot = new ParkingLot(name, country, region, city, parkPoint, lotsNumber, costPerDay, description, openingHour, openingMinute, closingHour, closingMinute);
+        const parkingLot = new ParkingLot(name, country, region, city, parkPoint, parseInt(lotsNumber), parseInt(costPerDay), description, parseInt(openingHour), parseInt(openingMinute), parseInt(closingHour), parseInt(closingMinute));
 
         await props.addNewParkingLot(parkingLot);
         setName('');

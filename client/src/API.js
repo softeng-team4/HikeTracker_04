@@ -462,6 +462,7 @@ const addNewHut = async (hut, collection = "huts") => {
         email: hut.email,
         phone: hut.phone,
         website: hut.website,
+        altitude: hut.altitude,
         country: hut.country,
         region: hut.region,
         city: hut.city,
