@@ -2,7 +2,7 @@
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth');
-const { GeoPoint, updateDoc, doc, deleteDoc } = require('firebase/firestore');
+const { GeoPoint, updateDoc, doc } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
@@ -268,7 +268,8 @@ const hikesList = async (filters, collection) => {
                                 region: doc.data().region,
                                 title: doc.data().title,
                                 startPoint: doc.data().startPoint,
-                                author: doc.data().author
+                                author: doc.data().author,
+                                linkedHuts: doc.data().linkedHuts
                             };
                             res.push(hike);
                         }
@@ -290,7 +291,8 @@ const hikesList = async (filters, collection) => {
                         region: doc.data().region,
                         title: doc.data().title,
                         startPoint: doc.data().startPoint,
-                        author: doc.data().author
+                        author: doc.data().author,
+                        linkedHuts: doc.data().linkedHuts
                     };
                     res.push(hike);
                 }
@@ -319,7 +321,8 @@ const hikesList = async (filters, collection) => {
                                 region: doc.data().region,
                                 title: doc.data().title,
                                 startPoint: doc.data().startPoint,
-                                author: doc.data().author
+                                author: doc.data().author,
+                                linkedHuts: doc.data().linkedHuts
                             };
                             res.push(hike);
                         }
@@ -341,7 +344,8 @@ const hikesList = async (filters, collection) => {
                         region: doc.data().region,
                         title: doc.data().title,
                         startPoint: doc.data().startPoint,
-                        author: doc.data().author
+                        author: doc.data().author,
+                        linkedHuts: doc.data().linkedHuts
                     };
                     res.push(hike);
                 }
@@ -446,6 +450,10 @@ const hutsList = async (filters, collection = "huts") => {
     return res;
 }
 
+const getHutById = async (hutID, collection = 'huts') => {
+    return {id: hutID, ...(await firestore.getDoc(firestore.doc(db, collection, hutID))).data()};
+}
+
 const addNewHut = async (hut, collection = "huts") => {
     console.log("API add new hut: ", hut);
     const hutsRef = firestore.collection(db, collection);
@@ -537,24 +545,30 @@ const getAllParkingLots = async (collection = "parkingLots") => {
     console.log(res);
     return res;
 }
-const modifyHike = async (id, ascent, city, country, description, difficulty, endPoint, expectedTime,
-    length, referencePoint, region, title, startPoint, author, collection="hike") => {
-    await deleteDoc(doc(db, collection, id));
-    const hike = {
-        title: title, country: country, region: region, city: city, description: description, difficulty: difficulty, expectedTime: expectedTime,
-        length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: referencePoint, author: author
-    }
-    console.log("Hike:"+ hike)
-    // const hikeRef = firestore.collection(db, 'hike')
-    await firestore.setDoc(doc(db, collection, id), hike);
-    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
+
+const getParkingLotById = async (parkID, collection = 'parkingLots') => {
+    return {id: parkID, ...(await firestore.getDoc(firestore.doc(db, collection, parkID))).data()};
 }
 
-const linkHuts = async(huts, hikeID, collection = "hike")=>{
+const modifyHike = async (hikeID, startPoint, endPoint, collection="hike") => {
+    await updateDoc(doc(db, collection, hikeID), {
+        startPoint: startPoint,
+        endPoint: endPoint
+    });
+    
+}
+
+const linkHuts = async(huts, hikeID, collection = "hike") => {
     console.log("API linkHuts: ", huts, hikeID);
     await firestore.updateDoc(firestore.doc(db, collection, hikeID),{
         linkedHuts: huts
     });
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike,  modifyReferencePoints, linkHuts };
+const modifyUserPreferences = async (email, preferences, collection = "users") => {
+    await firestore.updateDoc(firestore.doc(db, collection, email), {
+        preferences: preferences
+    });
+}
+
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike,  modifyReferencePoints, linkHuts, getHutById, getParkingLotById, modifyUserPreferences };

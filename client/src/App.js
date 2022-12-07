@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, ModifyHikeByAuthor } from './components/View';
+import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, ModifyHikeByAuthor, UserProfile } from './components/View';
 import { useEffect, useState } from 'react';
 import API from './API.js'
 import AuthenticationContext from './components/AuthenticationContext';
@@ -15,13 +15,10 @@ function App() {
   //states of authentication of an Admin
   const [authUser, setAuthUser] = useState(undefined);
   const [authErr, setAuthErr] = useState(undefined);
-  const [currentUser, setCurrentUser] = useState({});
-
   const auth = getAuth();
 
   useEffect(() => {
     onAuthStateChanged(auth, async (currentUser) => {
-      setCurrentUser(currentUser);
       if (currentUser) {
         try {
           if (currentUser.emailVerified) {
@@ -61,9 +58,16 @@ function App() {
     }
   }
 
+  // function to trigger update of authUser data
+  const updateUserData = async () => {
+    const userData = await API.getUser(authUser.email);
+    setAuthUser(userData);
+    return userData;
+  };
+
   const signup = async (email, password, firstName, lastName, role) => {
     try {
-      const user = await API.signUp(email, password, firstName, lastName, role);
+      await API.signUp(email, password, firstName, lastName, role);
     } catch (err) {
       console.log(err);
       throw err;
@@ -76,7 +80,8 @@ function App() {
     authUser: authUser,
     authErr: authErr,
     onLogin: login,
-    onLogout: logout
+    onLogout: logout,
+    onUpdateUserData: updateUserData
   };
   // console.log(authUser.role.toLowerCase()==='local guide')
 
@@ -126,6 +131,8 @@ function App() {
               <Route index element={<BrowserHikes />}></Route>
               <Route path='login' element={authUser ? <Navigate replace to='/' /> : <LoginForm login={login} />} />
               <Route path='signup' element={<SigninForm signup={signup} />}></Route>
+              {/* here are the routes with authenticated */}
+              {authUser && <Route path={`/profile/${authUser.firstName.toLowerCase().replace(' ','_')}_${authUser.lastName.toLowerCase().replace(' ','_')}`} element={<UserProfile />} />}
               {/* here are the routes with local guide */}
               <Route path='hikeform' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' /> : ''} />
               <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' /> : ''} />

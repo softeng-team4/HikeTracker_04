@@ -11,17 +11,45 @@ body {
   color: #292b2c !important;
 }
 
-.nav-dropdown-link {
-  color: lightgray;
-  text-decoration: none;
+.nav-dropdown-link, .nav-profile-link {
+  color: lightgray !important;
+  text-decoration: none !important;
 }
 
-.nav-dropdown-link:hover {
+.nav-dropdown-link:hover, .nav-profile-link:hover {
   color: lightgray !important;
 }
 
 .nav-icon {
   transform: translateY(-4px)
+}
+
+/* offcanvas */
+.offcanvas {
+  background-color: rgba(211,211,211,0.9) !important;
+  border-color: transparent !important;
+} 
+.btn-close {
+  background-color: gray !important;
+}
+
+@media screen and (min-width: 1400px) {
+  .offcanvas {
+    width: 17% !important;
+  }
+}
+
+.redirect-to-profile {
+  cursor: pointer;
+}
+
+.redirect-to-profile:hover > .redirect-text {
+  text-decoration: underline;
+  color: cornflowerblue;
+}
+
+.redirect-to-profile:hover > div > .redirect-icon {
+  padding-left: 10%;
 }
 
 /* geoAreaForm */
@@ -63,6 +91,15 @@ body {
   color: gray;
 }
 
+.mylink {
+  text-decoration: underline !important;
+  color: blue !important;
+}
+
+.mylink:hover {
+  cursor: pointer;
+}
+
 /* FilterForm */
 
 .btn-geoArea {
@@ -96,4 +133,10 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
+}
+
+/* AdditionalHikeInfoModal */
+
+.addInfo {
+  background-color: rgba(0, 0, 0, 0.03) !important;
 }

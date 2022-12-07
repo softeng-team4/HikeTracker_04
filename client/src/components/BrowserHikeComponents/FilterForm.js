@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import AuthenticationContext from '../AuthenticationContext';
 import DifficultyForm from './DifficultyForm';
@@ -11,6 +11,8 @@ import PointRadiusForm from './PointRadiusForm';
 const FilterForm = (props) => {
 
 
+    // user data
+    const userData = useContext(AuthenticationContext).authUser;
     // state to hold geoArea filter
     const [geoArea, setGeoArea] = useState({ country: { countryCode: 'None', name: 'None' }, region: { countryCode: 'None', stateCode: 'None', name: 'None' }, city: { name: 'None' } });
     // state to hold selected difficulty
@@ -29,6 +31,8 @@ const FilterForm = (props) => {
     const [filters, setFilters] = useState({ geoArea: geoArea, pointRadius: pointRadius, difficulty: difficulty, lenghtRange: lenghtRange, ascentRange: ascentRange, expTimeRange: expTimeRange });
     // state to hold which geoAreaFilter display to the user
     const [geoAreaFilterType, setGeoAreaFilterType] = useState(true);
+    // state to hold custom preferences on ranges
+    const [customPreferences, setCustomPreferences] = useState(undefined);
     const setHikeList = props.setHikeList;
     const setIsLoading = props.setIsLoading;
 
@@ -65,7 +69,7 @@ const FilterForm = (props) => {
             ascent: filters.ascentRange,
             expectedTime: filters.expTimeRange
         }, 'hike').then(r => setHikeList(r));
-    }, [filters, setHikeList]);
+    }, [filters, setHikeList, setIsLoading]);
 
 
     useEffect(() => {
@@ -74,13 +78,13 @@ const FilterForm = (props) => {
 
 
     const handleSliderSubmit = (sliderObj) => {
+        console.log(sliderObj.range)
         if (sliderObj.slider === 0)
             setLenghtRange(sliderObj.range)
         else if (sliderObj.slider === 1)
             setAscentRange(sliderObj.range)
         else
             setExpTimeRange(sliderObj.range)
-        console.log(sliderObj)
     };
 
 
@@ -90,6 +94,16 @@ const FilterForm = (props) => {
         else
             setPointRadius({ coordinates: undefined, radius: undefined });
         setGeoAreaFilterType(!geoAreaFilterType);
+    };
+
+
+    const handleCustomFilters = (event) => {
+        const isChecked = event.target.checked;
+        console.log(isChecked)
+        if(isChecked)
+            setCustomPreferences(userData.preferences);
+        else
+            setCustomPreferences(undefined);
     };
 
 
@@ -114,15 +128,18 @@ const FilterForm = (props) => {
                             <DifficultyForm difficulty={difficulty} setDifficulty={setDifficulty} />
                         </Row>
                         <Row>
-                            <SliderForm handleSliderSubmit={handleSliderSubmit} />
+                            <SliderForm customPreferences={customPreferences} handleSliderSubmit={handleSliderSubmit} />
                         </Row>
-                        {authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ?
                             <Row>
-                                <Col className='d-flex justify-content-sm-end'>
-                                    <Form.Check type='switch' label='modify created hikes' reverse onChange={() => props.handleEmailFilter()} />
+                                <Col className={authObject.authUser && authObject.authUser.preferences ? 'd-flex justify-content-sm-between' : 'd-flex justify-content-sm-end'}>
+                                {authObject.authUser && authObject.authUser.preferences && 
+                                    <Form.Check type='checkbox' label='apply custom filters' onChange={(ev) => handleCustomFilters(ev)} />  
+                                }
+                                {authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' &&
+                                    <Form.Check type='switch' label='modify created hikes' reverse onChange={() => props.handleEmailFilter()} />  
+                                }
                                 </Col>
-                            </Row> : null
-                        }
+                            </Row>
                     </Row>
                 </>
             )}

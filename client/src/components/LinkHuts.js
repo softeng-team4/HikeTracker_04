@@ -13,17 +13,19 @@ import StaticHikeInfo from "./StaticHikeInfo";
 const LinkHuts = (props) => {
 
     // used to return to homepage
-    const nav = useNavigate()
+    const nav = useNavigate();
     // hike to be modified
     const hike = props.hike;
     // coordinates of the hike track
     const points = JSON.parse(hike.referencePoint);
     // state to hold list of huts
-    const [hutList, setHutList] = useState([])
+    const [hutList, setHutList] = useState([]);
     // selected hut list
-    const [selectedHutList, setSelectedHutList] = useState([])
+    const [selectedHutList, setSelectedHutList] = useState([]);
+    // state to hold initial list state
+    const [initialState, setInitialState] = useState();
     // state to display that there are no huts close to the hike
-    const [showNoCloseHuts, setShowNoCloseHuts] = useState(false)
+    const [showNoCloseHuts, setShowNoCloseHuts] = useState(false);
     //state to show the modal to confirm hike changes
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     //state to show the modal to delete hike changes
@@ -47,10 +49,17 @@ const LinkHuts = (props) => {
             region: undefined,
             city: undefined
         };
-        API.hutsList(filters).then(r => setHutList(r))
-
-        // center = computeCenter()
-    }, []);
+        API.hutsList(filters).then(r => {
+            let hutsTmp = r;
+            let selectedHutsTmp = hike.linkedHuts ? r.filter(h => hike.linkedHuts.some(lh => lh.id === h.id)) : [];
+            hutsTmp = hike.startPoint.id ? hutsTmp.filter(h => h.id !== hike.startPoint.id ) : hutsTmp;
+            hutsTmp = hike.endPoint.id ? hutsTmp.filter(h => h.id !== hike.endPoint.id ) : hutsTmp;
+            hutsTmp = hike.linkedHuts ? hutsTmp.filter(h => !hike.linkedHuts.some(lh => lh.id === h.id)) : hutsTmp;
+            setHutList(hutsTmp);
+            setSelectedHutList(selectedHutsTmp);
+            setInitialState([hutsTmp, selectedHutsTmp])
+        })
+    }, [hike]);
 
 
     // function to link hut
@@ -78,17 +87,16 @@ const LinkHuts = (props) => {
 
 
     // function to send changes of the hike
-    const submitChanges = () => {
-        selectedHutList.map(h => ({hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long}))
-        linkHuts(selectedHutList.map(h => ({hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long})), props.hike.id);
+    const submitChanges = async () => {
+        await linkHuts(selectedHutList.map(h => ({id: h.id, name: h.name, position: h.position})), props.hike.id);
         nav('/');
     }
 
 
     // function to delete changes of the hike
     const deleteChanges = () => {
-        setHutList([...hutList, ...selectedHutList]);
-        setSelectedHutList([]);
+        setHutList(initialState[0]);
+        setSelectedHutList(initialState[1]);
         setShowDeleteModal(false);
     }
 
@@ -99,7 +107,7 @@ const LinkHuts = (props) => {
                 <StaticHikeInfo hike={hike} />
                 {!showNoCloseHuts && selectedHutList.length === 0 && <Alert variant='danger'>To link a hut to the hike select it on the map</Alert>}
                 {showNoCloseHuts && <Alert variant='danger'>There are not available huts close to this hike to be linked</Alert>}
-                {hike.referencePoint && <Map positions={points} startPoint={hike.startPoint} endPoint={hike.endPoint} huts={hutList} handleLinkHut={handleLinkHut} handleNohutsCloseToHike={handleNohutsCloseToHike} />}
+                {hike.referencePoint && <Map positions={points} startPoint={hike.startPoint} endPoint={hike.endPoint} huts={hutList} handleHutClickOnMap={handleLinkHut} handleNohutsCloseToHike={handleNohutsCloseToHike} />}
                 <Spacer height='1rem' />
                 <h5>Linked huts:</h5>
                 <Row>
@@ -118,6 +126,7 @@ const LinkHuts = (props) => {
                         </Card>
                     </Col>
                 </Row>
+                <Spacer height='1rem' />
                 <Row>
                     <Col>
                         <Button variant='danger' onClick={() => setShowDeleteModal(!showDeleteModal)}>Delete changes</Button>{' '}

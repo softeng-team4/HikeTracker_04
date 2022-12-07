@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col, Container, Card, ButtonGroup, Button, Tooltip, OverlayTrigger, Spinner } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Spacer from './Spacer';
 import FilterForm from './FilterForm';
 import AuthenticationContext from '../AuthenticationContext';
@@ -30,7 +30,8 @@ const HikeTable = () => {
     // state to display modal with additional hike info
     const [showInfoModal, setShowInfoModal] = useState(false);
     // state to hold user email --> author of hike
-    const [author, setAuthor] = useState(undefined);
+    const user = useContext(AuthenticationContext).authUser;
+    const author = user ? user.email : undefined;
     // state to allow a local guide to modify his tasks
     const [filterByEmail, setFilterByEmail] = useState(false);
     // state to hold touch swipe
@@ -45,6 +46,7 @@ const HikeTable = () => {
     useEffect(() => {
         setSubHikeList(hikeList.slice(0, hike4page));
         setIsLoading(false);
+        setIndex(0);
     }, [hikeList]);
 
     const handleEmailFilter = () => {
@@ -57,6 +59,7 @@ const HikeTable = () => {
             setHikeList(hikeListCopy);
             setFilterByEmail(false);
         }
+        setIndex(0);
     };
 
 
@@ -103,7 +106,6 @@ const HikeTable = () => {
             {(authObject) => (
                 <>
                     {isLoading && <div className='loading-overlay'><Spinner className='spinner' animation="border" variant="light" /></div>}
-                    {authObject.authUser && authObject.authUser.email ? setAuthor(authObject.authUser.email) : null}
                     <Container fluid className='BrowserHikesContainer' style={isLoading ? { pointerEvents: 'none' } : null}>
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
