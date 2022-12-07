@@ -183,4 +183,26 @@ describe('Browse Hikes', () => {
     cy.get(".card").should("have.length", 1)
     cy.contains("There are no hikes")
   })
+
+  it("My hikes", () => {
+    cy.visit("http://localhost:3000/")
+    cy.logIn('aleganino@gmail.com',"password")
+    cy.get(':nth-child(1) > .form-check-input').click()
+    cy.get(".card").should("have.length", 4)
+    //User preferences to be set according to this
+    cy.get(':nth-child(4) > .card > .card-footer > .row > :nth-child(2)').contains(/(1\d|20)\.\d km/)
+    cy.get(':nth-child(5) > .card > .card-footer > .row > :nth-child(2)').contains(/(1\d|20)\.\d km/)
+    cy.get(':nth-child(6) > .card > .card-footer > .row > :nth-child(2)').contains(/(1\d|20)\.\d km/)
+    cy.get(':nth-child(7) > .card > .card-footer > .row > :nth-child(2)').contains(/(1\d|20)\.\d km/)
+    cy.get(':nth-child(4) > .card > .card-footer > .row > :nth-child(3)').contains(/([4-7]\d\d|800) m/)
+    cy.get(':nth-child(5) > .card > .card-footer > .row > :nth-child(3)').contains(/([4-7]\d\d|800) m/)
+    cy.get(':nth-child(6) > .card > .card-footer > .row > :nth-child(3)').contains(/([4-7]\d\d|800) m/)
+    cy.get(':nth-child(7) > .card > .card-footer > .row > :nth-child(3)').contains(/([4-7]\d\d|800) m/)
+    cy.get(':nth-child(4) > .card > .card-footer > .row > :nth-child(4)').contains(/(2[4-9]\d|3\d\d|4[0-7]\d|480) min/)
+    cy.get(':nth-child(5) > .card > .card-footer > .row > :nth-child(4)').contains(/(2[4-9]\d|3\d\d|4[0-7]\d|480) min/)
+    cy.get(':nth-child(6) > .card > .card-footer > .row > :nth-child(4)').contains(/(2[4-9]\d|3\d\d|4[0-7]\d|480) min/)
+    cy.get(':nth-child(7) > .card > .card-footer > .row > :nth-child(4)').contains(/(2[4-9]\d|3\d\d|4[0-7]\d|480) min/)
+  })
+ 
+
 })
