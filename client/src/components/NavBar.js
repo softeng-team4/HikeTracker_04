@@ -6,8 +6,6 @@ import { useState } from 'react';
 import UserProfileOffCanvas from './UserProfileComponents/UserProfileOffCanvas';
 
 const NavBar = (props) => {
-
-
     const navigate = useNavigate();
     const path = useLocation().pathname;
     // state to show the offcanvas of user profile
