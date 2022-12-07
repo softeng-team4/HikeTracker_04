@@ -1,10 +1,13 @@
 import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
+import LocalGuideForm from './LocalGuideForm';
+import HutWorkerForm from './HutWorkerForm';
+
 
 function validPhoneNumber(phoneNumber) {
   var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-  if(phoneNumber.match(phoneno)) {
+  if (phoneNumber.match(phoneno)) {
     console.log("Valid phone number");
     return true;
   }
@@ -23,8 +26,9 @@ function SignupForm(props) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [role, setRole] = useState('Hiker');
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState({email: false, password: false, confirmedPassword: false, phoneNumber:false, firstName: false, lastName: false});
-
+  const [error, setError] = useState({ email: false, password: false, confirmedPassword: false, phoneNumber: false, firstName: false, lastName: false });
+  const [hutId, setHutId] = useState('');
+  const [hutSelected, setHutSelected] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,11 +38,12 @@ function SignupForm(props) {
       email: false,
       password: false,
       confirmedPassword: false,
-      phoneNumber:false,
+      phoneNumber: false,
       firstName: false,
-      lastName: false
+      lastName: false,
+      hutId: false
     };
-    if ( password === '' || password.length < 6) {
+    if (password === '' || password.length < 6) {
       valid = false;
       e.password = true;
     }
@@ -59,19 +64,32 @@ function SignupForm(props) {
       valid = false;
       e.lastName = true;
     }
-    if (!validPhoneNumber(phoneNumber)){
+    if (!validPhoneNumber(phoneNumber)) {
       valid = false;
       e.phoneNumber = true;
+    }
+    if(role === "Hut worker" && hutSelected === false){
+      valid = false;
+      e.hutId = true;
     }
     setError(e);
     if (!valid) {
       console.log("ERROR")
-    }else{
+    } else {
       console.log("Valid data");
     }
 
     // if (valid) {
-    //   props.signup(username, password, firstName, lastName, role)
+      const user = {
+        username: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        role: role,
+        phoneNumber: phoneNumber,
+        hutId: role === "Hut worker" ? hutId : undefined
+      }
+    //   props.signup(user)
     //     .then(() => {
     //       setSubmitted(true);
     //     }).catch((err) => {
@@ -80,6 +98,11 @@ function SignupForm(props) {
     //     });
     // }
   };
+
+  const hutSelection = (hut) => {
+    setHutId(hut);
+    setHutSelected(true);
+  }
 
   return (
     <>{
@@ -127,6 +150,13 @@ function SignupForm(props) {
                 <option value="Hut worker">Hut worker</option>
               </Form.Select>
             </Form.Group>
+            {role === "Hut worker" ?
+              <HutWorkerForm hutSelection={hutSelection}>
+              </HutWorkerForm>
+              : null}
+            {role === "Hut worker" && error.hutId ?
+              <Alert variant='danger'>Hut workers must select an hut.</Alert>
+            : null}
             <div align="right" style={{ marginTop: 10 }}>
               <Button type="submit">Sign Up</Button>
             </div>
