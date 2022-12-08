@@ -6,10 +6,10 @@ import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRout
 import { useEffect, useState } from 'react';
 import API from './API.js'
 import AuthenticationContext from './components/AuthenticationContext';
-import { LoginForm } from './components/LoginComponents';
-import { SigninForm } from './components/SigninComponents';
+import { LoginForm } from './components/AuthComponents/LoginComponents';
+import { SigninForm } from './components/AuthComponents/SigninComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
-import {BrowserHuts} from './components/BrowserHuts'
+import {BrowserHuts} from './components/BrowerHutComponent/BrowserHuts'
 
 function App() {
   //states of authentication of an Admin

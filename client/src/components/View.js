@@ -1,11 +1,11 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import { Outlet } from 'react-router';
 import HikeTable from './BrowserHikeComponents/HikeTable'
-import HandleModifyPage from './HandleModifyPage';
-import { HikeForm } from './HikeForm';
-import { HutForm } from './HutForm';
+import HandleModifyPage from './ModifyHikeComponents/HandleModifyPage';
+import { HikeForm } from './HikeFormComponents/HikeForm';
+import { HutForm } from './HutParkFormComponents/HutForm';
 import NavBar from './NavBar';
-import { ParkForm } from './ParkForm';
+import { ParkForm } from './HutParkFormComponents/ParkForm';
 import UserProfilePage from './UserProfileComponents/UserProfilePage';
 
 

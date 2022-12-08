@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
 import { FaRegTimesCircle } from 'react-icons/fa';
 import { useNavigate } from "react-router";
-import API, { linkHuts } from '../API';
-import Spacer from "./BrowserHikeComponents/Spacer";
+import API, { linkHuts } from '../../API';
+import Spacer from "../BrowserHikeComponents/Spacer";
 import ConfirmModal from "./ConfirmModal";
-import { Map } from "./Map";
+import { Map } from "../HikeFormComponents/Map";
 import StaticHikeInfo from "./StaticHikeInfo";
-
-
 
 const LinkHuts = (props) => {
 

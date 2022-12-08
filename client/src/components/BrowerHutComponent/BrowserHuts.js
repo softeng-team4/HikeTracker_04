@@ -1,10 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Container, Card, Row, Spinner } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import Spacer from './BrowserHikeComponents/Spacer';
-import AuthenticationContext from './AuthenticationContext';
-import HikePageHandler from './BrowserHikeComponents/HickePageHendler';
-import API from '../API';
+import Spacer from '../BrowserHikeComponents/Spacer';
+import AuthenticationContext from '../AuthenticationContext';
+import HikePageHandler from '../BrowserHikeComponents/HickePageHendler';
+import API from '../../API';
 import { HutSearchBar } from './HutSearchBar';
 
 const BrowserHuts = (props) => {
@@ -65,7 +65,6 @@ const BrowserHuts = (props) => {
                 return hutList
             })
     }, [searchQuery, hutList, range])
-
 
 
     const handlePageChange = (idx) => {

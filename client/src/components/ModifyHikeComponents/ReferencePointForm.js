@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { useNavigate } from "react-router";
-import { LocationMarker } from "./LocationMarker";
-import { modifyReferencePoints } from '../API';
+import { LocationMarker } from "../HutParkFormComponents/LocationMarker";
+import { modifyReferencePoints } from '../../API';
 import StaticHikeInfo from './StaticHikeInfo';
 import { FaRegTrashAlt } from 'react-icons/fa';
 

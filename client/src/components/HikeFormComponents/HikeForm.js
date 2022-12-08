@@ -1,13 +1,12 @@
-
 import { useEffect, useState } from "react"
-import { Form, Row, Col, Table, Button, ToggleButtonGroup, ToggleButton, Alert, Modal, InputGroup, Container } from "react-bootstrap"
+import { Form, Row, Col, Table, Button, Modal, InputGroup, Container } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet'
+import { Marker, useMapEvents } from 'react-leaflet'
 import L from 'leaflet-gpx'
 import { Country, State, City } from 'country-state-city';
-import AuthenticationContext from "./AuthenticationContext"
+import AuthenticationContext from "../AuthenticationContext"
 import { Map } from "./Map"
-import Spacer from "./BrowserHikeComponents/Spacer"
+import Spacer from "../BrowserHikeComponents/Spacer"
 let gpxParser = require('gpxparser');
 
 function HikeForm(props) {
@@ -52,7 +51,6 @@ function HikeForm(props) {
             iconUrl: require("leaflet/dist/images/marker-icon.png"),
             shadowUrl: require("leaflet/dist/images/marker-shadow.png")
         });
-        console.log("New point index:" + pointIndex)
         if (fileGPX) {
             getValuesFromGPX(fileGPX);
             gpx.parse(fileGPX);

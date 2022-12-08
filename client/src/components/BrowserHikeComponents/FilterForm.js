@@ -78,7 +78,6 @@ const FilterForm = (props) => {
 
 
     const handleSliderSubmit = (sliderObj) => {
-        console.log(sliderObj.range)
         if (sliderObj.slider === 0)
             setLenghtRange(sliderObj.range)
         else if (sliderObj.slider === 1)
@@ -99,7 +98,6 @@ const FilterForm = (props) => {
 
     const handleCustomFilters = (event) => {
         const isChecked = event.target.checked;
-        console.log(isChecked)
         if(isChecked)
             setCustomPreferences(userData.preferences);
         else

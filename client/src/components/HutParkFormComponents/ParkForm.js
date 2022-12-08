@@ -5,19 +5,20 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
 import L from 'leaflet'
-import Hut from '../model/Hut'
-import Spacer from "./BrowserHikeComponents/Spacer";
+import ParkingLot from "../../model/ParkingLot";
+import Spacer from "../BrowserHikeComponents/Spacer";
 
-function HutForm(props) {
+function ParkForm(props) {
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [website, setWebsite] = useState('');
-    const [altitude, setAltitude] = useState('');
-    const [bedsNumber, setBedsNumber] = useState('');
+    const [lotsNumber, setLotsNumber] = useState('');
     const [description, setDescription] = useState('');
+    const [costPerDay, setCostPerDay] = useState('');
+    const [openingHour, setOpeningHour] = useState('');
+    const [openingMinute, setOpeningMinute] = useState('');
+    const [closingHour, setClosingHour] = useState('');
+    const [closingMinute, setClosingMinute] = useState('');
 
-    const [hutPoint, setHutPoint] = useState([]);
+    const [parkPoint, setParkPoint] = useState([]);
     const [position, setPosition] = useState([45.06294822296754, 7.662272990156818]);
     const [countryCode, setCountryCode] = useState('');
     const [country, setCountry] = useState('');
@@ -33,32 +34,32 @@ function HutForm(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
-        if (form.checkValidity() === false || hutPoint.length === 0) {
+        if (form.checkValidity() === false || parkPoint.length === 0) {
             event.stopPropagation();
             setValidated(true);
             return;
         }
 
-        const hut = new Hut(name, phone, email, website, parseInt(altitude), country, region, city, hutPoint, parseInt(bedsNumber), null, description, null, null, null, null);
+        const parkingLot = new ParkingLot(name, country, region, city, parkPoint, parseInt(lotsNumber), parseInt(costPerDay), description, parseInt(openingHour), parseInt(openingMinute), parseInt(closingHour), parseInt(closingMinute));
 
-        console.log(hut)
-        await props.addNewHut(hut);
-        setValidated(false);
+        await props.addNewParkingLot(parkingLot);
         setName('');
-        setEmail('');
-        setPhone('');
-        setWebsite('');
-        setAltitude('');
-        setBedsNumber('');
+        setLotsNumber('');
         setDescription('');
+        setCostPerDay('');
+        setOpeningHour('');
+        setOpeningMinute('');
+        setClosingHour('');
+        setClosingMinute('');
         setCountry('');
         setCountryCode('');
         setRegion('');
         setRegionCode('');
         setCity('');
-        setHutPoint([]);
-        setCityMap([]);
+        setCityMap('');
+        setParkPoint([]);
         setPosition([45.06294822296754, 7.662272990156818]);
+        setValidated(false);
         handleShow();
     };
 
@@ -80,9 +81,9 @@ function HutForm(props) {
     return (<>
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>New hut</Modal.Title>
+                <Modal.Title>New parking lot</Modal.Title>
             </Modal.Header>
-            <Modal.Body>The new hut has been saved successfully!</Modal.Body>
+            <Modal.Body>The new parking lot has been saved successfully!</Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" onClick={handleClose}>
                     Close
@@ -91,7 +92,7 @@ function HutForm(props) {
         </Modal>
         <Container fluid style={{ marginBottom: 20 }}>
             <Spacer height='2rem' />
-            <h2>Add A New Hut</h2>
+            <h2>Add A New Parking Lot</h2>
             <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3">
                 <Form.Group as={Row} className="mb-3">
                     <Col sm={2}>
@@ -102,57 +103,71 @@ function HutForm(props) {
                         <Form.Control.Feedback>Valid name!</Form.Control.Feedback>
                         <Form.Control.Feedback type="invalid">Please insert a name.</Form.Control.Feedback>
                     </Col>
-                </Form.Group><Form.Group as={Row} className="mb-3">
+                </Form.Group>
+                <Form.Group as={Row} className="mb-3">
                     <Col sm={2}>
-                        <Form.Label>Email:</Form.Label>
+                        <Form.Label>Number of lots:</Form.Label>
                     </Col>
-                    <Col>
-                        <Form.Control className='email-input' required type='email' value={email} onChange={(event) => setEmail(event.target.value)} />
-                        <Form.Control.Feedback>Valid email!</Form.Control.Feedback>
-                        <Form.Control.Feedback type="invalid">Please insert a valid email.</Form.Control.Feedback>
+                    <Col >
+                        <Form.Control className='lots-input' required type='number' value={lotsNumber} defaultValue={undefined} min={0} onChange={(event) => setLotsNumber(event.target.value)} />
+                        <Form.Control.Feedback>Valid number of lots!</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please insert the number of lots. It must be a positive integer.</Form.Control.Feedback>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Col sm={2}>
-                        <Form.Label>Phone number:</Form.Label>
+                        <Form.Label>Cost per day:</Form.Label>
                     </Col>
-                    <Col>
-                        <Form.Control className='phone-input' required type='tel' value={phone} pattern="[0-9]{4,12}" onChange={(event) => setPhone(event.target.value)} />
-                        <Form.Control.Feedback>Valid phone number!</Form.Control.Feedback>
-                        <Form.Control.Feedback type="invalid">Please insert a valid phone number. It must have between 4 and 12 digits, based on your country.</Form.Control.Feedback>
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Col sm={2}>
-                        <Form.Label>Optional website:</Form.Label>
-                    </Col>
-                    <Col>
-                        <Form.Control className='website-input' type='url' placeholder="https://example.com" value={website} onChange={(event) => setWebsite(event.target.value)} />
-                        <Form.Control.Feedback>This field is optional.</Form.Control.Feedback>
-                        <Form.Control.Feedback type="invalid">Please insert a valid website. The format should be like "https://example.com".</Form.Control.Feedback>
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-3">
-                    <Col sm={2}>
-                        <Form.Label>Altitude:</Form.Label>
-                    </Col>
-                    <Col>
+                    <Col >
                         <InputGroup>
-                            <Form.Control className='altitude-input' required type='number' value={altitude} defaultValue={undefined} min={0} onChange={(event) => setAltitude(event.target.value)} />
-                            <InputGroup.Text>meters</InputGroup.Text>
-                            <Form.Control.Feedback>Valid altitude!</Form.Control.Feedback>
-                            <Form.Control.Feedback type="invalid">Please insert the altitude. It must be a positive integer.</Form.Control.Feedback>
+                            <InputGroup.Text>€</InputGroup.Text>
+                            <Form.Control className='cost-input' required type='number' value={costPerDay} defaultValue={undefined} min={0} onChange={(event) => setCostPerDay(event.target.value)} />
+                            <InputGroup.Text>.00</InputGroup.Text>
+                            <Form.Control.Feedback>Valid cost per day!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please insert the cost per day. It must be a positive number.</Form.Control.Feedback>
                         </InputGroup>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
                     <Col sm={2}>
-                        <Form.Label>Number of beds:</Form.Label>
+                        <Form.Label>Opening time:</Form.Label>
                     </Col>
                     <Col >
-                        <Form.Control className='beds-input' required type='number' value={bedsNumber} defaultValue={undefined} min={0} onChange={(event) => setBedsNumber(event.target.value)} />
-                        <Form.Control.Feedback>Valid number of beds!</Form.Control.Feedback>
-                        <Form.Control.Feedback type="invalid">Please insert the number of beds. It must be a positive integer.</Form.Control.Feedback>
+                        <InputGroup>
+                            <Form.Control className='openingHour-input' required type='number' value={openingHour} defaultValue={undefined} min={0} max={23} onChange={(event) => setOpeningHour(event.target.value)} />
+                            <InputGroup.Text>hour</InputGroup.Text>
+                            <Form.Control.Feedback>Valid hour!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please insert the hour. It must be a positive integer between 0 and 23.</Form.Control.Feedback>
+                        </InputGroup>
+                    </Col>
+                    <Col >
+                        <InputGroup>
+                            <Form.Control className='openingMinute-input' required type='number' value={openingMinute} defaultValue={undefined} min={0} max={59} onChange={(event) => setOpeningMinute(event.target.value)} />
+                            <InputGroup.Text>minute</InputGroup.Text>
+                            <Form.Control.Feedback>Valid minutes!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please insert the minutes. It must be a positive integer between 0 and 59.</Form.Control.Feedback>
+                        </InputGroup>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} className="mb-3">
+                    <Col sm={2}>
+                        <Form.Label>Closing time:</Form.Label>
+                    </Col>
+                    <Col >
+                        <InputGroup>
+                            <Form.Control className='closingHour-input' required type='number' value={closingHour} defaultValue={undefined} min={0} max={23} onChange={(event) => setClosingHour(event.target.value)} />
+                            <InputGroup.Text>hour</InputGroup.Text>
+                            <Form.Control.Feedback>Valid hour!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please insert the hour. It must be a positive integer between 0 and 23.</Form.Control.Feedback>
+                        </InputGroup>
+                    </Col>
+                    <Col >
+                        <InputGroup>
+                            <Form.Control className='closingMinute-input' required type='number' value={closingMinute} defaultValue={undefined} min={0} max={59} onChange={(event) => setClosingMinute(event.target.value)} />
+                            <InputGroup.Text>minute</InputGroup.Text>
+                            <Form.Control.Feedback>Valid minutes!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please insert the minutes. It must be a positive integer between 0 and 59.</Form.Control.Feedback>
+                        </InputGroup>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -160,7 +175,7 @@ function HutForm(props) {
                         <Form.Label>Country:</Form.Label>
                     </Col>
                     <Col >
-                        <Form.Select className='country-input' style={{ cursor: "pointer" }} value={countryCode} required onChange={(event) => {
+                        <Form.Select className='country-input' style={{ cursor: "pointer" }} required value={countryCode} onChange={(event) => {
                             if (event.target.value === "") {
                                 setCountryCode('');
                                 setCountry('');
@@ -185,7 +200,7 @@ function HutForm(props) {
                         <Form.Label>Region:</Form.Label>
                     </Col>
                     <Col >
-                        <Form.Select className='region-input' style={countryCode ? { cursor: "pointer" } : {}} disabled={countryCode ? false : true} value={regionCode} required onChange={(event) => {
+                        <Form.Select className='region-input' style={countryCode ? { cursor: "pointer" } : {}} disabled={countryCode ? false : true} required value={regionCode} onChange={(event) => {
                             if (event.target.value === "") {
                                 setRegionCode('');
                                 setRegion('');
@@ -206,7 +221,7 @@ function HutForm(props) {
                         <Form.Label>City:</Form.Label>
                     </Col>
                     <Col >
-                        <Form.Select className='city-input' style={regionCode ? { cursor: "pointer" } : {}} disabled={regionCode ? false : true} value={city} required onChange={(event) => {
+                        <Form.Select className='city-input' style={regionCode ? { cursor: "pointer" } : {}} disabled={regionCode ? false : true} required value={city} onChange={(event) => {
                             if (event.target.value === "") {
                                 setCity('');
                                 setCityMap('');
@@ -230,15 +245,15 @@ function HutForm(props) {
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                     />
                                     <LocationMarker position={position} setPosition={setPosition} />
-                                    {hutPoint.length !== 0 ? <Marker position={hutPoint}>
+                                    {parkPoint.length !== 0 ? <Marker position={parkPoint}>
                                         <Popup>
-                                            Hut point
+                                            Parking lot point
                                         </Popup>
                                     </Marker> : ''}
                                 </MapContainer>
                             </Col>
                         </Row>
-                        {validated && hutPoint.length === 0 &&
+                        {validated && parkPoint.length === 0 &&
                             <Row style={{ marginTop: 5 }}><p style={{ color: "red", fontSize: 14 }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -251,25 +266,25 @@ function HutForm(props) {
                             <Col align="right" style={{ marginTop: 10 }}>
                                 <Button variant='primary' onClick={() => {
                                     //add into db
-                                    setHutPoint(position);
-                                    console.log('hut', hutPoint);
+                                    setParkPoint(position);
+                                    console.log('parkingLot', parkPoint);
                                 }}>Save position
                                 </Button>
                             </Col>
                         </Row>
-                        <Table hover id="point-table" style={{ borderColor: "grey", paddingTop: 10 }}>
+                        <Table id="point-table" style={{ borderColor: "grey", paddingTop: 10 }}>
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Latitude</th>
-                                    <th>Longitude</th>
+                                    <th>latitude</th>
+                                    <th>longitude</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Hut position</td>
-                                    <td>{hutPoint[0]}</td>
-                                    <td>{hutPoint[1]}</td>
+                                    <td>{parkPoint[0]}</td>
+                                    <td>{parkPoint[1]}</td>
                                 </tr>
                             </tbody>
                         </Table>
@@ -289,7 +304,7 @@ function HutForm(props) {
                 </Row>
             </Form>
         </Container>
-    </>)
+    </>);
 }
 
-export { HutForm }
+export { ParkForm }

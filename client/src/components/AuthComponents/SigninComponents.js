@@ -2,7 +2,6 @@ import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useState } from 'react';
 //import { Redirect } from 'react-router';
 import isEmail from 'validator/lib/isEmail';
-import { Link } from 'react-router-dom';
 
 function SigninForm(props) {
   const [username, setUsername] = useState('');
