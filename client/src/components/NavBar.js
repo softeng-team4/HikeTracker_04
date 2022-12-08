@@ -51,10 +51,10 @@ const NavBar = (props) => {
                                                 <div>
                                                     <DropdownButton className='d-flex align-items-center' title={<><FaRegUserCircle className='react-icon align-self-center' />{'   '}{authObject.authUser.firstName.toUpperCase()}</>} variant='outline-dark' align={{ sm: 'end' }} menuVariant='dark'>
                                                         <Dropdown.Item ><NavLink className='profile-link' to={`/${authObject.authUser.firstName.toLowerCase()}`} variant='dark'>Your profile</NavLink></Dropdown.Item>
-                                                        {authObject.authUser.role.toLowerCase() === 'hut worker' ? <Dropdown.Item ><NavLink className='condition-link' to={`/condition`} variant='dark'>Hike Condition</NavLink></Dropdown.Item> : ''}
+                                                        {authObject.authUser.role.toLowerCase() === 'hut worker' ? <Dropdown.Item ><NavLink className='condition-link' to={`/hikeCondition`} variant='dark'>Hike Condition</NavLink></Dropdown.Item> : ''}
                                                         <Dropdown.Divider />
                                                         {/* {
-                                                        authObject.authUser.role.toLowerCase() === 'local guide' &&
+                                                        authObject.authUser.role.toLowerCase() === 'hut worker' &&
                                                         <div><Dropdown.Item ><NavLink className='hike-form' to="/hikeform" variant='dark'>New Hike</NavLink> </Dropdown.Item>
                                                             <Dropdown.Divider /></div>
                                                     } */}

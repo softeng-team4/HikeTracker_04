@@ -565,32 +565,39 @@ const updateCondition = async (condition, condDetails, hikeID, collection = "hik
     });
 }
 
-const getHikesByLinkHutWorker = async (hutId, collection = "hike") => {
+const getHikesByLinkHutWorker = async (hutID, collection = "hike") => {
     const hikesRef = firestore.collection(db, collection)
-    const q = firestore.query(hikesRef, firestore.where('linkHuts', 'in', hutId));
-    const querySnapshot = await firestore.getDocs(q);
+    // const q = firestore.query(hikesRef, firestore.where('linkHuts', 'array-contains', hutId));
+    const querySnapshot = await firestore.getDocs(hikesRef);
     const res = [];
     querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        const hike = {
-            id: doc.id,
-            ascent: doc.data().ascent,
-            city: doc.data().city,
-            country: doc.data().country,
-            description: doc.data().description,
-            difficulty: doc.data().difficulty,
-            endPoint: doc.data().endPoint,
-            expectedTime: doc.data().expectedTime,
-            length: doc.data().length,
-            referencePoint: doc.data().referencePoint,
-            region: doc.data().region,
-            title: doc.data().title,
-            startPoint: doc.data().startPoint,
-            author: doc.data().author,
-            condition: doc.data().condition,
-            condDetails: doc.data().condDetails
-        };
-        res.push(hike)
+        console.log(doc.id, " => ", doc.data().linkedHuts);
+        if (doc.data().linkedHuts !== undefined) {
+            for (let i = 0; i < doc.data().linkedHuts.length; i++) {
+                if (doc.data().linkedHuts[i].hutId === hutID) {
+                    const hike = {
+                        id: doc.id,
+                        ascent: doc.data().ascent,
+                        city: doc.data().city,
+                        country: doc.data().country,
+                        description: doc.data().description,
+                        difficulty: doc.data().difficulty,
+                        endPoint: doc.data().endPoint,
+                        expectedTime: doc.data().expectedTime,
+                        length: doc.data().length,
+                        referencePoint: doc.data().referencePoint,
+                        region: doc.data().region,
+                        title: doc.data().title,
+                        startPoint: doc.data().startPoint,
+                        author: doc.data().author,
+                        linkedHuts: doc.data().linkedHuts,
+                        condition: doc.data().condition,
+                        condDetails: doc.data().condDetails
+                    };
+                    res.push(hike)
+                }
+            }
+        }
     });
     console.log(res);
     return res;
