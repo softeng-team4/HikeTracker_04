@@ -47,25 +47,25 @@ describe('testing the creation of a new user', () => {
         ""
     )
 
-    const password = "12345678";
+    const p = "12345678";
 
     before(async () => {
-        deleteUser(userInfo1, password);
+        deleteUser(userInfo1, p);
     })
 
-    newUser(userInfo1, password);
+    newUser(userInfo1, p);
 
     before(async () => {
-        deleteUser(userInfo2, password);
+        deleteUser(userInfo2, p);
     })
 
-    newUser(userInfo2, password);
+    newUser(userInfo2, p);
 
     before(async () => {
-        deleteUser(userInfo3, password);
+        deleteUser(userInfo3, p);
     })
 
-    newUser(userInfo3, password);
+    newUser(userInfo3, p);
 
     api.logOut()
 })
