@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { useEffect, useState } from "react"
 import { Button, ButtonGroup, Card, Col, Form, Modal, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { FaRegEdit } from 'react-icons/fa';
@@ -15,19 +16,27 @@ function UpdateCondition(props) {
     const [showFeedback, setShowFeedback] = useState(false);
     const [condition, setCondition] = useState('')
     const [condDetails, setCondDetails] = useState('')
-
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         API.getHikesByLinkHutWorker(hutId).then(r => setHikeList(r))
-    }, [hutId])
+    }, [hutId, reload])
 
     const handleShowInfo = (event) => {
         event.preventDefault();
         const id = event.target.id;
-        setHike(hikeList.find((h) => h.id === id)); // TODO change with id on final version
+        setHike(hikeList.find((h) => h.id === id));
         setShowInfoModal(true);
     }
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        await API.updateCondition(condition, condDetails, hike.id);
+        setShow(false);
+        setReload(!reload);
+        setShowFeedback(true);
+    }
+    // console.log(condition,condDetails,hike)
     return (
         <AuthenticationContext.Consumer>
             {(authObject) => (
@@ -79,10 +88,10 @@ function UpdateCondition(props) {
                             </Form>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="primary" onClick={() => { setShow(false); setShowFeedback(true) }}>
+                            <Button variant="primary" onClick={(e) => { handleSubmit(e) }}>
                                 Confirm
                             </Button>
-                            <Button variant="primary" onClick={() => setShow(false)}>
+                            <Button variant="danger" onClick={() => setShow(false)}>
                                 Close
                             </Button>
                         </Modal.Footer>
@@ -107,15 +116,18 @@ function UpdateCondition(props) {
                                                         </Button>
                                                     </OverlayTrigger>
                                                     {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hut worker' ? <Button variant='danger'
-                                                        onClick={() =>
-                                                            setShow(true)
-                                                        }><FaRegEdit /></Button> : null}
+                                                        onClick={() => {
+                                                            setHike(hike);
+                                                            setShow(true);
+                                                        }}><FaRegEdit /></Button> : null}
                                                 </ButtonGroup>
                                             </Col>
                                         </Row>
                                     </Card.Header>
                                     <Card.Body className='d-flex justify-content-start' key={`card_body_${idx}`}>
                                         <Col><b>Description:</b>&nbsp;<Col className='hike-desc'>{hike.description}</Col></Col>
+                                        <Col><b>Condition:</b>&nbsp;<Col className='hike-desc'>{hike.condition}</Col></Col>
+                                        <Col><b>Condition Detail:</b>&nbsp;<Col className='hike-desc'>{hike.condDetails}</Col></Col>
                                     </Card.Body>
                                     <Card.Footer key={`card_footer_${idx}`}>
                                         <Row md={12}>
