@@ -30,7 +30,7 @@ const signUp = async (user, password) => {
     await fireAuth.updateProfile(auth.currentUser, {
         displayName: user.firstName + user.lastName
     });
-    //await sendVerificationEmail();
+    await sendVerificationEmail();
     return await createUserOnDb(user);
 }
 
