@@ -30,7 +30,7 @@ const signUp = async (user, password) => {
     await fireAuth.updateProfile(auth.currentUser, {
         displayName: user.firstName + user.lastName
     });
-    await sendVerificationEmail();
+    //await sendVerificationEmail();
     return await createUserOnDb(user);
 }
 
@@ -58,8 +58,20 @@ const sendVerificationEmail = async () => {
 }
 
 const createUserOnDb = async (user) => {
+    console.log(user.phoneNumber);
     // Add a new document in collection "users"
-    await firestore.setDoc(firestore.doc(db, "users", user.email), user);
+    const obj = {
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phoneNumber: user.phoneNumber,
+        role: user.role,
+        reqRole: user.reqRole || "",
+        reqStatus: user.reqStatus || "",
+        respDate: user.respDate || "",
+        hut: user.hut || ""
+    };
+    await firestore.setDoc(firestore.doc(db, "users", user.email), obj);
     return user;
 }
 

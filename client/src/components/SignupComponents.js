@@ -1,11 +1,7 @@
 import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
-import LocalGuideForm from './LocalGuideForm';
 import HutWorkerForm from './HutWorkerForm';
-import ParkingLot from "../model/User";
-import User from '../model/User';
-
 
 
 function validPhoneNumber(phoneNumber) {
@@ -32,7 +28,6 @@ function SignupForm(props) {
   const [error, setError] = useState({ email: false, password: false, confirmedPassword: false, phoneNumber: false, firstName: false, lastName: false });
   const [hutId, setHutId] = useState('');
   const [hutSelected, setHutSelected] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -77,23 +72,34 @@ function SignupForm(props) {
       e.hutId = true;
     }
     setError(e);
-
-    if (valid) {
-      const userClass = new User(username, firstName, lastName, phoneNumber, role, role !== "Hiker" ? role : undefined, 
-        role !== "Hiker" ? "pending" : undefined, undefined, role === "Hut worker" ? hutId : undefined);
-      props.signup(userClass, password)
-        .then(() => {
-          setSubmitted(true);
-        }).catch((err) => {
-          console.log(err);
-          setErrorMessage("Error: " + err.code);
-        });
+    if (!valid) {
+      console.log("ERROR")
+    } else {
+      console.log("Valid data");
     }
+
+    // if (valid) {
+      const user = {
+        username: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        role: role,
+        phoneNumber: phoneNumber,
+        hutId: role === "Hut worker" ? hutId : undefined
+      }
+    //   props.signup(user)
+    //     .then(() => {
+    //       setSubmitted(true);
+    //     }).catch((err) => {
+    //       console.log(err);
+    //       setErrorMessage("Error: " + err.code);
+    //     });
+    // }
   };
 
   const hutSelection = (hut) => {
     setHutId(hut);
-    console.log(hut);
     setHutSelected(true);
   }
 
@@ -105,7 +111,6 @@ function SignupForm(props) {
         </Alert> :
         <Container className="col-sm-8 col-12 below-nav">
           <Form noValidate onSubmit={handleSubmit}>
-            {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
             <Form.Group controlId='username'>
               <Form.Label>Email</Form.Label>
               <Form.Control className='email' type='email' required value={username} isInvalid={!!error.email} onChange={ev => setUsername(ev.target.value)} />
