@@ -24,14 +24,14 @@ const app = firebase.initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = firestore.getFirestore(app);
 
-const signUp = async (email, password, firstName, lastName, role) => {
+const signUp = async (user, password) => {
     const auth = fireAuth.getAuth();
-    await fireAuth.createUserWithEmailAndPassword(auth, email, password);
+    await fireAuth.createUserWithEmailAndPassword(auth, user.email, password);
     await fireAuth.updateProfile(auth.currentUser, {
-        displayName: firstName + lastName
+        displayName: user.firstName + user.lastName
     });
     await sendVerificationEmail();
-    return await createUserOnDb(email, firstName, lastName, role);
+    return await createUserOnDb(user);
 }
 
 const logIn = async (email, password) => {
@@ -57,15 +57,9 @@ const sendVerificationEmail = async () => {
     await fireAuth.sendEmailVerification(auth.currentUser)
 }
 
-const createUserOnDb = async (email, firstName, lastName, role) => {
+const createUserOnDb = async (user) => {
     // Add a new document in collection "users"
-    const user = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        role: role
-    }
-    await firestore.setDoc(firestore.doc(db, "users", email), user);
+    await firestore.setDoc(firestore.doc(db, "users", user.email), user);
     return user;
 }
 
