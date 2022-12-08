@@ -414,7 +414,9 @@ function HikeForm(props) {
                             //         </Popup>
                             //     </Marker> : ''}
                             // </MapContainer>
-                            <Map positions={positions} startPoint={startPoint} endPoint={endPoint} />
+                            <Row className="mb-3">
+                                <Map positions={positions} startPoint={startPoint} endPoint={endPoint} />
+                            </Row>
                         }
                         {
                             !showMap ? '' :
