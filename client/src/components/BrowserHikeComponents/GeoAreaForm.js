@@ -60,7 +60,7 @@ const GeoAreaForm = (props) => {
 
     const handleSubmit = () => {
         if (props.geoArea !== localGeoArea) {
-            props.setGeoArea(localGeoArea);
+            props.setGeoArea((s) => ({...s, geoArea: localGeoArea}));
         }
     };
 

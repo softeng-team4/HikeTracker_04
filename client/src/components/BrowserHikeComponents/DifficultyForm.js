@@ -20,7 +20,7 @@ const DifficultyForm = (props) => {
             setSelectedButton(key);
         if (key === 'Pro Hiker')
             key = 'Professional Hiker'
-        props.setDifficulty(key);
+        props.setDifficulty((s) => ({...s, difficulty: key}));
     };
 
 

@@ -74,7 +74,7 @@ const HikeTable = () => {
     const handleShowInfo = (event) => {
         event.preventDefault();
         const id = event.target.id;
-        setHike(hikeList.find((h) => h.id === id)); // TODO change with id on final version
+        setHike(hikeList.find((h) => h.id === id));
         setShowInfoModal(true);
     }
 
@@ -109,7 +109,7 @@ const HikeTable = () => {
                     <Container fluid className='BrowserHikesContainer' style={isLoading ? { pointerEvents: 'none' } : null}>
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
-                        <FilterForm setHikeList={setHikeList} isLoading={isLoading} setIsLoading={setIsLoading} handleEmailFilter={handleEmailFilter} />
+                        <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} handleEmailFilter={handleEmailFilter} />
                         {subHikeList.map((hike, idx) =>
                             <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                                 <Card key={`card_${idx}`}>
@@ -121,7 +121,7 @@ const HikeTable = () => {
                                                 <ButtonGroup size='sm'>
                                                     <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
                                                         <Button
-                                                            id={hike.id} //TODO change with id on final version
+                                                            id={hike.id}
                                                             variant='success'
                                                             onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
                                                             Show more info
@@ -150,10 +150,10 @@ const HikeTable = () => {
                                 <Spacer height='1rem' key={`card_spacer_${idx}`} />
                             </div>
                         )}
-                        {!isLoading && hikeList.length === 0 ? <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem' /></Container> : null}
+                        {!isLoading && hikeList.length === 0 && <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem' /></Container>}
                         <HikePageHandler index={index} pageNum={computeIndex()} handlePageChange={handlePageChange} />
                     </Container>
-                    {hike ? <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} /> : null}
+                    {hike && <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} />}
                 </>
             )}
         </AuthenticationContext.Consumer>
