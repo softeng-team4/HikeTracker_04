@@ -101,8 +101,8 @@ const addNewHike = async (ascent, city, country, description, difficulty, endPoi
 
 const deleteInvalidHikes = async () => {
     const hikesRef = firestore.collection(db, "hike");
-    var q = firestore.query(hikesRef, firestore.where("ascent", '==', ''));
-    var querySnapshot = await firestore.getDocs(q);
+    let q = firestore.query(hikesRef, firestore.where("ascent", '==', ''));
+    let querySnapshot = await firestore.getDocs(q);
     querySnapshot.forEach((doc) => {
         firestore.deleteDoc(doc.ref);
     });

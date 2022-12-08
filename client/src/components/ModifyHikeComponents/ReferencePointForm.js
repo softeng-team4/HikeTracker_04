@@ -68,11 +68,11 @@ function ReferencePointForm(props) {
     };
 
     const checkPosInsideTrack = async (r = 50) => {
-        var min = 100;
-        var p = undefined;
+        let min = 100;
+        let p = undefined;
         points.forEach((pos) => {
-            var from = L.latLng(position[0], position[1]);
-            var to = L.latLng(pos.lat, pos.lng);
+            let from = L.latLng(position[0], position[1]);
+            let to = L.latLng(pos.lat, pos.lng);
             const d = from.distanceTo(to);
             if (d <= r) {
                 if (d < min) {

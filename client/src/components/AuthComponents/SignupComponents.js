@@ -5,7 +5,7 @@ import HutWorkerForm from './HutWorkerForm';
 
 
 function validPhoneNumber(phoneNumber) {
-  var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  let phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
   if (phoneNumber.match(phoneno)) {
     console.log("Valid phone number");
     return true;
