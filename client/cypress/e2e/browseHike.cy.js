@@ -1,7 +1,6 @@
 const { FaItalic } = require("react-icons/fa")
 
 describe('Browse Hikes', () => {
-  /*
   it('Select city', () => {
     cy.visit("http://localhost:3000/");
     cy.get('.CountrySelection').select("Italy")
@@ -180,7 +179,7 @@ describe('Browse Hikes', () => {
     cy.get(".card").should("have.length", 1)
     cy.contains("There are no hikes")
   })
-  */
+  
   
   it("Select by preferences", () => {
     cy.login("aleganino@gmail.com","password")
