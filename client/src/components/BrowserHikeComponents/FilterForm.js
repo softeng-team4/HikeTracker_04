@@ -10,23 +10,19 @@ import PointRadiusForm from './PointRadiusForm';
 
 const FilterForm = (props) => {
 
+    // initial state of filters
+    const geoArea = { country: { countryCode: 'None', name: 'None' }, region: { countryCode: 'None', stateCode: 'None', name: 'None' }, city: { name: 'None' } };
+    const difficulty  = 'None';
+    const lenghtRange = { min: 0, max: Number.MAX_VALUE };
+    const ascentRange = { min: 0, max: Number.MAX_VALUE };
+    const expTimeRange = { min: 0, max: Number.MAX_VALUE };
+    const pointRadius = { coordinates: undefined, radius: undefined };
+    // initial state of center map
+    const milan_coord = { coordinates: [45.46427, 9.18951] };
 
     // user data
     const userData = useContext(AuthenticationContext).authUser;
-    // state to hold geoArea filter
-    const [geoArea, setGeoArea] = useState({ country: { countryCode: 'None', name: 'None' }, region: { countryCode: 'None', stateCode: 'None', name: 'None' }, city: { name: 'None' } });
-    // state to hold selected difficulty
-    const [difficulty, setDifficulty] = useState('None')
-    // state to hold lenght data range
-    const [lenghtRange, setLenghtRange] = useState({ min: 0, max: Number.MAX_VALUE })
-    // state to hold ascent data range
-    const [ascentRange, setAscentRange] = useState({ min: 0, max: Number.MAX_VALUE })
-    // state to hold expected time data range
-    const [expTimeRange, setExpTimeRange] = useState({ min: 0, max: Number.MAX_VALUE })
-    // state to hold initial map location
-    const [centerMap, setcenterMap] = useState({ coordinates: [45.46427, 9.18951] });
-    // state to hold point and radius of map filter
-    const [pointRadius, setPointRadius] = useState({ coordinates: undefined, radius: undefined });
+    const [centerMap, setcenterMap] = useState(milan_coord);
     // state to hold the entire list of filters
     const [filters, setFilters] = useState({ geoArea: geoArea, pointRadius: pointRadius, difficulty: difficulty, lenghtRange: lenghtRange, ascentRange: ascentRange, expTimeRange: expTimeRange });
     // state to hold which geoAreaFilter display to the user
@@ -41,16 +37,12 @@ const FilterForm = (props) => {
         const success = (pos) => {
             const lat = pos.coords.latitude;
             const lon = pos.coords.longitude;
-            const cM = centerMap;
-            cM.coordinates = [lat, lon];
+            const cM = {coordinates: [lat, lon]};
             setcenterMap(cM);
         };
 
         const error = (error) => {
             console.log(error);
-            const cM = centerMap;
-            cM.coordinates = [45.46427, 9.18951]; // coord of Milan city
-            setcenterMap(cM);
         };
         //navigator.geolocation.getCurrentPosition(success, error);
     }, [centerMap]);
@@ -58,7 +50,6 @@ const FilterForm = (props) => {
 
     useEffect(() => {
         setIsLoading(true);
-        //API.deleteInvalidHikes().then(console.log("deleted!"))
         API.hikesList({
             country: filters.geoArea.country.name === 'None' ? undefined : filters.geoArea.country.name,
             region: filters.geoArea.region.name === 'None' ? undefined : filters.geoArea.region.name,
@@ -72,26 +63,21 @@ const FilterForm = (props) => {
     }, [filters, setHikeList, setIsLoading]);
 
 
-    useEffect(() => {
-        setFilters({ geoArea: geoArea, pointRadius: pointRadius, difficulty: difficulty, lenghtRange: lenghtRange, ascentRange: ascentRange, expTimeRange: expTimeRange });
-    }, [geoArea, pointRadius, difficulty, lenghtRange, ascentRange, expTimeRange]);
-
-
     const handleSliderSubmit = (sliderObj) => {
         if (sliderObj.slider === 0)
-            setLenghtRange(sliderObj.range)
+            setFilters({...filters, lenghtRange: sliderObj.range});
         else if (sliderObj.slider === 1)
-            setAscentRange(sliderObj.range)
+            setFilters({...filters, ascentRange: sliderObj.range});
         else
-            setExpTimeRange(sliderObj.range)
+            setFilters({...filters, expTimeRange: sliderObj.range});
     };
 
 
     const handleGeoAreaSwitch = () => {
         if (geoAreaFilterType)
-            setGeoArea({ country: { countryCode: 'None', name: 'None' }, region: { countryCode: 'None', stateCode: 'None', name: 'None' }, city: { name: 'None' } });
+            setFilters({...filters, geoArea: geoArea});
         else
-            setPointRadius({ coordinates: undefined, radius: undefined });
+            setFilters({...filters, pointRadius: pointRadius});
         setGeoAreaFilterType(!geoAreaFilterType);
     };
 
@@ -114,27 +100,29 @@ const FilterForm = (props) => {
                             {geoAreaFilterType ?
                                 <>
                                     <Col lg={7} className='geoAreaFilter'>
-                                        <GeoAreaForm geoArea={geoArea} setGeoArea={setGeoArea} />
+                                        <GeoAreaForm geoArea={filters.geoArea} setGeoArea={setFilters} />
                                     </Col>
                                     <Col lg={2} className='btn-geoArea p-3'>
                                         <Button size='sm' variant='success' onClick={handleGeoAreaSwitch}>switch to radius</Button>
                                     </Col>
                                 </>
                                 :
-                                <PointRadiusForm isLoading={props.isLoading} centerMap={centerMap} pointRadius={pointRadius} setPointRadius={setPointRadius} handleGeoAreaSwitch={handleGeoAreaSwitch} />
+                                <PointRadiusForm centerMap={centerMap} pointRadius={filters.pointRadius} setPointRadius={setFilters} handleGeoAreaSwitch={handleGeoAreaSwitch} />
                             }
-                            <DifficultyForm difficulty={difficulty} setDifficulty={setDifficulty} />
+                            <DifficultyForm difficulty={filters.difficulty} setDifficulty={setFilters} />
                         </Row>
                         <Row>
                             <SliderForm customPreferences={customPreferences} handleSliderSubmit={handleSliderSubmit} />
                         </Row>
                             <Row>
-                                <Col className={authObject.authUser && authObject.authUser.preferences ? 'd-flex justify-content-sm-between' : 'd-flex justify-content-sm-end'}>
+                                <Col sm={6}>
                                 {authObject.authUser && authObject.authUser.preferences && 
                                     <Form.Check type='checkbox' label='apply custom filters' onChange={(ev) => handleCustomFilters(ev)} />  
                                 }
+                                </Col>
+                                <Col sm={6} className='d-flex justify-content-start justify-content-sm-end'>
                                 {authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' &&
-                                    <Form.Check type='switch' label='modify created hikes' reverse onChange={() => props.handleEmailFilter()} />  
+                                    <Form.Check type='switch' label='modify created hikes' reverse={window.innerWidth > 576 ? true : false} onChange={() => props.handleEmailFilter()} />  
                                 }
                                 </Col>
                             </Row>
