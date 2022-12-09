@@ -70,7 +70,7 @@ const NavBar = (props) => {
                                                                 <Dropdown.Divider />
                                                             </>
                                                         }
-                                                        <Dropdown.Item onClick={() => { authObject.onLogout(); navigate('/'); }}>Sign out</Dropdown.Item>
+                                                        <Dropdown.Item className='logOutBtn' onClick={() => { authObject.onLogout(); navigate('/'); }}>Sign out</Dropdown.Item>
                                                     </DropdownButton>
                                                 }
                                                 {!authObject.authUser &&

@@ -83,8 +83,8 @@ const PreferencesSliderForm = (props) => {
                         </Toast>
                         <Form.Group>
                             <Row className='pt-0 p-4'>
-                                <Form.Label className='d-flex justify-content-center' htmlFor='LengthRange'>Select lenght range</Form.Label>
-                                <Range className='LengthRange'
+                                <Form.Label className='d-flex justify-content-center' htmlFor='prefLengthRange'>Select lenght range</Form.Label>
+                                <Range className='prefLengthRange'
                                     min={dR[0].min}
                                     max={dR[0].max}
                                     step={dR[0].step}
@@ -95,9 +95,9 @@ const PreferencesSliderForm = (props) => {
                                 />
                             </Row>
                             <Row className='p-4'>
-                                <Form.Label className='d-flex justify-content-center' htmlFor='AscentRange'>Select ascent range</Form.Label>
+                                <Form.Label className='d-flex justify-content-center' htmlFor='prefAscentRange'>Select ascent range</Form.Label>
                                 <Range
-                                    className='AscentRange'
+                                    className='prefAscentRange'
                                     min={dR[1].min}
                                     max={dR[1].max}
                                     step={dR[1].step}
@@ -108,9 +108,9 @@ const PreferencesSliderForm = (props) => {
                                 />
                             </Row>
                             <Row className='p-4'>
-                                <Form.Label className='d-flex justify-content-center' htmlFor='ExpTimeRange'>Select time range</Form.Label>
+                                <Form.Label className='d-flex justify-content-center' htmlFor='prefExpTimeRange'>Select time range</Form.Label>
                                 <Range
-                                    className='ExpTimeRange'
+                                    className='prefExpTimeRange'
                                     min={dR[2].min}
                                     max={dR[2].max}
                                     step={dR[2].step}
