@@ -1,8 +1,8 @@
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
-import API from '../API';
+import API from '../../API';
 import { useNavigate } from "react-router";
 import { useState } from "react";
-import { Map } from "./Map";
+import { Map } from "../HikeFormComponents/Map";
 
 const StaticHikeInfo = (props) => {
 
