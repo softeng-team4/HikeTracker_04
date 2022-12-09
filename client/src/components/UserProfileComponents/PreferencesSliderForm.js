@@ -66,7 +66,6 @@ const PreferencesSliderForm = (props) => {
                 setShowSubmitAlert(true);
                 authObject.onUpdateUserData().then((userData) => {
                     setUser(userData);
-                    console.log(userData)
                 });
             });
         }

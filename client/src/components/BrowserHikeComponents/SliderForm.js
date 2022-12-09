@@ -3,7 +3,7 @@ import 'rc-slider/assets/index.css';
 import Slider from 'rc-slider';
 import { Form, Col } from 'react-bootstrap';
 import Spacer from './Spacer';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
@@ -17,31 +17,30 @@ const SliderForm = (props) => {
     const timeMarks = { 0: '0h', 120: '2h', 240: '4h', 360: '6h', 480: '8h', 600: '10+h' };
     // default Ranges for Sliders defaultValues
     const dR = { 0: { min: 0, max: 25000, step: 5000 }, 1: { min: 0, max: 1000, step: 200 }, 2: { min: 0, max: 600, step: 120 } };
-    // states to hold current ranges defaultValues
-    const [lengthRange, setLengthRange] = useState([dR[0].min, dR[0].max]);
-    const [ascentRange, setAscentRange] = useState([dR[1].min, dR[1].max]);
-    const [timeRange, setTimeRange] = useState([dR[2].min, dR[2].max]);
-    // reference to ranges
-    const handleSliderSubmit = useMemo(() => (props.handleSliderSubmit), []);
+    // state to hold current ranges defaultValues
+    const [localRanges, setLocalRanges] = useState({ lengthRange: [dR[0].min, dR[0].max], ascentRange: [dR[1].min, dR[1].max], timeRange: [dR[2].min, dR[2].max] })
+    // reference to set filters
+    const setRanges = props.setRanges;
 
     useEffect(() => {
         const p = props.customPreferences;
         if (p) {
-            setLengthRange([p.lengthRange.min, p.lengthRange.max]);
-            setAscentRange([p.ascentRange.min, p.ascentRange.max]);
-            setTimeRange([p.timeRange.min, p.timeRange.max]);
+            setLocalRanges({ lengthRange: [p.lengthRange.min, p.lengthRange.max], ascentRange: [p.ascentRange.min, p.ascentRange.max], timeRange: [p.timeRange.min, p.timeRange.max] });
 
         } else {
-            setLengthRange([0, 25000]);
-            setAscentRange([0, 1000]);
-            setTimeRange([0, 600]);
+            setLocalRanges({ lengthRange: [0, 25000], ascentRange: [0, 1000], timeRange: [0, 600] });
         }
     }, [props.customPreferences]);
 
 
-    useEffect(() => { handleSliderSubmit({ slider: 0, range: { min: lengthRange[0], max: (lengthRange[1] === 25000) ? Number.MAX_VALUE : lengthRange[1] } }) }, [lengthRange, handleSliderSubmit]);
-    useEffect(() => { handleSliderSubmit({ slider: 1, range: { min: ascentRange[0], max: (ascentRange[1] === 1000) ? Number.MAX_VALUE : ascentRange[1] } }) }, [ascentRange, handleSliderSubmit]);
-    useEffect(() => { handleSliderSubmit({ slider: 2, range: { min: timeRange[0], max: (timeRange[1] === 600) ? Number.MAX_VALUE : timeRange[1] } }) }, [timeRange, handleSliderSubmit]);
+    useEffect(() => {
+        setRanges((s) => ({
+            ...s,
+            lengthRange: { min: localRanges.lengthRange[0], max: (localRanges.lengthRange[1] === 25000) ? Number.MAX_VALUE : localRanges.lengthRange[1] },
+            ascentRange: { min: localRanges.ascentRange[0], max: (localRanges.ascentRange[1] === 1000) ? Number.MAX_VALUE : localRanges.ascentRange[1] },
+            expTimeRange: { min: localRanges.timeRange[0], max: (localRanges.timeRange[1] === 600) ? Number.MAX_VALUE : localRanges.timeRange[1] }
+        }));
+    }, [localRanges, setRanges]);
 
 
     return (
@@ -57,8 +56,8 @@ const SliderForm = (props) => {
                         marks={lengthMarks}
                         allowCross={false}
                         defaultValue={[dR[0].min, dR[0].max]}
-                        value={lengthRange}
-                        onChange={(range) => setLengthRange(range)}
+                        value={localRanges.lengthRange}
+                        onChange={(range) => setLocalRanges((r) => ({ ...r, lengthRange: range }))}
                     />
                 </Col>
                 <Col className='col-md-4 p-4'>
@@ -71,8 +70,8 @@ const SliderForm = (props) => {
                         marks={ascentMarks}
                         allowCross={false}
                         defaultValue={[dR[1].min, dR[1].max]}
-                        value={ascentRange}
-                        onChange={(range) => setAscentRange(range)}
+                        value={localRanges.ascentRange}
+                        onChange={(range) => setLocalRanges((r) => ({ ...r, ascentRange: range }))}
                     />
                 </Col>
                 <Col className='col-md-4 p-4'>
@@ -85,8 +84,8 @@ const SliderForm = (props) => {
                         marks={timeMarks}
                         allowCross={false}
                         defaultValue={[dR[2].min, dR[2].max]}
-                        value={timeRange}
-                        onChange={(range) => setTimeRange(range)}
+                        value={localRanges.timeRange}
+                        onChange={(range) => setLocalRanges((r) => ({ ...r, timeRange: range }))}
                     />
                 </Col>
             </Form.Group>

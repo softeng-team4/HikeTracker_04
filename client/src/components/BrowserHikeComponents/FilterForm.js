@@ -13,7 +13,7 @@ const FilterForm = (props) => {
     // initial state of filters
     const geoArea = { country: { countryCode: 'None', name: 'None' }, region: { countryCode: 'None', stateCode: 'None', name: 'None' }, city: { name: 'None' } };
     const difficulty  = 'None';
-    const lenghtRange = { min: 0, max: Number.MAX_VALUE };
+    const lengthRange = { min: 0, max: Number.MAX_VALUE };
     const ascentRange = { min: 0, max: Number.MAX_VALUE };
     const expTimeRange = { min: 0, max: Number.MAX_VALUE };
     const pointRadius = { coordinates: undefined, radius: undefined };
@@ -24,7 +24,7 @@ const FilterForm = (props) => {
     const userData = useContext(AuthenticationContext).authUser;
     const [centerMap, setcenterMap] = useState(milan_coord);
     // state to hold the entire list of filters
-    const [filters, setFilters] = useState({ geoArea: geoArea, pointRadius: pointRadius, difficulty: difficulty, lenghtRange: lenghtRange, ascentRange: ascentRange, expTimeRange: expTimeRange });
+    const [filters, setFilters] = useState({ geoArea: geoArea, pointRadius: pointRadius, difficulty: difficulty, lengthRange: lengthRange, ascentRange: ascentRange, expTimeRange: expTimeRange });
     // state to hold which geoAreaFilter display to the user
     const [geoAreaFilterType, setGeoAreaFilterType] = useState(true);
     // state to hold custom preferences on ranges
@@ -56,21 +56,11 @@ const FilterForm = (props) => {
             city: filters.geoArea.city.name === 'None' ? undefined : filters.geoArea.city.name,
             pointRadius: filters.pointRadius,
             difficulty: filters.difficulty === 'None' ? undefined : filters.difficulty,
-            length: filters.lenghtRange,
+            length: filters.lengthRange,
             ascent: filters.ascentRange,
             expectedTime: filters.expTimeRange
         }, 'hike').then(r => setHikeList(r));
     }, [filters, setHikeList, setIsLoading]);
-
-
-    const handleSliderSubmit = (sliderObj) => {
-        if (sliderObj.slider === 0)
-            setFilters({...filters, lenghtRange: sliderObj.range});
-        else if (sliderObj.slider === 1)
-            setFilters({...filters, ascentRange: sliderObj.range});
-        else
-            setFilters({...filters, expTimeRange: sliderObj.range});
-    };
 
 
     const handleGeoAreaSwitch = () => {
@@ -112,7 +102,7 @@ const FilterForm = (props) => {
                             <DifficultyForm difficulty={filters.difficulty} setDifficulty={setFilters} />
                         </Row>
                         <Row>
-                            <SliderForm customPreferences={customPreferences} handleSliderSubmit={handleSliderSubmit} />
+                            <SliderForm customPreferences={customPreferences} setRanges={setFilters} />
                         </Row>
                             <Row>
                                 <Col sm={6}>
