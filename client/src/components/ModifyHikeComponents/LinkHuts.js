@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
+import { Alert, Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { FaRegTimesCircle } from 'react-icons/fa';
 import { useNavigate } from "react-router";
 import API, { linkHuts } from '../../API';
@@ -50,8 +50,8 @@ const LinkHuts = (props) => {
         API.hutsList(filters).then(r => {
             let hutsTmp = r;
             let selectedHutsTmp = hike.linkedHuts ? r.filter(h => hike.linkedHuts.some(lh => lh.id === h.id)) : [];
-            hutsTmp = hike.startPoint.id ? hutsTmp.filter(h => h.id !== hike.startPoint.id ) : hutsTmp;
-            hutsTmp = hike.endPoint.id ? hutsTmp.filter(h => h.id !== hike.endPoint.id ) : hutsTmp;
+            hutsTmp = hike.startPoint.id ? hutsTmp.filter(h => h.id !== hike.startPoint.id) : hutsTmp;
+            hutsTmp = hike.endPoint.id ? hutsTmp.filter(h => h.id !== hike.endPoint.id) : hutsTmp;
             hutsTmp = hike.linkedHuts ? hutsTmp.filter(h => !hike.linkedHuts.some(lh => lh.id === h.id)) : hutsTmp;
             setHutList(hutsTmp);
             setSelectedHutList(selectedHutsTmp);
@@ -75,6 +75,7 @@ const LinkHuts = (props) => {
         let tmp = selectedHutList.find(h => h.id === hutId);
         setSelectedHutList(selectedHutList.filter(h => h.id !== hutId));
         setHutList([...hutList, tmp]);
+        setShowNoCloseHuts(false);
     };
 
 
@@ -86,7 +87,7 @@ const LinkHuts = (props) => {
 
     // function to send changes of the hike
     const submitChanges = async () => {
-        await linkHuts(selectedHutList.map(h => ({id: h.id, name: h.name, position: h.position})), props.hike.id);
+        await linkHuts(selectedHutList.map(h => ({ id: h.id, name: h.name, position: h.position })), props.hike.id);
         nav('/');
     }
 
@@ -100,30 +101,37 @@ const LinkHuts = (props) => {
 
 
     return (
-        <>
+        <Container fluid style={{ marginBottom: 20 }}>
             <Form noValidate className="mt-3">
                 <StaticHikeInfo hike={hike} />
                 {!showNoCloseHuts && selectedHutList.length === 0 && <Alert variant='danger'>To link a hut to the hike select it on the map</Alert>}
                 {showNoCloseHuts && <Alert variant='danger'>There are not available huts close to this hike to be linked</Alert>}
-                {hike.referencePoint && <Map positions={points} startPoint={hike.startPoint} endPoint={hike.endPoint} huts={hutList} handleHutClickOnMap={handleLinkHut} handleNohutsCloseToHike={handleNohutsCloseToHike} />}
-                <Spacer height='1rem' />
-                <h5>Linked huts:</h5>
-                <Row>
-                    <Col>
-                        <Card><Card.Body>
-                        {selectedHutList.map((h, idx) => <Button
-                            id={h.id}
-                            key={`btn_${h.id}`}
-                            className='m-1'
-                            size='sm'
-                            onClick={(ev) => handleUnlinkHut(ev)}
-                            variant={buttonColor[idx < buttonColor.length ? idx : idx % buttonColor.length]}>
-                            {h.name}{' '}<FaRegTimesCircle key={`times_${h.id}`} />
-                        </Button>)}
-                        </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
+                {hike.referencePoint &&
+                    <Row>
+                        <Map positions={points} startPoint={hike.startPoint} endPoint={hike.endPoint} huts={hutList} handleHutClickOnMap={handleLinkHut} handleNohutsCloseToHike={handleNohutsCloseToHike} />
+                    </Row>
+                }
+                {selectedHutList.length !== 0 && <>
+                    <Spacer height='1rem' />
+                    <h5>Linked huts:</h5>
+                    <Row>
+                        <Col>
+                            <Card>
+                                <Card.Body>
+                                    {selectedHutList.map((h, idx) => <Button
+                                        id={h.id}
+                                        key={`btn_${h.id}`}
+                                        className='m-1'
+                                        size='sm'
+                                        onClick={(ev) => handleUnlinkHut(ev)}
+                                        variant={buttonColor[idx < buttonColor.length ? idx : idx % buttonColor.length]}>
+                                        {h.name}{' '}<FaRegTimesCircle key={`times_${h.id}`} />
+                                    </Button>)}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </>}
                 <Spacer height='1rem' />
                 <Row>
                     <Col>
@@ -134,7 +142,7 @@ const LinkHuts = (props) => {
             </Form>
             <ConfirmModal show={showDeleteModal} onSubmit={deleteChanges} onAbort={() => setShowDeleteModal(!showDeleteModal)} />
             <ConfirmModal show={showConfirmModal} onSubmit={submitChanges} onAbort={() => setShowConfirmModal(!showConfirmModal)} />
-        </>
+        </Container>
     );
 };
 

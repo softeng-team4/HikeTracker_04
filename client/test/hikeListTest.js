@@ -24,7 +24,7 @@ describe('testing the definition of a new hike by a local guide',()=>{
         const hikeQuery = firestore.query(testHikes);
         const querySnapshot = await firestore.getDocs(hikeQuery)
         querySnapshot.forEach(async (doc) =>{
-            await firestore.deleteDoc(firestore.doc(db,"hike-test",doc.id))
+            await firestore.deleteDoc(firestore.doc(api.db,"hike-test",doc.id))
         })
 
         await firestore.setDoc(firestore.doc(testHikes, "1"), {

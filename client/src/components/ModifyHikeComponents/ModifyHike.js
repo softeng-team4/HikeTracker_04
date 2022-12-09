@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Modal, Table } from "react-bootstrap";
+import { Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { Map } from "../HikeFormComponents/Map";
 import StaticHikeInfo from "./StaticHikeInfo";
@@ -88,11 +88,11 @@ function ModifyHike(props) {
                                 <Form.Label>Hut List:</Form.Label>
                             </Col>
                             <Col>
-                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => {setStart(event.target.value); setType('hut')}}>
+                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => { setStart(event.target.value); setType('hut') }}>
                                     <option value={''}>Select hut</option>
                                     {hutList.map((h, i) => <option key={i} value={h.id}>{h.name}</option>)}
                                 </Form.Select> :
-                                    <Form.Select value={end} onChange={(event) => {setEnd(event.target.value); setType('hut')}}>
+                                    <Form.Select value={end} onChange={(event) => { setEnd(event.target.value); setType('hut') }}>
                                         <option value={''}>Select hut</option>
                                         {hutList.map((h, i) => <option key={i} value={h.id}>{h.name}</option>)}
                                     </Form.Select>}
@@ -104,11 +104,11 @@ function ModifyHike(props) {
                                 <Form.Label>Parking Lot List:</Form.Label>
                             </Col>
                             <Col>
-                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => {setStart(event.target.value); setType('parking lot')}}>
+                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => { setStart(event.target.value); setType('parking lot') }}>
                                     <option value={''}>Select Park</option>
                                     {parkingList.map((p, j) => <option key={j} value={p.id}>{p.name}</option>)}
                                 </Form.Select> :
-                                    <Form.Select value={end} onChange={(event) => {setEnd(event.target.value); setType('parking lot')}}>
+                                    <Form.Select value={end} onChange={(event) => { setEnd(event.target.value); setType('parking lot') }}>
                                         <option value={''}>Select Park</option>
                                         {parkingList.map((p, j) => <option key={j} value={p.id}>{p.name}</option>)}
                                     </Form.Select>}
@@ -128,46 +128,48 @@ function ModifyHike(props) {
                     </Button>}
                 </Modal.Footer>
             </Modal>
+            <Container fluid style={{ marginBottom: 20 }}>
+                <Form noValidate className="mt-3">
+                    <StaticHikeInfo hike={hike} />
+                    
+                    <Row>
+                        { hike.referencePoint !== '' ?
+                        <Map positions={points} startPoint={startPoint} endPoint={endPoint} hutList={hutList} parkingList={parkingList} />
+                        : <div>No Track Inside</div>}
+                    </Row>
 
-            <Form noValidate className="mt-3">
-                <StaticHikeInfo hike={hike} />
-
-                {hike.referencePoint !== '' ?
-                    <Map positions={points} startPoint={startPoint} endPoint={endPoint} hutList={hutList} parkingList={parkingList} />
-                    : <div>No Track Inside</div>}
-
-
-                <Table id="point-table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>latitude</th>
-                            <th>longitude</th>
-                            <th>altitude</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Start point</td>
-                            <td>{startPoint.latitude}</td>
-                            <td>{startPoint.longitude}</td>
-                            <td>{hike.startPoint.altitude}</td>
-                            <td>{startPoint.name === null ? '' : startPoint.name}</td>
-                            <td><Button onClick={(event) => { handleShow(); setModal('start') }}>Link</Button></td>
-                        </tr>
-                        <tr>
-                            <td>End point</td>
-                            <td>{endPoint.latitude}</td>
-                            <td>{endPoint.longitude}</td>
-                            <td>{hike.endPoint.altitude}</td>
-                            <td>{endPoint.name === null ? '' : endPoint.name}</td>
-                            <td><Button onClick={(event) => { handleShow(); setModal('end') }}>Link</Button></td>
-                        </tr>
-                    </tbody>
-                </Table>
-                <Button onClick={handleSubmit}>Save Changes</Button>
-            </Form>
+                    <Table id="point-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>latitude</th>
+                                <th>longitude</th>
+                                <th>altitude</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Start point</td>
+                                <td>{startPoint.latitude}</td>
+                                <td>{startPoint.longitude}</td>
+                                <td>{hike.startPoint.altitude}</td>
+                                <td>{startPoint.name === null ? '' : startPoint.name}</td>
+                                <td><Button onClick={(event) => { handleShow(); setModal('start') }}>Link</Button></td>
+                            </tr>
+                            <tr>
+                                <td>End point</td>
+                                <td>{endPoint.latitude}</td>
+                                <td>{endPoint.longitude}</td>
+                                <td>{hike.endPoint.altitude}</td>
+                                <td>{endPoint.name === null ? '' : endPoint.name}</td>
+                                <td><Button onClick={(event) => { handleShow(); setModal('end') }}>Link</Button></td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    <Button onClick={handleSubmit}>Save Changes</Button>
+                </Form>
+            </Container>
         </>
     );
 }

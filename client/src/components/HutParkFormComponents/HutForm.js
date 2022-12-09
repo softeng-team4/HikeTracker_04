@@ -221,23 +221,19 @@ function HutForm(props) {
                     </Col>
                 </Form.Group>
                 {cityMap[0] === undefined ? '' :
-                    <Form.Group className="mb-3">
-                        <Row>
-                            <Col>
-                                <MapContainer center={cityMap} zoom={13} scrollWheelZoom={false}>
-                                    <TileLayer
-                                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    />
-                                    <LocationMarker position={position} setPosition={setPosition} />
-                                    {hutPoint.length !== 0 ? <Marker position={hutPoint}>
-                                        <Popup>
-                                            Hut point
-                                        </Popup>
-                                    </Marker> : ''}
-                                </MapContainer>
-                            </Col>
-                        </Row>
+                    <Form.Group as={Row} className="mb-3">
+                        <MapContainer center={cityMap} zoom={13} scrollWheelZoom={false}>
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                            <LocationMarker position={position} setPosition={setPosition} />
+                            {hutPoint.length !== 0 ? <Marker position={hutPoint}>
+                                <Popup>
+                                    Hut point
+                                </Popup>
+                            </Marker> : ''}
+                        </MapContainer>
                         {validated && hutPoint.length === 0 &&
                             <Row style={{ marginTop: 5 }}><p style={{ color: "red", fontSize: 14 }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
@@ -257,22 +253,24 @@ function HutForm(props) {
                                 </Button>
                             </Col>
                         </Row>
-                        <Table hover id="point-table" style={{ borderColor: "grey", paddingTop: 10 }}>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Latitude</th>
-                                    <th>Longitude</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Hut position</td>
-                                    <td>{hutPoint[0]}</td>
-                                    <td>{hutPoint[1]}</td>
-                                </tr>
-                            </tbody>
-                        </Table>
+                        <Row>
+                            <Table hover id="point-table" style={{ borderColor: "grey", paddingTop: 10 }}>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Latitude</th>
+                                        <th>Longitude</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Hut position</td>
+                                        <td>{hutPoint[0]}</td>
+                                        <td>{hutPoint[1]}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                        </Row>
                     </Form.Group>
                 }
                 <Form.Group className="mb-3">

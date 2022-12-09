@@ -174,7 +174,7 @@ function ParkForm(props) {
                     <Col sm={2}>
                         <Form.Label>Country:</Form.Label>
                     </Col>
-                    <Col >
+                    <Col>
                         <Form.Select className='country-input' style={{ cursor: "pointer" }} required value={countryCode} onChange={(event) => {
                             if (event.target.value === "") {
                                 setCountryCode('');
@@ -236,23 +236,19 @@ function ParkForm(props) {
                     </Col>
                 </Form.Group>
                 {cityMap[0] === undefined ? '' :
-                    <Form.Group className="mb-3">
-                        <Row>
-                            <Col>
-                                <MapContainer center={cityMap} zoom={13} scrollWheelZoom={false}>
-                                    <TileLayer
-                                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    />
-                                    <LocationMarker position={position} setPosition={setPosition} />
-                                    {parkPoint.length !== 0 ? <Marker position={parkPoint}>
-                                        <Popup>
-                                            Parking lot point
-                                        </Popup>
-                                    </Marker> : ''}
-                                </MapContainer>
-                            </Col>
-                        </Row>
+                    <Form.Group as={Row} className="mb-3">
+                        <MapContainer center={cityMap} zoom={13} scrollWheelZoom={false}>
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                            <LocationMarker position={position} setPosition={setPosition} />
+                            {parkPoint.length !== 0 ? <Marker position={parkPoint}>
+                                <Popup>
+                                    Parking lot point
+                                </Popup>
+                            </Marker> : ''}
+                        </MapContainer>
                         {validated && parkPoint.length === 0 &&
                             <Row style={{ marginTop: 5 }}><p style={{ color: "red", fontSize: 14 }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
@@ -263,31 +259,30 @@ function ParkForm(props) {
                             </p></Row>
                         }
                         <Row>
-                            <Col align="right" style={{ marginTop: 10 }}>
-                                <Button variant='primary' onClick={() => {
-                                    //add into db
-                                    setParkPoint(position);
-                                    console.log('parkingLot', parkPoint);
-                                }}>Save position
+                            <div align="right" style={{ marginTop: 10 }}>
+                                <Button variant='primary' onClick={() => setParkPoint(position)}>
+                                    Save position
                                 </Button>
-                            </Col>
+                            </div>
                         </Row>
-                        <Table id="point-table" style={{ borderColor: "grey", paddingTop: 10 }}>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>latitude</th>
-                                    <th>longitude</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Hut position</td>
-                                    <td>{parkPoint[0]}</td>
-                                    <td>{parkPoint[1]}</td>
-                                </tr>
-                            </tbody>
-                        </Table>
+                        <Row>
+                            <Table id="point-table" style={{ borderColor: "grey", paddingTop: 10 }}>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Latitude</th>
+                                        <th>Longitude</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Parking lot position</td>
+                                        <td>{parkPoint[0]}</td>
+                                        <td>{parkPoint[1]}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                        </Row>
                     </Form.Group>
                 }
                 <Form.Group className="mb-3">

@@ -52,7 +52,7 @@ const FilterForm = (props) => {
             cM.coordinates = [45.46427, 9.18951]; // coord of Milan city
             setcenterMap(cM);
         };
-        navigator.geolocation.getCurrentPosition(success, error);
+        //navigator.geolocation.getCurrentPosition(success, error);
     }, [centerMap]);
 
 

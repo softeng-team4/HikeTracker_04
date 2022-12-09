@@ -12,7 +12,7 @@ let gpxParser = require('gpxparser');
 function HikeForm(props) {
 
     let navigate = useNavigate()
-    var gpx = new gpxParser();
+    let gpx = new gpxParser();
     const reader = new FileReader();
     const [GPX, setGPX] = useState("");
     const [fileGPX, setFileGPX] = useState(null)
@@ -61,8 +61,8 @@ function HikeForm(props) {
 
 
     function checkFile() {
-        var fileElement = document.getElementById("formFile");
-        var fileExtension = "";
+        let fileElement = document.getElementById("formFile");
+        let fileExtension = "";
         if (fileElement.value.lastIndexOf(".") > 0) {
             fileExtension = fileElement.value.substring(fileElement.value.lastIndexOf(".") + 1, fileElement.value.length);
         }
@@ -206,16 +206,16 @@ function HikeForm(props) {
 
     /* This method will add a new row */
     function addNewRow() {
-        var table = document.getElementById("point-table");
-        var rowCount = table.rows.length;
-        var row = table.insertRow(rowCount);
-        var cell = row.insertCell(0)
+        let table = document.getElementById("point-table");
+        let rowCount = table.rows.length;
+        let row = table.insertRow(rowCount);
+        let cell = row.insertCell(0)
         cell = row.insertCell(1)
         cell.innerHTML = position[0]
         cell = row.insertCell(2)
         cell.innerHTML = position[1]
-        /*for (var i = 0; i < cellCount; i++) {
-              var cell = row.insertCell(i);
+        /*for (let i = 0; i < cellCount; i++) {
+              let cell = row.insertCell(i);
               if (i === 0 ) {
                   cell.innerHTML = '';
               } else if (i===1 ){
@@ -414,7 +414,9 @@ function HikeForm(props) {
                             //         </Popup>
                             //     </Marker> : ''}
                             // </MapContainer>
-                            <Map positions={positions} startPoint={startPoint} endPoint={endPoint} />
+                            <Row className="mb-3">
+                                <Map positions={positions} startPoint={startPoint} endPoint={endPoint} />
+                            </Row>
                         }
                         {
                             !showMap ? '' :
