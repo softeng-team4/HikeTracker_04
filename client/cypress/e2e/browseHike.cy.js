@@ -1,4 +1,7 @@
+const { FaItalic } = require("react-icons/fa")
+
 describe('Browse Hikes', () => {
+  /*
   it('Select city', () => {
     cy.visit("http://localhost:3000/");
     cy.get('.CountrySelection').select("Italy")
@@ -176,6 +179,26 @@ describe('Browse Hikes', () => {
     cy.get('.button-geoArea').click()
     cy.get(".card").should("have.length", 1)
     cy.contains("There are no hikes")
+  })
+  */
+  
+  it("Select by preferences", () => {
+    cy.login("aleganino@gmail.com","password")
+    cy.get(':nth-child(1) > .form-check-input').click()
+    cy.get(".card").should("have.length", 4)
+    cy.get(':nth-child(4) > .card > .card-footer > .row > :nth-child(2)').contains(/^Length: (1\d|20)\.\d km$/)
+    cy.get(':nth-child(5) > .card > .card-footer > .row > :nth-child(2)').contains(/^Length: (1\d|20)\.\d km$/)
+    cy.get(':nth-child(6) > .card > .card-footer > .row > :nth-child(2)').contains(/^Length: (1\d|20)\.\d km$/)
+    cy.get(':nth-child(7) > .card > .card-footer > .row > :nth-child(2)').contains(/^Length: (1\d|20)\.\d km$/)
+    cy.get(':nth-child(4) > .card > .card-footer > .row > :nth-child(3)').contains(/^Ascent: ([4-7]\d\d|800) m$/)
+    cy.get(':nth-child(5) > .card > .card-footer > .row > :nth-child(3)').contains(/^Ascent: ([4-7]\d\d|800) m$/)
+    cy.get(':nth-child(6) > .card > .card-footer > .row > :nth-child(3)').contains(/^Ascent: ([4-7]\d\d|800) m$/)
+    cy.get(':nth-child(7) > .card > .card-footer > .row > :nth-child(3)').contains(/^Ascent: ([4-7]\d\d|800) m$/)
+    cy.get(':nth-child(4) > .card > .card-footer > .row > :nth-child(4)').contains(/^Estimated Time: (2[4-9]\d|3\d\d|4[0-7]\d|480) min$/)
+    cy.get(':nth-child(5) > .card > .card-footer > .row > :nth-child(4)').contains(/^Estimated Time: (2[4-9]\d|3\d\d|4[0-7]\d|480) min$/)
+    cy.get(':nth-child(6) > .card > .card-footer > .row > :nth-child(4)').contains(/^Estimated Time: (2[4-9]\d|3\d\d|4[0-7]\d|480) min$/)
+    cy.get(':nth-child(7) > .card > .card-footer > .row > :nth-child(4)').contains(/^Estimated Time: (2[4-9]\d|3\d\d|4[0-7]\d|480) min$/)
+    cy.logout()
   })
 
 })

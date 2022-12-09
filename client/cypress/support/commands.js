@@ -26,10 +26,10 @@
 
 Cypress.Commands.add('login', (email, password) => {
         cy.visit('http://localhost:3000/login')
-        cy.get('.email-input').clear()
-        cy.get('.password-input').clear()
-        cy.get('.email-input').type(email)
-        cy.get('.password-input').type(password)
+        cy.get('form > :nth-child(1) > #username').clear()
+        cy.get('form > :nth-child(2) > #password').clear()
+        cy.get('form > :nth-child(1) > #username').type(email)
+        cy.get('form > :nth-child(2) > #password').type(password)
         cy.contains('Login').click()
         cy.url().should('include', '/')
 })
