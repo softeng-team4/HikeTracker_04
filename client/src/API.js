@@ -244,32 +244,12 @@ const hikesList = async (filters, collection) => {
         default:
             break;
     }
-        const querySnapshot = await firestore.getDocs(q);
-        querySnapshot.forEach((doc) => {
-            if (doc.data().expectedTime >= filters.expectedTime.min && doc.data().expectedTime <= filters.expectedTime.max && doc.data().length >= filters.length.min && doc.data().length <= filters.length.max && doc.data().ascent >= filters.ascent.min && doc.data().ascent <= filters.ascent.max) {
-                if (filters.pointRadius.radius !== undefined) {
-                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint.latitude, doc.data().startPoint.longitude);
-                        if (dist <= filters.pointRadius.radius) {
-                            const hike = {
-                                id: doc.id,
-                                ascent: doc.data().ascent,
-                                city: doc.data().city,
-                                country: doc.data().country,
-                                description: doc.data().description,
-                                difficulty: doc.data().difficulty,
-                                endPoint: doc.data().endPoint,
-                                expectedTime: doc.data().expectedTime,
-                                length: doc.data().length,
-                                referencePoint: doc.data().referencePoint,
-                                region: doc.data().region,
-                                title: doc.data().title,
-                                startPoint: doc.data().startPoint,
-                                author: doc.data().author,
-                                linkedHuts: doc.data().linkedHuts
-                            };
-                            res.push(hike);
-                        }
-                } else {
+    const querySnapshot = await firestore.getDocs(q);
+    querySnapshot.forEach((doc) => {
+        if (doc.data().expectedTime >= filters.expectedTime.min && doc.data().expectedTime <= filters.expectedTime.max && doc.data().length >= filters.length.min && doc.data().length <= filters.length.max && doc.data().ascent >= filters.ascent.min && doc.data().ascent <= filters.ascent.max) {
+            if (filters.pointRadius.radius !== undefined) {
+                const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint.latitude, doc.data().startPoint.longitude);
+                if (dist <= filters.pointRadius.radius) {
                     const hike = {
                         id: doc.id,
                         ascent: doc.data().ascent,
@@ -289,8 +269,28 @@ const hikesList = async (filters, collection) => {
                     };
                     res.push(hike);
                 }
+            } else {
+                const hike = {
+                    id: doc.id,
+                    ascent: doc.data().ascent,
+                    city: doc.data().city,
+                    country: doc.data().country,
+                    description: doc.data().description,
+                    difficulty: doc.data().difficulty,
+                    endPoint: doc.data().endPoint,
+                    expectedTime: doc.data().expectedTime,
+                    length: doc.data().length,
+                    referencePoint: doc.data().referencePoint,
+                    region: doc.data().region,
+                    title: doc.data().title,
+                    startPoint: doc.data().startPoint,
+                    author: doc.data().author,
+                    linkedHuts: doc.data().linkedHuts
+                };
+                res.push(hike);
             }
-        });
+        }
+    });
     return res;
 }
 
@@ -338,34 +338,34 @@ const hutsList = async (filters, collection = "huts") => {
         default:
             break;
     }
-        const querySnapshot = await firestore.getDocs(q);
-        querySnapshot.forEach((doc) => {
-            const hut = {
-                id: doc.id,
-                name: doc.data().name,
-                phone: doc.data().phone,
-                email: doc.data().email,
-                website: doc.data().website,
-                altitude: doc.data().altitude,
-                country: doc.data().country,
-                region: doc.data().region,
-                city: doc.data().city,
-                position: doc.data().position,
-                bedsNumber: doc.data().bedsNumber,
-                description: doc.data().description,
-                costPerNight: doc.data().costPerNight,
-                openingHour: doc.data().openingHour,
-                openingMinute: doc.data().openingMinute,
-                closingHour: doc.data().closingHour,
-                closingMinute: doc.data().closingMinute
-            }
-            res.push(hut);
-        });
+    const querySnapshot = await firestore.getDocs(q);
+    querySnapshot.forEach((doc) => {
+        const hut = {
+            id: doc.id,
+            name: doc.data().name,
+            phone: doc.data().phone,
+            email: doc.data().email,
+            website: doc.data().website,
+            altitude: doc.data().altitude,
+            country: doc.data().country,
+            region: doc.data().region,
+            city: doc.data().city,
+            position: doc.data().position,
+            bedsNumber: doc.data().bedsNumber,
+            description: doc.data().description,
+            costPerNight: doc.data().costPerNight,
+            openingHour: doc.data().openingHour,
+            openingMinute: doc.data().openingMinute,
+            closingHour: doc.data().closingHour,
+            closingMinute: doc.data().closingMinute
+        }
+        res.push(hut);
+    });
     return res;
 }
 
 const getHutById = async (hutID, collection = 'huts') => {
-    return {id: hutID, ...(await firestore.getDoc(firestore.doc(db, collection, hutID))).data()};
+    return { id: hutID, ...(await firestore.getDoc(firestore.doc(db, collection, hutID))).data() };
 }
 
 const addNewHut = async (hut, collection = "huts") => {
@@ -460,19 +460,19 @@ const getAllParkingLots = async (collection = "parkingLots") => {
 }
 
 const getParkingLotById = async (parkID, collection = 'parkingLots') => {
-    return {id: parkID, ...(await firestore.getDoc(firestore.doc(db, collection, parkID))).data()};
+    return { id: parkID, ...(await firestore.getDoc(firestore.doc(db, collection, parkID))).data() };
 }
 
-const modifyHike = async (hikeID, startPoint, endPoint, collection="hike") => {
+const modifyHike = async (hikeID, startPoint, endPoint, collection = "hike") => {
     await updateDoc(doc(db, collection, hikeID), {
         startPoint: startPoint,
         endPoint: endPoint
     });
-    
+
 }
 
-const linkHuts = async(huts, hikeID, collection = "hike") => {
-    await firestore.updateDoc(firestore.doc(db, collection, hikeID),{
+const linkHuts = async (huts, hikeID, collection = "hike") => {
+    await firestore.updateDoc(firestore.doc(db, collection, hikeID), {
         linkedHuts: huts
     });
 }
@@ -483,4 +483,50 @@ const modifyUserPreferences = async (email, preferences, collection = "users") =
     });
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike,  modifyReferencePoints, linkHuts, getHutById, getParkingLotById, modifyUserPreferences };
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, getHutById, getParkingLotById, modifyUserPreferences };
+const updateCondition = async (condition, condDetails, hikeID, collection = "hike") => {
+    await firestore.updateDoc(firestore.doc(db, collection, hikeID), {
+        condition: condition,
+        condDetails: condDetails
+    });
+}
+
+const getHikesByLinkHutWorker = async (hutID, collection = "hike") => {
+    const hikesRef = firestore.collection(db, collection)
+    // const q = firestore.query(hikesRef, firestore.where('linkHuts', 'array-contains', hutId));
+    const querySnapshot = await firestore.getDocs(hikesRef);
+    const res = [];
+    querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data().linkedHuts);
+        if (doc.data().linkedHuts !== undefined) {
+            for (let i = 0; i < doc.data().linkedHuts.length; i++) {
+                if (doc.data().linkedHuts[i].hutId === hutID) {
+                    const hike = {
+                        id: doc.id,
+                        ascent: doc.data().ascent,
+                        city: doc.data().city,
+                        country: doc.data().country,
+                        description: doc.data().description,
+                        difficulty: doc.data().difficulty,
+                        endPoint: doc.data().endPoint,
+                        expectedTime: doc.data().expectedTime,
+                        length: doc.data().length,
+                        referencePoint: doc.data().referencePoint,
+                        region: doc.data().region,
+                        title: doc.data().title,
+                        startPoint: doc.data().startPoint,
+                        author: doc.data().author,
+                        linkedHuts: doc.data().linkedHuts,
+                        condition: doc.data().condition,
+                        condDetails: doc.data().condDetails
+                    };
+                    res.push(hike)
+                }
+            }
+        }
+    });
+    console.log(res);
+    return res;
+}
+
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences };

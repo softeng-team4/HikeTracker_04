@@ -9,7 +9,8 @@ import AuthenticationContext from './components/AuthenticationContext';
 import { LoginForm } from './components/AuthComponents/LoginComponents';
 import { SignupForm } from './components/AuthComponents/SignupComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
-import {BrowserHuts} from './components/BrowerHutComponent/BrowserHuts'
+import {BrowserHuts} from './components/BrowserHuts'
+import { UpdateCondition } from './components/UpdateCondition';
 
 function App() {
   //states of authentication of an Admin
@@ -139,6 +140,8 @@ function App() {
               <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
               <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor /> : <Navigate to='/' /> : ''} />
               <Route path='huts' element={authUser ? (authUser.role.toLowerCase() === 'local guide' || authUser.role.toLowerCase() === 'hiker') ? <BrowserHuts  /> : <Navigate to='/' /> : ''} />
+              <Route path='hikeCondition' element={authUser ? ( authUser.role.toLowerCase() === 'hut worker') ? <UpdateCondition  /> : <Navigate to='/' /> : ''} />
+
               
               <Route></Route>
             </Route>
