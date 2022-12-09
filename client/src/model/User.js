@@ -1,5 +1,6 @@
-export default function User(email, firstName, lastName, phoneNumber, role, reqRole, reqStatus, respDate, hut) {
+export default function User(email, username, firstName, lastName, phoneNumber, role, reqRole, reqStatus, respDate, hut) {
     this.email = email;
+    this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
     this.phoneNumber = phoneNumber;

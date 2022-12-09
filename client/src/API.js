@@ -62,6 +62,7 @@ const createUserOnDb = async (user) => {
     // Add a new document in collection "users"
     const obj = {
         email: user.email,
+        username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
         phoneNumber: user.phoneNumber,

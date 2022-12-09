@@ -2,6 +2,8 @@ import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import HutWorkerForm from './HutWorkerForm';
+import User from '../../model/User'
+
 
 
 function validPhoneNumber(phoneNumber) {
@@ -17,6 +19,7 @@ function validPhoneNumber(phoneNumber) {
 }
 
 function SignupForm(props) {
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,6 +31,8 @@ function SignupForm(props) {
   const [error, setError] = useState({ email: false, password: false, confirmedPassword: false, phoneNumber: false, firstName: false, lastName: false });
   const [hutId, setHutId] = useState('');
   const [hutSelected, setHutSelected] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -37,6 +42,7 @@ function SignupForm(props) {
       email: false,
       password: false,
       confirmedPassword: false,
+      username: false,
       phoneNumber: false,
       firstName: false,
       lastName: false,
@@ -46,7 +52,7 @@ function SignupForm(props) {
       valid = false;
       e.password = true;
     }
-    let checkIfValidEmail = isEmail(username); // true for good email
+    let checkIfValidEmail = isEmail(email); // true for good email
     if (!checkIfValidEmail) {
       valid = false;
       e.email = true;
@@ -54,6 +60,10 @@ function SignupForm(props) {
     if (password !== confirmPassword) {
       valid = false;
       e.confirmedPassword = true;
+    }
+    if (username === '') {
+      valid = false;
+      e.username = true;
     }
     if (firstName === '') {
       valid = false;
@@ -72,30 +82,26 @@ function SignupForm(props) {
       e.hutId = true;
     }
     setError(e);
-    if (!valid) {
-      console.log("ERROR")
-    } else {
-      console.log("Valid data");
+    if (valid) {
+      const userClass = new User(
+        email,
+        username,
+        firstName,
+        lastName,
+        phoneNumber,
+        "Hiker",
+        role !== "Hiker" ? role : undefined, 
+        role !== "Hiker" ? "pending" : undefined,
+        undefined,
+        role === "Hut worker" ? hutId : undefined);
+      props.signup(userClass, password)
+        .then(() => {
+          setSubmitted(true);
+        }).catch((err) => {
+          console.log(err);
+          setErrorMessage("Error: " + err.code);
+        });
     }
-
-    // if (valid) {
-      const user = {
-        username: username,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
-        role: role,
-        phoneNumber: phoneNumber,
-        hutId: role === "Hut worker" ? hutId : undefined
-      }
-    //   props.signup(user)
-    //     .then(() => {
-    //       setSubmitted(true);
-    //     }).catch((err) => {
-    //       console.log(err);
-    //       setErrorMessage("Error: " + err.code);
-    //     });
-    // }
   };
 
   const hutSelection = (hut) => {
@@ -111,9 +117,10 @@ function SignupForm(props) {
         </Alert> :
         <Container className="col-sm-8 col-12 below-nav">
           <Form noValidate onSubmit={handleSubmit}>
-            <Form.Group controlId='username'>
+          {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
+            <Form.Group controlId='email'>
               <Form.Label>Email</Form.Label>
-              <Form.Control className='email' type='email' required value={username} isInvalid={!!error.email} onChange={ev => setUsername(ev.target.value)} />
+              <Form.Control className='email' type='email' required value={email} isInvalid={!!error.email} onChange={ev => setEmail(ev.target.value)} />
               <Form.Control.Feedback type="invalid">Invalid email address.</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId='password'>
@@ -125,6 +132,11 @@ function SignupForm(props) {
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control className='confirm_password' type='password' value={confirmPassword} isInvalid={!!error.confirmedPassword} onChange={ev => setConfirmPassword(ev.target.value)} autoComplete="on" />
               <Form.Control.Feedback type="invalid">Passwords do not match.</Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId='username'>
+              <Form.Label>Username</Form.Label>
+              <Form.Control className='username' type='text' required value={username} isInvalid={!!error.username} onChange={ev => setUsername(ev.target.value)} />
+              <Form.Control.Feedback type="invalid">Username cannot be empty.</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId='firstName'>
               <Form.Label>First Name</Form.Label>
