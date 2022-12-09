@@ -110,7 +110,9 @@ const StaticHikeInfo = (props) => {
                 </Col>
             </Form.Group>
             {props.status === 'modify' ? props.hike.referencePoint !== '' ?
-                <Map positions={points} startPoint={props.hike.startPoint} endPoint={props.hike.endPoint} />
+                <Row>
+                    <Map positions={points} startPoint={props.hike.startPoint} endPoint={props.hike.endPoint} />
+                </Row>
                 : <div>No Track Inside</div> : ''}
             {props.status === 'modify' ? <div align="right" style={{ marginTop: 10 }}><Button onClick={handleSubmit}>Confirm</Button></div> : ''}
         </>
