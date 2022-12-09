@@ -54,7 +54,7 @@ const NavBar = (props) => {
                                                         {authObject.authUser.role.toLowerCase() === 'hut worker' ? <Dropdown.Item ><NavLink className='condition-link' to={`/hikeCondition`} variant='dark'>Hike Condition</NavLink></Dropdown.Item> : ''}
                                                         <Dropdown.Divider />
                                                         {/* {
-                                                        authObject.authUser.role.toLowerCase() === 'hut worker' &&
+                                                        authObject.authUser.role.toLowerCase() === 'hike' &&
                                                         <div><Dropdown.Item ><NavLink className='hike-form' to="/hikeform" variant='dark'>New Hike</NavLink> </Dropdown.Item>
                                                             <Dropdown.Divider /></div>
                                                     } */}

@@ -51,7 +51,7 @@ function UpdateCondition(props) {
                             Update Condition Success!
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="primary" onClick={() => setShowFeedback(false)}>
+                            <Button variant="primary" onClick={() => setShowFeedback(false)} className='close-feedback'>
                                 Close
                             </Button>
                         </Modal.Footer>
@@ -81,10 +81,10 @@ function UpdateCondition(props) {
                                 </Form.Group>
                                 <Form.Group as={Row} className="mb-3">
                                     <Col sm={2}>
-                                        <Form.Label>Condition:</Form.Label>
+                                        <Form.Label>Condition Detail:</Form.Label>
                                     </Col>
                                     <Col>
-                                        <Form.Control className='title-input' value={condDetails} required as='textarea' onChange={(event) => setCondDetails(event.target.value)} />
+                                        <Form.Control className='condition-detail-input' value={condDetails} required as='textarea' onChange={(event) => setCondDetails(event.target.value)} />
                                     </Col>
                                     <Col md={1}>
                                         {condDetails === '' ? <RiErrorWarningLine style={{ color: 'red' }} /> : <BiCheckCircle style={{ color: 'green' }} />}
@@ -120,7 +120,7 @@ function UpdateCondition(props) {
                                                             Show more info
                                                         </Button>
                                                     </OverlayTrigger>
-                                                    {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hut worker' ? <Button variant='danger'
+                                                    {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hut worker' ? <Button variant='danger' className="update_cond"
                                                         onClick={() => {
                                                             setHike(hike);
                                                             setShow(true);

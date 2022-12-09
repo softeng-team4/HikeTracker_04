@@ -48,7 +48,7 @@ describe('loginhikeform e2e tset', () => {
 
 })
 
-describe('hikeform e2e tset', () => {
+describe('hikeform e2e test', () => {
   it('1 access the webpage', () => {
     cy.visit('http://localhost:3000/hikeform')
   })
