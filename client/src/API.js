@@ -202,7 +202,7 @@ function distance(lat1, lon1, lat2, lon2) {
 
 const hikesList = async (filters, collection) => {
     const hikesRef = firestore.collection(db, collection);
-    let q;
+    let q = firestore.query(hikesRef);
     let cont = 0;
     const names = [];
     const values = [];
@@ -243,64 +243,10 @@ const hikesList = async (filters, collection) => {
         default:
             break;
     }
-    if (cont === 0) {
-        const querySnapshot = await firestore.getDocs(hikesRef);
-        querySnapshot.forEach((doc) => {
-            if (doc.data().expectedTime >= filters.expectedTime.min && doc.data().expectedTime <= filters.expectedTime.max && doc.data().length >= filters.length.min && doc.data().length <= filters.length.max && doc.data().ascent >= filters.ascent.min && doc.data().ascent <= filters.ascent.max) {
-                if (filters.pointRadius.radius !== undefined) {
-                    if (doc.data().startPoint.latitude !== undefined && doc.data().startPoint.longitude !== undefined) {
-                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint.latitude, doc.data().startPoint.longitude);
-                        if (dist <= filters.pointRadius.radius) {
-                            const hike = {
-                                id: doc.id,
-                                ascent: doc.data().ascent,
-                                city: doc.data().city,
-                                country: doc.data().country,
-                                description: doc.data().description,
-                                difficulty: doc.data().difficulty,
-                                endPoint: doc.data().endPoint,
-                                expectedTime: doc.data().expectedTime,
-                                length: doc.data().length,
-                                referencePoint: doc.data().referencePoint,
-                                region: doc.data().region,
-                                title: doc.data().title,
-                                startPoint: doc.data().startPoint,
-                                author: doc.data().author,
-                                linkedHuts: doc.data().linkedHuts
-                            };
-                            res.push(hike);
-                        }
-                    } else {
-                        //console.log("Starting point is undefined.");
-                    }
-                } else {
-                    const hike = {
-                        id: doc.id,
-                        ascent: doc.data().ascent,
-                        city: doc.data().city,
-                        country: doc.data().country,
-                        description: doc.data().description,
-                        difficulty: doc.data().difficulty,
-                        endPoint: doc.data().endPoint,
-                        expectedTime: doc.data().expectedTime,
-                        length: doc.data().length,
-                        referencePoint: doc.data().referencePoint,
-                        region: doc.data().region,
-                        title: doc.data().title,
-                        startPoint: doc.data().startPoint,
-                        author: doc.data().author,
-                        linkedHuts: doc.data().linkedHuts
-                    };
-                    res.push(hike);
-                }
-            }
-        });
-    } else {
         const querySnapshot = await firestore.getDocs(q);
         querySnapshot.forEach((doc) => {
             if (doc.data().expectedTime >= filters.expectedTime.min && doc.data().expectedTime <= filters.expectedTime.max && doc.data().length >= filters.length.min && doc.data().length <= filters.length.max && doc.data().ascent >= filters.ascent.min && doc.data().ascent <= filters.ascent.max) {
                 if (filters.pointRadius.radius !== undefined) {
-                    if (doc.data().startPoint.latitude !== undefined && doc.data().startPoint.longitude !== undefined) {
                         const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint.latitude, doc.data().startPoint.longitude);
                         if (dist <= filters.pointRadius.radius) {
                             const hike = {
@@ -322,9 +268,6 @@ const hikesList = async (filters, collection) => {
                             };
                             res.push(hike);
                         }
-                    } else {
-                        //console.log("Starting point is undefined.");
-                    }
                 } else {
                     const hike = {
                         id: doc.id,
@@ -347,14 +290,13 @@ const hikesList = async (filters, collection) => {
                 }
             }
         });
-    }
     return res;
 }
 
 
 const hutsList = async (filters, collection = "huts") => {
     const hutsRef = firestore.collection(db, collection);
-    let q;
+    let q = firestore.query(hutsRef);
     let cont = 0;
     const names = [];
     const values = [];
@@ -395,31 +337,6 @@ const hutsList = async (filters, collection = "huts") => {
         default:
             break;
     }
-    if (cont === 0) {
-        const querySnapshot = await firestore.getDocs(hutsRef);
-        querySnapshot.forEach((doc) => {
-            const hut = {
-                id: doc.id,
-                name: doc.data().name,
-                phone: doc.data().phone,
-                email: doc.data().email,
-                website: doc.data().website,
-                altitude: doc.data().altitude,
-                country: doc.data().country,
-                region: doc.data().region,
-                city: doc.data().city,
-                position: doc.data().position,
-                bedsNumber: doc.data().bedsNumber,
-                description: doc.data().description,
-                costPerNight: doc.data().costPerNight,
-                openingHour: doc.data().openingHour,
-                openingMinute: doc.data().openingMinute,
-                closingHour: doc.data().closingHour,
-                closingMinute: doc.data().closingMinute
-            }
-            res.push(hut);
-        });
-    } else {
         const querySnapshot = await firestore.getDocs(q);
         querySnapshot.forEach((doc) => {
             const hut = {
@@ -443,7 +360,6 @@ const hutsList = async (filters, collection = "huts") => {
             }
             res.push(hut);
         });
-    }
     return res;
 }
 

@@ -14,8 +14,8 @@ function LocalGuideForm(props) {
     };
 
     function checkFile() {
-        var fileElement = document.getElementById("formFile");
-        var fileExtension = "";
+        let fileElement = document.getElementById("formFile");
+        let fileExtension = "";
         if (fileElement.value.lastIndexOf(".") > 0) {
             fileExtension = fileElement.value.substring(fileElement.value.lastIndexOf(".") + 1, fileElement.value.length);
         }
