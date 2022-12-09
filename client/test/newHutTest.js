@@ -32,6 +32,10 @@ describe('testing the definition of a new hut by a local guide',()=>{
 
     const hut = {
         name: "hut_test",
+        email: "test@test",
+        phone: "1234567890",
+        website: "hut_test.it",
+        altitude: 200,
         country: "Italy",
         region: "Piedmont",
         city: "Turin", 

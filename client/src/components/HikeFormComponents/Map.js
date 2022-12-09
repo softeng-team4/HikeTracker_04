@@ -142,7 +142,7 @@ function Map(props) {
                     />
                 }
                 {filteredHuts && filteredHuts.map((h) =>
-                    <Marker key={`mark_${h.name}`} position={[h.position._lat, h.position._long]} icon={hutIcon}>
+                    <Marker key={`mark_${h.name}${h.position._lat}${h.position._long}`} position={[h.position._lat, h.position._long]} icon={hutIcon}>
                         <Popup key={`pop_${h.name}`}>
                             <Button key={`btn_${h.name}`} variant='link' id={h.id} onClick={(ev) => handleHutClick(ev)}>
                                 {props.isDisplay ?
@@ -155,7 +155,7 @@ function Map(props) {
                     </Marker>
                 )}
                 {props.parkLots && props.parkLots.map((p) => 
-                    <Marker key={`mark_${p.name}`} position={[p.position._lat, p.position._long]} icon={parkIcon}>
+                    <Marker key={`mark_${p.name}${p.position._lat}${p.position._long}`} position={[p.position._lat, p.position._long]} icon={parkIcon}>
                         <Popup key={`pop_${p.name}`}>{p.name}</Popup>
                     </Marker>
                 )}

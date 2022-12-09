@@ -24,14 +24,14 @@ const app = firebase.initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = firestore.getFirestore(app);
 
-const signUp = async (email, password, firstName, lastName, role) => {
+const signUp = async (user, password) => {
     const auth = fireAuth.getAuth();
-    await fireAuth.createUserWithEmailAndPassword(auth, email, password);
+    await fireAuth.createUserWithEmailAndPassword(auth, user.email, password);
     await fireAuth.updateProfile(auth.currentUser, {
-        displayName: firstName + lastName
+        displayName: user.firstName + user.lastName
     });
     await sendVerificationEmail();
-    return await createUserOnDb(email, firstName, lastName, role);
+    return await createUserOnDb(user);
 }
 
 const logIn = async (email, password) => {
@@ -57,15 +57,22 @@ const sendVerificationEmail = async () => {
     await fireAuth.sendEmailVerification(auth.currentUser)
 }
 
-const createUserOnDb = async (email, firstName, lastName, role) => {
+const createUserOnDb = async (user) => {
+    console.log(user.phoneNumber);
     // Add a new document in collection "users"
-    const user = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        role: role
-    }
-    await firestore.setDoc(firestore.doc(db, "users", email), user);
+    const obj = {
+        email: user.email,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phoneNumber: user.phoneNumber,
+        role: user.role,
+        reqRole: user.reqRole || "",
+        reqStatus: user.reqStatus || "",
+        respDate: user.respDate || "",
+        hut: user.hut || ""
+    };
+    await firestore.setDoc(firestore.doc(db, "users", user.email), obj);
     return user;
 }
 
@@ -95,8 +102,8 @@ const addNewHike = async (ascent, city, country, description, difficulty, endPoi
 
 const deleteInvalidHikes = async () => {
     const hikesRef = firestore.collection(db, "hike");
-    var q = firestore.query(hikesRef, firestore.where("ascent", '==', ''));
-    var querySnapshot = await firestore.getDocs(q);
+    let q = firestore.query(hikesRef, firestore.where("ascent", '==', ''));
+    let querySnapshot = await firestore.getDocs(q);
     querySnapshot.forEach((doc) => {
         firestore.deleteDoc(doc.ref);
     });
@@ -143,7 +150,6 @@ const deleteInvalidHikes = async () => {
 }
 
 const countryList = async () => {
-    console.log("Country list.");
     const hikesRef = firestore.collection(db, "hike");
     const res = new Set();
     const querySnapshot = await firestore.getDocs(hikesRef);
@@ -154,7 +160,6 @@ const countryList = async () => {
 }
 
 const regionList = async (country) => {
-    console.log("Region list country: ", country);
     const hikesRef = firestore.collection(db, "hike");
     const res = new Set();
     const q = firestore.query(hikesRef, firestore.where('country', '==', country));
@@ -167,7 +172,6 @@ const regionList = async (country) => {
 
 const cityList = async (country, region) => {
     const hikesRef = firestore.collection(db, "hike");
-    console.log("City list country and region: ", country, region);
     const res = new Set();
     const q = firestore.query(hikesRef, firestore.where('country', '==', country), firestore.where('region', '==', region));
     const querySnapshot = await firestore.getDocs(q);
@@ -198,9 +202,8 @@ function distance(lat1, lon1, lat2, lon2) {
 }
 
 const hikesList = async (filters, collection) => {
-    console.log("Hikes List filters: ", filters);
     const hikesRef = firestore.collection(db, collection);
-    let q;
+    let q = firestore.query(hikesRef);
     let cont = 0;
     const names = [];
     const values = [];
@@ -227,85 +230,25 @@ const hikesList = async (filters, collection) => {
     }
     switch (cont) {
         case 1:
-            //console.log(cont);
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]));
             break;
         case 2:
-            //console.log(cont);
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]));
             break;
         case 3:
-            //console.log(cont);
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
             break;
         case 4:
-            //console.log(cont);
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
             break;
         default:
             break;
     }
-    if (cont === 0) {
-        const querySnapshot = await firestore.getDocs(hikesRef);
-        querySnapshot.forEach((doc) => {
-            if (doc.data().expectedTime >= filters.expectedTime.min && doc.data().expectedTime <= filters.expectedTime.max && doc.data().length >= filters.length.min && doc.data().length <= filters.length.max && doc.data().ascent >= filters.ascent.min && doc.data().ascent <= filters.ascent.max) {
-                if (filters.pointRadius.radius !== undefined) {
-                    if (doc.data().startPoint.latitude !== undefined && doc.data().startPoint.longitude !== undefined) {
-                        const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint.latitude, doc.data().startPoint.longitude);
-                        console.log("Distance: ", dist);
-                        if (dist <= filters.pointRadius.radius) {
-                            const hike = {
-                                id: doc.id,
-                                ascent: doc.data().ascent,
-                                city: doc.data().city,
-                                country: doc.data().country,
-                                description: doc.data().description,
-                                difficulty: doc.data().difficulty,
-                                endPoint: doc.data().endPoint,
-                                expectedTime: doc.data().expectedTime,
-                                length: doc.data().length,
-                                referencePoint: doc.data().referencePoint,
-                                region: doc.data().region,
-                                title: doc.data().title,
-                                startPoint: doc.data().startPoint,
-                                author: doc.data().author,
-                                linkedHuts: doc.data().linkedHuts
-                            };
-                            res.push(hike);
-                        }
-                    } else {
-                        console.log("Starting point is undefined.");
-                    }
-                } else {
-                    const hike = {
-                        id: doc.id,
-                        ascent: doc.data().ascent,
-                        city: doc.data().city,
-                        country: doc.data().country,
-                        description: doc.data().description,
-                        difficulty: doc.data().difficulty,
-                        endPoint: doc.data().endPoint,
-                        expectedTime: doc.data().expectedTime,
-                        length: doc.data().length,
-                        referencePoint: doc.data().referencePoint,
-                        region: doc.data().region,
-                        title: doc.data().title,
-                        startPoint: doc.data().startPoint,
-                        author: doc.data().author,
-                        linkedHuts: doc.data().linkedHuts
-                    };
-                    res.push(hike);
-                }
-            }
-        });
-    } else {
         const querySnapshot = await firestore.getDocs(q);
         querySnapshot.forEach((doc) => {
             if (doc.data().expectedTime >= filters.expectedTime.min && doc.data().expectedTime <= filters.expectedTime.max && doc.data().length >= filters.length.min && doc.data().length <= filters.length.max && doc.data().ascent >= filters.ascent.min && doc.data().ascent <= filters.ascent.max) {
                 if (filters.pointRadius.radius !== undefined) {
-                    if (doc.data().startPoint.latitude !== undefined && doc.data().startPoint.longitude !== undefined) {
                         const dist = distance(filters.pointRadius.coordinates[0], filters.pointRadius.coordinates[1], doc.data().startPoint.latitude, doc.data().startPoint.longitude);
-                        console.log(dist);
                         if (dist <= filters.pointRadius.radius) {
                             const hike = {
                                 id: doc.id,
@@ -326,9 +269,6 @@ const hikesList = async (filters, collection) => {
                             };
                             res.push(hike);
                         }
-                    } else {
-                        console.log("Starting point is undefined.");
-                    }
                 } else {
                     const hike = {
                         id: doc.id,
@@ -351,16 +291,13 @@ const hikesList = async (filters, collection) => {
                 }
             }
         });
-    }
-    console.log(res);
     return res;
 }
 
 
 const hutsList = async (filters, collection = "huts") => {
-    console.log("Huts List filters: ", filters);
     const hutsRef = firestore.collection(db, collection);
-    let q;
+    let q = firestore.query(hutsRef);
     let cont = 0;
     const names = [];
     const values = [];
@@ -387,50 +324,29 @@ const hutsList = async (filters, collection = "huts") => {
     }
     switch (cont) {
         case 1:
-            console.log(cont);
             q = firestore.query(hutsRef, firestore.where(names[0], '==', values[0]));
             break;
         case 2:
-            console.log(cont);
             q = firestore.query(hutsRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]));
             break;
         case 3:
-            console.log(cont);
             q = firestore.query(hutsRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
             break;
         case 4:
-            console.log(cont);
             q = firestore.query(hutsRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
             break;
         default:
             break;
     }
-    if (cont === 0) {
-        const querySnapshot = await firestore.getDocs(hutsRef);
-        querySnapshot.forEach((doc) => {
-            const hut = {
-                id: doc.id,
-                name: doc.data().name,
-                country: doc.data().country,
-                region: doc.data().region,
-                city: doc.data().city,
-                position: doc.data().position,
-                bedsNumber: doc.data().bedsNumber,
-                description: doc.data().description,
-                costPerNight: doc.data().costPerNight,
-                openingHour: doc.data().openingHour,
-                openingMinute: doc.data().openingMinute,
-                closingHour: doc.data().closingHour,
-                closingMinute: doc.data().closingMinute
-            }
-            res.push(hut);
-        });
-    } else {
         const querySnapshot = await firestore.getDocs(q);
         querySnapshot.forEach((doc) => {
             const hut = {
                 id: doc.id,
                 name: doc.data().name,
+                phone: doc.data().phone,
+                email: doc.data().email,
+                website: doc.data().website,
+                altitude: doc.data().altitude,
                 country: doc.data().country,
                 region: doc.data().region,
                 city: doc.data().city,
@@ -445,8 +361,6 @@ const hutsList = async (filters, collection = "huts") => {
             }
             res.push(hut);
         });
-    }
-    console.log(res);
     return res;
 }
 
@@ -455,10 +369,13 @@ const getHutById = async (hutID, collection = 'huts') => {
 }
 
 const addNewHut = async (hut, collection = "huts") => {
-    console.log("API add new hut: ", hut);
     const hutsRef = firestore.collection(db, collection);
     const obj = {
         name: hut.name,
+        email: hut.email,
+        phone: hut.phone,
+        website: hut.website,
+        altitude: hut.altitude,
         country: hut.country,
         region: hut.region,
         city: hut.city,
@@ -471,13 +388,11 @@ const addNewHut = async (hut, collection = "huts") => {
         closingHour: hut.closingHour,
         closingMinute: hut.closingMinute
     }
-    console.log(obj);
     await firestore.addDoc(hutsRef, obj);
     // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 
 const addNewParkingLot = async (parkingLot, collection = "parkingLots") => {
-    console.log("API add new parking lot: ", parkingLot);
     const parkingLotsRef = firestore.collection(db, collection);
     const obj = {
         name: parkingLot.name,
@@ -524,7 +439,6 @@ const getAllParkingLots = async (collection = "parkingLots") => {
     const querySnapshot = await firestore.getDocs(parkingLotsRef);
     const res = [];
     querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
         const obj = {
             id: doc.id,
             name: doc.data().name,
@@ -542,7 +456,6 @@ const getAllParkingLots = async (collection = "parkingLots") => {
         }
         res.push(obj)
     });
-    console.log(res);
     return res;
 }
 
@@ -559,7 +472,6 @@ const modifyHike = async (hikeID, startPoint, endPoint, collection="hike") => {
 }
 
 const linkHuts = async(huts, hikeID, collection = "hike") => {
-    console.log("API linkHuts: ", huts, hikeID);
     await firestore.updateDoc(firestore.doc(db, collection, hikeID),{
         linkedHuts: huts
     });

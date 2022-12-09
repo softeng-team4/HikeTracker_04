@@ -6,10 +6,10 @@ import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRout
 import { useEffect, useState } from 'react';
 import API from './API.js'
 import AuthenticationContext from './components/AuthenticationContext';
-import { LoginForm } from './components/LoginComponents';
-import { SigninForm } from './components/SigninComponents';
+import { LoginForm } from './components/AuthComponents/LoginComponents';
+import { SignupForm } from './components/AuthComponents/SignupComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
-import {BrowserHuts} from './components/BrowserHuts'
+import {BrowserHuts} from './components/BrowerHutComponent/BrowserHuts'
 
 function App() {
   //states of authentication of an Admin
@@ -130,7 +130,7 @@ function App() {
             <Route path='/' element={<AppLayout />} >
               <Route index element={<BrowserHikes />}></Route>
               <Route path='login' element={authUser ? <Navigate replace to='/' /> : <LoginForm login={login} />} />
-              <Route path='signup' element={<SigninForm signup={signup} />}></Route>
+              <Route path='signup' element={<SignupForm signup={signup} />}></Route>
               {/* here are the routes with authenticated */}
               {authUser && <Route path={`/profile/${authUser.firstName.toLowerCase().replace(' ','_')}_${authUser.lastName.toLowerCase().replace(' ','_')}`} element={<UserProfile />} />}
               {/* here are the routes with local guide */}

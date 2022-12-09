@@ -6,8 +6,6 @@ import { useState } from 'react';
 import UserProfileOffCanvas from './UserProfileComponents/UserProfileOffCanvas';
 
 const NavBar = (props) => {
-
-
     const navigate = useNavigate();
     const path = useLocation().pathname;
     // state to show the offcanvas of user profile
@@ -72,7 +70,7 @@ const NavBar = (props) => {
                                                                 <Dropdown.Divider />
                                                             </>
                                                         }
-                                                        <Dropdown.Item onClick={() => { authObject.onLogout(); navigate('/'); }}>Sign out</Dropdown.Item>
+                                                        <Dropdown.Item className='logOutBtn' onClick={() => { authObject.onLogout(); navigate('/'); }}>Sign out</Dropdown.Item>
                                                     </DropdownButton>
                                                 }
                                                 {!authObject.authUser &&

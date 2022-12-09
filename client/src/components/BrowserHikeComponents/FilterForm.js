@@ -44,8 +44,8 @@ const FilterForm = (props) => {
         const error = (error) => {
             console.log(error);
         };
-        navigator.geolocation.getCurrentPosition(success, error);
-    }, []);
+        //navigator.geolocation.getCurrentPosition(success, error);
+    }, [centerMap]);
 
 
     useEffect(() => {
@@ -84,7 +84,6 @@ const FilterForm = (props) => {
 
     const handleCustomFilters = (event) => {
         const isChecked = event.target.checked;
-        console.log(isChecked)
         if(isChecked)
             setCustomPreferences(userData.preferences);
         else
