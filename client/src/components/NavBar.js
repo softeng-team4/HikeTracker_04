@@ -44,7 +44,7 @@ const NavBar = (props) => {
                                                         </>}
                                                     {authObject.authUser.role.toLowerCase() === 'manager' &&
                                                         <>
-                                                            <Nav.Link onClick={() => navigate('/manager')}>Manager Users</Nav.Link>
+                                                            <Nav.Link onClick={() => navigate('/manager')}>Manage Users</Nav.Link>
                                                         </>}
                                                 </>
                                             }

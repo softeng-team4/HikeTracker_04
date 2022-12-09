@@ -33,7 +33,7 @@ function PlatformManager(props) {
                             <Modal.Title>Accepted !</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            You already accepted this request!
+                            You have accepted this request!
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="primary" onClick={() => setShowAccepted(false)}>
@@ -46,7 +46,7 @@ function PlatformManager(props) {
                             <Modal.Title>Rejected !</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            You already rejected this request!
+                            You have rejected this request!
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="danger" onClick={() => setShowRejected(false)}>
@@ -60,7 +60,7 @@ function PlatformManager(props) {
                             <Card.Header key={`card_header_${i}`}>
                                 <Row md={10}>
                                     <Col md={5}><b>User:</b>&nbsp;{r.firstName}&nbsp;{r.lastName}</Col>
-                                    <Col md={5}><b>Request Role:</b>&nbsp;{r.reqRole}</Col>
+                                    <Col md={5}><b>Requested Role:</b>&nbsp;{r.reqRole}</Col>
                                     <Col className='d-flex justify-content-md-end'>
                                         <ButtonGroup size='sm'>
                                             <Button variant='success' onClick={() => { handleRequest(r, 'accepted') }}>
