@@ -562,7 +562,8 @@ const linkHuts = async(huts, hikeID, collection = "hike")=>{
 
 const getRequestingUsers = async () =>{
     const userCollection = firestore.collection(db,"users")
-    const querySnapshot = await firestore.getDocs(userCollection,firestore.where('reqStatus','==','pending'))
+    const reqQuery = firestore.query(userCollection,firestore.where("reqStatus","==","pending"))
+    const querySnapshot = await firestore.getDocs(reqQuery)
     let res = []
     querySnapshot.forEach(async (doc) =>{
         const user ={
@@ -571,8 +572,8 @@ const getRequestingUsers = async () =>{
             lastName: doc.data().lastName,
             role: doc.data().role,
             reqRole: doc.data().reqRole,
-            reqDocumentation: doc.data().reqDocumentation,
-            hutId: doc.data().hutId? doc.data().hutId : ""
+            hutId: doc.data().hutId? doc.data().hutId : "",
+            reqStatus: doc.data().reqStatus
         }
         if(user.hutId){
             const hut = await firestore.getDoc(firestore.doc(db,"huts",user.hutId))
@@ -591,7 +592,6 @@ const handleRoleRequest = async (user,outcome) =>{
     const docData = {
         role: outcome? user.reqRole : user.role,
         respDate: dayjs().format("DD/MM/YYYY HH:mm:ss"),
-        reqDocumentation: (!outcome)? "" : user.reqDocumentation,
         reqStatus: outcome? "accepted" : "rejected" 
     }
     if (!outcome && user.hutId && user.reqRole === 'hut worker')
