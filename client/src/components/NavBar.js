@@ -67,7 +67,7 @@ const NavBar = (props) => {
                                                                 >
                                                                     Your profile
                                                                 </Dropdown.Item>
-                                                                {authObject.authUser.role.toLowerCase() === 'hut worker' ? <Dropdown.Item ><NavLink className='condition-link' to={`/hikeCondition`} variant='dark'>Hike Condition</NavLink></Dropdown.Item> : ''}
+                                                                {authObject.authUser.role.toLowerCase() === 'hut worker' ? <Dropdown.Item className='condition-link' onClick={() => { navigate('/hikeCondition'); }} >Hike Condition</Dropdown.Item> : ''}
                                                                 <Dropdown.Divider />
                                                             </>
                                                         }

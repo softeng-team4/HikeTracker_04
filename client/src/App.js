@@ -9,7 +9,7 @@ import AuthenticationContext from './components/AuthenticationContext';
 import { LoginForm } from './components/AuthComponents/LoginComponents';
 import { SignupForm } from './components/AuthComponents/SignupComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
-import {BrowserHuts} from './components/BrowserHuts'
+import {BrowserHuts} from './components/BrowerHutComponent/BrowserHuts'
 import { UpdateCondition } from './components/UpdateCondition';
 
 function App() {
