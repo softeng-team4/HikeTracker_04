@@ -25,7 +25,7 @@ describe('testing the update of preferences by an hiker',()=>{
         const userQuery = firestore.query(testUser);
         const querySnapshot = await firestore.getDocs(userQuery)
         querySnapshot.forEach(async (doc) =>{
-            await firestore.deleteDoc(firestore.doc(db, collection, doc.id));
+            await firestore.deleteDoc(firestore.doc(api.db, collection, doc.id));
         })
 
         await firestore.setDoc(firestore.doc(testUser, "testeamail@test.it"), {
