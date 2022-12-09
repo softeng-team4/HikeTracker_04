@@ -1,7 +1,9 @@
 import { async } from "@firebase/util";
 import { useEffect, useState } from "react"
-import { Button, ButtonGroup, Card, Col, Form, Modal, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import { Alert, Button, ButtonGroup, Card, Col, Form, Modal, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { FaRegEdit } from 'react-icons/fa';
+import { RiErrorWarningLine } from 'react-icons/ri'
+import { BiCheckCircle } from 'react-icons/bi'
 import API from '../API';
 import AuthenticationContext from "./AuthenticationContext";
 import AdditionalHikeInfoModal from "./BrowserHikeComponents/AdditionalHikeInfoModal";
@@ -54,7 +56,7 @@ function UpdateCondition(props) {
                             </Button>
                         </Modal.Footer>
                     </Modal>
-                    <Modal show={show} onHide={() => setShow(false)}>
+                    <Modal show={show} onHide={() => setShow(false)} backdrop="static">
                         <Modal.Header closeButton>
                             <Modal.Title>Update Condition</Modal.Title>
                         </Modal.Header>
@@ -72,7 +74,9 @@ function UpdateCondition(props) {
                                             <option value={'partly blocked'}>Partly Blocked</option>
                                             <option value={'requires special gear'}>Requires Special Gear</option>
                                         </Form.Select>
-                                        <Form.Control.Feedback type="invalid">Please select a condition. </Form.Control.Feedback>
+                                    </Col>
+                                    <Col md={1}>
+                                        {condition === '' ? <RiErrorWarningLine style={{ color: 'red' }} /> : <BiCheckCircle style={{ color: 'green' }} />}
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} className="mb-3">
@@ -81,20 +85,21 @@ function UpdateCondition(props) {
                                     </Col>
                                     <Col>
                                         <Form.Control className='title-input' value={condDetails} required as='textarea' onChange={(event) => setCondDetails(event.target.value)} />
-                                        <Form.Control.Feedback>Valid Condition Details!</Form.Control.Feedback>
-                                        <Form.Control.Feedback type="invalid">Please insert a reason.</Form.Control.Feedback>
+                                    </Col>
+                                    <Col md={1}>
+                                        {condDetails === '' ? <RiErrorWarningLine style={{ color: 'red' }} /> : <BiCheckCircle style={{ color: 'green' }} />}
                                     </Col>
                                 </Form.Group>
                             </Form>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="primary" onClick={(e) => { handleSubmit(e) }}>
-                                Confirm
-                            </Button>
-                            <Button variant="danger" onClick={() => setShow(false)}>
-                                Close
-                            </Button>
-                        </Modal.Footer>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="primary" disabled={condDetails === '' || condition === ''} onClick={(e) => { handleSubmit(e) }}>
+                                    Confirm
+                                </Button>
+                                <Button variant="danger" onClick={() => setShow(false)}>
+                                    Close
+                                </Button>
+                            </Modal.Footer>
                     </Modal>
                     {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hut worker' ? setHutId(authObject.authUser.hut) : null}
                     {hikeList.length === 0 ? <div>No Hike Linked With My working Hut</div> :
