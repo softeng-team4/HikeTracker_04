@@ -1,11 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Form, Button, Row, Col, Alert, Table } from 'react-bootstrap';
+import { Modal, Form, Button, Row, Col, Alert, Table, Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { LocationMarker } from "./LocationMarker";
-import { modifyReferencePoints } from '../API';
+import { useNavigate } from "react-router";
+import { LocationMarker } from "../HutParkFormComponents/LocationMarker";
+import { modifyReferencePoints } from '../../API';
 import StaticHikeInfo from './StaticHikeInfo';
+import { FaRegTrashAlt } from 'react-icons/fa';
 
 
 function ReferencePointForm(props) {
@@ -14,6 +16,7 @@ function ReferencePointForm(props) {
     const [validated, setValidated] = useState(false);
     const [refPointList, setRefPointList] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     L.Icon.Default.mergeOptions({
         iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -21,13 +24,42 @@ function ReferencePointForm(props) {
         shadowUrl: require("leaflet/dist/images/marker-shadow.png")
     });
 
-
     const points = JSON.parse(props.hike.referencePoint);
+    const definedRefPoint = points.filter(e => e.name !== undefined);
     const minLat = Math.min(...points.map(p => p.lat)) - 0.003;
     const minLng = Math.min(...points.map(p => p.lng)) - 0.003;
     const maxLat = Math.max(...points.map(p => p.lat)) + 0.003;
     const maxLng = Math.max(...points.map(p => p.lng)) + 0.003;
 
+    // custom icons for the map markers
+    const startIcon = L.AwesomeMarkers.icon({
+        icon: 'play-circle',
+        markerColor: 'green',
+        prefix: 'fa',
+        iconColor: 'black',
+        extraClasses: 'fas fa-2x',
+    });
+    const endIcon = L.AwesomeMarkers.icon({
+        icon: 'stop-circle',
+        markerColor: 'red',
+        prefix: 'fa',
+        iconColor: 'black',
+        extraClasses: 'fas fa-2x'
+    });
+    const refIcon = L.AwesomeMarkers.icon({
+        icon: 'info-circle',
+        markerColor: 'blue',
+        prefix: 'fa',
+        iconColor: 'black',
+        extraClasses: 'fas fa-2x'
+    });
+    const refIconToConfirm = L.AwesomeMarkers.icon({
+        icon: 'info-circle',
+        markerColor: 'red',
+        prefix: 'fa',
+        iconColor: 'black',
+        extraClasses: 'fas fa-2x'
+    });
 
     const evaluateCenter = () => {
         return points.reduce((sum, point) => (
@@ -36,11 +68,11 @@ function ReferencePointForm(props) {
     };
 
     const checkPosInsideTrack = async (r = 50) => {
-        var min = 100;
-        var p = undefined;
+        let min = 100;
+        let p = undefined;
         points.forEach((pos) => {
-            var from = L.latLng(position[0], position[1]);
-            var to = L.latLng(pos.lat, pos.lng);
+            let from = L.latLng(position[0], position[1]);
+            let to = L.latLng(pos.lat, pos.lng);
             const d = from.distanceTo(to);
             if (d <= r) {
                 if (d < min) {
@@ -79,6 +111,7 @@ function ReferencePointForm(props) {
             setErrorMessage("Invalid position. Select a position on the track");
             console.log("Invalid position. Select a position on the track");
         }
+        setValidated(false);
     };
 
     const handleSubmit = async (event) => {
@@ -87,6 +120,8 @@ function ReferencePointForm(props) {
         handleShow();
         await modifyReferencePoints(props.hike, refPointList);
         setRefPointList([]);
+        navigate('/')
+
     };
 
     useEffect(() => {
@@ -110,10 +145,14 @@ function ReferencePointForm(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    return (<>
+    const deleteRefPoint = (i) => {
+        setRefPointList((oldRf) => oldRf.filter((o, index) => index !== i));
+    }
+
+    return (<Container fluid style={{ marginBottom: 20 }}>
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>New reference point</Modal.Title>
+                <Modal.Title>New reference points</Modal.Title>
             </Modal.Header>
             <Modal.Body>Reference points have been saved successfully!</Modal.Body>
             <Modal.Footer>
@@ -134,52 +173,68 @@ function ReferencePointForm(props) {
                     <Form.Control.Feedback type="invalid">Please insert a name.</Form.Control.Feedback>
                 </Col>
             </Form.Group>
-            <MapContainer center={evaluateCenter()} bounds={L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng))}>
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Polyline
-                    pathOptions={{ fillColor: 'red', color: 'blue' }}
-                    positions={points}
-                />
-                <Marker position={points[0]} fillColor='green'>
-                    <Popup>
-                        {(points[0].lat === points[points.length - 1].lat && points[0].lng === points[points.length - 1].lng) ? 'Start/End' : 'Start'}
-                    </Popup>
-                </Marker>
-                {!(points[0].lat === points[points.length - 1].lat && points[0].lng === points[points.length - 1].lng) ?
-                    <Marker position={points[points.length - 1]} fillColor='red'>
-                        <Popup >
-                            End
+            <Row>
+                <MapContainer center={evaluateCenter()} bounds={L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng))}>
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <Polyline
+                        pathOptions={{ fillColor: 'red', color: 'blue' }}
+                        positions={points}
+                    />
+                    <Marker position={[props.hike.startPoint.latitude, props.hike.startPoint.longitude]} icon={startIcon}>
+                        <Popup>
+                            Start point
                         </Popup>
-                    </Marker> : null
-                }
-                <LocationMarker position={position} setPosition={setPosition} />
-            </MapContainer>
+                    </Marker>
+                    <Marker position={[props.hike.endPoint.latitude, props.hike.endPoint.longitude]} icon={endIcon}>
+                        <Popup>
+                            End Point
+                        </Popup>
+                    </Marker>
+                    {definedRefPoint.map(rp =>
+                        <Marker key={`mark_${rp.name}${rp.lat}${rp.lng}`} position={[rp.lat, rp.lng]} icon={refIcon}>
+                            <Popup>
+                                {rp.name}
+                            </Popup>
+                        </Marker>
+                    )}
+                    {refPointList.map(rp =>
+                        <Marker key={`mark_${rp.name}${rp.lat}${rp.lng}`} position={[rp.lat, rp.lng]} icon={refIconToConfirm}>
+                            <Popup>
+                                {rp.name}
+                            </Popup>
+                        </Marker>
+                    )}
+                    <LocationMarker position={position} setPosition={setPosition} />
+                </MapContainer>
+            </Row>
             {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
             <Table id="ref_point-table">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>latitude</th>
-                        <th>longitude</th>
+                        <th>Name</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {refPointList.map(rp =>
-                        <tr key={rp.name}>
+                    {refPointList.map((rp, i) =>
+                        <tr key={`${rp.name}${rp.lat}${rp.lng}`}>
                             <td>{rp.name}</td>
                             <td>{rp.lat}</td>
                             <td>{rp.lng}</td>
+                            <td><Button variant='danger' onClick={() => deleteRefPoint(i)}><FaRegTrashAlt /></Button></td>
                         </tr>
                     )}
                 </tbody>
             </Table>
             <Button type="submit" onClick={(ev) => AddRefPoint(ev)}>Add point</Button>
-            <Button variant='success' type="submit" >Submit changes</Button>
+            <Button variant='success' type="submit" style={{ marginLeft: 10 }}>Submit changes</Button>
         </Form>
-    </>);
+    </Container>);
 }
 
 export default ReferencePointForm

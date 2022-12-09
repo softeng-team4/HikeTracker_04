@@ -1,29 +1,29 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
+import { Alert, Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { FaRegTimesCircle } from 'react-icons/fa';
 import { useNavigate } from "react-router";
-import API, { linkHuts } from '../API';
-import Spacer from "./BrowserHikeComponents/Spacer";
+import API, { linkHuts } from '../../API';
+import Spacer from "../BrowserHikeComponents/Spacer";
 import ConfirmModal from "./ConfirmModal";
-import { Map } from "./Map";
+import { Map } from "../HikeFormComponents/Map";
 import StaticHikeInfo from "./StaticHikeInfo";
-
-
 
 const LinkHuts = (props) => {
 
     // used to return to homepage
-    const nav = useNavigate()
+    const nav = useNavigate();
     // hike to be modified
     const hike = props.hike;
     // coordinates of the hike track
     const points = JSON.parse(hike.referencePoint);
     // state to hold list of huts
-    const [hutList, setHutList] = useState([])
+    const [hutList, setHutList] = useState([]);
     // selected hut list
-    const [selectedHutList, setSelectedHutList] = useState([])
+    const [selectedHutList, setSelectedHutList] = useState([]);
+    // state to hold initial list state
+    const [initialState, setInitialState] = useState();
     // state to display that there are no huts close to the hike
-    const [showNoCloseHuts, setShowNoCloseHuts] = useState(false)
+    const [showNoCloseHuts, setShowNoCloseHuts] = useState(false);
     //state to show the modal to confirm hike changes
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     //state to show the modal to delete hike changes
@@ -47,10 +47,17 @@ const LinkHuts = (props) => {
             region: undefined,
             city: undefined
         };
-        API.hutsList(filters).then(r => setHutList(r))
-
-        // center = computeCenter()
-    }, []);
+        API.hutsList(filters).then(r => {
+            let hutsTmp = r;
+            let selectedHutsTmp = hike.linkedHuts ? r.filter(h => hike.linkedHuts.some(lh => lh.id === h.id)) : [];
+            hutsTmp = hike.startPoint.id ? hutsTmp.filter(h => h.id !== hike.startPoint.id) : hutsTmp;
+            hutsTmp = hike.endPoint.id ? hutsTmp.filter(h => h.id !== hike.endPoint.id) : hutsTmp;
+            hutsTmp = hike.linkedHuts ? hutsTmp.filter(h => !hike.linkedHuts.some(lh => lh.id === h.id)) : hutsTmp;
+            setHutList(hutsTmp);
+            setSelectedHutList(selectedHutsTmp);
+            setInitialState([hutsTmp, selectedHutsTmp])
+        })
+    }, [hike]);
 
 
     // function to link hut
@@ -68,6 +75,7 @@ const LinkHuts = (props) => {
         let tmp = selectedHutList.find(h => h.id === hutId);
         setSelectedHutList(selectedHutList.filter(h => h.id !== hutId));
         setHutList([...hutList, tmp]);
+        setShowNoCloseHuts(false);
     };
 
 
@@ -78,46 +86,53 @@ const LinkHuts = (props) => {
 
 
     // function to send changes of the hike
-    const submitChanges = () => {
-        selectedHutList.map(h => ({ hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long }))
-        linkHuts(selectedHutList.map(h => ({ hutId: h.id, name: h.name, lat: h.position._lat, lng: h.position._long })), props.hike.id);
+    const submitChanges = async () => {
+        await linkHuts(selectedHutList.map(h => ({ id: h.id, name: h.name, position: h.position })), props.hike.id);
         nav('/');
     }
 
 
     // function to delete changes of the hike
     const deleteChanges = () => {
-        setHutList([...hutList, ...selectedHutList]);
-        setSelectedHutList([]);
+        setHutList(initialState[0]);
+        setSelectedHutList(initialState[1]);
         setShowDeleteModal(false);
     }
 
 
     return (
-        <>
+        <Container fluid style={{ marginBottom: 20 }}>
             <Form noValidate className="mt-3">
                 <StaticHikeInfo hike={hike} status={props.status} />
                 {!showNoCloseHuts && selectedHutList.length === 0 && <Alert variant='danger'>To link a hut to the hike select it on the map</Alert>}
                 {showNoCloseHuts && <Alert variant='danger'>There are not available huts close to this hike to be linked</Alert>}
-                {hike.referencePoint && <Map positions={points} startPoint={hike.startPoint} endPoint={hike.endPoint} huts={hutList} handleLinkHut={handleLinkHut} handleNohutsCloseToHike={handleNohutsCloseToHike} />}
+                {hike.referencePoint &&
+                    <Row>
+                        <Map positions={points} startPoint={hike.startPoint} endPoint={hike.endPoint} huts={hutList} handleHutClickOnMap={handleLinkHut} handleNohutsCloseToHike={handleNohutsCloseToHike} />
+                    </Row>
+                }
+                {selectedHutList.length !== 0 && <>
+                    <Spacer height='1rem' />
+                    <h5>Linked huts:</h5>
+                    <Row>
+                        <Col>
+                            <Card>
+                                <Card.Body>
+                                    {selectedHutList.map((h, idx) => <Button
+                                        id={h.id}
+                                        key={`btn_${h.id}`}
+                                        className='m-1'
+                                        size='sm'
+                                        onClick={(ev) => handleUnlinkHut(ev)}
+                                        variant={buttonColor[idx < buttonColor.length ? idx : idx % buttonColor.length]}>
+                                        {h.name}{' '}<FaRegTimesCircle key={`times_${h.id}`} />
+                                    </Button>)}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </>}
                 <Spacer height='1rem' />
-                <h5>Linked huts:</h5>
-                <Row>
-                    <Col>
-                        <Card><Card.Body>
-                            {selectedHutList.map((h, idx) => <Button
-                                id={h.id}
-                                key={`btn_${h.id}`}
-                                className='m-1'
-                                size='sm'
-                                onClick={(ev) => handleUnlinkHut(ev)}
-                                variant={buttonColor[idx < buttonColor.length ? idx : idx % buttonColor.length]}>
-                                {h.name}{' '}<FaRegTimesCircle key={`times_${h.id}`} />
-                            </Button>)}
-                        </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
                 <Row>
                     <Col>
                         <Button variant='danger' onClick={() => setShowDeleteModal(!showDeleteModal)}>Delete changes</Button>{' '}
@@ -127,7 +142,7 @@ const LinkHuts = (props) => {
             </Form>
             <ConfirmModal show={showDeleteModal} onSubmit={deleteChanges} onAbort={() => setShowDeleteModal(!showDeleteModal)} />
             <ConfirmModal show={showConfirmModal} onSubmit={submitChanges} onAbort={() => setShowConfirmModal(!showConfirmModal)} />
-        </>
+        </Container>
     );
 };
 

@@ -23,8 +23,7 @@ const PointRadiusForm = (props) => {
     function DraggableCircle() {
         const map = useMapEvents({
             dragend: () => {
-                console.log('I am dragging!')
-                props.setPointRadius({ coordinates: [map.getCenter().lat, map.getCenter().lng], radius: radius })
+                props.setPointRadius((s) => ({...s, pointRadius: { coordinates: [map.getCenter().lat, map.getCenter().lng], radius: radius }}));
             }
         });
         const position = props.pointRadius.coordinates ? props.pointRadius.coordinates : props.centerMap.coordinates;
@@ -39,7 +38,7 @@ const PointRadiusForm = (props) => {
                 mouseup: () => {
                     map.removeEventListener('mousemove');
                     map.dragging.enable();
-                    props.setPointRadius({ coordinates: [circleRef.current.getLatLng().lat, circleRef.current.getLatLng().lng], radius: radius })
+                    props.setPointRadius((s) => ({...s, pointRadius: { coordinates: [circleRef.current.getLatLng().lat, circleRef.current.getLatLng().lng], radius: radius }}));
                 }
             }), [map])
 
@@ -58,10 +57,10 @@ const PointRadiusForm = (props) => {
 
     const handleRadiusChange = (ev) => {
         ev.preventDefault();
-        const r = parseFloat(ev.target.value)
+        const r = parseFloat(ev.target.value);
         setRadius(r * 1000);
-        console.log(props.centerMap)
-        props.setPointRadius({ coordinates: props.pointRadius.coordinates ? props.pointRadius.coordinates : props.centerMap.coordinates, radius: r * 1000 })
+        console.log(props.centerMap);
+        props.setPointRadius((s) => ({...s, pointRadius: { coordinates: props.pointRadius.coordinates ? props.pointRadius.coordinates : props.centerMap.coordinates, radius: r * 1000 }}));
     };
 
 

@@ -6,21 +6,19 @@
 | firstName | string |
 | lastName  | string |
 | role      | string |
+| phoneNumber | string |
 | reqRole   | string |
 | reqStatus | string |
-| reqDocumentation | string |
 | respDate      | string |
-| hut       | string |
+| hutId       | string |
 
 **reqRole possible values:** "hut worker", "local guide"
 
 **reqStatus possible values:** "pending", "accepted", "rejected"
 
-**reqDocumentaion:** data that goes along with the request, it can be represented by an image or by a json object
-
 **respDate:** date of rejection/approval of the last request
 
-**hut:** name of the hut that a hut worker works to, written upon approval of a request for a hut worker account (hut worker exclusive)
+**hutId:** id of the hut that a hut worker works to, written upon approval of a request for a hut worker account (hut worker exclusive)
 
 
 # hike

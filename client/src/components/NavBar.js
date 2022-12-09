@@ -1,13 +1,15 @@
 import { Navbar, DropdownButton, Dropdown, Button, Container, Row, Col, Nav } from 'react-bootstrap';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle, FaHiking } from 'react-icons/fa'
 import AuthenticationContext from './AuthenticationContext';
+import { useState } from 'react';
+import UserProfileOffCanvas from './UserProfileComponents/UserProfileOffCanvas';
 
 const NavBar = (props) => {
-
-
     const navigate = useNavigate();
-
+    const path = useLocation().pathname;
+    // state to show the offcanvas of user profile
+    const [showProfileOffCanvas, setShowProfileOffCanvas] = useState(false);
 
     return (
         <AuthenticationContext.Consumer>
@@ -18,55 +20,84 @@ const NavBar = (props) => {
                             <Col xxl={2} />
                             <Col>
                                 <Navbar expand="sm">
-                                    <Navbar.Brand className='d-flex' style={{cursor:"pointer"}} onClick={() => navigate('/')}>
+                                    <Navbar.Brand style={{ cursor: "pointer" }} onClick={() => navigate('/')}>
                                         <h3><FaHiking className='nav-icon' />Hike Tracker</h3>
                                     </Navbar.Brand>
                                     <Navbar.Toggle aria-controls="nav-toggle" />
                                     <Nav className="justify-content-end flex-grow-1 pe-3">
 
-                                        <Navbar.Collapse className='justify-content-end' id="nav-toggle">
-                                            {/* all user could see with login */}
-                                            <Nav.Link onClick={() => navigate('/')}>Hike List</Nav.Link>
+                                        <Navbar.Collapse className='row justify-content-sm-end' id="nav-toggle">
+                                            <Col sm={9} className='d-sm-flex justify-content-sm-start'>
+                                                {/* all user could see with login */}
+                                                <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/')}>Hike List</Nav.Link>
 
-                                            {/* local guide navbar */}
+                                                {/* local guide navbar */}
 
-                                            {authObject.authUser &&
-                                                <>
-                                                  <Nav.Link onClick={() => navigate('/huts')}>Explore huts</Nav.Link>
-                                                    {authObject.authUser.role.toLowerCase() === 'local guide' &&
-                                                        <>
-                                                            <Nav.Link onClick={() => navigate('/hikeform')}>New Hike</Nav.Link>
-                                                            <Nav.Link onClick={() => navigate('/newPark')}>New Park</Nav.Link>
-                                                            <Nav.Link onClick={() => navigate('/newHut')}>New Hut</Nav.Link>
-                                                            {/* <Nav.Link href='/parks'>Park List</Nav.Link> */}
-                                                            
-
-                                                        </>}
-                                                </>
-                                            }
-
-
+                                                {authObject.authUser &&
+                                                    <>
+                                                        <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/huts')}>Explore huts</Nav.Link>
+                                                        {authObject.authUser.role.toLowerCase() === 'local guide' &&
+                                                            <>
+                                                                <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/hikeform')}>New Hike</Nav.Link>
+                                                                <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/newPark')}>New Park</Nav.Link>
+                                                                <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/newHut')}>New Hut</Nav.Link>
+                                                                {/* <Nav.Link href='/parks'>Park List</Nav.Link> */}
+                                                            </>}
+                                                    </>
+                                                }
+                                            </Col>
+                                            <hr className='d-sm-none' style={{ width: '95%', margin: 'auto' }} />
                                             {/* hiker navbar */}
-                                            {authObject.authUser &&
-                                                <div>
-                                                    <DropdownButton className='d-flex align-items-center' title={<><FaRegUserCircle className='react-icon align-self-center' />{'   '}{authObject.authUser.firstName.toUpperCase()}</>} variant='outline-dark' align={{ sm: 'end' }} menuVariant='dark'>
-                                                        <Dropdown.Item ><NavLink className='profile-link' to={`/${authObject.authUser.firstName.toLowerCase()}`} variant='dark'>Your profile</NavLink></Dropdown.Item>
-                                                        <Dropdown.Divider />
-                                                        {/* {
-                                                        authObject.authUser.role.toLowerCase() === 'local guide' &&
-                                                        <div><Dropdown.Item ><NavLink className='hike-form' to="/hikeform" variant='dark'>New Hike</NavLink> </Dropdown.Item>
-                                                            <Dropdown.Divider /></div>
-                                                    } */}
-                                                        <Dropdown.Item onClick={() => authObject.onLogout()}><NavLink to='/' className='nav-dropdown-link' variant='dark'>Sign out</NavLink></Dropdown.Item>
+                                            {/* show on display larger than sm */}
+                                            <Col sm={3} className='d-none d-sm-flex justify-content-sm-end'>
+                                                {authObject.authUser &&
+                                                    <DropdownButton
+                                                        variant='outline-dark'
+                                                        drop='down'
+                                                        align='end'
+                                                        menuVariant='dark'
+                                                        title={<><FaRegUserCircle className='mb-1' />{'   '}{authObject.authUser.firstName.toUpperCase()}</>}
+                                                    >
+                                                        {!path.startsWith('/profile/') &&
+                                                            <>
+                                                                <Dropdown.Item
+                                                                    className='nav-profile-link'
+                                                                    variant='link'
+                                                                    onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}
+                                                                >
+                                                                    Your profile
+                                                                </Dropdown.Item>
+                                                                {authObject.authUser.role.toLowerCase() === 'hut worker' ? <Dropdown.Item className='condition-link' onClick={() => { navigate('/hikeCondition'); }} >Hike Condition</Dropdown.Item> : ''}
+                                                                <Dropdown.Divider />
+                                                            </>
+                                                        }
+                                                        <Dropdown.Item className='logOutBtn' onClick={() => { authObject.onLogout(); navigate('/'); }}>Sign out</Dropdown.Item>
                                                     </DropdownButton>
-                                                </div>
-                                            }
-                                            {!authObject.authUser &&
-                                                <>
-                                                    <NavLink to='/login'><Button variant='link-dark'>Sign In</Button></NavLink>
-                                                    <NavLink to='/signup'><Button variant='outline-dark'>Sign Up</Button></NavLink>
-                                                </>
-                                            }
+                                                }
+                                                {!authObject.authUser &&
+                                                    <>
+                                                        {path !== '/login' && <NavLink to='/login'><Button variant='link-dark'>Sign In</Button></NavLink>}
+                                                        {path !== '/signup' && <NavLink to='/signup'><Button variant='outline-dark'>Sign Up</Button></NavLink>}
+                                                    </>
+                                                }
+                                            </Col>
+                                            {/* show on small display */}
+                                            <Col className='d-sm-none'>
+                                                {authObject.authUser &&
+                                                    <>
+                                                        {!path.startsWith('/profile/') &&
+                                                            <Nav.Link className='d-flex justify-content-center' onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}>Your profile</Nav.Link>}
+                                                        <Nav.Link className='d-flex justify-content-center' onClick={() => authObject.onLogout()}>Sign out</Nav.Link>
+                                                    </>
+                                                }
+                                                {!authObject.authUser &&
+                                                    <>
+                                                        {path !== '/login' && <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/login')}>Sign In</Nav.Link>}
+                                                        {path !== '/signup' && <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/signup')}>Sign Up</Nav.Link>}
+                                                    </>
+                                                }
+                                            </Col>
+                                            <hr className='d-sm-none' style={{ width: '95%', margin: 'auto' }} />
                                         </Navbar.Collapse>
                                     </Nav>
                                 </Navbar>
@@ -74,6 +105,7 @@ const NavBar = (props) => {
                             <Col xxl={2} />
                         </Row>
                     </Container>
+                    {authObject.authUser && <UserProfileOffCanvas show={showProfileOffCanvas} onHide={() => setShowProfileOffCanvas(false)} />}
                 </>
             )}
         </AuthenticationContext.Consumer>
