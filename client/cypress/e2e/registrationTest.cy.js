@@ -14,11 +14,13 @@ describe('registration form render', () => {
 describe('can fill all the fields', () => {
   it('should change all the text fields', () => {
     cy.visit('/signup');
-    cy.get('input[id=username]').type('test').should('have.value', 'test');
+    cy.get('input[id=email]').type('test').should('have.value', 'test');
     cy.get('input[id=password]').type('test').should('have.value', 'test');
     cy.get('input[id=confirm_password]').type('test').should('have.value', 'test');
     cy.get('input[id=firstName]').type('test').should('have.value', 'test');
     cy.get('input[id=lastName]').type('test').should('have.value', 'test');
+    cy.get('input[id=username]').type('test').should('have.value', 'test');
+    cy.get('input[id=phoneNumber]').type('test').should('have.value', 'test');
   })
 })
 
@@ -27,8 +29,10 @@ describe('can select all roles', () => {
     cy.visit('/signup');
     cy.get('select[id=role]').select('Local guide').should('have.value', 'Local guide');
     cy.get('select[id=role]').select('Hiker').should('have.value', 'Hiker');
+    cy.get('select[id=role]').select('Hut worker').should('have.value', 'Hut worker');
   })
 })
+
 
 describe('email field empty', () => {
   it('should compare an alert', () => {
@@ -37,70 +41,127 @@ describe('email field empty', () => {
     cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
     cy.get('input[id=firstName]').type('John');
     cy.get('input[id=lastName]').type('Doe');
+    cy.get('input[id=username]').type("john_doe");
+    cy.get('input[id=phoneNumber]').type('1234567890');
     cy.get('form').submit();
-    cy.get('div[role=alert]').contains('Invalid email address.');
+    cy.get(':nth-child(1) > .invalid-feedback').contains('Invalid email address.');
   })
 })
 
 describe('wrong email typed', () => {
   it('should compare an alert', () => {
     cy.visit('/signup');
-    cy.get('input[id=username]').type('john.doe#polito.it');
+    cy.get('input[id=email]').type('john.doe#polito.it');
     cy.get('input[id=password]').type('notSoSafePassword1!');
     cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
     cy.get('input[id=firstName]').type('John');
     cy.get('input[id=lastName]').type('Doe');
+    cy.get('input[id=username]').type("john_doe");
+    cy.get('input[id=phoneNumber]').type('1234567890');
     cy.get('form').submit();
-    cy.get('div[role=alert]').contains('Invalid email address.');
+    cy.get(':nth-child(1) > .invalid-feedback').contains('Invalid email address.');
   })
 })
 
 describe('password field empty', () => {
   it('should compare an alert', () => {
     cy.visit('/signup');
-    cy.get('input[id=username]').type('john.doe@polito.it');
+    cy.get('input[id=email]').type('john.doe@polito.it');
     cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
     cy.get('input[id=firstName]').type('John');
     cy.get('input[id=lastName]').type('Doe');
+    cy.get('input[id=username]').type("john_doe");
+    cy.get('input[id=phoneNumber]').type('1234567890');
     cy.get('form').submit();
-    cy.get('div[role=alert]').contains('Passwords do not match.');
+    cy.get(':nth-child(3) > .invalid-feedback').contains('Passwords do not match.');
   })
 })
+
 
 describe('password less than 6 chars', () => {
   it('should compare an alert', () => {
     cy.visit('/signup');
-    cy.get('input[id=username]').type('john.doe@polito.it');
+    cy.get('input[id=email]').type('john.doe@polito.it');
     cy.get('input[id=password]').type('jhon');
     cy.get('input[id=confirm_password]').type('jhon');
     cy.get('input[id=firstName]').type('John');
     cy.get('input[id=lastName]').type('Doe');
+    cy.get('input[id=username]').type("john_doe");
+    cy.get('input[id=phoneNumber]').type('1234567890');
     cy.get('form').submit();
-    cy.get('div[role=alert]').contains('Email cannot be empty and password must be at least six character long.');
+    cy.get(':nth-child(2) > .invalid-feedback').contains('Password must be at least six character long');
   })
 })
+
 
 describe('first name field empty', () => {
   it('should compare an alert', () => {
     cy.visit('/signup');
-    cy.get('input[id=username]').type('john.doe@polito.it');
+    cy.get('input[id=email]').type('john.doe@polito.it');
     cy.get('input[id=password]').type('notSoSafePassword1!');
     cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
     cy.get('input[id=lastName]').type('Doe');
+    cy.get('input[id=username]').type("john_doe");
+    cy.get('input[id=phoneNumber]').type('1234567890');
     cy.get('form').submit();
-    cy.get('div[role=alert]').contains('First name cannot be empty.');
+    cy.get(':nth-child(5) > .invalid-feedback').contains('First name cannot be empty.');
   })
 })
 
 describe('last name field empty', () => {
   it('should compare an alert', () => {
     cy.visit('/signup');
-    cy.get('input[id=username]').type('john.doe@polito.it');
+    cy.get('input[id=email]').type('john.doe@polito.it');
     cy.get('input[id=password]').type('notSoSafePassword1!');
     cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
-    cy.get('input[id=firstName]').type('John');
+    cy.get('input[id=firstName]').type('John');    
+    cy.get('input[id=username]').type("john_doe");
+    cy.get('input[id=phoneNumber]').type('1234567890');
     cy.get('form').submit();
-    cy.get('div[role=alert]').contains('Last name cannot be empty.');
+    cy.get(':nth-child(6) > .invalid-feedback').contains('Last name cannot be empty.');
+  })
+})
+
+describe('username field empty', () => {
+  it('should compare an alert', () => {
+    cy.visit('/signup');
+    cy.get('input[id=email]').type('john.doe@polito.it');
+    cy.get('input[id=password]').type('notSoSafePassword1!');
+    cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
+    cy.get('input[id=firstName]').type('John');    
+    cy.get('input[id=lastName]').type("Doe");
+    cy.get('input[id=phoneNumber]').type('1234567890');
+    cy.get('form').submit();
+    cy.get(':nth-child(4) > .invalid-feedback').contains('Username cannot be empty.');
+  })
+})
+
+describe('telephone field empty', () => {
+  it('should compare an alert', () => {
+    cy.visit('/signup');
+    cy.get('input[id=email]').type('john.doe@polito.it');
+    cy.get('input[id=password]').type('notSoSafePassword1!');
+    cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
+    cy.get('input[id=firstName]').type('John');    
+    cy.get('input[id=lastName]').type("Doe");
+    cy.get('input[id=username]').type('john_doe');
+    cy.get('form').submit();
+    cy.get(':nth-child(7) > .invalid-feedback').contains('Invalid phone number.');
+  })
+})
+
+describe('wrong telephone typed', () => {
+  it('should compare an alert', () => {
+    cy.visit('/signup');
+    cy.get('input[id=email]').type('john.doe@polito.it');
+    cy.get('input[id=password]').type('notSoSafePassword1!');
+    cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
+    cy.get('input[id=firstName]').type('John');    
+    cy.get('input[id=lastName]').type("Doe");
+    cy.get('input[id=username]').type('john_doe');
+    cy.get('input[id=phoneNumber]').type('123456');
+    cy.get('form').submit();
+    cy.get(':nth-child(7) > .invalid-feedback').contains('Invalid phone number.');
   })
 })
 
@@ -171,5 +232,6 @@ describe('correct login', () => {
     cy.get('form').submit();
     cy.get('h2').contains('Explore Hike');
     cy.get('button').contains('GIANMARCO');
+    cy.logout()
   })
 })
