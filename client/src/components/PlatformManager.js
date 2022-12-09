@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Card, Col, ListGroup, Row } from 'react-bootstrap';
+import { Button, ButtonGroup, Card, Col, ListGroup, Modal, Row } from 'react-bootstrap';
 import { AiOutlineCheck, AiOutlineStop } from 'react-icons/ai'
 import API from '../API';
 import AuthenticationContext from './AuthenticationContext';
@@ -7,22 +7,53 @@ import Spacer from './BrowserHikeComponents/Spacer';
 
 function PlatformManager(props) {
     const [requestingUsers, setRequestingUsers] = useState([]);
-    const [user, setUser] = useState('');
+    const [reload, setReload] = useState(false);
+    const [showAccepted, setShowAccepted] = useState(false);
+    const [showRejected, setShowRejected] = useState(false);
     useEffect(() => {
 
         API.getRequestingUsers().then(r => setRequestingUsers(r))
 
-    }, [requestingUsers.length])
+    }, [requestingUsers.length, reload])
     console.log(requestingUsers)
-    const handleRequest = async (user, status) => {
-        await API.handleRoleRequest(user, status)
 
+    const handleRequest = async (user, status) => {
+        await API.handleRoleRequest(user, status);
+        status === 'accepted' ? setShowAccepted(true) : setShowRejected(true)
+        setReload(!reload);
     }
+
     return (
 
         <AuthenticationContext.Consumer>
             {(authObject) => (
                 <>
+                    <Modal show={showAccepted} onHide={() => setShowAccepted(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Accepted !</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            You already accepted this request!
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="primary" onClick={() => setShowAccepted(false)}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                    <Modal show={showRejected} onHide={() => setShowRejected(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Rejected !</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            You already rejected this request!
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="danger" onClick={() => setShowRejected(false)}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
 
                     {requestingUsers.map((r, i) => <div key={`div_${i}`} >
                         <Card key={`card_${i}`}>
