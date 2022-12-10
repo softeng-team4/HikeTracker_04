@@ -70,7 +70,7 @@ const createUserOnDb = async (user) => {
         reqRole: user.reqRole || "",
         reqStatus: user.reqStatus || "",
         respDate: user.respDate || "",
-        hut: user.hut || ""
+        hutId: user.hut || ""
     };
     await firestore.setDoc(firestore.doc(db, "users", user.email), obj);
     return user;

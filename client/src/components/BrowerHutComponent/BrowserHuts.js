@@ -63,9 +63,9 @@ const BrowserHuts = (props) => {
         setIsLoading(true);
         const filters = {
             name: undefined,
-            country: geoArea.country.name !== 'None' ? geoArea.country.name : undefined,
-            region: geoArea.region.name !== 'None' ? geoArea.region.name : undefined,
-            city: geoArea.city.name !== 'None' ? geoArea.city.name : undefined
+            country: geoArea.geoArea.country.name !== 'None' ? geoArea.geoArea.country.name : undefined,
+            region: geoArea.geoArea.region.name !== 'None' ? geoArea.geoArea.region.name : undefined,
+            city: geoArea.geoArea.city.name !== 'None' ? geoArea.geoArea.city.name : undefined
         };
         API.hutsList(filters).then(r => setHutList(r))
     }, [geoArea])
