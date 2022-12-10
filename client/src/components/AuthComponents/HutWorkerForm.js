@@ -4,9 +4,12 @@ import { useEffect, useState } from 'react';
 import Spacer from '../BrowserHikeComponents/Spacer';
 import HikePageHandler from '../BrowserHikeComponents/HickePageHendler';
 import API from '../../API';
+import GeoAreaForm from '../BrowserHikeComponents/GeoAreaForm';
 import { HutSearchBar } from '../BrowerHutComponent/HutSearchBar';
 
 function HutWorkerForm(props) {
+    const [range, setRange] = useState(undefined);
+
     const [geoArea, setGeoArea] = useState({ country: { countryCode: 'None', name: 'None' }, region: { countryCode: 'None', stateCode: 'None', name: 'None' }, city: { name: 'None' } });
     // state to hold list of huts
     const [hutList, setHutList] = useState([])
@@ -29,29 +32,37 @@ function HutWorkerForm(props) {
     const [hut, setHut] = useState('');
 
     useEffect(() => {
+        console.log("Filter change", geoArea, geoArea.country.name);
         const filters = {
             name: undefined,
-            country: geoArea.country.name !== 'None' ? geoArea.country.name : undefined,
-            region: geoArea.region.name !== 'None' ? geoArea.region.name : undefined,
-            city: geoArea.city.name !== 'None' ? geoArea.city.name : undefined
+            country: geoArea.geoArea.country.name !== 'None' ? geoArea.geoArea.country.name : undefined,
+            region: geoArea.geoArea.region.name !== 'None' ? geoArea.geoArea.region.name : undefined,
+            city: geoArea.geoArea.city.name !== 'None' ? geoArea.geoArea.city.name : undefined
         };
         API.hutsList(filters).then(r => setHutList(r))
     }, [geoArea])
 
     useEffect(() => {
-        setPageHutList(subHutList.slice(index * hut4page, index * hut4page + hut4page))
+        hutList !== undefined &&
+            setPageHutList(() => {
+                return subHutList.slice(index * hut4page, index * hut4page + hut4page)
+            })
     }, [subHutList, index])
 
     useEffect(() => {
-        setSubHutList(() => {
-            if (hutList && searchQuery)
-                return hutList.filter((hut) => {
-                    const hutName = hut.name.toLowerCase();
-                    return hutName.includes(searchQuery);
-                })
-            return hutList
-        })
-    }, [searchQuery, hutList])
+        hutList !== undefined &&
+            setSubHutList(() => {
+                if (hutList && (searchQuery || range !== undefined))
+                    return hutList.filter((hut) => {
+                        const hutName = hut.name.toLowerCase();
+                        return (hutName.includes(searchQuery) && (
+                            range === undefined ? true :
+                                (hut.altitude <= range.max && hut.altitude >= range.min)
+                        ));
+                    })
+                return hutList
+            })
+    }, [searchQuery, hutList, range])
 
     const handlePageChange = (idx) => {
         setIndex(idx);
@@ -80,7 +91,10 @@ function HutWorkerForm(props) {
     };
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setRange(undefined);
+    }
     const handleShow = () => setShow(true);
     const handleHut = (hut) => {
         console.log(hut.name);
@@ -99,11 +113,15 @@ function HutWorkerForm(props) {
                         <Row md={10} className='row d-flex justify-content-between'>
                             {hut.author ? <Col md={4}><b>Local guide:</b>&nbsp;{hut.author}</Col> : false}
                             <Col md={4}><b>Name:</b>&nbsp;{hut.name}</Col>
+                            <Col md={4}><b>Phone:</b>&nbsp;{hut.phone}</Col>
+                            <Col md={4}><b>Email:</b>&nbsp;{hut.email}</Col>
                             <Col md={4}><b>Latitude:</b>&nbsp;{parseFloat(hut.position.latitude).toFixed(6)}</Col>
                             <Col md={4}><b>Longitude:</b>&nbsp;{parseFloat(hut.position.longitude).toFixed(6)}</Col>
+                            <Col md={4}><b>Altitude:</b>&nbsp;{hut.altitude}&nbsp;m</Col>
                             <Col md={4}><b>Country:</b>&nbsp;{hut.country}</Col>
                             <Col md={4}><b>Region:</b>&nbsp;{hut.region}</Col>
                             <Col md={4}><b>City:</b>&nbsp;{hut.city}</Col>
+                            {hut.website !== '' && <Col md={12}><b>Website:</b>&nbsp;{hut.website}</Col>}
                         </Row>
                     </Card.Header>
                     <Card.Body>
@@ -118,7 +136,7 @@ function HutWorkerForm(props) {
                 </Modal.Header>
                 <Modal.Body><Container fluid className='BrowserHutssContainer'>
                     <Row className='mt-3'>
-                        <HutSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} geoArea={geoArea} setGeoArea={setGeoArea} />
+                        <HutSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} geoArea={geoArea} setGeoArea={setGeoArea} setRange={setRange} />
                     </Row>
                     <Row className='mt-3'>
                         {!(hutList) ? false : pageHutList.map((hut, idx) =>
@@ -128,11 +146,15 @@ function HutWorkerForm(props) {
                                         <Row md={10} className='row d-flex justify-content-between'>
                                             {hut.author ? <Col md={4}><b>Local guide:</b>&nbsp;{hut.author}</Col> : false}
                                             <Col md={4}><b>Name:</b>&nbsp;{hut.name}</Col>
+                                            <Col md={4}><b>Phone:</b>&nbsp;{hut.phone}</Col>
+                                            <Col md={4}><b>Email:</b>&nbsp;{hut.email}</Col>
                                             <Col md={4}><b>Latitude:</b>&nbsp;{parseFloat(hut.position.latitude).toFixed(6)}</Col>
                                             <Col md={4}><b>Longitude:</b>&nbsp;{parseFloat(hut.position.longitude).toFixed(6)}</Col>
+                                            <Col md={4}><b>Altitude:</b>&nbsp;{hut.altitude}&nbsp;m</Col>
                                             <Col md={4}><b>Country:</b>&nbsp;{hut.country}</Col>
                                             <Col md={4}><b>Region:</b>&nbsp;{hut.region}</Col>
                                             <Col md={4}><b>City:</b>&nbsp;{hut.city}</Col>
+                                            {hut.website !== '' && <Col md={12}><b>Website:</b>&nbsp;{hut.website}</Col>}
                                         </Row>
                                     </Card.Header>
                                     <Card.Body key={`card_body_${idx}`}>
