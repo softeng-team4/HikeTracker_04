@@ -97,7 +97,6 @@ const addNewHike = async (ascent, city, country, description, difficulty, endPoi
         length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: JSON.stringify(referencePoint), author: author
     }
     firestore.addDoc(firestore.collection(db, "hike"), hike);
-    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 
 const deleteInvalidHikes = async () => {
@@ -389,7 +388,6 @@ const addNewHut = async (hut, collection = "huts") => {
         closingMinute: hut.closingMinute
     }
     await firestore.addDoc(hutsRef, obj);
-    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 
 const addNewParkingLot = async (parkingLot, collection = "parkingLots") => {
@@ -409,7 +407,6 @@ const addNewParkingLot = async (parkingLot, collection = "parkingLots") => {
         closingMinute: parkingLot.closingMinute
     }
     await firestore.addDoc(parkingLotsRef, obj);
-    // firestore.setDoc(firestore.doc(db,collection,hike.title),hike);
 }
 
 const modifyReferencePoints = async (hike, referencePoints, collection = "hike") => {
@@ -497,7 +494,6 @@ const updateCondition = async (condition, condDetails, hikeID, collection = "hik
 
 const getHikesByLinkHutWorker = async (hutID, collection = "hike") => {
     const hikesRef = firestore.collection(db, collection)
-    // const q = firestore.query(hikesRef, firestore.where('linkHuts', 'array-contains', hutId));
     const querySnapshot = await firestore.getDocs(hikesRef);
     const res = [];
     querySnapshot.forEach((doc) => {

@@ -32,6 +32,7 @@ const FilterForm = (props) => {
     const setHikeList = props.setHikeList;
     const setIsLoading = props.setIsLoading;
 
+    
 
     useEffect(() => {
         const success = (pos) => {
@@ -40,11 +41,11 @@ const FilterForm = (props) => {
             const cM = {coordinates: [lat, lon]};
             setcenterMap(cM);
         };
-
+        
         const error = (error) => {
             console.log(error);
         };
-        //navigator.geolocation.getCurrentPosition(success, error);
+        navigator.geolocation.getCurrentPosition(success, error);
     }, [centerMap]);
 
 
