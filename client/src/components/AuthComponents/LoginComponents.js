@@ -1,6 +1,5 @@
 import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useState } from 'react';
-//import { Redirect } from 'react-router';
 import isEmail from 'validator/lib/isEmail';
 
 function LoginForm(props) {

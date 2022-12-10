@@ -39,16 +39,13 @@ function App() {
       const user = await API.logIn(email, password);
       setAuthUser(user);
       setAuthErr(undefined);
-      // setMessage({ msg: 'Hello ' + authUser.role + ',' + authUser.firstName, type: 'success' })
     } catch (err) {
       setAuthErr(err);
       setAuthUser(undefined);
       console.log(err);
-      // setMessage({ msg: err, type: 'danger' });
       throw (err);
     }
   }
-  // console.log(authUser.firstName)
   const logout = async () => {
     try {
       await API.logOut();
@@ -84,7 +81,6 @@ function App() {
     onLogout: logout,
     onUpdateUserData: updateUserData
   };
-  // console.log(authUser.role.toLowerCase()==='local guide')
 
   const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
     length, referencePoint, region, title, startPoint) => {

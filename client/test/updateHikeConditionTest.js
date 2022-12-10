@@ -168,9 +168,9 @@ describe('testing getHikesByLinkHutWorker API function', () => {
     testHikeList("2", 1);
 })
 
-function testHikeList(hutID, n) {
+function testHikeList(hutId, n) {
     it("Viewing a list of hikes with linked huts", function (done) {
-        api.getHikesByLinkHutWorker(hutID, collection)
+        api.getHikesByLinkHutWorker(hutId, collection)
             .then((res) => {
                 res.length.should.equal(n)
             })
