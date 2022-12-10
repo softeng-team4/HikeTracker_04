@@ -32,13 +32,24 @@ function HutWorkerForm(props) {
     const [hut, setHut] = useState('');
 
     useEffect(() => {
-        console.log("Filter change", geoArea, geoArea.country.name);
-        const filters = {
-            name: undefined,
-            country: geoArea.geoArea.country.name !== 'None' ? geoArea.geoArea.country.name : undefined,
-            region: geoArea.geoArea.region.name !== 'None' ? geoArea.geoArea.region.name : undefined,
-            city: geoArea.geoArea.city.name !== 'None' ? geoArea.geoArea.city.name : undefined
-        };
+        console.log("Filter change", geoArea);
+        let filters;
+        if(geoArea.geoArea != undefined){
+            filters = {
+                name: undefined,
+                country: geoArea.geoArea.country.name !== 'None' ? geoArea.geoArea.country.name : undefined,
+                region: geoArea.geoArea.region.name !== 'None' ? geoArea.geoArea.region.name : undefined,
+                city: geoArea.geoArea.city.name !== 'None' ? geoArea.geoArea.city.name : undefined
+            };
+        }else{
+            filters = {
+                name: undefined,
+                country: geoArea.country.name !== 'None' ? geoArea.country.name : undefined,
+                region: geoArea.region.name !== 'None' ? geoArea.region.name : undefined,
+                city: geoArea.city.name !== 'None' ? geoArea.city.name : undefined
+            };
+        }
+        
         API.hutsList(filters).then(r => setHutList(r))
     }, [geoArea])
 
