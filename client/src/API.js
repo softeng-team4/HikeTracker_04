@@ -471,6 +471,10 @@ const modifyHike = async (hikeID, startPoint, endPoint, collection = "hike") => 
 
 }
 
+const deleteHike = async (hikeId, collection = 'hike') => {
+    await firestore.deleteDoc(firestore.doc(db, collection, hikeId))
+}
+
 const linkHuts = async (huts, hikeID, collection = "hike") => {
     await firestore.updateDoc(firestore.doc(db, collection, hikeID), {
         linkedHuts: huts
@@ -539,5 +543,5 @@ const UpdateHikeDescription = async (title, expectedTime, difficulty, descriptio
     });
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences,UpdateHikeDescription };
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription };
 
