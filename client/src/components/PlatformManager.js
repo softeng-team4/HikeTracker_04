@@ -6,19 +6,17 @@ import AuthenticationContext from './AuthenticationContext';
 import Spacer from './BrowserHikeComponents/Spacer';
 
 function PlatformManager(props) {
-    const roleList = ["Local guide", "Hut Worker"]
-    const [requestedRole, setRequestedRole] = useState('')
+    const roleList = ["Local guide", "Hut worker"]
+    const [requestedRole, setRequestedRole] = useState('Local guide')
     const [requestingUsers, setRequestingUsers] = useState([]);
     const [reload, setReload] = useState(false);
     const [showAccepted, setShowAccepted] = useState(false);
-    const [showRejected, setShowRejected] = useState(false);    
-    const [selectedButton, setSelectedButton] = useState(undefined)
+    const [showRejected, setShowRejected] = useState(false);
+    const [selectedButton, setSelectedButton] = useState('Local guide')
 
     useEffect(() => {
-
         API.getRequestingUsers().then(r => setRequestingUsers(r))
-
-    }, [requestingUsers.length, reload])
+    }, [reload])
 
     const handleRequest = async (user, status) => {
         await API.handleRoleRequest(user, status);
@@ -26,7 +24,7 @@ function PlatformManager(props) {
         setReload(!reload);
     }
 
-    
+
     const handleButtonClick = (key) => {
         if (selectedButton === key) {
             setSelectedButton('');
@@ -37,11 +35,15 @@ function PlatformManager(props) {
     };
 
     const filterRole = (elem) => {
-        if (requestedRole==='')
+        if (requestedRole === '') {
             return true
-        else if (elem.reqRole.toLowerCase()===requestedRole.toLowerCase())
+        }
+        else if (elem.reqRole.toLowerCase() === requestedRole.toLowerCase()) {
             return true
-        else return false
+        }
+        else {
+            return false
+        }
     }
 
     return (
@@ -79,16 +81,16 @@ function PlatformManager(props) {
                     <Form className='row col-md d-flex justify-content-between'>
                         <Form.Group as={Row} className='row col-md p-2'>
                             <Col sm={2}>
-                            <Form.Label htmlFor='RoleSelection'>Filter requests by role: &nbsp;</Form.Label>
+                                <Form.Label htmlFor='RoleSelection'>Filter requests by role: &nbsp;</Form.Label>
                             </Col>
                             <Col>
-                            <Form.Text>
-                                <ButtonGroup className='RoleSelection'>
-                                    {roleList.map((d) =>
-                                        <Button key={d} active={d === selectedButton ? true : false} variant='light' onClick={(ev) => (handleButtonClick(d))}>{d}</Button>
-                                    )}
-                                </ButtonGroup>
-                            </Form.Text>
+                                <Form.Text>
+                                    <ButtonGroup className='RoleSelection'>
+                                        {roleList.map((d) =>
+                                            <Button key={d} active={d === selectedButton ? true : false} variant='light' onClick={(ev) => (handleButtonClick(d))}>{d}</Button>
+                                        )}
+                                    </ButtonGroup>
+                                </Form.Text>
                             </Col>
                         </Form.Group>
                     </Form>
@@ -99,7 +101,7 @@ function PlatformManager(props) {
                                 <Card.Header key={`card_header_${i}`}>
                                     <Row md={10}>
                                         <Col md={5}><b>User:</b>&nbsp;{r.firstName}&nbsp;{r.lastName}</Col>
-                                        <Col md={5}><b>Requested Role:</b>&nbsp;{r.reqRole}</Col>
+                                        <Col md={5}><b>Actual role:</b>&nbsp;{r.role}</Col>
                                         <Col className='d-flex justify-content-md-end'>
                                             <ButtonGroup size='sm'>
                                                 <Button variant='success' onClick={() => { handleRequest(r, 'accepted') }}>
@@ -120,7 +122,11 @@ function PlatformManager(props) {
                                 </Card.Body>
                                 <Card.Footer key={`card_footer_${i}`}>
                                     <Row md={12}>
-                                        <Col md key={`user_role_${i}`}><b>Role:</b>&nbsp;{r.role}</Col>
+
+                                        <Col><b>Requested Role:</b>&nbsp;{r.reqRole}
+                                        {r.reqRole.toLowerCase() === "hut worker" ? ` at ${r.hutName} (${r.hutId})` : ''}
+                                        </Col>
+
                                     </Row>
 
                                 </Card.Footer>

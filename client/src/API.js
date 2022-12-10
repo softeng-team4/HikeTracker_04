@@ -561,25 +561,25 @@ const linkHuts = async(huts, hikeID, collection = "hike")=>{
 //APIs for the system administrator
 
 const getRequestingUsers = async () =>{
-    const userCollection = firestore.collection(db,"users")
+    const userCollection = firestore.collection(db, "users")
     const reqQuery = firestore.query(userCollection,firestore.where("reqStatus","==","pending"))
     const querySnapshot = await firestore.getDocs(reqQuery)
     let res = []
-    querySnapshot.forEach(async (doc) =>{
-        const user ={
+    querySnapshot.forEach(async (doc) => {
+        let user = {
             email: doc.data().email,
             firstName: doc.data().firstName,
             lastName: doc.data().lastName,
             role: doc.data().role,
             reqRole: doc.data().reqRole,
-            hutId: doc.data().hutId? doc.data().hutId : "",
+            hutId: doc.data().hutId ? doc.data().hutId : "",
             reqStatus: doc.data().reqStatus
         }
-        if(user.hutId){
-            const hut = await firestore.getDoc(firestore.doc(db,"huts",user.hutId))
-            user.hutName = hut.data().name
+        if (user.hutId) {
+            const hut = await firestore.getDoc(firestore.doc(db, "huts", user.hutId));
+            user.hutName = await hut.data().name;
         }
-        res.push(user)
+        res.push(user);
     })
     return res
 }
