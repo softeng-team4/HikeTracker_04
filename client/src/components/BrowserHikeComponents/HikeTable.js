@@ -10,6 +10,7 @@ import { FaAppStoreIos, FaRegEdit } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import API from '../../API';
 import { useNavigate } from 'react-router-dom';
+import ConfirmModal from '../ModifyHikeComponents/ConfirmModal';
 
 
 const HikeTable = () => {
@@ -43,16 +44,15 @@ const HikeTable = () => {
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0);
     // method to change page
     const nav = useNavigate();
-    const [reload, setReload] = useState(false);
     const [showFeedback, setShowFeedback] = useState(false);
-    const [show, setShow] = useState(false);
+    const [reload, setReload] = useState(false)
 
     // effect to select the hikes to show based on page number
     useEffect(() => {
         setSubHikeList(hikeList.slice(0, hike4page));
         setIsLoading(false);
         setIndex(0);
-    }, [hikeList]);
+    }, [hikeList, reload]);
 
     const handleEmailFilter = () => {
         const hl = hikeList;
@@ -105,9 +105,11 @@ const HikeTable = () => {
         }
     };
 
+
+
     const handleDelete = async (hikeId) => {
         await API.deleteHike(hikeId)
-        setReload(!reload);
+        setShowFeedback(true);
     }
 
 
@@ -123,24 +125,8 @@ const HikeTable = () => {
                             You already delete this hike!
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="primary" onClick={() => setShowFeedback(false)} className='close-feedback'>
+                            <Button variant="primary" onClick={() => { setShowFeedback(false); setReload(!reload) }} className='close-feedback'>
                                 Close
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-                    <Modal show={show} onHide={() => setShow(false)}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Delete Hike</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            Are you sure delete this hike?
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="danger" onClick={() => setShow(false)} className='close-confirm'>
-                                No
-                            </Button>
-                            <Button variant="primary" onClick={() => setShow(false)} className='save-confirm'>
-                                Yes
                             </Button>
                         </Modal.Footer>
                     </Modal>
