@@ -18,7 +18,6 @@ describe("Manager validating roles", () => {
     it ("Accept local guide", () => {
         cy.login("s304890@studenti.polito.it","password")
         cy.visit("http://localhost:3000/manager")
-        cy.get('.RoleSelection > :nth-child(1)').click()
         cy.get(':nth-child(2) > .card > .card-header > .row > .d-flex > .btn-group > .btn-success').click().wait(1000)
         cy.get('.modal-footer > .btn').click()
         cy.logout()
@@ -27,7 +26,6 @@ describe("Manager validating roles", () => {
     it ("Reject local guide", () => {
         cy.login("s304890@studenti.polito.it","password")
         cy.visit("http://localhost:3000/manager")
-        cy.get('.RoleSelection > :nth-child(1)').click()
         cy.get(':nth-child(2) > .card > .card-header > .row > .d-flex > .btn-group > .btn-danger').click().wait(1000)
         cy.get('.modal-footer > .btn').click()
         cy.logout()
