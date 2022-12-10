@@ -14,7 +14,7 @@ describe("testing the management of local guide/hut worker role requests",() =>{
 
     let users = []
 
-    before( async () =>{
+    beforeEach( async () =>{
 
         users[0] = {
             email: "eeee.test@gmail.com",
@@ -82,7 +82,7 @@ describe("testing the management of local guide/hut worker role requests",() =>{
         });
         })
     }
-    after(async () =>{
+    afterEach(async () =>{
         const auth = fireAuth.getAuth()
         for( let u of users){
         await fireAuth.signInWithEmailAndPassword(auth,u.email,"123456")
