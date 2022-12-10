@@ -101,7 +101,7 @@ function UpdateCondition(props) {
                                 </Button>
                             </Modal.Footer>
                     </Modal>
-                    {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hut worker' ? setHutId(authObject.authUser.hut) : null}
+                    {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hut worker' ? setHutId(authObject.authUser.hutId) : null}
                     {hikeList.length === 0 ? <div>No Hike Linked With My working Hut</div> :
                         hikeList.map((hike, idx) =>
                             <div key={`div_${idx}`}>

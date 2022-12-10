@@ -487,7 +487,6 @@ const modifyUserPreferences = async (email, preferences, collection = "users") =
     });
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, getHutById, getParkingLotById, modifyUserPreferences };
 const updateCondition = async (condition, condDetails, hikeID, collection = "hike") => {
     await firestore.updateDoc(firestore.doc(db, collection, hikeID), {
         condition: condition,
@@ -501,10 +500,12 @@ const getHikesByLinkHutWorker = async (hutID, collection = "hike") => {
     const querySnapshot = await firestore.getDocs(hikesRef);
     const res = [];
     querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data().linkedHuts);
+        // console.log(doc.id, " => ", doc.data().linkedHuts);
         if (doc.data().linkedHuts !== undefined) {
             for (let i = 0; i < doc.data().linkedHuts.length; i++) {
-                if (doc.data().linkedHuts[i].hutId === hutID) {
+                console.log(doc.id, " => ", doc.data().linkedHuts[i].id, hutID, doc.data().linkedHuts[i].id === hutID);
+
+                if (doc.data().linkedHuts[i].id === hutID) {
                     const hike = {
                         id: doc.id,
                         ascent: doc.data().ascent,
