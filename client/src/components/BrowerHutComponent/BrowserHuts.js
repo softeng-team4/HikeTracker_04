@@ -7,6 +7,33 @@ import HikePageHandler from '../BrowserHikeComponents/HickePageHendler';
 import API from '../../API';
 import { HutSearchBar } from './HutSearchBar';
 
+const HutHeader = (props) =>{
+    return(
+        <>
+        {props.hut.author ? <Col md={4}><b>Local guide:</b>&nbsp;{props.hut.author}</Col> : false}
+                                        <Col md={4}><b>Name:</b>&nbsp;{props.hut.name}</Col>
+                                        <Col md={4}><b>Phone:</b>&nbsp;{props.hut.phone}</Col>
+                                        <Col md={4}><b>Email:</b>&nbsp;{props.hut.email}</Col>
+                                        <Col md={4}><b>Latitude:</b>&nbsp;{parseFloat(props.hut.position.latitude).toFixed(6)}</Col>
+                                        <Col md={4}><b>Longitude:</b>&nbsp;{parseFloat(props.hut.position.longitude).toFixed(6)}</Col>
+                                        <Col md={4}><b>Altitude:</b>&nbsp;{props.hut.altitude}&nbsp;m</Col>
+                                        <Col md={4}><b>Country:</b>&nbsp;{props.hut.country}</Col>
+                                        <Col md={4}><b>Region:</b>&nbsp;{props.hut.region}</Col>
+                                        <Col md={4}><b>City:</b>&nbsp;{props.hut.city}</Col>
+                                        {props.hut.website !== '' && <Col md={12}><b>Website:</b>&nbsp;{props.hut.website}</Col>}
+        </>
+    )
+}
+
+const HutFooter = (props) =>{
+    return(<>
+    {props.hut.bedsNumber ? <Col md={3} key={`hut_beds_${props.idx}`}><b>Number of beds:</b>&nbsp;{props.hut.bedsNumber}</Col> : false}
+    {props.hut.costPerNight ? <Col md={3} key={`hut_cost_${props.idx}`}><b>Cost per night:</b>&nbsp;{props.hut.costPerNight}&nbsp;€</Col> : false}
+    {props.hut.openingHour && props.hut.openingMinute ? <Col md={3} key={`hut_opn_${props.idx}`}><b>Opening time:</b>&nbsp;{props.hut.openingHour}&nbsp;:&nbsp;{props.hut.openingMinute}</Col> : false}
+    {props.hut.closingHour && props.hut.closingMinute ? <Col md={3} key={`hut_cls_${props.idx}`}><b>Closing Time:</b>&nbsp;{props.hut.closingHour}&nbsp;:&nbsp;{props.hut.closingMinute}</Col> : false}
+    </>)
+}
+
 const BrowserHuts = (props) => {
 
     const [range, setRange] = useState(undefined);
@@ -93,33 +120,6 @@ const BrowserHuts = (props) => {
 
         }
     };
-
-    const HutHeader = (props) =>{
-        return(
-            <>
-            {props.hut.author ? <Col md={4}><b>Local guide:</b>&nbsp;{props.hut.author}</Col> : false}
-                                            <Col md={4}><b>Name:</b>&nbsp;{props.hut.name}</Col>
-                                            <Col md={4}><b>Phone:</b>&nbsp;{props.hut.phone}</Col>
-                                            <Col md={4}><b>Email:</b>&nbsp;{props.hut.email}</Col>
-                                            <Col md={4}><b>Latitude:</b>&nbsp;{parseFloat(props.hut.position.latitude).toFixed(6)}</Col>
-                                            <Col md={4}><b>Longitude:</b>&nbsp;{parseFloat(props.hut.position.longitude).toFixed(6)}</Col>
-                                            <Col md={4}><b>Altitude:</b>&nbsp;{props.hut.altitude}&nbsp;m</Col>
-                                            <Col md={4}><b>Country:</b>&nbsp;{props.hut.country}</Col>
-                                            <Col md={4}><b>Region:</b>&nbsp;{props.hut.region}</Col>
-                                            <Col md={4}><b>City:</b>&nbsp;{props.hut.city}</Col>
-                                            {props.hut.website !== '' && <Col md={12}><b>Website:</b>&nbsp;{props.hut.website}</Col>}
-            </>
-        )
-    }
-
-    const HutFooter = (props) =>{
-        return(<>
-        {props.hut.bedsNumber ? <Col md={3} key={`hut_beds_${props.idx}`}><b>Number of beds:</b>&nbsp;{props.hut.bedsNumber}</Col> : false}
-        {props.hut.costPerNight ? <Col md={3} key={`hut_cost_${props.idx}`}><b>Cost per night:</b>&nbsp;{props.hut.costPerNight}&nbsp;€</Col> : false}
-        {props.hut.openingHour && props.hut.openingMinute ? <Col md={3} key={`hut_opn_${props.idx}`}><b>Opening time:</b>&nbsp;{props.hut.openingHour}&nbsp;:&nbsp;{props.hut.openingMinute}</Col> : false}
-        {props.hut.closingHour && props.hut.closingMinute ? <Col md={3} key={`hut_cls_${props.idx}`}><b>Closing Time:</b>&nbsp;{props.hut.closingHour}&nbsp;:&nbsp;{props.hut.closingMinute}</Col> : false}
-        </>)
-    }
 
 
     return (
