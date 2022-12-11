@@ -33,7 +33,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "apiTest": "mocha test --runInBand --timeout 8000 --exit",
+    "apiTest": "mocha test --runInBand --timeout 8000 --exit --grep",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open"
   },

@@ -59,7 +59,6 @@ const sendVerificationEmail = async () => {
 }
 
 const createUserOnDb = async (user) => {
-    console.log(user.phoneNumber);
     // Add a new document in collection "users"
     const obj = {
         email: user.email,
@@ -616,7 +615,7 @@ const getHikesByAuthor = async (author, collection = "hike") => {
 }
 
 module.exports = {
-    deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db,
+    deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition,
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor
 };

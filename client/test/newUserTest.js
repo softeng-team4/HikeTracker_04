@@ -7,97 +7,107 @@ chai.should();// Import the functions you need from the SDKs you need
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth')
 const api = require('../src/API');
-const User = require('../src/model/User');
 
 describe('testing the creation of a new user', () => {
 
-    const userInfo1 = new User(
-        'kekkok99@gmail.com',
-        "Francesco",
-        "Fiorella",
-        "12345678",
-        "Hiker",
-        "",
-        "",
-        "",
-        ""
-    )
+    const userInfo1 = {
+        email: 'kekkok99@gmail.com',
+        username: 'frafio',
+        firstName: "Francesco",
+        lastName: "Fiorella",
+        phoneNumber: "12345678",
+        role: "Hiker",
+        reqRole: "",
+        reqStatus: "",
+        respDate: "",
+        hut: ""
+    }
 
-    const userInfo2 = new User(
-        'kekkok99@gmail.com',
-        "Francesco",
-        "Fiorella",
-        "12345678",
-        "Hiker",
-        "Hut worker",
-        "pending",
-        "",
-        ""
-    )
+    const userInfo2 = {
+        email :'kekkok99@gmail.com',
+        username: 'frafio',
+        firstName: "Francesco",
+        lastName: "Fiorella",
+        phoneNumber: "12345678",
+        role: "Hiker",
+        reqRole: "Hut worker",
+        reqStatus: "pending",
+        respDate: "",
+        hut: ""
+    }
 
-    const userInfo3 = new User(
-        'kekkok99@gmail.com',
-        "Francesco",
-        "Fiorella",
-        "12345678",
-        "Hiker",
-        "Local guide",
-        "pending",
-        "",
-        ""
-    )
+    const userInfo3 = {
+        email: 'kekkok99@gmail.com',
+        username: 'frafio',
+        firstName: "Francesco",
+        lastName: "Fiorella",
+        phoneNumber: "12345678",
+        role: "Hiker",
+        reqRole: "Local guide",
+        reqStatus: "pending",
+        respDate: "",
+        hut: ""
+    }
 
     const p = "12345678";
 
     before(async () => {
-        deleteUser(userInfo1, p);
-    })
+        deleteUser(userInfo1.email);
+    });
 
-    newUser(userInfo1, p);
+    newUser(userInfo1, p, true);
 
-    before(async () => {
-        deleteUser(userInfo2, p);
-    })
-
+    deleteUser(userInfo1.email);
     newUser(userInfo2, p);
 
-    before(async () => {
-        deleteUser(userInfo3, p);
-    })
-
+    deleteUser(userInfo1.email);
     newUser(userInfo3, p);
 
     api.logOut()
 })
 
-function newUser(user, password) {
+function newUser(user, password, createAuth = false) {
 
     it("Adding a new user", function (done) {
-        api.signUp(user, password)
-            .then((user) => {
-                console.log(user)
-                user.email.should.equal(userInfo1.email)
-                user.firstName.should.equal(userInfo1.firstName)
-                user.lastName.should.equal(userInfo1.lastName)
-                user.phoneNumber.should.equal(userInfo1.phoneNumber)
-                user.role.should.equal(userInfo1.role)
-                user.reqRole.should.equal(userInfo1.reqRole)
-                user.reqStatus.should.equal(userInfo1.reqStatus)
-                user.respDate.should.equal(userInfo1.respDate)
-                user.hut.should.equal(userInfo1.hut)
+        if (createAuth) {
+            api.signUp(user, password)
+            .then((newUser) => {
+                newUser.email.should.equal(user.email)
+                newUser.firstName.should.equal(user.firstName)
+                newUser.lastName.should.equal(user.lastName)
+                newUser.phoneNumber.should.equal(user.phoneNumber)
+                newUser.role.should.equal(user.role)
+                newUser.reqRole.should.equal(user.reqRole)
+                newUser.reqStatus.should.equal(user.reqStatus)
+                newUser.respDate.should.equal(user.respDate)
+                newUser.hut.should.equal(user.hut)
             })
             .then(() => done(), done)
             .catch((error) => {
                 done(error);
             });
+        } else {
+            api.createUserOnDb(user)
+            .then((newUser) => {
+                newUser.email.should.equal(user.email)
+                newUser.firstName.should.equal(user.firstName)
+                newUser.lastName.should.equal(user.lastName)
+                newUser.phoneNumber.should.equal(user.phoneNumber)
+                newUser.role.should.equal(user.role)
+                newUser.reqRole.should.equal(user.reqRole)
+                newUser.reqStatus.should.equal(user.reqStatus)
+                newUser.respDate.should.equal(user.respDate)
+                newUser.hut.should.equal(user.hut)
+            })
+            .then(() => done(), done)
+            .catch((error) => {
+                done(error);
+            });
+        }
     })
 }
 
-async function deleteUser(user, password) {
+async function deleteUser(email) {
+    await firestore.deleteDoc(firestore.doc(api.db, "users", email))
     await api.logOut();
-    await api.logIn(user.email, password);
-    const auth = fireAuth.getAuth();
-    const authuser = auth.currentUser;
-    await fireAuth.deleteUser(authuser)
-    await firestore.deleteDoc(firestore.doc(api.db, "users", user.email))
 }
