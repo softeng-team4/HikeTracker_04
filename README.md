@@ -6,14 +6,16 @@
     | eelielisa@outlook.com | 123456789 |
 
 - Local guide
-    | Email             | Password  |
-    | :---------------- | :-------- |
-    | dqy0828@gmail.com | 123456789 |
+    | Email                    | Password  |
+    | :----------------------- | :-------- |
+    | dqy0828@gmail.com        | 123456789 |
+    | francescofio99@gmail.com | 12345678  |
 
 - Hiker
     | Email | Password |
     | :---- | :------- |
     | email | string   |
+    
 - Hut Worker
     | Email                      | Password  |
     | :------------------------- | :-------- |
