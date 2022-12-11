@@ -36,5 +36,5 @@ Cypress.Commands.add('login', (email, password) => {
 
 Cypress.Commands.add('logout', () => {
     cy.get('.dropdown-toggle').click()
-    cy.get('.dropdown-menu > :nth-child(3)').click()
+    cy.get('.logOutBtn').click()
 })

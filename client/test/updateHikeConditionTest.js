@@ -37,19 +37,19 @@ describe('testing getHikesByLinkHutWorker API function', () => {
         expectedTime: '123',
         length: '16233.1',
         linkedHuts: [{
-            hutId: "1",
+            id: "1",
             lat: 44.113446900517765,
             lng: 8.06554931951915,
             name: "Hut 1"
         },
         {
-            hutId: "2",
+            id: "2",
             lat: 44.113735,
             lng: 8.067172,
             name: "Hut 2"
         },
         {
-            hutId: "3",
+            id: "3",
             lat: 45.113735,
             lng: 9.067172,
             name: "Hut 3"
@@ -84,13 +84,13 @@ describe('testing getHikesByLinkHutWorker API function', () => {
         expectedTime: "300",
         length: "11741.12",
         linkedHuts: [{
-            hutId: "3",
+            id: "3",
             lat: 45.113735,
             lng: 9.067172,
             name: "Hut 3"
         },
         {
-            hutId: "4",
+            id: "4",
             lat: 46.113735,
             lng: 11.067172,
             name: "Hut 4"
@@ -127,13 +127,13 @@ describe('testing getHikesByLinkHutWorker API function', () => {
         expectedTime: "380",
         length: "15544.71",
         linkedHuts: [{
-            hutId: "1",
+            id: "1",
             lat: 44.113446900517765,
             lng: 8.06554931951915,
             name: "Hut 1"
         },
         {
-            hutId: "4",
+            id: "4",
             lat: 46.113735,
             lng: 11.067172,
             name: "Hut 4"

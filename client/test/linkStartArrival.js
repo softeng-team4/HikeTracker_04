@@ -104,10 +104,7 @@ function testLinkStartArrival(huts,hike){
             time: '',
             name: huts[0].name
         }
-        api.modifyHike("1", hike.ascent, hike.city, hike.country,
-            hike.description, hike.difficulty, hike.endPoint, hike.expectedTime,
-            hike.length, hike.referencePoint, hike.region, hike.title, startPoint,
-            hike.author, "test-hike")
+        api.modifyHike("1", startPoint, hike.endPoint, "test-hike")
         .then(() => done(), done)
         .catch((error) => {
             done(error);
@@ -122,10 +119,7 @@ function testLinkStartArrival(huts,hike){
             time: '',
             name: huts[0].name
         }
-        api.modifyHike("1", hike.ascent, hike.city, hike.country,
-            hike.description, hike.difficulty, endPoint, hike.expectedTime,
-            hike.length, hike.referencePoint, hike.region, hike.title, hike.startPoint,
-            hike.author, "test-hike")
+        api.modifyHike("1",hike.startPoint,endPoint, "test-hike")
         .then(() => done(), done)
         .catch((error) => {
             done(error);
@@ -140,10 +134,7 @@ function testLinkStartArrival(huts,hike){
             time: '',
             name: huts[1].name
         }
-        api.modifyHike("1", hike.ascent, hike.city, hike.country,
-            hike.description, hike.difficulty, hike.endPoint, hike.expectedTime,
-            hike.length, hike.referencePoint, hike.region, hike.title, startPoint,
-            hike.author)
+        api.modifyHike("1", startPoint, hike.endPoint, "test-hike")
         .then(() => done(), done)
         .catch((error) => {
             done(error);
@@ -158,10 +149,7 @@ function testLinkStartArrival(huts,hike){
             time: '',
             name: huts[1].name
         }
-        api.modifyHike("1", hike.ascent, hike.city, hike.country,
-            hike.description, hike.difficulty, endPoint, hike.expectedTime,
-            hike.length, hike.referencePoint, hike.region, hike.title, hike.startPoint,
-            hike.author, "test-hike")
+        api.modifyHike("1", hike.startPoint, endPoint, "test-hike")
         .then(() => done(), done)
         .catch((error) => {
             done(error);
