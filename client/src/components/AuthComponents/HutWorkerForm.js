@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Spacer from '../BrowserHikeComponents/Spacer';
 import HikePageHandler from '../BrowserHikeComponents/HickePageHendler';
 import API from '../../API';
-import GeoAreaForm from '../BrowserHikeComponents/GeoAreaForm';
 import { HutSearchBar } from '../BrowerHutComponent/HutSearchBar';
 
 function HutWorkerForm(props) {
@@ -32,9 +31,8 @@ function HutWorkerForm(props) {
     const [hut, setHut] = useState('');
 
     useEffect(() => {
-        console.log("Filter change", geoArea);
         let filters;
-        if(geoArea.geoArea != undefined){
+        if(geoArea.geoArea !== undefined){
             filters = {
                 name: undefined,
                 country: geoArea.geoArea.country.name !== 'None' ? geoArea.geoArea.country.name : undefined,
@@ -44,12 +42,11 @@ function HutWorkerForm(props) {
         }else{
             filters = {
                 name: undefined,
-                country: geoArea.country.name !== 'None' ? geoArea.country.name : undefined,
-                region: geoArea.region.name !== 'None' ? geoArea.region.name : undefined,
-                city: geoArea.city.name !== 'None' ? geoArea.city.name : undefined
+                country: undefined,
+                region: undefined,
+                city: undefined
             };
         }
-        
         API.hutsList(filters).then(r => setHutList(r))
     }, [geoArea])
 
@@ -58,7 +55,7 @@ function HutWorkerForm(props) {
             setPageHutList(() => {
                 return subHutList.slice(index * hut4page, index * hut4page + hut4page)
             })
-    }, [subHutList, index])
+    }, [subHutList, index, hutList])
 
     useEffect(() => {
         hutList !== undefined &&
