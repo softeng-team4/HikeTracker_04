@@ -24,7 +24,7 @@ describe('testing the creation of a new user', () => {
     }
 
     const userInfo2 = {
-        email :'kekkok99@gmail.com',
+        email :'kekkok98@gmail.com',
         username: 'frafio',
         firstName: "Francesco",
         lastName: "Fiorella",
@@ -37,7 +37,7 @@ describe('testing the creation of a new user', () => {
     }
 
     const userInfo3 = {
-        email: 'kekkok99@gmail.com',
+        email: 'kekkok97@gmail.com',
         username: 'frafio',
         firstName: "Francesco",
         lastName: "Fiorella",
@@ -51,19 +51,19 @@ describe('testing the creation of a new user', () => {
 
     const p = "12345678";
 
-    before(async () => {
-        deleteUser(userInfo1.email);
+    after(async () => {
+       
+    await deleteUser(userInfo1.email,p);
+    await deleteUser(userInfo2.email,p);
+    await deleteUser(userInfo3.email,p);
+
     });
 
     newUser(userInfo1, p, true);
 
-    deleteUser(userInfo1.email);
-    newUser(userInfo2, p);
+    newUser(userInfo2, p, true);
 
-    deleteUser(userInfo1.email);
-    newUser(userInfo3, p);
-
-    api.logOut()
+    newUser(userInfo3, p, true);
 })
 
 function newUser(user, password, createAuth = false) {
@@ -107,7 +107,11 @@ function newUser(user, password, createAuth = false) {
     })
 }
 
-async function deleteUser(email) {
+async function deleteUser(email,p) {
+    const auth = fireAuth.getAuth()
+    await fireAuth.signInWithEmailAndPassword(auth,email,p)
+    const user = auth.currentUser
+    await fireAuth.deleteUser(user)
     await firestore.deleteDoc(firestore.doc(api.db, "users", email))
     await api.logOut();
 }
