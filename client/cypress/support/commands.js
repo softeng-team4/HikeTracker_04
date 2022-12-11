@@ -1,3 +1,4 @@
+import API from "../../src/API"
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -37,4 +38,35 @@ Cypress.Commands.add('login', (email, password) => {
 Cypress.Commands.add('logout', () => {
     cy.get('.dropdown-toggle').click()
     cy.get('.logOutBtn').click()
+})
+
+Cypress.Commands.add("createTestHike", (hike = {}) => {
+    const point = {
+        altitude: 1000,
+        id: 12345,
+        latitude: 45,
+        longitude: 8,
+        name: "generic point",
+        time: ''
+    }
+    const newHike = {
+        title: hike.title? hike.title : "test", 
+        country: hike.country? hike.country :"Italy", 
+        region: hike.region? hike.region :"Piedmont", 
+        city: hike.city? hike.city : "Turin", 
+        description: hike.description? hike.description : "description", 
+        difficulty: hike.difficulty? hike.difficulty :"Hiker", 
+        expectedTime: hike.expectedTime? hike.expectedTime : "123",
+        length: hike.length? hike.length : "1234", 
+        ascent: hike.ascent? hike.ascent : "1234", 
+        startPoint: hike.startPoint? hike.startPoint : point, 
+        endPoint: hike.endPoint? hike.endPoint : point, 
+        referencePoint: hike.referencePoint? JSON.stringify(hike.referencePoint) : "", 
+        author: hike.author? hike.author: "test"
+    }
+    API.addNewHike(newHike);
+})
+
+Cypress.Commands.add('deleteHike', (hikeId, collection="hikes") => {
+    API.deleteHike(hikeId, collection)
 })
