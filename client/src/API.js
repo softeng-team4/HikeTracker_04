@@ -583,5 +583,9 @@ const UpdateHikeDescription = async (title, expectedTime, difficulty, descriptio
     });
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription,, getRequestingUsers, handleRoleRequest };
+module.exports = {
+    deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db,
+    addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition,
+    getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest
+};
 
