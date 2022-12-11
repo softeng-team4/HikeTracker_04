@@ -45,7 +45,7 @@ const FilterForm = (props) => {
         const error = (error) => {
             console.log(error);
         };
-        navigator.geolocation.getCurrentPosition(success, error);
+        //navigator.geolocation.getCurrentPosition(success, error);
     }, [centerMap]);
 
 
