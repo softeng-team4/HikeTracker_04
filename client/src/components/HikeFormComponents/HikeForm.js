@@ -146,8 +146,23 @@ function HikeForm(props) {
             console.log("End point:" + endPoint)
             console.log("Reference points:" + referencePoint)*/
 
-            await props.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
-                length, referencePoint, region, title, startPoint, email);
+            const hike = {
+                ascent: ascent,
+                city: city,
+                country: country,
+                description: description,
+                difficulty: difficulty,
+                endPoint: endPoint,
+                expectedTime: expectedTime,
+                length: length,
+                referencePoint: referencePoint,
+                region: region,
+                title: title,
+                startPoint: startPoint,
+                author: email
+            }
+
+            await props.addNewHike(hike);
             setAscent('');
             setCity('');
             setCountry('');

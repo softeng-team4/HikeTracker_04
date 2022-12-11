@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, ManagerPage, ModifyHikeByAuthor, UserProfile } from './components/View';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import API from './API.js'
 import AuthenticationContext from './components/AuthenticationContext';
 import { LoginForm } from './components/AuthComponents/LoginComponents';
@@ -76,19 +76,17 @@ function App() {
 
 
   //value for AuthenticationContext
-  let authObject = {
+  let authObject = useMemo( () => ({
     authUser: authUser,
     authErr: authErr,
     onLogin: login,
     onLogout: logout,
     onUpdateUserData: updateUserData
-  };
+  }),[authUser,authErr])
 
-  const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
-    length, referencePoint, region, title, startPoint) => {
+  const addNewHike = async (hike) => {
     try {
-      await API.addNewHike(ascent, city, country, description, difficulty, endPoint, expectedTime,
-        length, referencePoint, region, title, startPoint, authUser.email);
+      await API.addNewHike(hike);
     } catch (e) {
       console.log(e);
       throw (e);
@@ -119,9 +117,7 @@ function App() {
   return (
     <>
       <AuthenticationContext.Provider value={authObject}>
-        {/* {message && <Row>
-                    <Alert variant={message.type} onClose={() => setMessage('')} dismissible>{message.msg}</Alert>
-                  </Row>} */}
+
         <BrowserRouter>
 
           <Routes>

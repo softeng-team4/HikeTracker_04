@@ -90,13 +90,12 @@ const getUser = async (email) => {
 //Queries for the hike collection
 
 
-const addNewHike = async (ascent, city, country, description, difficulty, endPoint, expectedTime,
-    length, referencePoint, region, title, startPoint, author) => {
-    const hike = {
-        title: title, country: country, region: region, city: city, description: description, difficulty: difficulty, expectedTime: expectedTime,
-        length: length, ascent: ascent, startPoint: startPoint, endPoint: endPoint, referencePoint: JSON.stringify(referencePoint), author: author
+const addNewHike = async (hike,collection="hike") => {
+    const newHike = {
+        title: hike.title, country: hike.country, region: hike.region, city: hike.city, description: hike.description, difficulty: hike.difficulty, expectedTime: hike.expectedTime,
+        length: hike.length, ascent: hike.ascent, startPoint: hike.startPoint, endPoint: hike.endPoint, referencePoint: JSON.stringify(hike.referencePoint), author: hike.author
     }
-    firestore.addDoc(firestore.collection(db, "hike"), hike);
+    firestore.addDoc(firestore.collection(db, collection), newHike);
 }
 
 const deleteInvalidHikes = async () => {

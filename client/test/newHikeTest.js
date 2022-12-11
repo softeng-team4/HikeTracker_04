@@ -28,7 +28,7 @@ describe('testing the definition of a new hike by a local guide',()=>{
 
     })
 
-    const hike = {title:'111',city:"Milan",country:"Italy",region:"Lombardia",length:10,expectedTime:0,ascent:0,difficulty:2,startPoint:[45.555,34.222],endPoint:[78.999,22.111],referencePoint:'',description:'222'}
+    const hike = {title:'111',city:"Milan",country:"Italy",region:"Lombardia",length:10,expectedTime:0,ascent:0,difficulty:2,startPoint:[45.555,34.222],endPoint:[78.999,22.111],referencePoint:'',description:'222',author: 'chicco.siviero@gmail.com'}
     newHike(hike)
 })
 
