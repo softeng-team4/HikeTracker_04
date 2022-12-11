@@ -1,17 +1,9 @@
 before(() => {
-  cy.visit('http://localhost:3000/login')
-  cy.get('.email-input').clear()
-  cy.get('.password-input').clear()
-  cy.get('.email-input').type('luca.mistruzzi@gmail.com')
-  cy.get('.password-input').type('1234567')
-  cy.contains('Login').click()
-  cy.wait(1000)
+  cy.login('luca.mistruzzi@gmail.com', '1234567')
 })
 
 after('logout', () => {
-  cy.visit('http://localhost:3000/')
-  cy.get('.dropdown-toggle').click()
-  cy.get('.logOutBtn').click()
+  cy.logout()
 })
 
 describe('User Profile Open Offcanvas', () => {
