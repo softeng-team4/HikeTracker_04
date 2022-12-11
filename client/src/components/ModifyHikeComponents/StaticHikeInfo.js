@@ -34,9 +34,8 @@ const StaticHikeInfo = (props) => {
     return (
         <>
             <Row>
-                <Col lg={2}><h2>Hike:</h2> </Col>
-                <Col>{hike.id}</Col>
-                <Col lg={{ span: 1, offset: 1 }}><Button variant="outline-primary" onClick={() => setStatus('modify')}><FaRegEdit /></Button></Col>
+                <Col lg={9}><h2>Hike:</h2> </Col>
+                <Col lg={{ span: 1, offset: 2 }}><Button variant="outline-primary" onClick={() => setStatus('modify')}><FaRegEdit /></Button></Col>
             </Row>
 
             <Form>
