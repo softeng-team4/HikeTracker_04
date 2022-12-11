@@ -31,7 +31,7 @@ const NavBar = (props) => {
                                                 {/* all user could see with login */}
                                                 <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/')}>Hike List</Nav.Link>
 
-                                                {/* local guide navbar */}
+
 
                                                 {authObject.authUser &&
                                                     <>
@@ -42,6 +42,10 @@ const NavBar = (props) => {
                                                                 <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/newPark')}>New Park</Nav.Link>
                                                                 <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/newHut')}>New Hut</Nav.Link>
                                                                 {/* <Nav.Link href='/parks'>Park List</Nav.Link> */}
+                                                            </>}
+                                                        {authObject.authUser.role.toLowerCase() === 'manager' &&
+                                                            <>
+                                                                <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/manager')}>Manage Users</Nav.Link>
                                                             </>}
                                                     </>
                                                 }

@@ -2,14 +2,14 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, ModifyHikeByAuthor, UserProfile } from './components/View';
+import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, ManagerPage, ModifyHikeByAuthor, UserProfile } from './components/View';
 import { useEffect, useState } from 'react';
 import API from './API.js'
 import AuthenticationContext from './components/AuthenticationContext';
 import { LoginForm } from './components/AuthComponents/LoginComponents';
 import { SignupForm } from './components/AuthComponents/SignupComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
-import {BrowserHuts} from './components/BrowerHutComponent/BrowserHuts'
+import { BrowserHuts } from './components/BrowerHutComponent/BrowserHuts'
 import { UpdateCondition } from './components/UpdateCondition';
 
 function App() {
@@ -129,16 +129,17 @@ function App() {
               <Route path='login' element={authUser ? <Navigate replace to='/' /> : <LoginForm login={login} />} />
               <Route path='signup' element={<SignupForm signup={signup} />}></Route>
               {/* here are the routes with authenticated */}
-              {authUser && <Route path={`/profile/${authUser.firstName.toLowerCase().replace(' ','_')}_${authUser.lastName.toLowerCase().replace(' ','_')}`} element={<UserProfile />} />}
+              {authUser && <Route path={`/profile/${authUser.firstName.toLowerCase().replace(' ', '_')}_${authUser.lastName.toLowerCase().replace(' ', '_')}`} element={<UserProfile />} />}
               {/* here are the routes with local guide */}
               <Route path='hikeform' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' /> : ''} />
               <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' /> : ''} />
               <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
               <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor /> : <Navigate to='/' /> : ''} />
-              <Route path='huts' element={authUser ? (authUser.role.toLowerCase() === 'local guide' || authUser.role.toLowerCase() === 'hiker') ? <BrowserHuts  /> : <Navigate to='/' /> : ''} />
-              <Route path='hikeCondition' element={authUser ? ( authUser.role.toLowerCase() === 'hut worker') ? <UpdateCondition  /> : <Navigate to='/' /> : ''} />
+              <Route path='huts' element={authUser ? (authUser.role.toLowerCase() === 'local guide' || authUser.role.toLowerCase() === 'hiker') ? <BrowserHuts /> : <Navigate to='/' /> : ''} />
 
-              
+              <Route path='hikeCondition' element={authUser ? (authUser.role.toLowerCase() === 'hut worker') ? <UpdateCondition /> : <Navigate to='/' /> : ''} />
+              {/* here are the routes with manager */}
+              <Route path='manager' element={authUser ? (authUser.role.toLowerCase() === 'manager') ? <ManagerPage /> : <Navigate to='/' /> : ''} />
               <Route></Route>
             </Route>
 

@@ -2,7 +2,8 @@
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth');
-const { GeoPoint, updateDoc, doc } = require('firebase/firestore');
+const dayjs = require('dayjs')
+const { GeoPoint, updateDoc, doc, deleteDoc } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
@@ -478,6 +479,48 @@ const linkHuts = async (huts, hikeID, collection = "hike") => {
     });
 }
 
+//APIs for the system administrator
+
+const getRequestingUsers = async () => {
+    const userCollection = firestore.collection(db, "users")
+    const reqQuery = firestore.query(userCollection, firestore.where("reqStatus", "==", "pending"))
+    const querySnapshot = await firestore.getDocs(reqQuery)
+    let res = []
+    querySnapshot.forEach(async (doc) => {
+        let user = {
+            email: doc.data().email,
+            firstName: doc.data().firstName,
+            lastName: doc.data().lastName,
+            role: doc.data().role,
+            reqRole: doc.data().reqRole,
+            hutId: doc.data().hutId ? doc.data().hutId : "",
+            reqStatus: doc.data().reqStatus
+        }
+        if (user.hutId) {
+            const hut = await firestore.getDoc(firestore.doc(db, "huts", user.hutId));
+            user.hutName = await hut.data().name;
+        }
+        res.push(user);
+    })
+    return res
+}
+
+const handleRoleRequest = async (user, outcome) => {
+    if (user.reqStatus !== "pending") {
+        console.log("Bad request")
+        return
+    }
+    const docData = {
+        role: outcome ? user.reqRole : user.role,
+        respDate: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+        reqStatus: outcome ? "accepted" : "rejected"
+    }
+    if (!outcome && user.hutId && user.reqRole === 'hut worker')
+        docData.hutId = firestore.deleteField()
+    await firestore.setDoc(firestore.doc(db, "users", user.email), docData, { merge: true })
+}
+
+
 const modifyUserPreferences = async (email, preferences, collection = "users") => {
     await firestore.updateDoc(firestore.doc(db, collection, email), {
         preferences: preferences
@@ -540,5 +583,5 @@ const UpdateHikeDescription = async (title, expectedTime, difficulty, descriptio
     });
 }
 
-module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription };
+module.exports = { deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription,, getRequestingUsers, handleRoleRequest };
 

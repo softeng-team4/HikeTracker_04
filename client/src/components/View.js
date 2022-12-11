@@ -7,6 +7,7 @@ import { HutForm } from './HutParkFormComponents/HutForm';
 import NavBar from './NavBar';
 import { ParkForm } from './HutParkFormComponents/ParkForm';
 import UserProfilePage from './UserProfileComponents/UserProfilePage';
+import { PlatformManager } from './PlatformManager';
 
 
 function DefaultRoute() {
@@ -90,4 +91,12 @@ function UserProfile(props) {
     );
 }
 
-export { DefaultRoute, BrowserHikes, AppLayout, AddNewHike, AddNewPark, AddNewHut, ModifyHikeByAuthor, UserProfile };
+function ManagerPage(props) {
+    return (
+        <>
+            <PlatformManager />
+        </>
+    );
+}
+
+export { DefaultRoute, BrowserHikes, AppLayout, AddNewHike, AddNewPark, AddNewHut, ModifyHikeByAuthor, UserProfile, ManagerPage };
