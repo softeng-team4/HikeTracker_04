@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { Map } from "../HikeFormComponents/Map";
-import StaticHikeInfo from "./StaticHikeInfo";
+import { Map } from "../MapComponents/Map";
 import API from '../../API';
 
 function ModifyHike(props) {

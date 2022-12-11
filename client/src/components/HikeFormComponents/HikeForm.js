@@ -5,7 +5,7 @@ import { Marker, useMapEvents } from 'react-leaflet'
 import L from 'leaflet-gpx'
 import { Country, State, City } from 'country-state-city';
 import AuthenticationContext from "../AuthenticationContext"
-import { Map } from "./Map"
+import { Map } from "../MapComponents/Map"
 import Spacer from "../BrowserHikeComponents/Spacer"
 let gpxParser = require('gpxparser');
 

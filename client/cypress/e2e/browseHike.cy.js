@@ -183,7 +183,7 @@ describe('Browse Hikes', () => {
   
   it("Select by preferences", () => {
     cy.login("aleganino@gmail.com","password")
-    cy.get(':nth-child(1) > .form-check-input').click()
+    cy.get(':nth-child(1) > .form-check > .form-check-input').click()
     cy.get(".card").should("have.length", 4)
     cy.get(':nth-child(4) > .card > .card-footer > .row > :nth-child(2)').contains(/^Length: (1\d|20)\.\d km$/)
     cy.get(':nth-child(5) > .card > .card-footer > .row > :nth-child(2)').contains(/^Length: (1\d|20)\.\d km$/)

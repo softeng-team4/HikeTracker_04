@@ -1,4 +1,5 @@
 import { Marker, useMapEvents } from "react-leaflet";
+import MapIcons from "../MapComponents/MapIcons";
 
 function LocationMarker(props) {
     const map = useMapEvents({
@@ -14,7 +15,7 @@ function LocationMarker(props) {
     });
 
     return props.position === null ? null : (
-        <Marker position={props.position}>
+        <Marker position={props.position} {...(props.isRef ? {icon: MapIcons.newRefIcon} : (props.isHut ? {icon: MapIcons.newHutIcon} : {icon: MapIcons.newParkIcon}))}>
         </Marker>
     );
 }

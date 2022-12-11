@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { Modal, Button, Col, Row } from 'react-bootstrap';
-import { Map } from '../HikeFormComponents/Map';
+import { Map } from '../MapComponents/Map';
 import API from '../../API.js'
 import HutOrParkLotModal from './HutOrParkLotModal';
 

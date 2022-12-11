@@ -12,7 +12,7 @@ const FilterForm = (props) => {
 
     // initial state of filters
     const geoArea = { country: { countryCode: 'None', name: 'None' }, region: { countryCode: 'None', stateCode: 'None', name: 'None' }, city: { name: 'None' } };
-    const difficulty  = 'None';
+    const difficulty = 'None';
     const lengthRange = { min: 0, max: Number.MAX_VALUE };
     const ascentRange = { min: 0, max: Number.MAX_VALUE };
     const expTimeRange = { min: 0, max: Number.MAX_VALUE };
@@ -32,16 +32,16 @@ const FilterForm = (props) => {
     const setHikeList = props.setHikeList;
     const setIsLoading = props.setIsLoading;
 
-    
+
 
     useEffect(() => {
         const success = (pos) => {
             const lat = pos.coords.latitude;
             const lon = pos.coords.longitude;
-            const cM = {coordinates: [lat, lon]};
+            const cM = { coordinates: [lat, lon] };
             setcenterMap(cM);
         };
-        
+
         const error = (error) => {
             console.log(error);
         };
@@ -66,16 +66,16 @@ const FilterForm = (props) => {
 
     const handleGeoAreaSwitch = () => {
         if (geoAreaFilterType)
-            setFilters({...filters, geoArea: geoArea});
+            setFilters({ ...filters, geoArea: geoArea });
         else
-            setFilters({...filters, pointRadius: pointRadius});
+            setFilters({ ...filters, pointRadius: pointRadius });
         setGeoAreaFilterType(!geoAreaFilterType);
     };
 
 
     const handleCustomFilters = (event) => {
         const isChecked = event.target.checked;
-        if(isChecked)
+        if (isChecked)
             setCustomPreferences(userData.preferences);
         else
             setCustomPreferences(undefined);
@@ -105,18 +105,10 @@ const FilterForm = (props) => {
                         <Row>
                             <SliderForm customPreferences={customPreferences} setRanges={setFilters} />
                         </Row>
-                            <Row>
-                                <Col sm={6}>
-                                {authObject.authUser && authObject.authUser.preferences && 
-                                    <Form.Check type='checkbox' label='apply custom filters' onChange={(ev) => handleCustomFilters(ev)} />  
-                                }
-                                </Col>
-                                <Col sm={6} className='d-flex justify-content-start justify-content-sm-end'>
-                                {authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' &&
-                                    <Form.Check type='switch' label='modify created hikes' reverse={window.innerWidth > 576 ? true : false} onChange={() => props.handleEmailFilter()} />  
-                                }
-                                </Col>
-                            </Row>
+                        {authObject.authUser && authObject.authUser.preferences && <Row>
+                            <Form.Check type='checkbox' reverse label='apply custom filters' onChange={(ev) => handleCustomFilters(ev)} />
+                        </Row>
+                        }
                     </Row>
                 </>
             )}

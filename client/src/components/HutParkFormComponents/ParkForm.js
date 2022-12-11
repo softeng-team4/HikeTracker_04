@@ -1,12 +1,12 @@
 import { City, Country, State } from "country-state-city";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Container, Form, InputGroup, Modal, Row, Table } from "react-bootstrap";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
-import L from 'leaflet'
 import ParkingLot from "../../model/ParkingLot";
 import Spacer from "../BrowserHikeComponents/Spacer";
+import MapIcons from "../MapComponents/MapIcons";
 
 function ParkForm(props) {
     const [name, setName] = useState('');
@@ -62,16 +62,6 @@ function ParkForm(props) {
         setValidated(false);
         handleShow();
     };
-
-    useEffect(() => {
-        delete L.Icon.Default.prototype._getIconUrl;
-
-        L.Icon.Default.mergeOptions({
-            iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-            iconUrl: require("leaflet/dist/images/marker-icon.png"),
-            shadowUrl: require("leaflet/dist/images/marker-shadow.png")
-        });
-    }, []);
 
     const [show, setShow] = useState(false);
 
@@ -242,12 +232,12 @@ function ParkForm(props) {
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
-                            <LocationMarker position={position} setPosition={setPosition} />
-                            {parkPoint.length !== 0 ? <Marker position={parkPoint}>
+                            {parkPoint.length !== 0 ? <Marker position={parkPoint} icon={MapIcons.parkIcon}>
                                 <Popup>
                                     Parking lot point
                                 </Popup>
                             </Marker> : ''}
+                            <LocationMarker position={position} setPosition={setPosition} />
                         </MapContainer>
                         {validated && parkPoint.length === 0 &&
                             <Row style={{ marginTop: 5 }}><p style={{ color: "red", fontSize: 14 }}>

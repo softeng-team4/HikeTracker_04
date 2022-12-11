@@ -1,8 +1,8 @@
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import L from 'leaflet';
-import './leaflet.awesome-markers';
 import 'leaflet/dist/leaflet.css';
 import { Button } from 'react-bootstrap';
+import MapIcons from './MapIcons';
 
 
 function Map(props) {
@@ -28,42 +28,6 @@ function Map(props) {
             return true;
         });
     }) : huts;
-    // custom icons for the map markers
-    const startIcon = L.AwesomeMarkers.icon({
-        icon: 'play-circle',
-        markerColor: 'green',
-        prefix: 'fa',
-        iconColor: 'black',
-        extraClasses: 'fas fa-2x',
-    });
-    const endIcon = L.AwesomeMarkers.icon({
-        icon: 'stop-circle',
-        markerColor: 'red',
-        prefix: 'fa',
-        iconColor: 'black',
-        extraClasses: 'fas fa-2x'
-    });
-    // const refIcon = L.AwesomeMarkers.icon({
-    //     icon: 'info-circle',
-    //     markerColor: 'blue',
-    //     prefix: 'fa',
-    //     iconColor: 'black',
-    //     extraClasses: 'fas fa-2x'
-    // });
-    const hutIcon = L.AwesomeMarkers.icon({
-        icon: 'home',
-        markerColor: 'blue',
-        prefix: 'fa',
-        iconColor: 'black',
-        extraClasses: 'fas fa-2x'
-    });
-    const parkIcon = L.AwesomeMarkers.icon({
-        icon: 'parking',
-        markerColor: 'blue',
-        prefix: 'fa',
-        iconColor: 'black',
-        extraClasses: 'fas fa-2x'
-    });
 
 
     const handleHutClick = (ev) => {
@@ -119,7 +83,7 @@ function Map(props) {
                     pathOptions={{ fillColor: 'red', color: 'blue' }}
                     positions={points}
                 />
-                {props.startPoint && <Marker position={[props.startPoint.latitude, props.startPoint.longitude]} icon={startIcon}>
+                {props.startPoint && <Marker position={[props.startPoint.latitude, props.startPoint.longitude]} icon={MapIcons.startIcon}>
                         <Popup>
                             Start point
                         </Popup>
@@ -130,7 +94,7 @@ function Map(props) {
                               positions={[[props.startPoint.latitude, props.startPoint.longitude],[points[0].lat, points[0].lng]]}
                     />
                 }
-                {props.endPoint && <Marker position={[props.endPoint.latitude, props.endPoint.longitude]} icon={endIcon}>
+                {props.endPoint && <Marker position={[props.endPoint.latitude, props.endPoint.longitude]} icon={MapIcons.endIcon}>
                         <Popup>
                             End Point
                         </Popup>
@@ -142,7 +106,7 @@ function Map(props) {
                     />
                 }
                 {filteredHuts && filteredHuts.map((h) =>
-                    <Marker key={`mark_${h.name}${h.position._lat}${h.position._long}`} position={[h.position._lat, h.position._long]} icon={hutIcon}>
+                    <Marker key={`mark_${h.name}${h.position._lat}${h.position._long}`} position={[h.position._lat, h.position._long]} icon={MapIcons.hutIcon}>
                         <Popup key={`pop_${h.name}`}>
                             <Button key={`btn_${h.name}`} variant='link' id={h.id} onClick={(ev) => handleHutClick(ev)}>
                                 {props.isDisplay ?
@@ -155,7 +119,7 @@ function Map(props) {
                     </Marker>
                 )}
                 {props.parkLots && props.parkLots.map((p) => 
-                    <Marker key={`mark_${p.name}${p.position._lat}${p.position._long}`} position={[p.position._lat, p.position._long]} icon={parkIcon}>
+                    <Marker key={`mark_${p.name}${p.position._lat}${p.position._long}`} position={[p.position._lat, p.position._long]} icon={MapIcons.parkIcon}>
                         <Popup key={`pop_${p.name}`}>{p.name}</Popup>
                     </Marker>
                 )}

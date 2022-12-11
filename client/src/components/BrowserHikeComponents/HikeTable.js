@@ -6,10 +6,7 @@ import FilterForm from './FilterForm';
 import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
-import { FaAppStoreIos, FaRegEdit } from 'react-icons/fa';
-import { RiDeleteBin6Line } from 'react-icons/ri';
 import API from '../../API';
-import { useNavigate } from 'react-router-dom';
 
 
 const HikeTable = () => {
@@ -17,8 +14,6 @@ const HikeTable = () => {
 
     // state to hold list of hikes
     const [hikeList, setHikeList] = useState([]);
-    // state to hold a copy of hike list
-    const [hikeListCopy, setHikeListCopy] = useState([]);
     //state to wait server response for retrieve hikeList
     const [isLoading, setIsLoading] = useState(true);
     // state to hold current page index
@@ -34,14 +29,11 @@ const HikeTable = () => {
     // state to hold user email --> author of hike
     const user = useContext(AuthenticationContext).authUser;
     const author = user ? user.email : undefined;
-    // state to allow a local guide to modify his tasks
-    const [filterByEmail, setFilterByEmail] = useState(false);
     // state to hold touch swipe
     const [touchStart, setTouchStart] = useState(0);
     const [touchEnd, setTouchEnd] = useState(0);
     // function to retrieve page index
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0);
-    // method to change page
 
 
     // effect to select the hikes to show based on page number
@@ -50,19 +42,6 @@ const HikeTable = () => {
         setIsLoading(false);
         setIndex(0);
     }, [hikeList]);
-
-    const handleEmailFilter = () => {
-        const hl = hikeList;
-        if (!filterByEmail) {
-            setHikeListCopy(hikeList);
-            setHikeList(hl.filter((h) => (h.author === author)));
-            setFilterByEmail(true);
-        } else {
-            setHikeList(hikeListCopy);
-            setFilterByEmail(false);
-        }
-        setIndex(0);
-    };
 
 
     // function to change page displayed
@@ -103,14 +82,6 @@ const HikeTable = () => {
     };
 
 
-
-    const handleDelete = async (hikeId) => {
-        await API.deleteHike(hikeId)
-        // setShowFeedback(true);
-        setIsLoading(true) 
-    }
-
-
     return (
         <AuthenticationContext.Consumer>
             {(authObject) => (
@@ -119,33 +90,30 @@ const HikeTable = () => {
                     <Container fluid className='BrowserHikesContainer' style={isLoading ? { pointerEvents: 'none' } : null}>
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
-                        <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} handleEmailFilter={handleEmailFilter} />
+                        <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} />
                         {subHikeList.map((hike, idx) =>
                             <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                                 <Card key={`card_${idx}`}>
                                     <Card.Header key={`card_header_${idx}`}>
-                                        <Row md={10}>
-                                            <Col md={5}><b>Title:</b>&nbsp;{hike.title}</Col>
-                                            <Col md={5}><b>Location:</b>&nbsp;{hike.country},&nbsp;{hike.region},&nbsp;{hike.city}</Col>
-                                            <Col className='d-flex justify-content-md-end'>
-                                                <ButtonGroup size='sm'>
-                                                    <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
-                                                        <Button
-                                                            id={hike.id}
-                                                            variant='success'
-                                                            onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
-                                                            Show more info
-                                                        </Button>
-                                                    </OverlayTrigger>
-                                                    {/* {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='primary'
-                                                        onClick={() =>
-                                                            (nav('/modifyHike', { state: { hike: hike } }))
-                                                        }><FaRegEdit /></Button> : null}
-                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='danger'
-                                                        onClick={() =>
-                                                            (handleDelete(hike.id))}
-                                                    ><RiDeleteBin6Line /></Button> : null} */}
-                                                </ButtonGroup>
+                                        <Row>
+                                            <Col md={8}>
+                                                <Row>
+                                                    <Col lg={6}><b>Title:</b>&nbsp;{hike.title}</Col>
+                                                    <Col lg={6}><b>Location:</b>&nbsp;{hike.country},&nbsp;{hike.region},&nbsp;{hike.city}</Col>
+                                                </Row>
+                                            </Col>
+                                            <Col md={4}>
+                                                <Col className='d-flex justify-content-md-end'>
+                                                        <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
+                                                            <Button
+                                                                id={hike.id}
+                                                                size='sm'
+                                                                variant='success'
+                                                                onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
+                                                                Show more info
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                </Col>
                                             </Col>
                                         </Row>
                                     </Card.Header>
@@ -154,10 +122,10 @@ const HikeTable = () => {
                                     </Card.Body>
                                     <Card.Footer key={`card_footer_${idx}`}>
                                         <Row md={12}>
-                                            <Col md key={`hike_diff_${idx}`}><b>Difficulty:</b>&nbsp;{hike.difficulty}</Col>
-                                            <Col md key={`hike_len_${idx}`}><b>Length:</b>&nbsp;{(parseFloat(hike.length) / 1000.).toFixed(1)}&nbsp;km</Col>
-                                            <Col md key={`hike_asc_${idx}`}><b>Ascent:</b>&nbsp;{parseInt(hike.ascent)}&nbsp;m</Col>
-                                            <Col md key={`hike_time_${idx}`}><b>Estimated Time:</b>&nbsp;{hike.expectedTime}&nbsp;min</Col>
+                                            <Col md={6} lg={3} key={`hike_diff_${idx}`}><b>Difficulty:</b>&nbsp;{hike.difficulty}</Col>
+                                            <Col md={6} lg={3} key={`hike_len_${idx}`}><b>Length:</b>&nbsp;{(parseFloat(hike.length) / 1000.).toFixed(1)}&nbsp;km</Col>
+                                            <Col md={6} lg={3} key={`hike_asc_${idx}`}><b>Ascent:</b>&nbsp;{parseInt(hike.ascent)}&nbsp;m</Col>
+                                            <Col md={6} lg={3} key={`hike_time_${idx}`}><b>Estimated Time:</b>&nbsp;{hike.expectedTime}&nbsp;min</Col>
                                         </Row>
                                     </Card.Footer>
                                 </Card>

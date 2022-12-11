@@ -34,9 +34,9 @@ const StaticHikeInfo = (props) => {
     return (
         <>
             <Row>
-                <Col md={2}><h2>Hike:</h2> </Col>
+                <Col lg={2}><h2>Hike:</h2> </Col>
                 <Col>{hike.id}</Col>
-                <Col md={{ span: 1, offset: 1 }}><Button variant="outline-primary" onClick={() => setStatus('modify')}><FaRegEdit /></Button></Col>
+                <Col lg={{ span: 1, offset: 1 }}><Button variant="outline-primary" onClick={() => setStatus('modify')}><FaRegEdit /></Button></Col>
             </Row>
 
             <Form>
@@ -123,7 +123,7 @@ const StaticHikeInfo = (props) => {
                     </Col>
                 </Form.Group>
             </Form>
-            {status === 'modify' ? <Col md={{ span: 8, offset: 9 }}>
+            {status === 'modify' ? <Col lg={{ span: 8, offset: 9 }}>
                 <Button variant="danger" onClick={() => { setStatus('static') }}>Cancel</Button>
                 <Button variant='success' onClick={handleSubmit}>Confirm</Button></Col> : ''}
             <HandleModifyPage hike={hike} />
