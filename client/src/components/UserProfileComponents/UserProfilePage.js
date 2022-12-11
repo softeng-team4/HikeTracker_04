@@ -4,9 +4,17 @@ import Spacer from "../BrowserHikeComponents/Spacer";
 import PreferencesSliderForm from "./PreferencesSliderForm";
 import { IconContext } from 'react-icons'
 import { FaUserCircle } from 'react-icons/fa'
+import { getHutById } from "../../API";
+import { useEffect, useState, useContext } from "react";
 
 
 const UserProfilePage = (props) => {
+    const [hutName, setHutName] = useState('')
+    const authObject = useContext(AuthenticationContext);
+
+    useEffect(() => {
+        getHutById(authObject.authUser.hutId).then( (res) => setHutName(res.name))
+    }, [])
 
     return (
         <AuthenticationContext.Consumer>
@@ -51,9 +59,19 @@ const UserProfilePage = (props) => {
                                         <Form.Label className='mt-2'>Role:</Form.Label>
                                     </Col>
                                     <Col sm={10}>
-                                        <Form.Control className='role-input' value={authObject.authUser.role} disabled type='text' />
+                                        <Form.Control className='role-input' value={authObject.authUser.role} disabled type='text' isInvalid={authObject.authUser.reqStatus==="pending"}/>
+                                        <Form.Control.Feedback type="invalid">Pending request for role {authObject.authUser.reqRole}</Form.Control.Feedback>
                                     </Col>
                                 </Form.Group>
+                                { authObject.authUser.role.toLowerCase() === "hut worker" && 
+                                    <Form.Group as={Row} className="p-3">
+                                    <Col sm={2}>
+                                        <Form.Label className='mt-2'>Hut:</Form.Label>
+                                    </Col>
+                                    <Col sm={10}>
+                                        <Form.Control className='role-input' value={hutName} disabled type='text' isInvalid={authObject.authUser.reqStatus==="pending"}/>
+                                    </Col>
+                                </Form.Group>}
                             </Form>
                         </Col>
                         <Spacer height='2rem' />
