@@ -10,7 +10,7 @@
     | :----------------------- | :-------- |
     | dqy0828@gmail.com        | 123456789 |
     | francescofio99@gmail.com | 12345678  |
-    | dragonheart951@gmail.com | password123 |
+    | gianmarcobell95@gmail.com | password123 |
 
 localhost:3000
 
@@ -25,4 +25,4 @@ localhost:3000
     | Email                      | Password  |
     | :------------------------- | :-------- |
     | s300179@studenti.polito.it | 123456789 |
-    | gianmarcobell95@gmail.com  | password123 |
+    | dragonheart951@gmail.com | password123 |
