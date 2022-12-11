@@ -78,7 +78,7 @@ function UpdateCondition(props) {
                                             <option value={'requires special gear'}>Requires Special Gear</option>
                                         </Form.Select>
                                     </Col>
-                                    <Col md={1}>
+                                    <Col lg={1}>
                                         {condition === '' ? <RiErrorWarningLine style={{ color: 'red' }} /> : <BiCheckCircle style={{ color: 'green' }} />}
                                     </Col>
                                 </Form.Group>
@@ -89,7 +89,7 @@ function UpdateCondition(props) {
                                     <Col>
                                         <Form.Control className='condition-detail-input' value={condDetails} required as='textarea' onChange={(event) => setCondDetails(event.target.value)} />
                                     </Col>
-                                    <Col md={1}>
+                                    <Col lg={1}>
                                         {condDetails === '' ? <RiErrorWarningLine style={{ color: 'red' }} /> : <BiCheckCircle style={{ color: 'green' }} />}
                                     </Col>
                                 </Form.Group>
@@ -113,8 +113,8 @@ function UpdateCondition(props) {
                                     <Card key={`card_${idx}`}>
                                         <Card.Header key={`card_header_${idx}`}>
                                             <Row md={10}>
-                                                <Col md={5}><b>Title:</b>&nbsp;{hike.title}</Col>
-                                                <Col md={5}><b>Location:</b>&nbsp;{hike.country},&nbsp;{hike.region},&nbsp;{hike.city}</Col>
+                                                <Col lg={5}><b>Title:</b>&nbsp;{hike.title}</Col>
+                                                <Col lg={5}><b>Location:</b>&nbsp;{hike.country},&nbsp;{hike.region},&nbsp;{hike.city}</Col>
                                                 <Col className='d-flex justify-content-md-end'>
                                                     <ButtonGroup size='sm'>
                                                         <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
@@ -141,10 +141,10 @@ function UpdateCondition(props) {
                                         </Card.Body>
                                         <Card.Footer key={`card_footer_${idx}`}>
                                             <Row md={12}>
-                                                <Col md key={`hike_diff_${idx}`}><b>Difficulty:</b>&nbsp;{hike.difficulty}</Col>
-                                                <Col md key={`hike_len_${idx}`}><b>Length:</b>&nbsp;{(parseFloat(hike.length) / 1000.).toFixed(1)}&nbsp;km</Col>
-                                                <Col md key={`hike_asc_${idx}`}><b>Ascent:</b>&nbsp;{parseInt(hike.ascent)}&nbsp;m</Col>
-                                                <Col md key={`hike_time_${idx}`}><b>Estimated Time:</b>&nbsp;{hike.expectedTime}&nbsp;min</Col>
+                                                <Col lg key={`hike_diff_${idx}`}><b>Difficulty:</b>&nbsp;{hike.difficulty}</Col>
+                                                <Col lg key={`hike_len_${idx}`}><b>Length:</b>&nbsp;{(parseFloat(hike.length) / 1000.).toFixed(1)}&nbsp;km</Col>
+                                                <Col lg key={`hike_asc_${idx}`}><b>Ascent:</b>&nbsp;{parseInt(hike.ascent)}&nbsp;m</Col>
+                                                <Col lg key={`hike_time_${idx}`}><b>Estimated Time:</b>&nbsp;{hike.expectedTime}&nbsp;min</Col>
                                             </Row>
                                         </Card.Footer>
                                     </Card>

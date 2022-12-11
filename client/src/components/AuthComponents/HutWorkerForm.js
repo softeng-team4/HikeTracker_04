@@ -122,17 +122,17 @@ function HutWorkerForm(props) {
                 <Card>
                     <Card.Header>
                         <Row md={10} className='row d-flex justify-content-between'>
-                            {hut.author ? <Col md={4}><b>Local guide:</b>&nbsp;{hut.author}</Col> : false}
-                            <Col md={4}><b>Name:</b>&nbsp;{hut.name}</Col>
-                            <Col md={4}><b>Phone:</b>&nbsp;{hut.phone}</Col>
-                            <Col md={4}><b>Email:</b>&nbsp;{hut.email}</Col>
-                            <Col md={4}><b>Latitude:</b>&nbsp;{parseFloat(hut.position.latitude).toFixed(6)}</Col>
-                            <Col md={4}><b>Longitude:</b>&nbsp;{parseFloat(hut.position.longitude).toFixed(6)}</Col>
-                            <Col md={4}><b>Altitude:</b>&nbsp;{hut.altitude}&nbsp;m</Col>
-                            <Col md={4}><b>Country:</b>&nbsp;{hut.country}</Col>
-                            <Col md={4}><b>Region:</b>&nbsp;{hut.region}</Col>
-                            <Col md={4}><b>City:</b>&nbsp;{hut.city}</Col>
-                            {hut.website !== '' && <Col md={12}><b>Website:</b>&nbsp;{hut.website}</Col>}
+                            {hut.author ? <Col lg={4}><b>Local guide:</b>&nbsp;{hut.author}</Col> : false}
+                            <Col lg={4}><b>Name:</b>&nbsp;{hut.name}</Col>
+                            <Col lg={4}><b>Phone:</b>&nbsp;{hut.phone}</Col>
+                            <Col lg={4}><b>Email:</b>&nbsp;{hut.email}</Col>
+                            <Col lg={4}><b>Latitude:</b>&nbsp;{parseFloat(hut.position.latitude).toFixed(6)}</Col>
+                            <Col lg={4}><b>Longitude:</b>&nbsp;{parseFloat(hut.position.longitude).toFixed(6)}</Col>
+                            <Col lg={4}><b>Altitude:</b>&nbsp;{hut.altitude}&nbsp;m</Col>
+                            <Col lg={4}><b>Country:</b>&nbsp;{hut.country}</Col>
+                            <Col lg={4}><b>Region:</b>&nbsp;{hut.region}</Col>
+                            <Col lg={4}><b>City:</b>&nbsp;{hut.city}</Col>
+                            {hut.website !== '' && <Col lg={12}><b>Website:</b>&nbsp;{hut.website}</Col>}
                         </Row>
                     </Card.Header>
                     <Card.Body>
@@ -155,17 +155,17 @@ function HutWorkerForm(props) {
                                 <Card key={`card_${idx}`}>
                                     <Card.Header key={`card_header_${idx}`}>
                                         <Row md={10} className='row d-flex justify-content-between'>
-                                            {hut.author ? <Col md={4}><b>Local guide:</b>&nbsp;{hut.author}</Col> : false}
-                                            <Col md={4}><b>Name:</b>&nbsp;{hut.name}</Col>
-                                            <Col md={4}><b>Phone:</b>&nbsp;{hut.phone}</Col>
-                                            <Col md={4}><b>Email:</b>&nbsp;{hut.email}</Col>
-                                            <Col md={4}><b>Latitude:</b>&nbsp;{parseFloat(hut.position.latitude).toFixed(6)}</Col>
-                                            <Col md={4}><b>Longitude:</b>&nbsp;{parseFloat(hut.position.longitude).toFixed(6)}</Col>
-                                            <Col md={4}><b>Altitude:</b>&nbsp;{hut.altitude}&nbsp;m</Col>
-                                            <Col md={4}><b>Country:</b>&nbsp;{hut.country}</Col>
-                                            <Col md={4}><b>Region:</b>&nbsp;{hut.region}</Col>
-                                            <Col md={4}><b>City:</b>&nbsp;{hut.city}</Col>
-                                            {hut.website !== '' && <Col md={12}><b>Website:</b>&nbsp;{hut.website}</Col>}
+                                            {hut.author ? <Col lg={4}><b>Local guide:</b>&nbsp;{hut.author}</Col> : false}
+                                            <Col lg={4}><b>Name:</b>&nbsp;{hut.name}</Col>
+                                            <Col lg={4}><b>Phone:</b>&nbsp;{hut.phone}</Col>
+                                            <Col lg={4}><b>Email:</b>&nbsp;{hut.email}</Col>
+                                            <Col lg={4}><b>Latitude:</b>&nbsp;{parseFloat(hut.position.latitude).toFixed(6)}</Col>
+                                            <Col lg={4}><b>Longitude:</b>&nbsp;{parseFloat(hut.position.longitude).toFixed(6)}</Col>
+                                            <Col lg={4}><b>Altitude:</b>&nbsp;{hut.altitude}&nbsp;m</Col>
+                                            <Col lg={4}><b>Country:</b>&nbsp;{hut.country}</Col>
+                                            <Col lg={4}><b>Region:</b>&nbsp;{hut.region}</Col>
+                                            <Col lg={4}><b>City:</b>&nbsp;{hut.city}</Col>
+                                            {hut.website !== '' && <Col lg={12}><b>Website:</b>&nbsp;{hut.website}</Col>}
                                         </Row>
                                     </Card.Header>
                                     <Card.Body key={`card_body_${idx}`}>
