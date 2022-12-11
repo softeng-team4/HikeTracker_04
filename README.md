@@ -4,6 +4,7 @@
     | Email                 | Password  |
     | :-------------------- | :-------- |
     | eelielisa@outlook.com | 123456789 |
+    | s304890@studenti.polito.it | password |
 
 - Local guide
     | Email                    | Password  |
@@ -11,6 +12,7 @@
     | dqy0828@gmail.com        | 123456789 |
     | francescofio99@gmail.com | 12345678  |
     | gianmarcobell95@gmail.com | password123 |
+    | aleganino@gmail.com | password |
 
 localhost:3000
 
@@ -19,7 +21,7 @@ localhost:3000
 - Hiker
     | Email | Password |
     | :---- | :------- |
-    | email | string   |
+    | masterale1999@gmail.com | password|
     
 - Hut Worker
     | Email                      | Password  |
