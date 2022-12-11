@@ -138,7 +138,7 @@ function MyHikeList() {
                                 {!isLoading && hikeList.length === 0 &&
                                     <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>You haven't added any hike yet</h5></Card><Spacer height='2rem' /></Container>}
                                 <HikePageHandler index={index} pageNum={computeIndex()} handlePageChange={handlePageChange} />
-                                <ConfirmModal show={showConfirm} onSubmit={() => { setShowConfirm(s => !s); handleDelete(hikeIdToDelete) }} onAbort={() => { setShowConfirm(false); setHikeIdToDelete() }} />
+                                <ConfirmModal show={showConfirm} onSubmit={() => { setShowConfirm(s => !s); handleDelete() }} onAbort={() => { setShowConfirm(false); setHikeIdToDelete() }} />
                                 {hike ? <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} /> : null}
                             </Container>
                         </>
