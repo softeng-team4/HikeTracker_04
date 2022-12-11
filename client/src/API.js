@@ -509,11 +509,11 @@ const handleRoleRequest = async (user, outcome) => {
         return
     }
     const docData = {
-        role: outcome ? user.reqRole : user.role,
+        role: outcome === 'accepted' ? user.reqRole : user.role,
         respDate: dayjs().format("DD/MM/YYYY HH:mm:ss"),
-        reqStatus: outcome ? "accepted" : "rejected"
+        reqStatus: outcome
     }
-    if (!outcome && user.hutId && user.reqRole === 'hut worker')
+    if (outcome !== 'accepted' && user.hutId && user.reqRole === 'hut worker')
         docData.hutId = firestore.deleteField()
     await firestore.setDoc(firestore.doc(db, "users", user.email), docData, { merge: true })
 }

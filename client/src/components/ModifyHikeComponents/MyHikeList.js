@@ -22,7 +22,7 @@ function MyHikeList(props) {
     useEffect(() => {
         API.getHikesByAuthor(author).then(h => setHikeList(h))
         setIsLoading(false)
-    }, [hikeList.length, reload])
+    }, [hikeList.length, reload, author])
 
     const handleDelete = async (hikeId) => {
         await API.deleteHike(hikeId)
@@ -103,7 +103,7 @@ function MyHikeList(props) {
                                 </div>
                             )}
                         {!isLoading && hikeList.length === 0 &&
-                            <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>No Hike Linked With My working Hut</h5></Card><Spacer height='2rem' /></Container>}
+                            <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>You haven't added any hike yet</h5></Card><Spacer height='2rem' /></Container>}
                         {hike ? <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} /> : null}
                     </Container>
                 </>
