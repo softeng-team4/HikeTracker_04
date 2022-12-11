@@ -42,9 +42,7 @@ const HikeTable = () => {
     // function to retrieve page index
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0);
     // method to change page
-    const nav = useNavigate();
-    const [showFeedback, setShowFeedback] = useState(false);
-    const [reload, setReload] = useState(false)
+
 
     // effect to select the hikes to show based on page number
     useEffect(() => {
@@ -108,7 +106,7 @@ const HikeTable = () => {
 
     const handleDelete = async (hikeId) => {
         await API.deleteHike(hikeId)
-        setShowFeedback(true);
+        // setShowFeedback(true);
         setIsLoading(true) 
     }
 

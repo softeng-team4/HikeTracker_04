@@ -1,9 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import HandleModifyPage from "./HandleModifyPage"
 import API from '../../API';
 import AuthenticationContext from "../AuthenticationContext";
 import { Button, ButtonGroup, Card, Col, Container, Modal, OverlayTrigger, Row, Spinner, Tooltip } from "react-bootstrap";
-import { FaAppStoreIos, FaRegEdit } from 'react-icons/fa';
+import { FaRegEdit } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import Spacer from "../BrowserHikeComponents/Spacer";
 import AdditionalHikeInfoModal from "../BrowserHikeComponents/AdditionalHikeInfoModal";

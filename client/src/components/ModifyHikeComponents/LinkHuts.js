@@ -6,7 +6,6 @@ import API, { linkHuts } from '../../API';
 import Spacer from "../BrowserHikeComponents/Spacer";
 import ConfirmModal from "./ConfirmModal";
 import { Map } from "../HikeFormComponents/Map";
-import StaticHikeInfo from "./StaticHikeInfo";
 
 const LinkHuts = (props) => {
 

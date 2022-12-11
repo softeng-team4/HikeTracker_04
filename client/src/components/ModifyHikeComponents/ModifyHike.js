@@ -130,7 +130,6 @@ function ModifyHike(props) {
             </Modal>
             <Container fluid style={{ marginBottom: 20 }}>
                 <Form noValidate className="mt-3">
-                    {/* <StaticHikeInfo hike={hike} status={props.status} /> */}
                     
                     <Row>
                         { hike.referencePoint !== '' ?
