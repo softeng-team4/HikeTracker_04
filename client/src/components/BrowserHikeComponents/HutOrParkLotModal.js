@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Col } from 'react-bootstrap';
-import { Map } from '../HikeFormComponents/Map';
+import { Map } from '../MapComponents/Map';
 
 
 const HutOrParkLotModal = (props) => {

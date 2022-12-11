@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import API, { linkHuts } from '../../API';
 import Spacer from "../BrowserHikeComponents/Spacer";
 import ConfirmModal from "./ConfirmModal";
-import { Map } from "../HikeFormComponents/Map";
+import { Map } from "../MapComponents/Map";
 
 const LinkHuts = (props) => {
 

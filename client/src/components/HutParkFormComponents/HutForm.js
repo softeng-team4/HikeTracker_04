@@ -1,12 +1,12 @@
 import { City, Country, State } from "country-state-city";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Container, Form, InputGroup, Modal, Row, Table } from "react-bootstrap";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useNavigate } from "react-router";
 import { LocationMarker } from "./LocationMarker";
-import L from 'leaflet'
 import Hut from '../../model/Hut'
 import Spacer from "../BrowserHikeComponents/Spacer";
+import MapIcons from "../MapComponents/MapIcons";
 
 function HutForm(props) {
     const [name, setName] = useState('');
@@ -61,16 +61,6 @@ function HutForm(props) {
         setPosition([45.06294822296754, 7.662272990156818]);
         handleShow();
     };
-
-    useEffect(() => {
-        delete L.Icon.Default.prototype._getIconUrl;
-
-        L.Icon.Default.mergeOptions({
-            iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-            iconUrl: require("leaflet/dist/images/marker-icon.png"),
-            shadowUrl: require("leaflet/dist/images/marker-shadow.png")
-        });
-    }, []);
 
     const [show, setShow] = useState(false);
 
@@ -227,12 +217,12 @@ function HutForm(props) {
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
-                            <LocationMarker position={position} setPosition={setPosition} />
-                            {hutPoint.length !== 0 ? <Marker position={hutPoint}>
+                            {hutPoint.length !== 0 ? <Marker position={hutPoint} icon={MapIcons.hutIcon}>
                                 <Popup>
                                     Hut point
                                 </Popup>
                             </Marker> : ''}
+                            <LocationMarker position={position} setPosition={setPosition} isHut={true} />
                         </MapContainer>
                         {validated && hutPoint.length === 0 &&
                             <Row style={{ marginTop: 5 }}><p style={{ color: "red", fontSize: 14 }}>

@@ -6,8 +6,8 @@ import L from 'leaflet';
 import { useNavigate } from "react-router";
 import { LocationMarker } from "../HutParkFormComponents/LocationMarker";
 import { modifyReferencePoints } from '../../API';
-import StaticHikeInfo from './StaticHikeInfo';
 import { FaRegTrashAlt } from 'react-icons/fa';
+import MapIcons from '../MapComponents/MapIcons';
 
 
 function ReferencePointForm(props) {
@@ -18,11 +18,6 @@ function ReferencePointForm(props) {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
-    L.Icon.Default.mergeOptions({
-        iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-        iconUrl: require("leaflet/dist/images/marker-icon.png"),
-        shadowUrl: require("leaflet/dist/images/marker-shadow.png")
-    });
 
     const points = JSON.parse(props.hike.referencePoint);
     const definedRefPoint = points.filter(e => e.name !== undefined);
@@ -31,35 +26,6 @@ function ReferencePointForm(props) {
     const maxLat = Math.max(...points.map(p => p.lat)) + 0.003;
     const maxLng = Math.max(...points.map(p => p.lng)) + 0.003;
 
-    // custom icons for the map markers
-    const startIcon = L.AwesomeMarkers.icon({
-        icon: 'play-circle',
-        markerColor: 'green',
-        prefix: 'fa',
-        iconColor: 'black',
-        extraClasses: 'fas fa-2x',
-    });
-    const endIcon = L.AwesomeMarkers.icon({
-        icon: 'stop-circle',
-        markerColor: 'red',
-        prefix: 'fa',
-        iconColor: 'black',
-        extraClasses: 'fas fa-2x'
-    });
-    const refIcon = L.AwesomeMarkers.icon({
-        icon: 'info-circle',
-        markerColor: 'blue',
-        prefix: 'fa',
-        iconColor: 'black',
-        extraClasses: 'fas fa-2x'
-    });
-    const refIconToConfirm = L.AwesomeMarkers.icon({
-        icon: 'info-circle',
-        markerColor: 'red',
-        prefix: 'fa',
-        iconColor: 'black',
-        extraClasses: 'fas fa-2x'
-    });
 
     const evaluateCenter = () => {
         return points.reduce((sum, point) => (
@@ -125,16 +91,6 @@ function ReferencePointForm(props) {
     };
 
     useEffect(() => {
-        delete L.Icon.Default.prototype._getIconUrl;
-
-        L.Icon.Default.mergeOptions({
-            iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-            iconUrl: require("leaflet/dist/images/marker-icon.png"),
-            shadowUrl: require("leaflet/dist/images/marker-shadow.png")
-        });
-    }, [])
-
-    useEffect(() => {
         setPosition([45.06294822296754, 7.662272990156818]);
         setName('');
         setErrorMessage('');
@@ -183,31 +139,31 @@ function ReferencePointForm(props) {
                         pathOptions={{ fillColor: 'red', color: 'blue' }}
                         positions={points}
                     />
-                    <Marker position={[props.hike.startPoint.latitude, props.hike.startPoint.longitude]} icon={startIcon}>
+                    <Marker position={[props.hike.startPoint.latitude, props.hike.startPoint.longitude]} icon={MapIcons.startIcon}>
                         <Popup>
                             Start point
                         </Popup>
                     </Marker>
-                    <Marker position={[props.hike.endPoint.latitude, props.hike.endPoint.longitude]} icon={endIcon}>
+                    <Marker position={[props.hike.endPoint.latitude, props.hike.endPoint.longitude]} icon={MapIcons.endIcon}>
                         <Popup>
                             End Point
                         </Popup>
                     </Marker>
                     {definedRefPoint.map(rp =>
-                        <Marker key={`mark_${rp.name}${rp.lat}${rp.lng}`} position={[rp.lat, rp.lng]} icon={refIcon}>
+                        <Marker key={`mark_${rp.name}${rp.lat}${rp.lng}`} position={[rp.lat, rp.lng]} icon={MapIcons.refIcon}>
                             <Popup>
                                 {rp.name}
                             </Popup>
                         </Marker>
                     )}
                     {refPointList.map(rp =>
-                        <Marker key={`mark_${rp.name}${rp.lat}${rp.lng}`} position={[rp.lat, rp.lng]} icon={refIconToConfirm}>
+                        <Marker key={`mark_${rp.name}${rp.lat}${rp.lng}`} position={[rp.lat, rp.lng]} icon={MapIcons.refIconToConfirm}>
                             <Popup>
                                 {rp.name}
                             </Popup>
                         </Marker>
                     )}
-                    <LocationMarker position={position} setPosition={setPosition} />
+                    <LocationMarker position={position} setPosition={setPosition} isRef={true}/>
                 </MapContainer>
             </Row>
             {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
