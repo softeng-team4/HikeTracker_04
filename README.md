@@ -13,6 +13,7 @@
     | francescofio99@gmail.com | 12345678  |
     | gianmarcobell95@gmail.com | password123 |
     | aleganino@gmail.com | password |
+    | chicco.siviero@gmail.com | chicco |
 
 localhost:3000
 
