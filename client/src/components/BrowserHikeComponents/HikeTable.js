@@ -6,10 +6,7 @@ import FilterForm from './FilterForm';
 import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
-import { FaAppStoreIos, FaRegEdit } from 'react-icons/fa';
-import { RiDeleteBin6Line } from 'react-icons/ri';
 import API from '../../API';
-import { useNavigate } from 'react-router-dom';
 
 
 const HikeTable = () => {
@@ -17,8 +14,6 @@ const HikeTable = () => {
 
     // state to hold list of hikes
     const [hikeList, setHikeList] = useState([]);
-    // state to hold a copy of hike list
-    const [hikeListCopy, setHikeListCopy] = useState([]);
     //state to wait server response for retrieve hikeList
     const [isLoading, setIsLoading] = useState(true);
     // state to hold current page index
@@ -34,8 +29,6 @@ const HikeTable = () => {
     // state to hold user email --> author of hike
     const user = useContext(AuthenticationContext).authUser;
     const author = user ? user.email : undefined;
-    // state to allow a local guide to modify his tasks
-    const [filterByEmail, setFilterByEmail] = useState(false);
     // state to hold touch swipe
     const [touchStart, setTouchStart] = useState(0);
     const [touchEnd, setTouchEnd] = useState(0);
@@ -50,19 +43,6 @@ const HikeTable = () => {
         setIsLoading(false);
         setIndex(0);
     }, [hikeList]);
-
-    const handleEmailFilter = () => {
-        const hl = hikeList;
-        if (!filterByEmail) {
-            setHikeListCopy(hikeList);
-            setHikeList(hl.filter((h) => (h.author === author)));
-            setFilterByEmail(true);
-        } else {
-            setHikeList(hikeListCopy);
-            setFilterByEmail(false);
-        }
-        setIndex(0);
-    };
 
 
     // function to change page displayed
@@ -119,7 +99,7 @@ const HikeTable = () => {
                     <Container fluid className='BrowserHikesContainer' style={isLoading ? { pointerEvents: 'none' } : null}>
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
-                        <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} handleEmailFilter={handleEmailFilter} />
+                        <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} />
                         {subHikeList.map((hike, idx) =>
                             <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                                 <Card key={`card_${idx}`}>
