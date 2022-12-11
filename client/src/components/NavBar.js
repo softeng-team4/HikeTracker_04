@@ -72,6 +72,7 @@ const NavBar = (props) => {
                                                                     Your profile
                                                                 </Dropdown.Item>
                                                                 {authObject.authUser.role.toLowerCase() === 'hut worker' ? <Dropdown.Item className='condition-link' onClick={() => { navigate('/hikeCondition'); }} >Hike Condition</Dropdown.Item> : ''}
+                                                                {authObject.authUser.role.toLowerCase() === 'local guide' ? <Dropdown.Item className='modify-page' onClick={() => { navigate('/myHikeList'); }} >My Hikes</Dropdown.Item> : ''}
                                                                 <Dropdown.Divider />
                                                             </>
                                                         }

@@ -8,6 +8,7 @@ import NavBar from './NavBar';
 import { ParkForm } from './HutParkFormComponents/ParkForm';
 import UserProfilePage from './UserProfileComponents/UserProfilePage';
 import { PlatformManager } from './PlatformManager';
+import { MyHikeList } from './ModifyHikeComponents/MyHikeList';
 
 
 function DefaultRoute() {
@@ -78,7 +79,7 @@ function AddNewHut(props) {
 function ModifyHikeByAuthor(props) {
     return (
         <>
-            <HandleModifyPage />
+            <MyHikeList />
         </>
     );
 }

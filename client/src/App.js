@@ -11,6 +11,8 @@ import { SignupForm } from './components/AuthComponents/SignupComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { BrowserHuts } from './components/BrowerHutComponent/BrowserHuts'
 import { UpdateCondition } from './components/UpdateCondition';
+import HandleModifyPage from './components/ModifyHikeComponents/HandleModifyPage';
+import StaticHikeInfo from './components/ModifyHikeComponents/StaticHikeInfo';
 
 function App() {
   //states of authentication of an Admin
@@ -134,7 +136,8 @@ function App() {
               <Route path='hikeform' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' /> : ''} />
               <Route path='newPark' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' /> : ''} />
               <Route path='newHut' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' /> : ''} />
-              <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor /> : <Navigate to='/' /> : ''} />
+              <Route path='myHikeList' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor /> : <Navigate to='/' /> : ''} />
+              <Route path='modifyHike' element={authUser ? (authUser.role.toLowerCase() === 'local guide') ? <StaticHikeInfo /> : <Navigate to='/' /> : ''} />
               <Route path='huts' element={authUser ? (authUser.role.toLowerCase() === 'local guide' || authUser.role.toLowerCase() === 'hiker') ? <BrowserHuts /> : <Navigate to='/' /> : ''} />
 
               <Route path='hikeCondition' element={authUser ? (authUser.role.toLowerCase() === 'hut worker') ? <UpdateCondition /> : <Navigate to='/' /> : ''} />

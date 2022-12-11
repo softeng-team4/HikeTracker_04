@@ -10,7 +10,6 @@ import { FaAppStoreIos, FaRegEdit } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import API from '../../API';
 import { useNavigate } from 'react-router-dom';
-import ConfirmModal from '../ModifyHikeComponents/ConfirmModal';
 
 
 const HikeTable = () => {
@@ -52,7 +51,7 @@ const HikeTable = () => {
         setSubHikeList(hikeList.slice(0, hike4page));
         setIsLoading(false);
         setIndex(0);
-    }, [hikeList, reload]);
+    }, [hikeList]);
 
     const handleEmailFilter = () => {
         const hl = hikeList;
@@ -110,6 +109,7 @@ const HikeTable = () => {
     const handleDelete = async (hikeId) => {
         await API.deleteHike(hikeId)
         setShowFeedback(true);
+        setIsLoading(true) 
     }
 
 
@@ -117,19 +117,6 @@ const HikeTable = () => {
         <AuthenticationContext.Consumer>
             {(authObject) => (
                 <>
-                    <Modal show={showFeedback} onHide={() => setShowFeedback(false)}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Delete Hike</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            You already delete this hike!
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="primary" onClick={() => { setShowFeedback(false); setReload(!reload) }} className='close-feedback'>
-                                Close
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
                     {isLoading && <div className='loading-overlay'><Spinner className='spinner' animation="border" variant="light" /></div>}
                     <Container fluid className='BrowserHikesContainer' style={isLoading ? { pointerEvents: 'none' } : null}>
                         <Spacer height='2rem' />
@@ -152,14 +139,14 @@ const HikeTable = () => {
                                                             Show more info
                                                         </Button>
                                                     </OverlayTrigger>
-                                                    {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='primary'
+                                                    {/* {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='primary'
                                                         onClick={() =>
                                                             (nav('/modifyHike', { state: { hike: hike } }))
                                                         }><FaRegEdit /></Button> : null}
                                                     {filterByEmail && authObject.authUser && authObject.authUser.role.toLowerCase() === 'local guide' ? <Button variant='danger'
                                                         onClick={() =>
                                                             (handleDelete(hike.id))}
-                                                    ><RiDeleteBin6Line /></Button> : null}
+                                                    ><RiDeleteBin6Line /></Button> : null} */}
                                                 </ButtonGroup>
                                             </Col>
                                         </Row>

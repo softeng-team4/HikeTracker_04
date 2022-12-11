@@ -103,7 +103,7 @@ const LinkHuts = (props) => {
     return (
         <Container fluid style={{ marginBottom: 20 }}>
             <Form noValidate className="mt-3">
-                <StaticHikeInfo hike={hike} status={props.status} />
+                {/* <StaticHikeInfo hike={hike} status={props.status} /> */}
                 {!showNoCloseHuts && selectedHutList.length === 0 && <Alert variant='danger'>To link a hut to the hike select it on the map</Alert>}
                 {showNoCloseHuts && <Alert variant='danger'>There are not available huts close to this hike to be linked</Alert>}
                 {hike.referencePoint &&

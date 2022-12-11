@@ -583,9 +583,41 @@ const UpdateHikeDescription = async (title, expectedTime, difficulty, descriptio
     });
 }
 
+const getHikesByAuthor = async (author, collection = "hike") => {
+    const hikesRef = firestore.collection(db, collection)
+    const q = firestore.query(hikesRef, firestore.where("author", "==", author))
+    const querySnapshot = await firestore.getDocs(q);
+    const res = [];
+    querySnapshot.forEach((doc) => {
+
+        const hike = {
+            id: doc.id,
+            ascent: doc.data().ascent,
+            city: doc.data().city,
+            country: doc.data().country,
+            description: doc.data().description,
+            difficulty: doc.data().difficulty,
+            endPoint: doc.data().endPoint,
+            expectedTime: doc.data().expectedTime,
+            length: doc.data().length,
+            referencePoint: doc.data().referencePoint,
+            region: doc.data().region,
+            title: doc.data().title,
+            startPoint: doc.data().startPoint,
+            author: doc.data().author,
+            linkedHuts: doc.data().linkedHuts,
+            condition: doc.data().condition,
+            condDetails: doc.data().condDetails
+        };
+        res.push(hike)
+    });
+    console.log(res);
+    return res;
+}
+
 module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition,
-    getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest
+    getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor
 };
 

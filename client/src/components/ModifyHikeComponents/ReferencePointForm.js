@@ -162,7 +162,7 @@ function ReferencePointForm(props) {
             </Modal.Footer>
         </Modal>
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{ marginBottom: 10 }}>
-            <StaticHikeInfo hike={props.hike} status={props.status} />
+            {/* <StaticHikeInfo hike={props.hike} status={props.status} /> */}
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Name:</Form.Label>
