@@ -14,10 +14,6 @@
     | aleganino@gmail.com | password |
     | chicco.siviero@gmail.com | chicco |
 
-localhost:3000
-
-
-
 - Hiker
     | Email | Password |
     | :---- | :------- |
