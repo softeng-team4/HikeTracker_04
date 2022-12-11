@@ -3,7 +3,6 @@
 - Manager
     | Email                 | Password  |
     | :-------------------- | :-------- |
-    | eelielisa@outlook.com | 123456789 |
     | s304890@studenti.polito.it | password |
 
 - Local guide
