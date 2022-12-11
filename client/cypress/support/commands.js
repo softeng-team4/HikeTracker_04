@@ -66,3 +66,7 @@ Cypress.Commands.add("createTestHike", (hike = {}) => {
     }
     API.addNewHike(newHike);
 })
+
+Cypress.Commands.add('deleteHike', (hikeId, collection="hikes") => {
+    API.deleteHike(hikeId, collection)
+})
