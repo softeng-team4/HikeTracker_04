@@ -52,7 +52,13 @@ sections:
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
 - Hours per task (average, standard deviation)
+
+	- Average: 1.636h estimated vs 1.64 spent
+	- Standard deviation: 1.00 estimated vs 1.03 spent
+
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1
+
+	TTEER = -0.00243
 
   
 ## QUALITY MEASURES 
