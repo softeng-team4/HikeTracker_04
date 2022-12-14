@@ -36,17 +36,17 @@ sections:
 
 ### Detailed statistics
 
-| Story  | # Tasks | Points | Hours est. | Hours actual |
-|--------|---------|--------|------------|--------------|
-| _#0_   |    15   |   -    |   31h 25m  |     30h 35m  |
-| 10     |    4    |   8    |    6h 30m  |      6h 50m  |
-| 11     |    2    |   5    |    2h 15m  |      2h 10m  |
-| 31     |    4    |   3    |    4h 30m  |      3h 40m  |
-| 32     |    5    |   8    |   12h 30m  |      8h 51m  |
-| 12     |    4    |   5    |    3h 25m  |      4h 25m  |
-| 13     |    2    |   8    |    2h 15m  |      3h 40m  |
-| 14     |    4    |  13    |    5h 05m  |      6h 25m  |
-| 30     |    4    |   8    |    4h 05m  |      5h 35m  |
+| Story | # Tasks | Points | Hours est. | Hours actual |
+| ----- | ------- | ------ | ---------- | ------------ |
+| _#0_  | 15      | -      | 31h 25m    | 30h 35m      |
+| 10    | 4       | 8      | 6h 30m     | 6h 50m       |
+| 11    | 2       | 5      | 2h 15m     | 2h 10m       |
+| 31    | 4       | 3      | 4h 30m     | 3h 40m       |
+| 32    | 5       | 8      | 12h 30m    | 8h 51m       |
+| 12    | 4       | 5      | 3h 25m     | 4h 25m       |
+| 13    | 2       | 8      | 2h 15m     | 3h 40m       |
+| 14    | 4       | 13     | 5h 05m     | 6h 25m       |
+| 30    | 4       | 8      | 4h 05m     | 5h 35m       |
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
@@ -91,15 +91,29 @@ sections:
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
+  
+  There are some tasks that actually spent time and the estimation is different. May think tasks are too complicated or too simple.
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
+  Notifies the end of the development phase, is good for testing as quickly as possible. Contact testing in time with developing code changes is better to organize the entire user story
+
 - Which improvement goals set in the previous retrospective were you able to achieve? 
+  
+  Organized the estimation in a timely manner, and members discussed the interface and functions so that users have a better experience.
+
+  More scrum meeting makes the work connection between front and back ends smoother. Compared with the lag of the last test task, the task priority of development and testing and the notification in the scrum meeting make the test task well connected.  
   
 - Which ones you were not able to achieve? Why?
 
+  The goal of the previous stage was fully achieved. Thanks for everyone's efforts
+
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
+
+  A group task to improve user usability will help each user story link more in line with usability.
 
 > Propose one or two
 
 - One thing you are proud of as a Team!!
+
+   This sprint ended perfectly, all tasks and additional ideas were completed. After the development changes, the test modification is also rapid.
