@@ -82,6 +82,7 @@ sections:
   - Hours spent on remediation: 3h 
   - debt ratio (as reported by SonarQube under "Measures-Maintainability"): 0.8%
   - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability ):
+	
 	- Reilability: A
 	- Security: A
 	- Maintainability: A
@@ -92,28 +93,28 @@ sections:
 
 - What caused your errors in estimation (if any)?
   
-  There are some tasks that actually spent time and the estimation is different. May think tasks are too complicated or too simple.
+	For some stories, the most time consuming part has been wrongfully identified. This, along with unexpected issues, was the cause of great overestimation and underestimation of some tasks 
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
-  Notifies the end of the development phase, is good for testing as quickly as possible. Contact testing in time with developing code changes is better to organize the entire user story
+	Having some test cases available earlier in the development allowed for continous feedback on the story implementation throughout the rest of the sprint
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
   
-  Organized the estimation in a timely manner, and members discussed the interface and functions so that users have a better experience.
+  - The estimation has been done in a swifter manner, granting the team more time to discuss interfaces and functions.
 
-  More scrum meeting makes the work connection between front and back ends smoother. Compared with the lag of the last test task, the task priority of development and testing and the notification in the scrum meeting make the test task well connected.  
-  
+  - More emphasis has been put to communication and more effort has been spent to plan meetings in advance.
+
 - Which ones you were not able to achieve? Why?
 
-  The goal of the previous stage was fully achieved. Thanks for everyone's efforts
+  Thanks for everyone's efforts, a lot of progress has been made in achieving the goals set in the previous sprint.
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
-  A group task to improve user usability will help each user story link more in line with usability.
-
-> Propose one or two
+	- A horizontal task to improve usability may make for an overall smoother user experience
+	- The usage of SonarCloud was quite superficial, technical debt should be handled in a more rigorous way to obtain more insight on the code quality.
+	- To make communication even smoother, a full meeting schedule can be devise at the beginning of the sprint
 
 - One thing you are proud of as a Team!!
 
-   This sprint ended perfectly, all tasks and additional ideas were completed. After the development changes, the test modification is also rapid.
+   All the tasks and some additional ideas were implemented.
