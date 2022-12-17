@@ -12,18 +12,18 @@ Sections:
 ### Macro statistics
 
 - Number of stories committed vs. done
-
-3 stories committed vs. 3 stories done
+  
+  3 stories committed vs. 3 stories done
  
 - Total points committed vs. done 
-
-26 points committed vs. 26 points done
+  
+  26 points committed vs. 26 points done
 
 - Nr of hours planned vs. spent (as a team)
+  
+  72 hours planned vs. 73h 40m spent
 
-72 hours planned vs. 73h 40m spent
-
-**Remember**a story is done ONLY if it fits the Definition of Done:
+A story is done only if it fits the Definition of Done:
  
 - Unit Tests passing
 - Code review completed
@@ -48,7 +48,7 @@ Sections:
   - Estimated standard deviation: 2
   - Actual standard deviation: 3.66
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1
-  - 72 / 73.66 -1 = -0.023
+  - TTEER = -0.023
 
   
 ## QUALITY MEASURES 

@@ -13,15 +13,15 @@ Sections:
 
 - Number of stories committed vs done
 
-8 stories committed vs 8 stories done 
+  8 stories committed vs 8 stories done 
 
 - Total points committed vs done 
 
-58 points committed vs 58 points done
+  58 points committed vs 58 points done
 
 - Nr of hours planned vs spent (as a team)
 
-72h planned vs 72h 10m spent
+  72h planned vs 72h 10m spent
 
 
 **Remember**  a story is done ONLY if it fits the Definition of Done:
@@ -49,13 +49,11 @@ Sections:
 > technical tasks correspond to story `#0` and don't include story points (not applicable in this case)
 
 - Hours per task (average, standard deviation)
-
 	- Average: 1.636h estimated vs 1.64 spent
 	- Standard deviation: 1.00 estimated vs 1.03 spent
 
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1
-
-	TTEER = -0.00243
+	- TTEER = -0.00243
 
   
 ## QUALITY MEASURES 

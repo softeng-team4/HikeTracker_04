@@ -13,15 +13,15 @@ Sections:
 
 - Number of stories committed vs. done 
 
-7 stories committed vs. 7 stories done
+  7 stories committed vs. 7 stories done
 
 - Total points committed vs. done 
 
-47 points committed vs. 47 points done
+  47 points committed vs. 47 points done
 
 - Nr of hours planned vs. spent (as a team)
 
-72h planned vs. 72h 25m spent
+  72h planned vs. 72h 25m spent
 
 **Remember** a story is done ONLY if it fits the Definition of Done:
  
@@ -53,7 +53,7 @@ Sections:
   - Estimated standard deviation = 0.90
   - Actual standard deviation = 1.39
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1
-  - TER = -0.01
+  - TTEER = -0.01
 
   
 ## QUALITY MEASURES 
