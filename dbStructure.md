@@ -12,6 +12,7 @@
 | respDate      | string |
 | hutId       | string |
 
+
 **reqRole possible values:** "hut worker", "local guide"
 
 **reqStatus possible values:** "pending", "accepted", "rejected"
@@ -97,3 +98,21 @@ The "name" attribute is present only if that point is actually a reference point
 | openingMinute | number   |
 | closingHour   | number   |
 | closingMinute | number   |
+
+# regHikes
+
+| Fields        | Type     |
+| :------------ | :------- |
+| id          | string   |
+| hikeId          | string   |
+| status          | string   |
+| startTime          | string   |
+| endTime          | string   |
+| passedRP          | array(GeoPoint)   |
+| userId         | string   |
+
+**status possible values:** 'ongoing' (upon hike creation),'terminated' (upon hike termination)
+**passedRP:** array containing the list of reference points (belonging to the hike identified by hikeId) that the user has declared as passed
+**userId**: id of the user that started the registered hike
+
+
