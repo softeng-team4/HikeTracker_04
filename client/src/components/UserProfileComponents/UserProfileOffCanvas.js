@@ -34,7 +34,7 @@ const ProfileOffCanvas = (props) => {
                                 <Row className='redirect-to-profile d-flex justify-content-between'
                                     onClick={() => {navigate(`/profile/${authObject.authUser.firstName.toLowerCase().replace(' ', '_')}_${authObject.authUser.lastName.toLowerCase().replace(' ', '_')}`); props.onHide()}}
                                 >
-                                    <Col xs={8} className='redirect-text'>Explore your profile</Col>
+                                    <Col xs={8} className='redirect-text'>Explore my profile</Col>
                                     <Col xs={4} className='d-flex justify-content-end'><FaChevronRight className='redirect-icon mt-1' /></Col>
                                 </Row>
                             </Card.Footer>
