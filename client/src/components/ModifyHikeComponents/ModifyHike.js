@@ -120,9 +120,9 @@ function ModifyHike(props) {
                     <Button variant="danger" onClick={handleClose}>
                         Close
                     </Button>
-                    {modal === 'start' ? <Button variant="primary" onClick={handleChange} disabled={start === ''}>
+                    {modal === 'start' ? <Button variant="success" onClick={handleChange} disabled={start === ''}>
                         Confirm
-                    </Button> : <Button variant="primary" onClick={handleChange} disabled={end === ''}>
+                    </Button> : <Button variant="success" onClick={handleChange} disabled={end === ''}>
                         Confirm
                     </Button>}
                 </Modal.Footer>
@@ -130,7 +130,7 @@ function ModifyHike(props) {
             <Container fluid style={{ marginBottom: 20 }}>
                 <Form noValidate className="mt-3">
                     
-                    <Row>
+                    <Row style={{marginBottom: 10}}>
                         { hike.referencePoint !== '' ?
                         <Map positions={points} startPoint={startPoint} endPoint={endPoint} hutList={hutList} parkingList={parkingList} />
                         : <div>No Track Inside</div>}
@@ -140,10 +140,11 @@ function ModifyHike(props) {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>latitude</th>
-                                <th>longitude</th>
-                                <th>altitude</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Altitude</th>
                                 <th>Name</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -165,7 +166,7 @@ function ModifyHike(props) {
                             </tr>
                         </tbody>
                     </Table>
-                    <Button onClick={handleSubmit}>Save Changes</Button>
+                    <Button variant="success" onClick={handleSubmit}>Save Changes</Button>
                 </Form>
             </Container>
         </>

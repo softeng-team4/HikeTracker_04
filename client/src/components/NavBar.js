@@ -69,7 +69,7 @@ const NavBar = (props) => {
                                                                     variant='link'
                                                                     onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}
                                                                 >
-                                                                    Your profile
+                                                                    My profile
                                                                 </Dropdown.Item>
                                                                 {authObject.authUser.role.toLowerCase() === 'hut worker' && <Dropdown.Item className='condition-link' onClick={() => { navigate('/hikeCondition'); }} >Hike Condition</Dropdown.Item>}
                                                                 {authObject.authUser.role.toLowerCase() === 'local guide' && <Dropdown.Item className='modify-page' onClick={() => { navigate('/myHikeList'); }} >My Hikes</Dropdown.Item>}
@@ -91,7 +91,7 @@ const NavBar = (props) => {
                                                 {authObject.authUser &&
                                                     <>
                                                         {!path.startsWith('/profile/') &&
-                                                            <Nav.Link className='d-flex justify-content-center' onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}>Your profile</Nav.Link>}
+                                                            <Nav.Link className='d-flex justify-content-center' onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}>My profile</Nav.Link>}
                                                         {authObject.authUser.role.toLowerCase() === 'hut worker' &&
                                                             <Nav.Link className='condition-link d-flex justify-content-center' onClick={() => { navigate('/hikeCondition'); }} >Hike Condition</Nav.Link>}
                                                         {authObject.authUser.role.toLowerCase() === 'local guide' &&

@@ -85,32 +85,29 @@ const FilterForm = (props) => {
     return (
         <AuthenticationContext.Consumer>
             {(authObject) => (
-                <>
-                    <Row className='FilterForm'>
-                        <Row>
-                            {geoAreaFilterType ?
-                                <>
-                                    <Col lg={7} className='geoAreaFilter'>
-                                        <GeoAreaForm geoArea={filters.geoArea} setGeoArea={setFilters} />
-                                    </Col>
-                                    <Col lg={2} className='btn-geoArea p-3'>
-                                        <Button size='sm' variant='success' onClick={handleGeoAreaSwitch}>switch to radius</Button>
-                                    </Col>
-                                </>
-                                :
-                                <PointRadiusForm centerMap={centerMap} pointRadius={filters.pointRadius} setPointRadius={setFilters} handleGeoAreaSwitch={handleGeoAreaSwitch} />
-                            }
-                            <DifficultyForm difficulty={filters.difficulty} setDifficulty={setFilters} />
-                        </Row>
-                        <Row>
-                            <SliderForm customPreferences={customPreferences} setRanges={setFilters} />
-                        </Row>
-                        {authObject.authUser && authObject.authUser.preferences && <Row>
-                            <Form.Check type='checkbox' reverse label='apply custom filters' onChange={(ev) => handleCustomFilters(ev)} />
-                        </Row>
+                <Row className='FilterForm' style={{ marginBottom: 10 }}>
+                    <Row>
+                        {geoAreaFilterType ?
+                            <>
+                                <Col lg={7} className='geoAreaFilter'>
+                                    <GeoAreaForm geoArea={filters.geoArea} setGeoArea={setFilters} />
+                                </Col>
+                                <Col lg={2} className='btn-geoArea p-3'>
+                                    <Button size='sm' variant='success' onClick={handleGeoAreaSwitch}>Switch to radius</Button>
+                                </Col>
+                            </>
+                            :
+                            <PointRadiusForm centerMap={centerMap} pointRadius={filters.pointRadius} setPointRadius={setFilters} handleGeoAreaSwitch={handleGeoAreaSwitch} />
                         }
+                        <DifficultyForm difficulty={filters.difficulty} setDifficulty={setFilters} />
                     </Row>
-                </>
+                    <Row>
+                        <SliderForm customPreferences={customPreferences} setRanges={setFilters} />
+                    </Row>
+                    {authObject.authUser && authObject.authUser.preferences && <Row>
+                        <Form.Check type='checkbox' reverse label='Apply my preferences filter' onChange={(ev) => handleCustomFilters(ev)} />
+                    </Row>}
+                </Row>
             )}
         </AuthenticationContext.Consumer>
     );

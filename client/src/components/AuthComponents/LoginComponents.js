@@ -1,6 +1,7 @@
 import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
+import Spacer from '../BrowserHikeComponents/Spacer';
 
 function LoginForm(props) {
   const [username, setUsername] = useState('');
@@ -35,7 +36,8 @@ function LoginForm(props) {
   };
 
   return (
-    <Container className="col-sm-8 col-12 below-nav">
+    <Container className="col-sm-8 col-12 below-nav" style={{ marginBottom: 20 }}>
+      <Spacer height='2rem' />
       <Form onSubmit={handleSubmit}>
         {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
         <Form.Group controlId='username'>

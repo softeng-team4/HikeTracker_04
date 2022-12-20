@@ -52,7 +52,7 @@ const HutSearchBar = (props) => {
                 </Row>
             </Form>
         </Col>
-        <Col xl={8}>
+        <Col md={8}>
             <Form style={{ margin: 10 }}>
                 <Form.Label htmlFor='AltitudeRange'>Select an altitude range</Form.Label>
                 <Range className='AltitudeRange' min={dR.min} max={dR.max} step={dR.step} marks={altitudeMarks} allowCross={false} defaultValue={[dR.min, dR.max]} onAfterChange={(range) => handleRange(range)} />

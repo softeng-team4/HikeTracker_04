@@ -129,7 +129,7 @@ function ReferencePointForm(props) {
                     <Form.Control.Feedback type="invalid">Please insert a name.</Form.Control.Feedback>
                 </Col>
             </Form.Group>
-            <Row>
+            <Row style={{ marginBottom: 10 }}>
                 <MapContainer center={evaluateCenter()} bounds={L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng))}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -163,7 +163,7 @@ function ReferencePointForm(props) {
                             </Popup>
                         </Marker>
                     )}
-                    <LocationMarker position={position} setPosition={setPosition} isRef={true}/>
+                    <LocationMarker position={position} setPosition={setPosition} isRef={true} />
                 </MapContainer>
             </Row>
             {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}

@@ -27,8 +27,8 @@ const ProfileOffCanvas = (props) => {
                                 </Card.Title>
                             </Card.Header>
                             <Card.Body>
-                                <Col className='d-flex justify-content-center'><strong>email:</strong>&nbsp;{authObject.authUser.email}</Col>
-                                <Col className='d-flex justify-content-center'><strong>role:</strong>&nbsp;{authObject.authUser.role}</Col>
+                                <Col className='d-flex justify-content-center'><strong>Email:</strong>&nbsp;{authObject.authUser.email}</Col>
+                                <Col className='d-flex justify-content-center'><strong>Role:</strong>&nbsp;{authObject.authUser.role}</Col>
                             </Card.Body>
                             <Card.Footer>
                                 <Row className='redirect-to-profile d-flex justify-content-between'

@@ -1,6 +1,5 @@
-import { async } from "@firebase/util";
 import { useEffect, useState } from "react"
-import { Alert, Button, ButtonGroup, Card, Col, Container, Form, Modal, OverlayTrigger, Row, Spinner, Tooltip } from "react-bootstrap";
+import { Button, ButtonGroup, Card, Col, Container, Form, Modal, OverlayTrigger, Row, Spinner, Tooltip } from "react-bootstrap";
 import { FaRegEdit } from 'react-icons/fa';
 import { RiErrorWarningLine } from 'react-icons/ri'
 import { BiCheckCircle } from 'react-icons/bi'
@@ -60,7 +59,7 @@ function UpdateCondition(props) {
                         </Modal.Footer>
                     </Modal>
                     <Modal show={show} onHide={() => setShow(false)} backdrop="static">
-                        <Modal.Header closeButton>
+                        <Modal.Header>
                             <Modal.Title>Update Condition</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>

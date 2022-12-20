@@ -78,7 +78,7 @@ const PreferencesSliderForm = (props) => {
                 <>
                     <Form className='p-2'>
                         <Toast bg='success' show={showSubmitAlert} onClose={() => setShowSubmitAlert(false)} delay={3000} autohide>
-                            <Toast.Body>Preferences updated successfully!</Toast.Body>
+                            <Toast.Body style={{color: "white"}}>Preferences updated successfully!</Toast.Body>
                         </Toast>
                         <Form.Group>
                             <Row className='pt-0 p-4'>

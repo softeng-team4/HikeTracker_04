@@ -1,9 +1,10 @@
-import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import API from '../../API';
 import { useLocation, useNavigate } from "react-router";
 import { useState } from "react";
 import HandleModifyPage from "./HandleModifyPage";
 import { FaRegEdit } from 'react-icons/fa';
+import Spacer from "../BrowserHikeComponents/Spacer";
 
 
 const StaticHikeInfo = (props) => {
@@ -32,10 +33,11 @@ const StaticHikeInfo = (props) => {
     }
 
     return (
-        <>
+        <Container fluid>
+            <Spacer height='2rem' />
             <Row>
-                <Col lg={9}><h2>Hike:</h2> </Col>
-                <Col lg={{ span: 1, offset: 2 }}><Button variant="outline-primary" onClick={() => setStatus('modify')}><FaRegEdit /></Button></Col>
+                <Col xs={9}><h2>Hike</h2> </Col>
+                <Col align="right" xs={3}><Button variant={status === 'modify' ? "secondary" : "outline-secondary"} onClick={() => setStatus('modify')}><FaRegEdit /></Button></Col>
             </Row>
 
             <Form>
@@ -122,12 +124,12 @@ const StaticHikeInfo = (props) => {
                     </Col>
                 </Form.Group>
             </Form>
-            {status === 'modify' ? <Col lg={{ span: 8, offset: 9 }}>
+            {status === 'modify' ? <Col align="right" style={{ marginBottom: 10 }}>
                 <Button variant="danger" onClick={() => { setStatus('static') }}>Cancel</Button>
-                <Button variant='success' onClick={handleSubmit}>Confirm</Button></Col> : ''}
+                <Button variant='success' style={{ marginLeft: 5 }} onClick={handleSubmit}>Confirm</Button></Col> : ''}
             <HandleModifyPage hike={hike} />
 
-        </>
+        </Container>
     );
 }
 
