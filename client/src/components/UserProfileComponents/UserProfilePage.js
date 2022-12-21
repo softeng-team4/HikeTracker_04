@@ -11,10 +11,11 @@ import { useEffect, useState, useContext } from "react";
 const UserProfilePage = (props) => {
     const [hutName, setHutName] = useState('')
     const authObject = useContext(AuthenticationContext);
+    const hutId = authObject.authUser.hutId;
 
     useEffect(() => {
-        getHutById(authObject.authUser.hutId).then( (res) => setHutName(res.name))
-    }, [])
+        hutId && getHutById(hutId).then((res) => setHutName(res.name));
+    }, [hutId])
 
     return (
         <AuthenticationContext.Consumer>
@@ -23,7 +24,7 @@ const UserProfilePage = (props) => {
                     <Container fluid className='UserProfileContainer'>
                         <Spacer height='2rem' />
                         <Col lg={{ span: 6, offset: 3 }} className='d-flex justify-content-center'>
-                            <IconContext.Provider value={{ size: '6em',  }}>
+                            <IconContext.Provider value={{ size: '6em', }}>
                                 <div>
                                     <FaUserCircle />
                                 </div>
@@ -59,28 +60,32 @@ const UserProfilePage = (props) => {
                                         <Form.Label className='mt-2'>Role:</Form.Label>
                                     </Col>
                                     <Col sm={10}>
-                                        <Form.Control className='role-input' value={authObject.authUser.role} disabled type='text' isInvalid={authObject.authUser.reqStatus==="pending"}/>
+                                        <Form.Control className='role-input' value={authObject.authUser.role} disabled type='text' isInvalid={authObject.authUser.reqStatus === "pending"} />
                                         <Form.Control.Feedback type="invalid">Pending request for role {authObject.authUser.reqRole}</Form.Control.Feedback>
                                     </Col>
                                 </Form.Group>
-                                { authObject.authUser.role.toLowerCase() === "hut worker" && 
+                                {authObject.authUser.role.toLowerCase() === "hut worker" &&
                                     <Form.Group as={Row} className="p-3">
-                                    <Col sm={2}>
-                                        <Form.Label className='mt-2'>Hut:</Form.Label>
-                                    </Col>
-                                    <Col sm={10}>
-                                        <Form.Control className='role-input' value={hutName} disabled type='text' isInvalid={authObject.authUser.reqStatus==="pending"}/>
-                                    </Col>
-                                </Form.Group>}
+                                        <Col sm={2}>
+                                            <Form.Label className='mt-2'>Hut:</Form.Label>
+                                        </Col>
+                                        <Col sm={10}>
+                                            <Form.Control className='role-input' value={hutName} disabled type='text' isInvalid={authObject.authUser.reqStatus === "pending"} />
+                                        </Col>
+                                    </Form.Group>}
                             </Form>
                         </Col>
                         <Spacer height='2rem' />
-                        <Col lg={{ span: 6, offset: 3 }} className='d-flex justify-content-center'>
-                            <h2>Preferences</h2>
-                        </Col>
-                        <Col lg={{ span: 6, offset: 3 }}>
-                            <PreferencesSliderForm />
-                        </Col>
+                        {authObject.authUser.role.toLowerCase() === 'hiker' &&
+                            <>
+                                <Col lg={{ span: 6, offset: 3 }} className='d-flex justify-content-center'>
+                                    <h2>Preferences</h2>
+                                </Col>
+                                <Col lg={{ span: 6, offset: 3 }}>
+                                    <PreferencesSliderForm />
+                                </Col>
+                            </>
+                        }
                     </Container>
                 </>
             }

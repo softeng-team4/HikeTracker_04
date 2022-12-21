@@ -75,6 +75,7 @@ const PreferencesSliderForm = (props) => {
     return (
         <AuthenticationContext.Consumer>
             {(authObject) =>
+                authObject.authUser.role.toLowerCase() === 'hiker' &&
                 <>
                     <Form className='p-2'>
                         <Toast bg='success' show={showSubmitAlert} onClose={() => setShowSubmitAlert(false)} delay={3000} autohide>
