@@ -5,7 +5,7 @@ const ConfirmModal = (props) => {
     return (
         <Modal show={props.show} backdrop='static' centered='true'>
             <Modal.Header className='addInfo d-flex justify-content-center p-2'>
-                <Modal.Title>Are u sure to continue?</Modal.Title>
+                <Modal.Title>Do you want to continue?</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Row className='d-flex justify-content-center'>This operation is not reversible!</Row>

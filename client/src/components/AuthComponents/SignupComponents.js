@@ -3,6 +3,7 @@ import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import HutWorkerForm from './HutWorkerForm';
 import User from '../../model/User'
+import Spacer from '../BrowserHikeComponents/Spacer';
 
 
 
@@ -115,7 +116,8 @@ function SignupForm(props) {
         <Alert key={'success'} variant={'success'}>
           Check your email to complete the registration process.
         </Alert> :
-        <Container className="col-sm-8 col-12 below-nav">
+        <Container className="col-sm-8 col-12 below-nav" style={{ marginBottom: 20 }}>
+          <Spacer height='2rem' />
           <Form noValidate onSubmit={handleSubmit}>
           {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
             <Form.Group controlId='email'>

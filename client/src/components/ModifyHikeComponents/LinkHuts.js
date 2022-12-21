@@ -106,7 +106,7 @@ const LinkHuts = (props) => {
                 {!showNoCloseHuts && selectedHutList.length === 0 && <Alert variant='danger'>To link a hut to the hike select it on the map</Alert>}
                 {showNoCloseHuts && <Alert variant='danger'>There are not available huts close to this hike to be linked</Alert>}
                 {hike.referencePoint &&
-                    <Row>
+                    <Row style={{ marginBottom: 10 }}>
                         <Map positions={points} startPoint={hike.startPoint} endPoint={hike.endPoint} huts={hutList} handleHutClickOnMap={handleLinkHut} handleNohutsCloseToHike={handleNohutsCloseToHike} />
                     </Row>
                 }
@@ -115,7 +115,7 @@ const LinkHuts = (props) => {
                     <h5>Linked huts:</h5>
                     <Row>
                         <Col>
-                            <Card>
+                            <Card style={{ backgroundColor: "whitesmoke" }}>
                                 <Card.Body>
                                     {selectedHutList.map((h, idx) => <Button
                                         id={h.id}

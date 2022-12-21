@@ -76,7 +76,7 @@ const PointRadiusForm = (props) => {
                 </MapContainer>
             </Col>
             <Col xl={2} className='btn-radius p-2'>
-                <Button size='sm' variant='success' onClick={props.handleGeoAreaSwitch}>switch to geo area</Button>
+                <Button size='sm' variant='success' onClick={props.handleGeoAreaSwitch}>Switch to geo area</Button>
                 <Form className='row d-flex p-2'>
                     <Form.Label>Radius:</Form.Label>
                     <Form.Select onChange={(ev) => { handleRadiusChange(ev) }}>{radiusList.map((r) => <option key={r} value={r.split(' ')[0]}>{r}</option>)}</Form.Select>

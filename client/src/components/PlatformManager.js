@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Card, Col, ListGroup, Modal, Row, Container, Form } from 'react-bootstrap';
+import { Button, ButtonGroup, Card, Col, Modal, Row, Container, Form } from 'react-bootstrap';
 import { AiOutlineCheck, AiOutlineStop } from 'react-icons/ai'
 import API from '../API';
 import AuthenticationContext from './AuthenticationContext';
@@ -78,64 +78,66 @@ function PlatformManager(props) {
                         </Modal.Footer>
                     </Modal>
 
-                    <Form className='row col-md d-flex justify-content-between'>
-                        <Form.Group as={Row} className='row col-md p-2'>
-                            <Col sm={2}>
-                                <Form.Label htmlFor='RoleSelection'>Filter requests by role: &nbsp;</Form.Label>
-                            </Col>
-                            <Col>
-                                <Form.Text>
-                                    <ButtonGroup className='RoleSelection'>
-                                        {roleList.map((d) =>
-                                            <Button key={d} active={d === selectedButton ? true : false} variant='light' onClick={(ev) => (handleButtonClick(d))}>{d}</Button>
-                                        )}
-                                    </ButtonGroup>
-                                </Form.Text>
-                            </Col>
-                        </Form.Group>
-                    </Form>
+                    <Container fluid className='BrowserHutssContainer'>
+                        <Spacer height='2rem' />
+                        <Form className='row col-md d-flex justify-content-between'>
+                            <Form.Group as={Row} className='row col-md p-2'>
+                                <Col sm={2}>
+                                    <Form.Label htmlFor='RoleSelection'>Filter requests by role: &nbsp;</Form.Label>
+                                </Col>
+                                <Col>
+                                    <Form.Text>
+                                        <ButtonGroup className='RoleSelection'>
+                                            {roleList.map((d) =>
+                                                <Button key={d} active={d === selectedButton ? true : false} variant='light' onClick={(ev) => (handleButtonClick(d))}>{d}</Button>
+                                            )}
+                                        </ButtonGroup>
+                                    </Form.Text>
+                                </Col>
+                            </Form.Group>
+                        </Form>
 
-                    {requestingUsers.filter(filterRole).map((r, i) =>
-                        <div key={`div_${i}`} >
-                            <Card key={`card_${i}`}>
-                                <Card.Header key={`card_header_${i}`}>
-                                    <Row md={10}>
-                                        <Col lg={5}><b>User:</b>&nbsp;{r.firstName}&nbsp;{r.lastName}</Col>
-                                        <Col lg={5}><b>Actual role:</b>&nbsp;{r.role}</Col>
-                                        <Col className='d-flex justify-content-md-end'>
-                                            <ButtonGroup size='sm'>
-                                                <Button variant='success' onClick={() => { handleRequest(r, 'accepted') }}>
-                                                    <AiOutlineCheck />
-                                                </Button>
-                                                <Button variant='danger' onClick={() => { handleRequest(r, 'rejected') }}>
-                                                    <AiOutlineStop />
-                                                </Button>
-                                            </ButtonGroup>
-                                        </Col>
-                                    </Row>
-                                </Card.Header>
-                                <Card.Body className='d-flex justify-content-start' key={`card_body_${i}`}>
+                        {requestingUsers.filter(filterRole).map((r, i) =>
+                            <div key={`div_${i}`} >
+                                <Card key={`card_${i}`}>
+                                    <Card.Header key={`card_header_${i}`}>
+                                        <Row md={10}>
+                                            <Col lg={5}><b>User:</b>&nbsp;{r.firstName}&nbsp;{r.lastName}</Col>
+                                            <Col lg={5}><b>Actual role:</b>&nbsp;{r.role}</Col>
+                                            <Col className='d-flex justify-content-md-end'>
+                                                <ButtonGroup size='sm'>
+                                                    <Button variant='success' onClick={() => { handleRequest(r, 'accepted') }}>
+                                                        <AiOutlineCheck />
+                                                    </Button>
+                                                    <Button variant='danger' onClick={() => { handleRequest(r, 'rejected') }}>
+                                                        <AiOutlineStop />
+                                                    </Button>
+                                                </ButtonGroup>
+                                            </Col>
+                                        </Row>
+                                    </Card.Header>
+                                    <Card.Body className='d-flex justify-content-start' key={`card_body_${i}`}>
 
-                                    <Row md={12}>
-                                        <Col lg key={`user_email_${i}`}><b>Email:</b>&nbsp;{r.email}</Col>
-                                    </Row>
-                                </Card.Body>
-                                <Card.Footer key={`card_footer_${i}`}>
-                                    <Row md={12}>
+                                        <Row md={12}>
+                                            <Col lg key={`user_email_${i}`}><b>Email:</b>&nbsp;{r.email}</Col>
+                                        </Row>
+                                    </Card.Body>
+                                    <Card.Footer key={`card_footer_${i}`}>
+                                        <Row md={12}>
 
-                                        <Col><b>Requested Role:</b>&nbsp;{r.reqRole}
-                                        {r.reqRole.toLowerCase() === "hut worker" ? ` at ${r.hutName} (${r.hutId})` : ''}
-                                        </Col>
+                                            <Col><b>Requested Role:</b>&nbsp;{r.reqRole}
+                                                {r.reqRole.toLowerCase() === "hut worker" ? ` at ${r.hutName} (${r.hutId})` : ''}
+                                            </Col>
 
-                                    </Row>
+                                        </Row>
 
-                                </Card.Footer>
-                            </Card>
-                            <Spacer height='1rem' key={`card_spacer_${i}`} />
-                        </div>
-                    )}
-                    {requestingUsers.filter(filterRole).length === 0 && <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>No request found!</h5></Card><Spacer height='2rem' /></Container>}
-
+                                    </Card.Footer>
+                                </Card>
+                                <Spacer height='1rem' key={`card_spacer_${i}`} />
+                            </div>
+                        )}
+                        {requestingUsers.filter(filterRole).length === 0 && <div className='emty-hikeList'><Spacer height='2rem' /><Card><h5>No request found!</h5></Card><Spacer height='2rem' /></div>}
+                    </Container>
                 </>
             )}
         </AuthenticationContext.Consumer>

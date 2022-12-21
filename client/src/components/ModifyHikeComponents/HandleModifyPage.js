@@ -18,6 +18,8 @@ const HandleModifyPage = (props) => {
                 mountOnEnter={true}
                 className='mb-3'
                 fill
+                justify
+                variant="pills"
             >
                 <Tab eventKey='LinkStartEndpoints' title='Link start/arrival'>
                     <ModifyHike hike={props.hike} />
