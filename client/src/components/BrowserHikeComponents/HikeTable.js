@@ -104,15 +104,21 @@ const HikeTable = () => {
                                             </Col>
                                             <Col md={4}>
                                                 <Col className='d-flex justify-content-md-end'>
-                                                        <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
-                                                            <Button
-                                                                id={hike.id}
-                                                                size='sm'
-                                                                variant='success'
-                                                                onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
-                                                                Show more info
-                                                            </Button>
-                                                        </OverlayTrigger>
+                                                    <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
+                                                        <Button
+                                                            id={hike.id}
+                                                            size='sm'
+                                                            variant='success'
+                                                            onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
+                                                            Show more info
+                                                        </Button>
+                                                    </OverlayTrigger>
+                                                    {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hiker' &&
+                                                        <Button id={hike.id}
+                                                            size='sm'
+                                                            variant='primary'>
+                                                            Start Hike
+                                                        </Button>}
                                                 </Col>
                                             </Col>
                                         </Row>
