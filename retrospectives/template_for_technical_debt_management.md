@@ -13,7 +13,20 @@
 | Type      | Severity | File name | Line number | Estimated time | Actual time |
 | --------- | -------- | --------- | ----------- | -------------- | ----------- |
 |           |          |           |             |                |             |
-|   Code Smell   |    Critical     |    client/src/components/AuthComponents/SignupComponents.js       |  38     |       7m         |     5m      |
+|   Code Smell   |    Critical     |    client/src/components/AuthComponents/SignupComponents.js    |     38           |      7m          |      5m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     140          |      5m          |      10m    |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     141          |      5m          |      10m    |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     143          |      5m          |      1m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     175          |      5m          |      1m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     185          |      5m          |      5m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     188          |      5m          |      1m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     142          |      5m          |      1m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     154          |      5m          |      3m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     155          |      5m          |      3m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     156          |      5m          |      3m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     171          |      5m          |      3m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     174          |      5m          |      3m     |
+|   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     180          |      5m          |      3m     |
 |           |          |           |             |                |             |
 
 # Alessandro 
