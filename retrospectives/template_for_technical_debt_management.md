@@ -13,6 +13,8 @@
 | Type      | Severity | File name | Line number | Estimated time | Actual time |
 | --------- | -------- | --------- | ----------- | -------------- | ----------- |
 |           |          |           |             |                |             |
+|   Code Smell   |    Critical     |    client/src/components/AuthComponents/SignupComponents.js       |  38     |       7m         |     5m      |
+|           |          |           |             |                |             |
 
 # Alessandro 
 
