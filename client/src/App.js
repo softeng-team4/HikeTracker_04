@@ -123,7 +123,6 @@ function App() {
               <Route index element={<BrowserHikes />}></Route>
               <Route path='login' element={authUser ? <Navigate replace to='/' /> : <LoginForm login={login} />} />
               <Route path='signup' element={<SignupForm signup={signup} />}></Route>
-              {/* here are the routes with authenticated */}
               {authUser && <Route path={`/profile/${authUser.firstName.toLowerCase().replace(' ', '_')}_${authUser.lastName.toLowerCase().replace(' ', '_')}`} element={<UserProfile />} />}
               {/* here are the routes with local guide */}
               <Route path='hikeform' element={authUser && (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' />} />
