@@ -43,7 +43,6 @@ function App() {
     } catch (err) {
       setAuthErr(err);
       setAuthUser(undefined);
-      console.log(err);
       throw (err);
     }
   }
@@ -68,7 +67,6 @@ function App() {
     try {
       await API.signUp(email, password, firstName, lastName, role);
     } catch (err) {
-      console.log(err);
       throw err;
     }
   }
