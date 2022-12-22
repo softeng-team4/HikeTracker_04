@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Container, Card, Row, Button, Modal } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Spacer from '../BrowserHikeComponents/Spacer';
 import HikePageHandler from '../BrowserHikeComponents/HickePageHendler';
 import API from '../../API';
@@ -99,10 +99,11 @@ function HutWorkerForm(props) {
     };
     const [show, setShow] = useState(false);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setShow(false);
         setRange(undefined);
-    }
+    }, [setShow, setRange]);
+
     function handleShow(){
         setShow(true);
     }
@@ -185,7 +186,7 @@ function HutWorkerForm(props) {
                 </Container>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={()=>handleClose}>
+                    <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
                 </Modal.Footer>
