@@ -35,9 +35,7 @@ function SignupForm(props) {
   const [errorMessage, setErrorMessage] = useState('');
 
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const validInputs = () =>{
     let valid = true;
     let e = {
       email: false,
@@ -83,6 +81,14 @@ function SignupForm(props) {
       e.hutId = true;
     }
     setError(e);
+    return valid;
+
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const valid = validInputs();
+    
     if (valid) {
       const userClass = new User(
         email,
