@@ -109,12 +109,11 @@ function HutWorkerForm(props) {
     }, [setShow]);
 
     const handleHut = (hut) => {
-        console.log(hut.name);
         props.hutSelection(hut.id);
         setHut(hut);
         setHutSelected(true);
         handleClose();
-    }
+    };
 
     return (
         <>
@@ -152,7 +151,7 @@ function HutWorkerForm(props) {
                     </Row>
                     <Row className='mt-3'>
                         {!(hutList) ? false : pageHutList.map((hut) =>
-                            <div onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
+                            <div key={`div_${hut.id}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                                 <Card key={`card_${hut.id}`}>
                                     <Card.Header key={`card_header_${hut.id}`}>
                                         <Row md={10} className='row d-flex justify-content-between'>
