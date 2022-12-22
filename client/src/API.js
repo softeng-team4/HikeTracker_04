@@ -613,9 +613,23 @@ const getHikesByAuthor = async (author, collection = "hike") => {
     return res;
 }
 
+//APIs for registered hikes
+
+const startHike = async (hikeId, collection='regHikes') => {
+    const regHikesref = firestore.collection(db,collection)
+    const regHike ={
+        hikeId: hikeId,
+        status: "ongoing",
+        startTime: dayjs().format('DD/MM/YYYY hh:mm:ss'),
+        userId: fireAuth.getAuth().auth.currentUser.email
+    } 
+    await firestore.addDoc(regHikesref,regHike)
+}
+
 module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition,
-    getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor
+    getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor,
+    startHike
 };
 
