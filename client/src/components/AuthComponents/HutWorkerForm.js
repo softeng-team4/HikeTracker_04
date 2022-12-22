@@ -72,10 +72,10 @@ function HutWorkerForm(props) {
             })
     }, [searchQuery, hutList, range])
 
-    const handlePageChange = (idx) => {
+    const handlePageChange = useCallback((idx) => {
         setIndex(idx);
         setPageHutList(subHutList.slice(idx * hut4page, idx * hut4page + hut4page));
-    };
+    }, [setIndex, setPageHutList, subHutList]);
 
     const handleTouchStart = (e) => {
         setTouchStart(e.targetTouches[0].clientX);
@@ -104,9 +104,10 @@ function HutWorkerForm(props) {
         setRange(undefined);
     }, [setShow, setRange]);
 
-    function handleShow(){
+    const handleShow = useCallback(() => {
         setShow(true);
-    }
+    }, [setShow]);
+
     const handleHut = (hut) => {
         console.log(hut.name);
         props.hutSelection(hut.id);
@@ -150,10 +151,10 @@ function HutWorkerForm(props) {
                         <HutSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} geoArea={geoArea} setGeoArea={setGeoArea} setRange={setRange} />
                     </Row>
                     <Row className='mt-3'>
-                        {!(hutList) ? false : pageHutList.map((hut, idx) =>
-                            <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
-                                <Card key={`card_${idx}`}>
-                                    <Card.Header key={`card_header_${idx}`}>
+                        {!(hutList) ? false : pageHutList.map((hut) =>
+                            <div onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
+                                <Card key={`card_${hut.id}`}>
+                                    <Card.Header key={`card_header_${hut.id}`}>
                                         <Row md={10} className='row d-flex justify-content-between'>
                                             {hut.author ? <Col lg={4}><b>Local guide:</b>&nbsp;{hut.author}</Col> : false}
                                             <Col lg={4}><b>Name:</b>&nbsp;{hut.name}</Col>
@@ -168,16 +169,16 @@ function HutWorkerForm(props) {
                                             {hut.website !== '' && <Col lg={12}><b>Website:</b>&nbsp;{hut.website}</Col>}
                                         </Row>
                                     </Card.Header>
-                                    <Card.Body key={`card_body_${idx}`}>
+                                    <Card.Body key={`card_body_${hut.id}`}>
                                         <Col><b>Description:</b>&nbsp;<Col className='hut-desc'>{hut.description}</Col></Col>
                                     </Card.Body>
-                                    <Card.Footer key={`card_footer_${idx}`}>
+                                    <Card.Footer key={`card_footer_${hut.id}`}>
                                         <Row md={4} className='row d-flex justify-content-between'>
                                             <Button onClick={() => handleHut(hut)}>Select hut</Button>
                                         </Row>
                                     </Card.Footer>
                                 </Card>
-                                <Spacer height='1rem' key={`card_spacer_${idx}`} />
+                                <Spacer height='1rem' key={`card_spacer_${hut.id}`} />
                             </div>
                         )}
                     </Row>
