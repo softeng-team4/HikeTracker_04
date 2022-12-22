@@ -103,7 +103,9 @@ function HutWorkerForm(props) {
         setShow(false);
         setRange(undefined);
     }
-    const handleShow = () => setShow(true);
+    function handleShow(){
+        setShow(true);
+    }
     const handleHut = (hut) => {
         console.log(hut.name);
         props.hutSelection(hut.id);
@@ -183,7 +185,7 @@ function HutWorkerForm(props) {
                 </Container>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={()=>handleClose}>
                         Close
                     </Button>
                 </Modal.Footer>
