@@ -24,8 +24,13 @@ const testHuts = firestore.collection(api.db,"hut-test")
 const testParkingLots = firestore.collection(api.db,"parkingLots-test")
 
 
-describe('test the linking of a hut/parking-lot to a start/end point of a hike',()=>{
+describe('test the linking of a hut/parking-lot to a start/end point of a hike',async ()=>{
 
+    const user={
+        email: "chicco.siviero@gmail.com",
+        password: "chicco"
+    }
+    await api.logIn(user.email,user.password)
     const hike = {
         ascent: 1317.10,
         author: "luca.mistruzzi@gmail.com",

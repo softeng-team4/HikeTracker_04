@@ -20,7 +20,12 @@ const testHikes = firestore.collection(api.db,"hike-test-reference-points")
 describe('testing the addition of reference points by a local guide',()=>{
 
     before(async ()=>{
-
+        const testHikes = firestore.collection(api.db,"hike-test-reference-points")
+        const user={
+            email: "chicco.siviero@gmail.com",
+            password: "chicco"
+        }
+        await api.logIn(user.email,user.password)
         const hikeQuery = firestore.query(testHikes);
         const querySnapshot = await firestore.getDocs(hikeQuery)
         querySnapshot.forEach(async (doc) =>{
