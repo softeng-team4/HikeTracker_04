@@ -103,7 +103,9 @@ function HutWorkerForm(props) {
         setShow(false);
         setRange(undefined);
     }
-    const handleShow = () => setShow(true);
+    function handleShow(){
+        setShow(true);
+    }
     const handleHut = (hut) => {
         console.log(hut.name);
         props.hutSelection(hut.id);
