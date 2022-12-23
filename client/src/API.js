@@ -199,13 +199,10 @@ function distance(lat1, lon1, lat2, lon2) {
     }
 }
 
-const hikesList = async (filters, collection) => {
-    const hikesRef = firestore.collection(db, collection);
-    let q = firestore.query(hikesRef);
-    let cont = 0;
-    const names = [];
-    const values = [];
-    const res = [];
+const checkFilters = (filters) => {
+    let cont = 0
+    let names = []
+    let values = []
     if (filters.country !== undefined) {
         names.push("country");
         values.push(filters.country);
@@ -226,6 +223,20 @@ const hikesList = async (filters, collection) => {
         values.push(filters.difficulty);
         cont++;
     }
+    return [names, values, cont]
+} 
+
+const hikesList = async (filters, collection) => {
+    const hikesRef = firestore.collection(db, collection);
+    let q = firestore.query(hikesRef);
+    let cont = 0;
+    let names = [];
+    let values = [];
+    let res = [];
+    [names, values, cont] = checkFilters(filters)
+    console.log(names)
+    console.log(values)
+    console.log(cont)
     switch (cont) {
         case 1:
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]));
@@ -292,10 +303,14 @@ const hikesList = async (filters, collection) => {
     return res;
 }
 
-const checkFilters = (filters) => {
-    const names = []
-    const values = []
-    let cont = 0
+
+const hutsList = async (filters, collection = "huts") => {
+    const hutsRef = firestore.collection(db, collection);
+    let q = firestore.query(hutsRef);
+    let cont = 0;
+    const names = [];
+    const values = [];
+    const res = [];
     if (filters.country !== undefined) {
         names.push("country");
         values.push(filters.country);
@@ -316,17 +331,6 @@ const checkFilters = (filters) => {
         values.push(filters.difficulty);
         cont++;
     }
-    return [names, values, cont]
-}
-
-const hutsList = async (filters, collection = "huts") => {
-    const hutsRef = firestore.collection(db, collection);
-    let q = firestore.query(hutsRef);
-    let cont = 0;
-    let names = [];
-    let values = [];
-    const res = [];
-    [names, values, cont] = checkFilters(filters)
     switch (cont) {
         case 1:
             q = firestore.query(hutsRef, firestore.where(names[0], '==', values[0]));
