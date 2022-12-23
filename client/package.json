@@ -16,6 +16,7 @@
     "leaflet-gpx": "^1.7.0",
     "leaflet.awesome-markers": "^2.0.5",
     "mocha": "^10.1.0",
+    "prompt-sync": "^4.2.0",
     "rc-slider": "^9.6.5",
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
@@ -33,7 +34,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "apiTest": "mocha test --runInBand --timeout 8000 --exit",
+    "apiTest": "nyc mocha test --runInBand --timeout 8000 --exit",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open"
   },
@@ -56,6 +57,8 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^12.0.2"
+    "babel-cli": "^6.26.0",
+    "cypress": "^12.0.2",
+    "nyc": "^15.1.0"
   }
 }

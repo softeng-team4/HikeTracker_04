@@ -199,13 +199,10 @@ function distance(lat1, lon1, lat2, lon2) {
     }
 }
 
-const hikesList = async (filters, collection) => {
-    const hikesRef = firestore.collection(db, collection);
-    let q = firestore.query(hikesRef);
-    let cont = 0;
-    const names = [];
-    const values = [];
-    const res = [];
+const checkFilters = (filters) => {
+    let cont = 0
+    let names = []
+    let values = []
     if (filters.country !== undefined) {
         names.push("country");
         values.push(filters.country);
@@ -226,6 +223,20 @@ const hikesList = async (filters, collection) => {
         values.push(filters.difficulty);
         cont++;
     }
+    return [names, values, cont]
+} 
+
+const hikesList = async (filters, collection) => {
+    const hikesRef = firestore.collection(db, collection);
+    let q = firestore.query(hikesRef);
+    let cont = 0;
+    let names = [];
+    let values = [];
+    let res = [];
+    [names, values, cont] = checkFilters(filters)
+    console.log(names)
+    console.log(values)
+    console.log(cont)
     switch (cont) {
         case 1:
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]));
@@ -237,7 +248,7 @@ const hikesList = async (filters, collection) => {
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
             break;
         case 4:
-            q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
+            q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]), firestore.where(names[3], '==', values[3]));
             break;
         default:
             break;
@@ -537,12 +548,11 @@ const getHikesByLinkHutWorker = async (hutID, collection = "hike") => {
     const querySnapshot = await firestore.getDocs(hikesRef);
     const res = [];
     querySnapshot.forEach((doc) => {
-        // console.log(doc.id, " => ", doc.data().linkedHuts);
         if (doc.data().linkedHuts !== undefined) {
-            for (let i = 0; i < doc.data().linkedHuts.length; i++) {
-                console.log(doc.id, " => ", doc.data().linkedHuts[i].id, hutID, doc.data().linkedHuts[i].id === hutID);
+            for (let linkedHut of doc.data().linkedHuts) {
+                console.log(doc.id, " => ", linkedHut.id, hutID, linkedHut.id === hutID);
 
-                if (doc.data().linkedHuts[i].id === hutID) {
+                if (linkedHut.id === hutID) {
                     const hike = {
                         id: doc.id,
                         ascent: doc.data().ascent,
@@ -642,4 +652,6 @@ module.exports = {
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor,
     startHike
 };
+
+
 
