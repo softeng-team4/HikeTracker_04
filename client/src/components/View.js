@@ -1,5 +1,5 @@
 import { Container, Row, Col } from 'react-bootstrap';
-import { Outlet } from 'react-router';
+import { Navigate, Outlet } from 'react-router';
 import HikeTable from './BrowserHikeComponents/HikeTable'
 import HandleModifyPage from './ModifyHikeComponents/HandleModifyPage';
 import { HikeForm } from './HikeFormComponents/HikeForm';
@@ -9,6 +9,7 @@ import { ParkForm } from './HutParkFormComponents/ParkForm';
 import UserProfilePage from './UserProfileComponents/UserProfilePage';
 import { PlatformManager } from './PlatformManager';
 import { MyHikeList } from './ModifyHikeComponents/MyHikeList';
+import { ActiveHikePage } from './ActiveHikePage';
 
 
 function DefaultRoute() {
@@ -100,4 +101,12 @@ function ManagerPage(props) {
     );
 }
 
-export { DefaultRoute, BrowserHikes, AppLayout, AddNewHike, AddNewPark, AddNewHut, ModifyHikeByAuthor, UserProfile, ManagerPage };
+function HikePage(props) {
+    return (
+        <>
+            {props.hike? <ActiveHikePage hike = {props.hike}/> : <Navigate to='/'/>}
+        </>
+    )
+}
+
+export { DefaultRoute, BrowserHikes, AppLayout, AddNewHike, AddNewPark, AddNewHut, ModifyHikeByAuthor, UserProfile, ManagerPage, HikePage };

@@ -9,6 +9,7 @@ import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import API from '../../API';
 import { async } from '@firebase/util';
 import ConfirmModal from '../ModifyHikeComponents/ConfirmModal';
+import { Navigate } from 'react-router';
 
 const HikeTable = () => {
 
@@ -84,7 +85,8 @@ const HikeTable = () => {
     };
 
     const startHike = async (hikeId) => {
-        await API.startHike(hikeId);
+        //await API.startHike(hikeId);
+        //Navigate to /active/hikeId
     }
 
     return (
