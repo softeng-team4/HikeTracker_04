@@ -621,7 +621,7 @@ const startHike = async (hikeId, collection='regHikes') => {
         hikeId: hikeId,
         status: "ongoing",
         startTime: dayjs().format('DD/MM/YYYY hh:mm:ss'),
-        userId: fireAuth.getAuth().auth.currentUser.email
+        userId: fireAuth.getAuth().currentUser.email
     } 
     await firestore.addDoc(regHikesref,regHike)
 }
