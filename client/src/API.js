@@ -323,8 +323,8 @@ const hutsList = async (filters, collection = "huts") => {
     const hutsRef = firestore.collection(db, collection);
     let q = firestore.query(hutsRef);
     let cont = 0;
-    const names = [];
-    const values = [];
+    let names = [];
+    let values = [];
     const res = [];
     [names, values, cont] = checkFilters(filters)
     switch (cont) {
