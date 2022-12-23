@@ -20,11 +20,7 @@ const collection = "hike-test";
 const testHikes = firestore.collection(api.db, collection);
 
 describe('testing delete hike function', async () => {
-    const user={
-        email: "chicco.siviero@gmail.com",
-        password: "chicco"
-    }
-    await api.logIn(user.email,user.password)
+    await api.logIn("chicco.siviero@gmail.com","chicco")
     const hike1 = {
         ascent: 1317.10,
         author: "luca.mistruzzi@gmail.com",
