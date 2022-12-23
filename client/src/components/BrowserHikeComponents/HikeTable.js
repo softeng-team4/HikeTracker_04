@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Row, Col, Container, Card, ButtonGroup, Button, Tooltip, OverlayTrigger, Spinner, Modal } from 'react-bootstrap';
+import { Row, Col, Container, Card, ButtonGroup, Button, Tooltip, OverlayTrigger, Spinner, Modal, Alert, Toast, ToastContainer } from 'react-bootstrap';
 import { useContext, useEffect, useState } from 'react';
 import Spacer from './Spacer';
 import FilterForm from './FilterForm';
@@ -37,6 +37,7 @@ const HikeTable = () => {
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0);
 
     const [showConfirm, setShowConfirm] = useState(false);
+    const [message, setMessage] = useState('');
 
     // effect to select the hikes to show based on page number
     useEffect(() => {
@@ -84,7 +85,14 @@ const HikeTable = () => {
     };
 
     const startHike = async (hikeId) => {
-        await API.startHike(hikeId);
+        try {
+            await API.startHike(hikeId);
+            setMessage('')
+        } catch (e) {
+            setMessage(e);
+        }
+
+
     }
 
     return (
@@ -96,6 +104,16 @@ const HikeTable = () => {
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
                         <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} />
+                        {message ? <div className='loading-overlay'><ToastContainer className="p-3" position={'middle-center'}>
+                            <Toast bg='warning' onClose={() => setMessage('')} >
+                                <Toast.Header >
+                                    <strong className="me-auto">Oops!</strong>
+                                    <small>warning</small>
+                                </Toast.Header>
+                                <Toast.Body>{message}</Toast.Body>
+                            </Toast>
+                        </ToastContainer> </div> : ''}
+
                         {subHikeList.map((hike, idx) =>
                             <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                                 <Card key={`card_${idx}`}>

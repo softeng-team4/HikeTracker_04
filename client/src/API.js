@@ -622,7 +622,7 @@ const startHike = async (hikeId, collection='regHikes') => {
         const q = firestore.query(regHikesref, firestore.where("userId","==",user.email), firestore.where("status","==","ongoing"))
         const querySnapshot = await firestore.getDocs(q)
         if(!querySnapshot.empty){
-            reject("User already started a hike")
+            reject("You already started a hike")
             return
         }
         const regHike ={
