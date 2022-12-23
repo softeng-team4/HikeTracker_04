@@ -34,4 +34,7 @@
 
 | Type      | Severity | File name | Line number | Estimated time | Actual time |
 | --------- | -------- | --------- | ----------- | -------------- | ----------- |
-|           |          |           |             |                |             |
+| Security Hotspot | High | client/test/addReferencePointTest.js | 26 |  / | 1m |
+| Security Hotspot | High | client/test/deleteHikeTest.js | 26 |  / | 1m |
+| Code Smell | Critical | client/src/API.js | 202 | 6min | |
+| Code Smell | Critical | client/src/App.js | 16 | 6min | 10m |

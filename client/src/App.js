@@ -128,17 +128,20 @@ function App() {
               {/* here are the routes with authenticated */}
               {authUser && <Route path={`/profile/${authUser.firstName.toLowerCase().replace(' ', '_')}_${authUser.lastName.toLowerCase().replace(' ', '_')}`} element={<UserProfile />} />}
               {/* here are the routes with local guide */}
-              <Route path='hikeform' element={authUser && (authUser.role.toLowerCase() === 'local guide') ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' />} />
-              <Route path='newPark' element={authUser && (authUser.role.toLowerCase() === 'local guide') ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' />} />
-              <Route path='newHut' element={authUser && (authUser.role.toLowerCase() === 'local guide') ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' />} />
-              <Route path='myHikeList' element={authUser && (authUser.role.toLowerCase() === 'local guide') ? <ModifyHikeByAuthor /> : <Navigate to='/' />} />
-              <Route path='modifyHike' element={authUser && (authUser.role.toLowerCase() === 'local guide') ? <StaticHikeInfo /> : <Navigate to='/' />} />
-              <Route path='huts' element={authUser ? <BrowserHuts /> : <Navigate to='/' />} />
+              { authUser &&
+              <>
+              <Route path='hikeform' element={authUser.role.toLowerCase() === 'local guide' ? <AddNewHike addNewHike={addNewHike} /> : <Navigate to='/' />} />
+              <Route path='newPark' element={authUser.role.toLowerCase() === 'local guide' ? <AddNewPark addNewParkingLot={addNewParkingLot} /> : <Navigate to='/' />} />
+              <Route path='newHut' element={authUser.role.toLowerCase() === 'local guide' ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' />} />
+              <Route path='myHikeList' element={authUser.role.toLowerCase() === 'local guide' ? <ModifyHikeByAuthor /> : <Navigate to='/' />} />
+              <Route path='modifyHike' element={authUser.role.toLowerCase() === 'local guide' ? <StaticHikeInfo /> : <Navigate to='/' />} />
+              <Route path='huts' element={<BrowserHuts />} />
 
-              <Route path='hikeCondition' element={authUser && (authUser.role.toLowerCase() === 'hut worker') ? <UpdateCondition /> : <Navigate to='/' />} />
+              <Route path='hikeCondition' element={authUser.role.toLowerCase() === 'hut worker' ? <UpdateCondition /> : <Navigate to='/' />} />
               {/* here are the routes with manager */}
-              <Route path='manager' element={authUser && (authUser.role.toLowerCase() === 'manager') ? <ManagerPage /> : <Navigate to='/' />} />
-              <Route></Route>
+              <Route path='manager' element={authUser.role.toLowerCase() === 'manager' ? <ManagerPage /> : <Navigate to='/' />} />
+              </>
+              }
             </Route>
 
             <Route path='*' element={<DefaultRoute />} />
