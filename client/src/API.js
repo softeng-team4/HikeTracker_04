@@ -619,3 +619,5 @@ module.exports = {
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor
 };
 
+
+
