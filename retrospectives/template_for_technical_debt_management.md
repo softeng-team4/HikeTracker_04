@@ -38,3 +38,5 @@
 | Security Hotspot | High | client/test/deleteHikeTest.js | 26 |  / | 1m |
 | Code Smell | Critical | client/src/API.js | 202 | 6min | 5m |
 | Code Smell | Critical | client/src/App.js | 16 | 6min | 10m |
+| Code Smell | Major | client/src/API.js | 551 | 5min | 0m |
+| Code Smell | Minor | client/src/API.js | 578 | 5min | 2m |

@@ -548,12 +548,11 @@ const getHikesByLinkHutWorker = async (hutID, collection = "hike") => {
     const querySnapshot = await firestore.getDocs(hikesRef);
     const res = [];
     querySnapshot.forEach((doc) => {
-        // console.log(doc.id, " => ", doc.data().linkedHuts);
         if (doc.data().linkedHuts !== undefined) {
-            for (let i = 0; i < doc.data().linkedHuts.length; i++) {
-                console.log(doc.id, " => ", doc.data().linkedHuts[i].id, hutID, doc.data().linkedHuts[i].id === hutID);
+            for (let linkedHut of doc.data().linkedHuts) {
+                console.log(doc.id, " => ", linkedHut.id, hutID, linkedHut.id === hutID);
 
-                if (doc.data().linkedHuts[i].id === hutID) {
+                if (linkedHut.id === hutID) {
                     const hike = {
                         id: doc.id,
                         ascent: doc.data().ascent,
