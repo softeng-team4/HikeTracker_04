@@ -237,7 +237,7 @@ const hikesList = async (filters, collection) => {
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
             break;
         case 4:
-            q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
+            q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]), firestore.where(names[3], '==', values[3]));
             break;
         default:
             break;
@@ -292,14 +292,10 @@ const hikesList = async (filters, collection) => {
     return res;
 }
 
-
-const hutsList = async (filters, collection = "huts") => {
-    const hutsRef = firestore.collection(db, collection);
-    let q = firestore.query(hutsRef);
-    let cont = 0;
-    const names = [];
-    const values = [];
-    const res = [];
+const checkFilters = (filters) => {
+    const names = []
+    const values = []
+    let cont = 0
     if (filters.country !== undefined) {
         names.push("country");
         values.push(filters.country);
@@ -320,6 +316,17 @@ const hutsList = async (filters, collection = "huts") => {
         values.push(filters.difficulty);
         cont++;
     }
+    return [names, values, cont]
+}
+
+const hutsList = async (filters, collection = "huts") => {
+    const hutsRef = firestore.collection(db, collection);
+    let q = firestore.query(hutsRef);
+    let cont = 0;
+    const names = [];
+    const values = [];
+    const res = [];
+    [names, values, cont] = checkFilters(filters)
     switch (cont) {
         case 1:
             q = firestore.query(hutsRef, firestore.where(names[0], '==', values[0]));
