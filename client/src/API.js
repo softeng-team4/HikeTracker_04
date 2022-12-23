@@ -616,14 +616,24 @@ const getHikesByAuthor = async (author, collection = "hike") => {
 //APIs for registered hikes
 
 const startHike = async (hikeId, collection='regHikes') => {
-    const regHikesref = firestore.collection(db,collection)
-    const regHike ={
-        hikeId: hikeId,
-        status: "ongoing",
-        startTime: dayjs().format('DD/MM/YYYY hh:mm:ss'),
-        userId: fireAuth.getAuth().currentUser.email
-    } 
-    await firestore.addDoc(regHikesref,regHike)
+    return new Promise( async (resolve,reject) =>{
+        const regHikesref = firestore.collection(db,collection)
+        const user = fireAuth.getAuth().currentUser
+        const q = firestore.query(regHikesref, firestore.where("userId","==",user.email), firestore.where("status","==","ongoing"))
+        const querySnapshot = await firestore.getDocs(q)
+        if(!querySnapshot.empty){
+            reject("User already started a hike")
+            return
+        }
+        const regHike ={
+            hikeId: hikeId,
+            status: "ongoing",
+            startTime: dayjs().format('DD/MM/YYYY hh:mm:ss'),
+            userId: user.email
+        } 
+        await firestore.addDoc(regHikesref,regHike)
+        resolve("Hike started")
+    })
 }
 
 module.exports = {
