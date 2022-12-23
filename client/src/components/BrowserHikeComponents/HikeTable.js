@@ -7,7 +7,8 @@ import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import API from '../../API';
-
+import { async } from '@firebase/util';
+import ConfirmModal from '../ModifyHikeComponents/ConfirmModal';
 
 const HikeTable = () => {
 
@@ -35,6 +36,7 @@ const HikeTable = () => {
     // function to retrieve page index
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0);
 
+    const [showConfirm, setShowConfirm] = useState(false);
 
     // effect to select the hikes to show based on page number
     useEffect(() => {
@@ -81,6 +83,9 @@ const HikeTable = () => {
         }
     };
 
+    const startHike = async (hikeId) => {
+        await API.startHike(hikeId);
+    }
 
     return (
         <AuthenticationContext.Consumer>
@@ -116,7 +121,11 @@ const HikeTable = () => {
                                                     {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hiker' &&
                                                         <Button id={hike.id}
                                                             size='sm'
-                                                            variant='primary'>
+                                                            variant='primary'
+                                                            onClick={() => {
+                                                                setHike(hikeList.find((h) => h.id === hike.id));
+                                                                setShowConfirm(true)
+                                                            }}>
                                                             Start Hike
                                                         </Button>}
                                                 </Col>
@@ -140,6 +149,8 @@ const HikeTable = () => {
                         )}
                         {!isLoading && hikeList.length === 0 && <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem' /></Container>}
                         <HikePageHandler index={index} pageNum={computeIndex()} handlePageChange={handlePageChange} />
+                        <ConfirmModal show={showConfirm} onSubmit={() => { setShowConfirm(s => !s); startHike(hike.id) }} onAbort={() => { setShowConfirm(false); }} />
+
                     </Container>
                     {hike && <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} />}
                 </>
