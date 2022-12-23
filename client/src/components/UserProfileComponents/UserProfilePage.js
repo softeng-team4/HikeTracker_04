@@ -4,6 +4,7 @@ import Spacer from "../BrowserHikeComponents/Spacer";
 import PreferencesSliderForm from "./PreferencesSliderForm";
 import { IconContext } from 'react-icons'
 import { FaUserCircle } from 'react-icons/fa'
+import { GiSettingsKnobs, GiRunningShoe } from 'react-icons/gi';
 import { getHutById } from "../../API";
 import { useEffect, useState, useContext } from "react";
 import PerformanceStats from "./PerformanceStats";
@@ -80,22 +81,24 @@ const UserProfilePage = (props) => {
                             <>
                                 <Spacer height='2rem' />
                                 <Col lg={{ span: 6, offset: 3 }} className='d-flex justify-content-center'>
-                                    <h2>Preferences</h2>
+                                    <h2>Preferences <GiSettingsKnobs /></h2>
                                 </Col>
                                 <Col lg={{ span: 6, offset: 3 }}>
                                     <PreferencesSliderForm />
                                 </Col>
-                                {authObject.authUser.performances &&
+                                {authObject.authUser.stats &&
                                     <>
                                         <Spacer height='2rem' />
                                         <Col lg={{ span: 6, offset: 3 }} className='d-flex justify-content-center'>
-                                            <h2>Performances</h2>
+                                            <h2>My Stats <GiRunningShoe /></h2>
                                         </Col>
+                                        <Spacer height='2rem' />
                                         <Col lg={{ span: 6, offset: 3 }}>
                                             <PerformanceStats />
                                         </Col>
                                     </>
                                 }
+                                <Spacer height='2rem' />
                             </>
                         }
                     </Container>
