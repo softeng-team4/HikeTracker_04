@@ -90,7 +90,7 @@ const getUser = async (email) => {
 //Queries for the hike collection
 
 
-const addNewHike = async (hike,collection="hike") => {
+const addNewHike = async (hike, collection = "hike") => {
     const newHike = {
         title: hike.title, country: hike.country, region: hike.region, city: hike.city, description: hike.description, difficulty: hike.difficulty, expectedTime: hike.expectedTime,
         length: hike.length, ascent: hike.ascent, startPoint: hike.startPoint, endPoint: hike.endPoint, referencePoint: JSON.stringify(hike.referencePoint), author: hike.author
@@ -613,9 +613,30 @@ const getHikesByAuthor = async (author, collection = "hike") => {
     return res;
 }
 
+const MyCompletedHikes = async (collection = 'regHikes') => {
+    const regHikesref = firestore.collection(db, collection)
+    const user = fireAuth.getAuth().currentUser
+    const q = firestore.query(regHikesref, firestore.where("userId", "==", user.email), firestore.where("status", "==", "terminated"))
+    const querySnapshot = await firestore.getDocs(q)
+    const res = [];
+    querySnapshot.forEach((doc) => {
+        const regHike = {
+            id:doc.id,
+            hikeId: doc.data().hikeId,
+            status: doc.data().status,
+            startTime: doc.data().startTime,
+            passedRP:doc.data().passedRP,
+            userId: doc.data().userId
+        }
+        res.push(regHike)
+    });
+    console.log(res);
+    return res;
+}
+
 module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
-    addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition,
+    addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, MyCompletedHikes,
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor
 };
 
