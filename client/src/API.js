@@ -654,9 +654,9 @@ const terminateHike = async (regHikeId, collection = "regHikes") => {
 }
 
 const getUserActiveHike = async (collection = "regHikes") => {
-    const regHikesref = firestore.collection(db,collection);
+    const regHikesref = firestore.collection(db, collection);
     const user = fireAuth.getAuth().currentUser;
-    const q = firestore.query(regHikesref, firestore.where("userId","==",user.email), firestore.where("status","==","ongoing"));
+    const q = firestore.query(regHikesref, firestore.where("userId", "==", user.email), firestore.where("status", "==", "ongoing"));
     const querySnapshot = await firestore.getDocs(q);
     const res = [];
     querySnapshot.forEach((doc) => {
