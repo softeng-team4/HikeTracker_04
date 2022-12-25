@@ -4,26 +4,15 @@ import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import ConfirmModal from '../ModifyHikeComponents/ConfirmModal';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import API from "../../API"
 
 const HikeCard = (props) => {
     // state to display modal with additional hike info
     const [showInfoModal, setShowInfoModal] = useState(false);
     const [hike, setHike] = useState(props.hike);
-    const [hikeStatus, setHikeStatus] = useState(undefined)
     const [showConfirm, setShowConfirm] = useState(false);
+    const activeHike = props.activeHike
     const navigate = useNavigate()
-
-    useEffect(() => {
-        //regHike = await API.getRegHikeByHikeId(hike.id)
-        const regHike = { hikeId: "1ougz4pxvyWg7AZOKnIA", status: "ongoing", userId: "masterale1999@gmail.com" }
-        if (regHike) {
-            setHikeStatus(regHike.status)
-        }
-        else {
-            setHikeStatus("unregistered")
-        }
-        console.log(hikeStatus)
-    }, [])
 
     // function to display additional hike info modal
     const handleShowInfo = (event) => {
@@ -34,23 +23,15 @@ const HikeCard = (props) => {
     }
 
     const startHike = async (hikeId) => {
-        //await API.startHike(hikeId);
-        navigate(`/active/${hikeId}`)
+        await API.startHike(hikeId);
+        navigate(`/active`)
     }
 
-    const terminateHike = async (hikeId) => {
-        //await API.terminateHike(hikeId);
-        navigate('/')
-    }
 
     const confirmModalSubmit = () => {
         setShowConfirm(s => !s);
-        if (hikeStatus === "ongoing") {
-            terminateHike(hike.id)
-        }
-        else {
-            startHike(hike.id)
-        }
+        
+        startHike(hike.id)
     }
 
     return (
@@ -77,15 +58,15 @@ const HikeCard = (props) => {
                                                 Show more info
                                             </Button>
                                         </OverlayTrigger>
-                                        {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hiker' &&
+                                        {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hiker' && !activeHike &&
                                             <Button id={hike.id}
                                                 size='sm'
-                                                variant={hikeStatus === "ongoing" ? 'danger' : 'primary'}
+                                                variant='primary'
                                                 onClick={() => {
                                                     setHike(hike);
                                                     setShowConfirm(true)
                                                 }}>
-                                                {hikeStatus === "ongoing" ? 'Terminate hike' : 'Start hike'}
+                                                Start hike
                                             </Button>}
                                     </Col>
                                 </Col>

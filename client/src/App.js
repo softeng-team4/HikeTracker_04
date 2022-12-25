@@ -136,7 +136,7 @@ function App() {
               <Route path='myHikeList' element={authUser.role.toLowerCase() === 'local guide' ? <ModifyHikeByAuthor /> : <Navigate to='/' />} />
               <Route path='modifyHike' element={authUser.role.toLowerCase() === 'local guide' ? <StaticHikeInfo /> : <Navigate to='/' />} />
               <Route path='huts' element={<BrowserHuts />} />
-              <Route path='active/:id' element={<HikePage/>} />
+              <Route path='active' element={<HikePage/>} />
               <Route path='hikeCondition' element={authUser.role.toLowerCase() === 'hut worker' ? <UpdateCondition /> : <Navigate to='/' />} />
               {/* here are the routes with manager */}
               <Route path='manager' element={authUser.role.toLowerCase() === 'manager' ? <ManagerPage /> : <Navigate to='/' />} />

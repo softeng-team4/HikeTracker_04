@@ -45,6 +45,10 @@ const NavBar = (props) => {
                                                             <>
                                                                 <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/manager')}>Manage Users</Nav.Link>
                                                             </>}
+                                                        {authObject.authUser.role.toLowerCase() === 'hiker' &&
+                                                            <>
+                                                                <Nav.Link className='d-flex justify-content-center' onClick={() => navigate('/active')}>Active hike</Nav.Link>
+                                                            </>}
                                                     </>
                                                 }
                                             </Col>

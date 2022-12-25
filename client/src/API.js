@@ -662,12 +662,12 @@ const getUserActiveHike = async (collection = "regHikes") => {
     querySnapshot.forEach((doc) => {
         const regHike = {
             id: doc.id,
-            hikeId: doc.hikeId,
-            status: doc.status,
-            startTime: doc.startTime,
-            endTime: doc.endTime,
-            passedRP: doc.passedRP,
-            userId: doc.userId
+            hikeId: doc.data().hikeId,
+            status: doc.data().status,
+            startTime: doc.data().startTime,
+            endTime: doc.data().endTime,
+            passedRP: doc.data().passedRP,
+            userId: doc.data().userId
         };
         res.push(regHike);
     });

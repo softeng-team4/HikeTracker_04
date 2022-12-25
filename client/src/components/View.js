@@ -102,10 +102,9 @@ function ManagerPage(props) {
 }
 
 function HikePage(props) {
-    let params = useParams()
     return (
         <>
-            <ActiveHikePage hikeId = {params.id}/>
+            <ActiveHikePage/>
         </>
     )
 }
