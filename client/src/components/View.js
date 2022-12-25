@@ -1,5 +1,5 @@
 import { Container, Row, Col } from 'react-bootstrap';
-import { Navigate, Outlet } from 'react-router';
+import { Navigate, Outlet, useParams } from 'react-router';
 import HikeTable from './BrowserHikeComponents/HikeTable'
 import HandleModifyPage from './ModifyHikeComponents/HandleModifyPage';
 import { HikeForm } from './HikeFormComponents/HikeForm';
@@ -102,9 +102,10 @@ function ManagerPage(props) {
 }
 
 function HikePage(props) {
+    let params = useParams()
     return (
         <>
-            {props.hike? <ActiveHikePage hike = {props.hike}/> : <Navigate to='/'/>}
+            <ActiveHikePage hikeId = {params.id}/>
         </>
     )
 }
