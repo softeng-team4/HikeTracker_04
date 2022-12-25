@@ -2,15 +2,29 @@ import AuthenticationContext from "../AuthenticationContext";
 import { Row, Col, Container, Card, ButtonGroup, Button, Tooltip, OverlayTrigger, Spinner, Modal } from 'react-bootstrap';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import ConfirmModal from '../ModifyHikeComponents/ConfirmModal';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 const HikeCard = (props) => {
     // state to display modal with additional hike info
     const [showInfoModal, setShowInfoModal] = useState(false);
     const [hike, setHike] = useState(props.hike);
+    const [hikeStatus, setHikeStatus] = useState(undefined)
     const [showConfirm, setShowConfirm] = useState(false);
     const navigate = useNavigate()
+
+    useEffect(() => {
+        //regHike = await API.getRegHikeByHikeIdAndUserId(hike.id, hike.author)
+        const regHike = { hikeId: "1ougz4pxvyWg7AZOKnIA", status: "ongoing", userId: "masterale1999@gmail.com" }
+        if (regHike) {
+            setHikeStatus(regHike.status)
+        }
+        else {
+            setHikeStatus("unregistered")
+        }
+        console.log(hikeStatus)
+    }, [])
+
     // function to display additional hike info modal
     const handleShowInfo = (event) => {
         event.preventDefault();
@@ -24,6 +38,20 @@ const HikeCard = (props) => {
         navigate(`/active/${hikeId}`)
     }
 
+    const terminateHike = async (hikeId) => {
+        //await API.terminateHike(hikeId);
+        navigate('/')
+    }
+
+    const confirmModalSubmit = () => {
+        setShowConfirm(s => !s);
+        if (hikeStatus === "ongoing") {
+            terminateHike(hike.id)
+        }
+        else {
+            startHike(hike.id)
+        }
+    }
 
     return (
         <AuthenticationContext.Consumer>
@@ -52,12 +80,12 @@ const HikeCard = (props) => {
                                         {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hiker' &&
                                             <Button id={hike.id}
                                                 size='sm'
-                                                variant='primary'
+                                                variant={hikeStatus === "ongoing" ? 'danger' : 'primary'}
                                                 onClick={() => {
                                                     setHike(hike);
                                                     setShowConfirm(true)
                                                 }}>
-                                                Start Hike
+                                                {hikeStatus === "ongoing" ? 'Terminate hike' : 'Start hike'}
                                             </Button>}
                                     </Col>
                                 </Col>
@@ -76,7 +104,7 @@ const HikeCard = (props) => {
                         </Card.Footer>
                     </Card>
                     <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} />
-                    <ConfirmModal show={showConfirm} onSubmit={() => { setShowConfirm(s => !s); startHike(hike.id) }} onAbort={() => { setShowConfirm(false); }} />
+                    <ConfirmModal show={showConfirm} onSubmit={confirmModalSubmit} onAbort={() => { setShowConfirm(false); }} />
                 </>
             )}
         </AuthenticationContext.Consumer>
