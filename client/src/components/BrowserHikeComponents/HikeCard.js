@@ -14,7 +14,7 @@ const HikeCard = (props) => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        //regHike = await API.getRegHikeByHikeIdAndUserId(hike.id, hike.author)
+        //regHike = await API.getRegHikeByHikeId(hike.id)
         const regHike = { hikeId: "1ougz4pxvyWg7AZOKnIA", status: "ongoing", userId: "masterale1999@gmail.com" }
         if (regHike) {
             setHikeStatus(regHike.status)
