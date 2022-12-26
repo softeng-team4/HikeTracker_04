@@ -47,13 +47,14 @@ function ActiveHikePage(props) {
                                 {!showRecordPoint ? <Button onClick={() => setShowRecordPoint(true)}>
                                     Record point
                                 </Button> : null}
+
+                                {showRecordPoint ? <RecordPoint regHike={activeHike} hike={hike}></RecordPoint> : null}
                                 <Button variant='danger' onClick={() => setShowConfirm(true)}>
                                     Terminate Hike
                                 </Button>
                             </>
                             : <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There is no active hike!</h5></Card><Spacer height='2rem' /></Container>}
                     </Container>
-                    {showRecordPoint ? <RecordPoint regHike={activeHike} hike={hike}></RecordPoint> : null}
                     <ConfirmModal show={showConfirm} onSubmit={confirmModalSubmit} onAbort={() => { setShowConfirm(false); }} />
                 </>
             )}
