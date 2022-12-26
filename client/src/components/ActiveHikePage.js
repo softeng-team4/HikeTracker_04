@@ -6,12 +6,14 @@ import HikeCard from './BrowserHikeComponents/HikeCard';
 import { useEffect, useState } from 'react';
 import ConfirmModal from './ModifyHikeComponents/ConfirmModal';
 import { useNavigate } from 'react-router';
+import { RecordPoint } from './RecordPoint';
 
 
 function ActiveHikePage(props) {
     const [activeHike, setActiveHike] = useState(undefined)
     const [hike, setHike] = useState(undefined)
     const [showConfirm, setShowConfirm] = useState(false);
+    const [showRecordPoint, setShowRecordPoint] = useState(false);
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -42,13 +44,16 @@ function ActiveHikePage(props) {
                             <>
                                 <HikeCard hike={hike} activeHike={true} />
                                 <Spacer height='2rem' />
+                                {!showRecordPoint ? <Button onClick={() => setShowRecordPoint(true)}>
+                                    Record point
+                                </Button> : null}
                                 <Button variant='danger' onClick={() => setShowConfirm(true)}>
                                     Terminate Hike
                                 </Button>
                             </>
                             : <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There is no active hike!</h5></Card><Spacer height='2rem' /></Container>}
                     </Container>
-
+                    {showRecordPoint ? <RecordPoint regHike={activeHike} hike={hike}></RecordPoint> : null}
                     <ConfirmModal show={showConfirm} onSubmit={confirmModalSubmit} onAbort={() => { setShowConfirm(false); }} />
                 </>
             )}
