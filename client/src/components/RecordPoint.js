@@ -3,7 +3,6 @@ import { Button, Row, Table, Container, Alert } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { useNavigate } from "react-router";
 import API from '../API';
 import { FaRegTrashAlt, FaCheck } from 'react-icons/fa';
 import MapIcons from './MapComponents/MapIcons';
@@ -13,11 +12,9 @@ import ConfirmModal from './ModifyHikeComponents/ConfirmModal';
 function RecordPoint(props) {
 
     const [refPointList, setRefPointList] = useState([]);
-    const passedRefPoint = JSON.parse(props.regHike.passedRP);
+    const [passedRefPoint, setPasseRefPoint] = useState(props.regHike.passedRP !== undefined ? JSON.parse(props.regHike.passedRP) : []);
     const [availableRefPoint, setAvailableRefPoint] = useState([]);
-    const navigate = useNavigate();
     const [showConfirm, setShowConfirm] = useState(false);
-
 
     const points = JSON.parse(props.hike.referencePoint);
     const definedRefPoints = points.filter(e => e.name !== undefined);
@@ -27,7 +24,6 @@ function RecordPoint(props) {
     const maxLng = Math.max(...points.map(p => p.lng)) + 0.003;
 
     useEffect(() => {
-
         const notAvailableRefPoint = passedRefPoint.concat(refPointList);
         const arf = [];
         let cont = 0;
@@ -63,9 +59,9 @@ function RecordPoint(props) {
 
     const confirmModalSubmit = async () => {
         setShowConfirm(s => !s);
-        await API.updateRP( props.regHike.id ,refPointList)
+        setPasseRefPoint(rf=>[...rf, ...refPointList]);
+        await API.updateRP(props.regHike.id, passedRefPoint.concat(refPointList));
         setRefPointList([]);
-        //navigate('/');
     }
 
     return (<>

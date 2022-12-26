@@ -3,7 +3,7 @@ const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth');
 const dayjs = require('dayjs')
-const { GeoPoint, updateDoc, doc, deleteDoc } = require('firebase/firestore');
+const { GeoPoint, updateDoc, doc } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
