@@ -679,11 +679,17 @@ const getHikeById = async (hikeId, collection = "hike") => {
     return { id: hikeId, ...(await firestore.getDoc(firestore.doc(db, collection, hikeId))).data() };
 }
 
+const updateRP = async (regHikeId, refPointList, collection = "regHikes") => {
+    await firestore.updateDoc(firestore.doc(db, collection, regHikeId), {
+        passedRP: JSON.stringify(refPointList)
+    });
+}
+
 module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition,
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor,
-    startHike, terminateHike, getUserActiveHike, getHikeById
+    startHike, terminateHike, getUserActiveHike, getHikeById, updateRP
 };
 
 

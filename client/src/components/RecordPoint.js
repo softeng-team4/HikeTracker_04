@@ -62,11 +62,10 @@ function RecordPoint(props) {
     }
 
     const confirmModalSubmit = async () => {
-        //console.log(activeHike.id)
         setShowConfirm(s => !s);
-        //await API.terminateHike(activeHike.id)
+        await API.updateRP( props.regHike.id ,refPointList)
         setRefPointList([]);
-        navigate('/');
+        //navigate('/');
     }
 
     return (<>
