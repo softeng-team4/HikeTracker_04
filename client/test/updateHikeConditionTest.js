@@ -19,7 +19,7 @@ const collection = "hike-test-update-condition";
 
 const testHikes = firestore.collection(api.db, collection);
 
-describe('testing getHikesByLinkHutWorker API function', () => {
+describe('testing getHikesByLinkHutWorker API function', async() => {
 
     const hike1 = {
         ascent: 1317.10,
@@ -152,7 +152,7 @@ describe('testing getHikesByLinkHutWorker API function', () => {
         title: "Mount Ciarmetta from Bussoleno"
     };
     before(async () => {
-
+        await api.logIn("gianmarcobell95@gmail.com", "password123");
         const hikeQuery = firestore.query(testHikes);
         const querySnapshot = await firestore.getDocs(hikeQuery)
         querySnapshot.forEach(async (doc) => {
@@ -166,6 +166,7 @@ describe('testing getHikesByLinkHutWorker API function', () => {
     
     testHikeList("1", 2);
     testHikeList("2", 1);
+    await api.logOut();
 })
 
 function testHikeList(hutId, n) {

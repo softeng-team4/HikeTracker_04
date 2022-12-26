@@ -19,7 +19,7 @@ const collection = "hike-test";
 
 const testHikes = firestore.collection(api.db, collection);
 
-describe('update hike description test', () => {
+describe('update hike description test', async() => {
 
     const hike = {
         ascent: 1317.10,
@@ -68,7 +68,7 @@ describe('update hike description test', () => {
     }
     
     before(async () => {
-
+        await api.logIn("gianmarcobell95@gmail.com", "password123");
         const hikeQuery = firestore.query(testHikes);
         const querySnapshot = await firestore.getDocs(hikeQuery)
         querySnapshot.forEach(async (doc) => {
@@ -84,6 +84,7 @@ describe('update hike description test', () => {
         description: "Test description update"
     }
     testUpdateHikeDescription(values, "1", hike);
+    await api.logOut();
 
 })
 
