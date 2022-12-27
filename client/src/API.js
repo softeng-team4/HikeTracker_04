@@ -625,7 +625,8 @@ const MyCompletedHikes = async (collection = 'regHikes') => {
             hikeId: doc.data().hikeId,
             status: doc.data().status,
             startTime: doc.data().startTime,
-            passedRP:doc.data().passedRP,
+            endTime: doc.data().endTime,
+            passedRP: doc.data().passedRP? doc.data().passedRP : undefined,
             userId: doc.data().userId
         }
         res.push(regHike)
