@@ -60,7 +60,7 @@ const AdditionalHikeInfoModal = (props) => {
                     {props.hike.endPoint.name && <Col><strong>End Point:</strong>&nbsp;<span className='mylink' onClick={() => { handleClickOnStartEndPoint(props.hike.endPoint) }}>{props.hike.endPoint.name}</span></Col>}
                 </Modal.Body>
                 <Modal.Footer className='addInfo'>
-                    <Button size='sm' onClick={props.onHide}>Close</Button>
+                    <Button size='sm' onClick={props.onHide} className='closebtn'>Close</Button>
                 </Modal.Footer>
             </Modal>
             {hutOrParkLot ? <HutOrParkLotModal show={showHutOrParkLotModal} onHide={() => setShowHutOrParkLotModal(false)} hutOrParkLot={hutOrParkLot} isHut={isHut} /> : null}

@@ -49,7 +49,7 @@ function LoginForm(props) {
           <Form.Control className='password-input' type='password' value={password} onChange={ev => setPassword(ev.target.value)} autoComplete="on" />
         </Form.Group>
         <div align="right" style={{ marginTop: 10 }}>
-          <Button type="submit">Login</Button>
+          <Button type="submit" className='loginbtn'>Login</Button>
         </div>
       </Form>
     </Container>)
