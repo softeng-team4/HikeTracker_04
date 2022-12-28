@@ -85,7 +85,7 @@ function CompletedHikes(props){
                                         </Row>
                                     </Card.Header>
                                     <Card.Body key={`card_body_${idx}`}>
-                                        {hike.passedRP? <RefPointsMap passedRP={hike.passedRP}></RefPointsMap> : false}
+                                        {hike.passedRP && hike.passedRP.length? <RefPointsMap passedRP={hike.passedRP}></RefPointsMap> : false}
                                     </Card.Body>
                                     <Card.Footer key={`card_footer_${idx}`}>
                                         <Row md={10} className='row d-flex justify-content-between'>
@@ -109,32 +109,33 @@ function CompletedHikes(props){
 
 function RefPointsMap(props){
 
-    const evaluateCenter = () => {
-        return points.reduce((sum, point) => (
-            [point.lat + sum[0], point.lng + sum[1]]
-        ), [0., 0.]).map(v => v / points.length);
-    };
 
     const [minLat,setMinLat] = useState()
     const [minLng,setMinLng] = useState()
     const [maxLat,setMaxLat] = useState()
     const [maxLng,setMaxLng] = useState()
-    const [points,setPoints] = useState()
+    const [points,setPoints] = useState([])
     const [center,setCenter] = useState()
     const [bounds,setBounds] = useState()
-    const [position, setPosition] = useState([45.06294822296754, 7.662272990156818]);
 
     useEffect(() =>{
-        setPoints(JSON.parse(props.passedRP))
+        setPoints(() => JSON.parse(props.passedRP))
     },[props.passedRP])
 
     useEffect(()=>{
         if(points){
-            setMinLat(Math.min(points.map(p => p.lat)) - 0.003)
-            setMaxLat(Math.max(points.map(p => p.lat)) + 0.003)
-            setMinLng(Math.min(points.map(p => p.lng)) - 0.003)
-            setMaxLng(Math.max(points.map(p => p.lng)) + 0.003)
-            setCenter(() => evaluateCenter())
+            setMinLat(() => Math.min(points.map(p => p.lat)) - 0.003)
+            setMaxLat(() => Math.max(points.map(p => p.lat)) + 0.003)
+            setMinLng(() => Math.min(points.map(p => p.lng)) - 0.003)
+            setMaxLng(() => Math.max(points.map(p => p.lng)) + 0.003)
+
+            const evaluateCenter = () => {
+                return points.reduce((sum, point) => (
+                    [point.lat + sum[0], point.lng + sum[1]]
+                ), [0., 0.]).map(v => v / points.length);
+            };
+
+            setCenter(evaluateCenter)
             
         }
     },[points])
@@ -145,24 +146,27 @@ function RefPointsMap(props){
     },[maxLat,maxLng,minLat,minLng])
 
     return(
+        <>
+        {points && center && bounds?
         <MapContainer center={center} bounds={bounds}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {points? <Polyline
+            <Polyline
                         pathOptions={{ fillColor: 'red', color: 'blue' }}
                         positions={points}
-                    />: false}
-            {points? points.map(rp =>
+                    />
+            {points.map(rp =>
                         <Marker key={`mark_${rp.name}${rp.lat}${rp.lng}`} position={[rp.lat, rp.lng]} icon={MapIcons.refIcon}>
                             <Popup>
                                 {rp.name}
                             </Popup>
                         </Marker>
-                    ) : false}
-            <LocationMarker position={position} setPosition={setPosition} isRef={true} />
+                    )} 
         </MapContainer>
+        : false}
+        </>
     )
 }
 export {CompletedHikes}
