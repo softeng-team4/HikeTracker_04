@@ -394,8 +394,8 @@ function HikeForm(props) {
                         </Form.Group>
                         <Form.Group as={Row} controlId="formFile" className="mb-3">
                             <Form.Label>GPX File</Form.Label>
-                            <div style={{ paddingRight: 10, paddingLeft: 10 }}>
-                                <Form.Control type="file" accept=".gpx" value={GPX} required onChange={(event) => {
+                            <div style={{ paddingRight: 10, paddingLeft: 10 }} className="file-upload">
+                                <Form.Control type="file" accept=".gpx" value={GPX} required  onChange={(event) => {
                                     checkFile();
                                     setGPX(event.target.value);
                                     loadGPXContent(event.target.files);

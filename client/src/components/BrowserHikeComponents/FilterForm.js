@@ -106,7 +106,7 @@ const FilterForm = (props) => {
                             <SliderForm customPreferences={customPreferences} setRanges={setFilters} />
                         </Row>
                         {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hiker' && authObject.authUser.preferences && <Row>
-                            <Form.Check type='checkbox' reverse label='Apply my preferences filter' onChange={(ev) => handleCustomFilters(ev)} />
+                            <Form.Check type='checkbox' reverse label='Apply my preferences filter' onChange={(ev) => handleCustomFilters(ev)} className='setPreBtn' />
                         </Row>
                         }
                     </Row>

@@ -1,4 +1,5 @@
 import API from "../../src/API"
+import 'cypress-file-upload';
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -27,16 +28,14 @@ import API from "../../src/API"
 
 Cypress.Commands.add('login', (email, password) => {
         cy.visit('http://localhost:3000/login')
-        cy.get('form > :nth-child(1) > #username').clear()
-        cy.get('form > :nth-child(2) > #password').clear()
-        cy.get('form > :nth-child(1) > #username').type(email)
-        cy.get('form > :nth-child(2) > #password').type(password)
+        cy.get('form > :nth-child(1) > #username').clear().type(email)
+        cy.get('form > :nth-child(2) > #password').clear().type(password)
         cy.contains('Login').click()
         cy.url().should('include', '/')
 })
 
 Cypress.Commands.add('logout', () => {
-    cy.get('.dropdown-toggle').click()
+    cy.get('.mb-1').click()
     cy.get('.logOutBtn').click()
 })
 

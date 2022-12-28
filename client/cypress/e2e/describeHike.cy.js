@@ -1,59 +1,47 @@
 describe('loginhikeform e2e tset', () => {
-  it('1 access the webpage', () => {
-    cy.visit('http://localhost:3000/')
-  })
 
-  it('sign in button exists',()=>{
-    cy.contains('Sign In')
-  })
-  
   it('sign in button test',()=>{
+    cy.visit('http://localhost:3000/')
     cy.contains('Sign In').click()
     cy.url().should('include', '/login')
   })
 
   it('wrong login with empty account',()=>{
-    cy.contains('Login').click()
-    cy.contains('Email cannot be empty and password must be at least six character long')
+    cy.visit('http://localhost:3000/login')
+    cy.get('.loginbtn').click()
+    cy.contains('Invalid email address.')
   })
 
   it('wrong login with wrong info',()=>{
-    cy.get('.email-input').clear()
-    cy.get('.password-input').clear()
-    cy.get('.email-input').type('dqy0828@gmail.com').should('have.value', 'dqy0828@gmail.com')
-    cy.get('.password-input').type('12345678').should('have.value', '12345678')
-    cy.contains('Login').click()
+    cy.login('dqy0828@gmail.com','1234567')
     cy.contains('Error')
   })
 
   it('wrong login with account does not exist',()=>{
-    cy.get('.email-input').clear()
-    cy.get('.password-input').clear()
-    cy.get('.email-input').type('s300179@studenti.polito.it').should('have.value', 's300179@studenti.polito.it')
-    cy.get('.password-input').type('12345678').should('have.value', '12345678')
-    cy.contains('Login').click()
+    cy.login('dqy@gmail.com','12345678')
     cy.contains('Error')
   })
 
   it('login form test',()=>{
-    cy.get('.email-input').clear()
-    cy.get('.password-input').clear()
-    cy.get('.email-input').type('dqy0828@gmail.com').should('have.value', 'dqy0828@gmail.com')
-    cy.get('.password-input').type('123456789').should('have.value', '123456789')
-
-    cy.contains('Login').click()
-    cy.url().should('include', '/home')
-
+    cy.login('dqy0828@gmail.com','123456789')
+    cy.url().should('include', '/')
+    cy.logout()
   })
 
 })
 
 describe('hikeform e2e test', () => {
-  it('1 access the webpage', () => {
-    cy.visit('http://localhost:3000/hikeform')
+  beforeEach(() => {
+    cy.login('dqy0828@gmail.com', '123456789')
+  })
+
+  afterEach(()=>{
+    cy.logout();
   })
 
   it('all info exist',()=>{
+    cy.contains('New Hike').click()
+    cy.contains('Add A New Hike')
     cy.contains('Title')
     cy.contains('Length')
     cy.contains('Expected time')
@@ -64,36 +52,39 @@ describe('hikeform e2e test', () => {
     cy.contains('City')
     cy.contains('Description')
   })
-  
-  it('exit button test',()=>{
-    cy.contains('Exit without saving').click()
-    cy.url().should('include', '/home')
-  })
 
-  it('2 access the webpage again', () => {
-    cy.visit('http://localhost:3000/hikeform')
+  it('exit button test',()=>{
+    cy.contains('New Hike').click()
+    cy.contains('Exit without saving').click()
+    cy.url().should('include', '/')
   })
 
   it('submit form validation',()=>{
-    cy.contains('Submit form').click()
+    cy.contains('New Hike').click()
     cy.contains('Please insert')
-  
+
   })
 
-  it('3 access the webpage again', () => {
-    cy.visit('http://localhost:3000/hikeform')
-  })
-
-  it('submit form',()=>{
+  it('submit form', () => {
+    cy.contains('New Hike').click()
     cy.get('.title-input').type('e2e test').should('have.value', 'e2e test')
-    cy.get('.length-input').type('588').should('have.value', '588')
     cy.get('.expTime-input').type('344').should('have.value', '344')
-    cy.get('.ascent-input').type('788').should('have.value', '788')
+    cy.get('.difficulty-input').select('Hiker').should('have.value', 'Hiker')
     cy.get('.country-input').select('IN').should('have.value', 'IN')
     cy.get('.region-input').select('TG').should('have.value', 'TG')
     cy.get('.city-input').select('Bodhan').should('have.value', 'Bodhan')
+    cy.get('.file-upload').click()
+    cy.get("input[type='file']").attachFile('test.gpx')
+    cy.get('.length-input').should('have.value', '5694.10')
+    cy.get('.ascent-input').should('have.value', '177.09')
     cy.get('.description-input').type('e2e test').should('have.value', 'e2e test')
+    cy.contains('Latitude')
+    cy.contains('Longitude')
+    cy.contains('Altitude')
+    cy.contains('Start point')
+    cy.contains('End point')
     cy.contains('Submit form').click()
+    cy.contains('Close').click()
   })
 
 })

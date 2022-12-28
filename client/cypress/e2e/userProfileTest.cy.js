@@ -11,6 +11,9 @@ before(() => {
   cy.wait(1000)
 })
 
+after(()=>{
+  cy.logout();
+})
 
 describe('User Profile Open Offcanvas', () => {
 
