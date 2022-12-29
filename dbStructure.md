@@ -11,6 +11,8 @@
 | reqStatus | string |
 | respDate      | string |
 | hutId       | string |
+| preferences       | map |
+| stats      | map |
 
 
 **reqRole possible values:** "hut worker", "local guide"
@@ -20,6 +22,24 @@
 **respDate:** date of rejection/approval of the last request
 
 **hutId:** id of the hut that a hut worker works to, written upon approval of a request for a hut worker account (hut worker exclusive)
+
+**preferences:** map of custom preferences on hike filters (length, ascent and expected time ranges) for hikers, a range is an object like
+  - min: number
+  - max: number
+
+**stats:** map of performance stats of a hiker, It is an object with fields:
+  - completed_hikes: number
+  - distance: number
+  - time: number
+  - ascent: number
+  - ascending_time: number
+  - highest_altitude: number
+  - highest_altitude_range: number
+  - longest_hike_distance: number
+  - longest_hike_time: number
+  - shortest_hike_distance: number
+  - shortest_hike_time: number
+  - fastest_paced_hike: number
 
 
 # hike
