@@ -1,17 +1,17 @@
 before(() => {
   cy.visit('http://localhost:3000/')
-  cy.contains('Sign In').click()
-  cy.url().should('include', '/login')
-  cy.get('.email-input').clear()
-  cy.get('.password-input').clear()
-  cy.get('.email-input').clear().type('masterale1999@gmail.com')
-  cy.get('.password-input').clear().type('password')
-  cy.get('.loginbtn').click()
-  cy.go("back")
-  cy.wait(1000)
+  // cy.contains('Sign In').click()
+  // cy.url().should('include', '/login')
+  // cy.get('.email-input').clear()
+  // cy.get('.password-input').clear()
+  // cy.get('.email-input').clear().type('masterale1999@gmail.com')
+  // cy.get('.password-input').clear().type('password')
+  // cy.get('.loginbtn').click()
+  // cy.go("back")
+  cy.login('masterale1999@gmail.com', 'password')
 })
 
-after(()=>{
+after(() => {
   cy.logout();
 })
 
@@ -19,7 +19,8 @@ describe('User Profile Open Offcanvas', () => {
 
   it('open user profile canvas', () => {
     cy.visit('http://localhost:3000/')
-    cy.get('.dropdown-toggle').click()
+    cy.login('masterale1999@gmail.com', 'password')
+    cy.get('.mb-1').click()
     cy.contains('My Profile').click()
   })
 })
