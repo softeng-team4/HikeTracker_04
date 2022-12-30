@@ -54,6 +54,7 @@ const NavBar = (props) => {
                                             <Col sm={3} className='d-none d-sm-flex justify-content-sm-end'>
                                                 {authObject.authUser &&
                                                     <DropdownButton
+                                                        className='userDropdownButton'
                                                         variant='outline-dark'
                                                         drop='down'
                                                         align='end'
