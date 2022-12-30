@@ -35,7 +35,8 @@ Cypress.Commands.add('login', (email, password) => {
 })
 
 Cypress.Commands.add('logout', () => {
-    cy.get('.mb-1').click()
+    cy.visit('http://localhost:3000/')
+    cy.get('.userDropdownButton').click()
     cy.get('.logOutBtn').click()
 })
 
