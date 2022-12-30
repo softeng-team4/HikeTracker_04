@@ -20,7 +20,7 @@ describe('User Profile Open Offcanvas', () => {
   it('open user profile canvas', () => {
     cy.visit('http://localhost:3000/')
     cy.login('masterale1999@gmail.com', 'password')
-    cy.get('.mb-1').click()
+    cy.get('.userDropdownButton').click()
     cy.contains('My Profile').click()
   })
 })
@@ -29,7 +29,7 @@ describe('User Profile Offcanvas', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
-    cy.get('.mb-1').click()
+    cy.get('.userDropdownButton').click()
     cy.contains('My Profile').click()
   })
 
