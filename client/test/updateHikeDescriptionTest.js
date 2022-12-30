@@ -8,8 +8,8 @@ chai.should();
 
 
 // Import the functions you need from the SDKs you need
-const firebase = require('firebase/app')
-const firestore = require('firebase/firestore')
+const firebase = require('firebase/app');
+const firestore = require('firebase/firestore');
 const api = require('../src/API');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
@@ -19,7 +19,7 @@ const collection = "hike-test";
 
 const testHikes = firestore.collection(api.db, collection);
 
-describe('update hike description test', async() => {
+describe('update hike description test', async () => {
 
     const hike = {
         ascent: 1317.10,
@@ -66,52 +66,53 @@ describe('update hike description test', async() => {
 
 
     }
-    
+
     before(async () => {
         await api.logIn("gianmarcobell95@gmail.com", "password123");
         const hikeQuery = firestore.query(testHikes);
         const querySnapshot = await firestore.getDocs(hikeQuery)
         querySnapshot.forEach(async (doc) => {
-            await firestore.deleteDoc(firestore.doc(api.db, collection, doc.id))
+            await firestore.deleteDoc(firestore.doc(api.db, collection, doc.id));
         })
         await firestore.setDoc(firestore.doc(testHikes, "1"), hike);
     })
 
-    const values={
-        title: "Test title update", 
-        expectedTime: 300, 
+    const values = {
+        title: "Test title update",
+        expectedTime: 300,
         difficulty: "Pro",
         description: "Test description update"
-    }
+    };
+
     testUpdateHikeDescription(values, "1", hike);
     await api.logOut();
 
 })
 
-function testUpdateHikeDescription(values, hutId, hike){
+function testUpdateHikeDescription(values, hutId, hike) {
     it("Updating an hike description given its id", function (done) {
         api.UpdateHikeDescription(values.title, values.expectedTime, values.difficulty, values.description, hutId, collection)
-        .then(()=>{
-            firestore.getDoc(firestore.doc(api.db, collection,"1"))
-            .then((doc) =>{
-                doc.data.title.should.equal(values.title);
-                doc.data.length.should.equal(hike.length);
-                doc.data.expectedTime.should.equal(values.expectedTime);
-                doc.data.ascent.should.equal(hike.ascent);
-                doc.data.difficulty.should.equal(values.difficulty);
-                doc.data.startPoint.should.equal(hike.startPoint);
-                doc.data.endPoint.should.equal(hike.endPoint);
-                doc.data.description.should.equal(values.description);
-                doc.data.country.should.equal(hike.country);
-                doc.data.region.should.equal(hike.region);
-                doc.data.city.should.equal(hike.city);
-                doc.data.linkedHuts.should.equal(hike.linkedHuts);
-                doc.data.referencePoint.should.equal(hike.referencePoint);
+            .then(() => {
+                firestore.getDoc(firestore.doc(api.db, collection, "1"))
+                    .then((doc) => {
+                        doc.data.title.should.equal(values.title);
+                        doc.data.length.should.equal(hike.length);
+                        doc.data.expectedTime.should.equal(values.expectedTime);
+                        doc.data.ascent.should.equal(hike.ascent);
+                        doc.data.difficulty.should.equal(values.difficulty);
+                        doc.data.startPoint.should.equal(hike.startPoint);
+                        doc.data.endPoint.should.equal(hike.endPoint);
+                        doc.data.description.should.equal(values.description);
+                        doc.data.country.should.equal(hike.country);
+                        doc.data.region.should.equal(hike.region);
+                        doc.data.city.should.equal(hike.city);
+                        doc.data.linkedHuts.should.equal(hike.linkedHuts);
+                        doc.data.referencePoint.should.equal(hike.referencePoint);
+                    })
             })
-        })
-        .then(() => done(), done)
-        .catch((error) => {
-            done(error);
-        });
+            .then(() => done(), done)
+            .catch((error) => {
+                done(error);
+            });
     })
 }
