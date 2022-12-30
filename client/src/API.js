@@ -635,9 +635,13 @@ const MyCompletedHikes = async (collection = 'regHikes') => {
     return res;
 }
 
+const getHikeById = async (hikeId, collection = "hike") => {
+    return { id: hikeId, ...(await firestore.getDoc(firestore.doc(db, collection, hikeId))).data() };
+}
+
 module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, MyCompletedHikes,
-    getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor
+    getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor, getHikeById
 };
 

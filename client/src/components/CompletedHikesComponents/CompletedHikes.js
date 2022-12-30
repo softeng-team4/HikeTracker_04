@@ -22,12 +22,16 @@ function CompletedHikes(props){
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0)
 
     useEffect(() =>{
+        const getCompletedHikes = async () =>{
+            const hikes = await API.MyCompletedHikes()
+            for(let h of hikes){
+                    const hike = await API.getHikeById(h.hikeId)
+                    h.title = hike.title
+            }
+            return hikes
+        }
         setIsLoading(true)
-        API.MyCompletedHikes().then(r => {
-            r.forEach(h =>{
-            })
-            setHikeList(r)})
-
+        getCompletedHikes().then(r => setHikeList(r))
     },[])
 
     useEffect(() => {
@@ -81,7 +85,7 @@ function CompletedHikes(props){
                                         <Row md={10} className='row d-flex justify-content-between'>
                                             <Col lg={4}><b>Start time:</b>&nbsp;{hike.startTime}</Col>
                                             <Col lg={4}><b>End time:</b>&nbsp;{hike.endTime}</Col>
-                                            <Col lg={4}><b>Hike id:</b>&nbsp;{hike.hikeId}</Col>
+                                            {hike.title? <Col lg={4}><b>Title:</b>&nbsp;{hike.title}</Col> : false}
                                         </Row>
                                     </Card.Header>
                                     <Card.Body key={`card_body_${idx}`}>
