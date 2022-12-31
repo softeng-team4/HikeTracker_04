@@ -28,23 +28,22 @@ import 'cypress-file-upload';
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('login', (email, password) => {
-        // cy.visit('http://localhost:3000/login')
-        // cy.get('form > :nth-child(1) > #username').clear().type(email)
-        // cy.get('form > :nth-child(2) > #password').clear().type(password)
-        // cy.contains('Login').click()
-        // cy.url().should('include', '/')
-        const auth = fireAuth.getAuth();
-        fireAuth.signOut(auth);
-        fireAuth.signInWithEmailAndPassword(auth, email, password);
-        cy.visit('http://localhost:3000/')
+        cy.visit('http://localhost:3000/login')
+        cy.get('form > :nth-child(1) > #username').clear().type(email)
+        cy.get('form > :nth-child(2) > #password').clear().type(password)
+        cy.contains('Login').click()
+        cy.url().should('include', '/')
+        // const auth = fireAuth.getAuth();
+        // fireAuth.signOut(auth);
+        // fireAuth.signInWithEmailAndPassword(auth, email, password);
+        // cy.visit('http://localhost:3000/')
 })
 
 Cypress.Commands.add('logout', () => {
-    // cy.visit('http://localhost:3000/')
-    // cy.get('.userDropdownButton').click()
-    // cy.get('.logOutBtn').click()
-    const auth = fireAuth.getAuth();
-    fireAuth.signOut(auth);
+    cy.get('.userDropdownButton').click()
+    cy.get('.logOutBtn').click()
+    // const auth = fireAuth.getAuth();
+    // fireAuth.signOut(auth);
 })
 
 Cypress.Commands.add("createTestHike", (hike = {}) => {

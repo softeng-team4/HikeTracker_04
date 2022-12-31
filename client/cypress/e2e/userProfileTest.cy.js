@@ -50,7 +50,7 @@ describe('User Profile Offcanvas', () => {
   it('Set preferences', () => {
     cy.get('.prefLengthRange > div > span[style="left: 80%;"]').click()
     cy.get('.prefAscentRange > div > span[style="left: 40%;"]').click()
-    cy.get('.prefExpTimeRange > div > span[style="left: 80%;"]').click()
+    cy.get('.prefExpTimeRange > div > span[style="left: 80%;"]').click({force: true})
   })
 
   it('Redirect to user page', () => {
@@ -75,7 +75,7 @@ describe('User Profile Page', () => {
   it('Set preferences', () => {
     cy.get('.prefLengthRange > div > span[style="left: 80%;"]').click()
     cy.get('.prefAscentRange > div > span[style="left: 40%;"]').click()
-    cy.get('.prefExpTimeRange > div > span[style="left: 80%;"]').click()
+    cy.get('.prefExpTimeRange > div > span[style="left: 80%;"]').click({force: true})
   })
 })
 
