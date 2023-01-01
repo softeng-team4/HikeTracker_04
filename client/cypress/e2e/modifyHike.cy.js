@@ -7,6 +7,17 @@ describe("Modify hike", () => {
         cy.logout()
     })
 
+
+    it('there is not any my hikes',()=>{
+        cy.login("chicco.siviero@gmail.com","chicco")
+        cy.url().should('include', '/')
+        cy.get('.dropdown-toggle').click()
+        cy.get('.dropdown-menu > .modify-page').click()
+        cy.url().should('include', '/myHikeList')
+        cy.contains("You haven't added any hike yet")
+        cy.logout()
+    })
+
     it("Open edit page", () =>{
         cy.login("aleganino@gmail.com","password")
         cy.get('.dropdown-toggle').click()

@@ -10,7 +10,7 @@ describe('link huts', () => {
         cy.url().should('include', '/modifyHike')
         cy.get('#modify-tab-handler-tab-LinkHuts').click()
         cy.get('.awesome-marker-icon-blue').first().click({force: true})
-        cy.get('#A6e9rYeUqbiVdWx3rCNX').click()
+        cy.get('#sHObau64aEDosYMrbNln').click()
         cy.get('.btn-success').contains('Submit changes').click()
         //cy.get('.modal-footer > .btn-success')
         cy.get('.btn-secondary').click()

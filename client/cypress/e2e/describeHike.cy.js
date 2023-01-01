@@ -32,7 +32,7 @@ describe('loginhikeform e2e tset', () => {
 
 describe('hikeform e2e test', () => {
   beforeEach(() => {
-    cy.login('dqy0828@gmail.com', '123456789')
+    cy.login('aleganino@gmail.com', 'password')
   })
 
   afterEach(()=>{

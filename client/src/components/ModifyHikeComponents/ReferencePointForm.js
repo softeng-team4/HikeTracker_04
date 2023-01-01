@@ -130,7 +130,7 @@ function ReferencePointForm(props) {
                 </Col>
             </Form.Group>
             <Row style={{ marginBottom: 10 }}>
-                <MapContainer center={evaluateCenter()} bounds={L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng))}>
+                <MapContainer className='map_ref' center={evaluateCenter()} bounds={L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng))}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -187,8 +187,8 @@ function ReferencePointForm(props) {
                     )}
                 </tbody>
             </Table>
-            <Button type="submit" onClick={(ev) => AddRefPoint(ev)}>Add point</Button>
-            <Button variant='success' type="submit" style={{ marginLeft: 10 }}>Submit changes</Button>
+            <Button type="submit" className='refAddBtn' onClick={(ev) => AddRefPoint(ev)}>Add point</Button>
+            <Button variant='success' className='refConfirmBtn' type="submit" style={{ marginLeft: 10 }}>Submit changes</Button>
         </Form>
     </Container>);
 }
