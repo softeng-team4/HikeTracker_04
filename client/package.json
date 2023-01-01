@@ -31,12 +31,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts -r @cypress/instrument-cra start",
+    "start": "react-scripts start",
+    "start-test": "react-scripts -r @cypress/instrument-cra start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "apiTest": "nyc mocha test --runInBand --timeout 8000 --exit",
     "eject": "react-scripts eject",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "e2eTestCov": "npx cypress run -c screenshotOnRunFailure=false,video=false"
   },
   "eslintConfig": {
     "extends": [
