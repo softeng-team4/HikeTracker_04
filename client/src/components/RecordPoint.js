@@ -7,7 +7,7 @@ import API from '../API';
 import { FaRegTrashAlt, FaCheck } from 'react-icons/fa';
 import MapIcons from './MapComponents/MapIcons';
 import ConfirmModal from './ModifyHikeComponents/ConfirmModal';
-
+const dayjs = require('dayjs')
 
 function RecordPoint(props) {
 
@@ -50,7 +50,14 @@ function RecordPoint(props) {
     };
 
     const AddRefPoint = (i) => {
-        setRefPointList(state => [...state, availableRefPoint[i]]);
+        const rp = {
+            lat: availableRefPoint[i].lat,
+            lng: availableRefPoint[i].lng,
+            name: availableRefPoint[i].name,
+            time: dayjs().format('DD/MM/YYYY hh:mm:ss')
+
+        };
+        setRefPointList(state => [...state, rp]);
     };
 
     const deleteRefPoint = (i) => {
