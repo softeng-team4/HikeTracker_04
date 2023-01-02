@@ -44,7 +44,7 @@ function ActiveHikePage(props) {
                             <>
                                 <HikeCard hike={hike} activeHike={true} />
                                 <Spacer height='2rem' />
-                                {!showRecordPoint ? <Button onClick={() => setShowRecordPoint(true)}>
+                                {!showRecordPoint ? <Button onClick={() => setShowRecordPoint(true)} style={{marginRight:10}}>
                                     Record point
                                 </Button> : null}
 
