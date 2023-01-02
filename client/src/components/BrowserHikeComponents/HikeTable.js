@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Row, Col, Container, Card, ButtonGroup, Button, Tooltip, OverlayTrigger, Spinner, Modal } from 'react-bootstrap';
+import { Row, Col, Container, Card, ButtonGroup, Button, Tooltip, OverlayTrigger, Spinner, Modal, Alert, Toast, ToastContainer } from 'react-bootstrap';
 import { useContext, useEffect, useState } from 'react';
 import Spacer from './Spacer';
 import FilterForm from './FilterForm';
@@ -7,7 +7,8 @@ import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import API from '../../API';
-
+import { async } from '@firebase/util';
+import ConfirmModal from '../ModifyHikeComponents/ConfirmModal';
 
 const HikeTable = () => {
 
@@ -35,6 +36,8 @@ const HikeTable = () => {
     // function to retrieve page index
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0);
 
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [message, setMessage] = useState('');
 
     // effect to select the hikes to show based on page number
     useEffect(() => {
@@ -81,6 +84,16 @@ const HikeTable = () => {
         }
     };
 
+    const startHike = async (hikeId) => {
+        try {
+            await API.startHike(hikeId);
+            setMessage('')
+        } catch (e) {
+            setMessage(e);
+        }
+
+
+    }
 
     return (
         <AuthenticationContext.Consumer>
@@ -91,6 +104,16 @@ const HikeTable = () => {
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
                         <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} />
+                        {message ? <div className='loading-overlay'><ToastContainer className="p-3" position={'middle-center'}>
+                            <Toast bg='warning' onClose={() => setMessage('')} >
+                                <Toast.Header >
+                                    <strong className="me-auto">Oops!</strong>
+                                    <small>warning</small>
+                                </Toast.Header>
+                                <Toast.Body>{message}</Toast.Body>
+                            </Toast>
+                        </ToastContainer> </div> : ''}
+
                         {subHikeList.map((hike, idx) =>
                             <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                                 <Card key={`card_${idx}`}>
@@ -104,15 +127,26 @@ const HikeTable = () => {
                                             </Col>
                                             <Col md={4}>
                                                 <Col className='d-flex justify-content-md-end'>
-                                                        <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
-                                                            <Button
-                                                                id={hike.id}
-                                                                size='sm'
-                                                                variant='success'
-                                                                onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
-                                                                Show more info
-                                                            </Button>
-                                                        </OverlayTrigger>
+                                                    <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
+                                                        <Button
+                                                            id={hike.id}
+                                                            size='sm'
+                                                            variant='success'
+                                                            onClick={authObject.authUser ? (ev) => handleShowInfo(ev) : null}>
+                                                            Show more info
+                                                        </Button>
+                                                    </OverlayTrigger>
+                                                    {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hiker' &&
+                                                        <Button id={hike.id}
+                                                            size='sm'
+                                                            variant='primary'
+                                                            onClick={() => {
+                                                                setHike(hikeList.find((h) => h.id === hike.id));
+                                                                setShowConfirm(true)
+                                                            }}
+                                                            style={{marginLeft:10}}>
+                                                            Start Hike
+                                                        </Button>}
                                                 </Col>
                                             </Col>
                                         </Row>
@@ -134,6 +168,8 @@ const HikeTable = () => {
                         )}
                         {!isLoading && hikeList.length === 0 && <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem' /></Container>}
                         <HikePageHandler index={index} pageNum={computeIndex()} handlePageChange={handlePageChange} />
+                        <ConfirmModal show={showConfirm} onSubmit={() => { setShowConfirm(s => !s); startHike(hike.id) }} onAbort={() => { setShowConfirm(false); }} />
+
                     </Container>
                     {hike && <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} />}
                 </>
