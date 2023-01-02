@@ -39,6 +39,10 @@ Cypress.Commands.add('login', (email, password) => {
         // cy.visit('http://localhost:3000/')
 })
 
+Cypress.Commands.add('hardcodedLogin', (email, password) => {
+    API.logIn(email, password)
+})
+
 Cypress.Commands.add('logout', () => {
     cy.get('.userDropdownButton').click()
     cy.get('.logOutBtn').click()
@@ -75,4 +79,8 @@ Cypress.Commands.add("createTestHike", (hike = {}) => {
 
 Cypress.Commands.add('deleteHike', (hikeId, collection="hikes") => {
     API.deleteHike(hikeId, collection)
+})
+
+Cypress.Commands.add('resetRegHike', (email) => {
+    API.deleteRegHike(email)
 })

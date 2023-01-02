@@ -104,7 +104,7 @@ const HikeTable = () => {
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
                         <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} />
-                        {message ? <div className='loading-overlay'><ToastContainer className="p-3" position={'middle-center'}>
+                        {message ? <div className='loading-overlay'><ToastContainer className="startedWarning p-3" position={'middle-center'}>
                             <Toast bg='warning' onClose={() => setMessage('')} >
                                 <Toast.Header >
                                     <strong className="me-auto">Oops!</strong>

@@ -646,11 +646,21 @@ const startHike = async (hikeId, collection='regHikes') => {
     })
 }
 
+const deleteRegHike = async (email) => {
+    const regHikesref = firestore.collection(db,'regHikes')
+    const q = firestore.query(regHikesref, firestore.where("userId","==",email), firestore.where("status","==","ongoing"))
+    const querySnapshot = await firestore.getDocs(q)
+    if(querySnapshot.empty){
+        return
+    }
+    await deleteDoc(doc(db, "regHikes", querySnapshot.docs[0].id));
+}
+
 module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition,
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor,
-    startHike
+    startHike, deleteRegHike
 };
 
 
