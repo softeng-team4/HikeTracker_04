@@ -36,4 +36,12 @@ describe('test: terminate hike by Hiker',()=>{
 
         api.logOut()
     })
+
+    it('test hike by id', ()=> {
+        const hikeId = 'Jpe9Hy5c0xoFnP21BSk7'
+        const title = 'Rifugio Toesca from Bussoleno'
+        api.getHikeById(hikeId).then((hike) => {
+            hike.title.should.equal(title)
+        })
+    })
 })
