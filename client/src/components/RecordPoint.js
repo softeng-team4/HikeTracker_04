@@ -51,9 +51,9 @@ function RecordPoint(props) {
 
     const AddRefPoint = (i) => {
         const rp = {
+            name: availableRefPoint[i].name,
             lat: availableRefPoint[i].lat,
             lng: availableRefPoint[i].lng,
-            name: availableRefPoint[i].name,
             time: dayjs().format('DD/MM/YYYY hh:mm:ss')
 
         };
