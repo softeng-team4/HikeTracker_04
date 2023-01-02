@@ -18,6 +18,7 @@
     | Email | Password |
     | :---- | :------- |
     | masterale1999@gmail.com | password|
+    | kekkok99@gmail.com | 12345678 |
     
 - Hut Worker
     | Email                      | Password  |
