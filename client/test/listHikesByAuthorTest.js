@@ -153,6 +153,8 @@ describe('testing list hikes by author API', () => {
     };
     before(async () => {
 
+        await api.logIn("chicco.siviero@gmail.com","chicco")
+
         const hikeQuery = firestore.query(testHikes);
         const querySnapshot = await firestore.getDocs(hikeQuery)
         querySnapshot.forEach(async (doc) => {
@@ -162,6 +164,10 @@ describe('testing list hikes by author API', () => {
         await firestore.addDoc(testHikes, hike2);
         await firestore.addDoc(testHikes, hike3);
 
+    })
+
+    after(async () =>{
+        await api.logOut()
     })
     
     testHikeList("luca.mistruzzi@gmail.com", 2);

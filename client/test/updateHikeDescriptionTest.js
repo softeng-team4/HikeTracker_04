@@ -77,6 +77,10 @@ describe('update hike description test', async () => {
         await firestore.setDoc(firestore.doc(testHikes, "1"), hike);
     })
 
+    after(async () =>{
+        await api.logOut()
+    })
+
     const values = {
         title: "Test title update",
         expectedTime: 300,
@@ -85,7 +89,8 @@ describe('update hike description test', async () => {
     };
 
     testUpdateHikeDescription(values, "1", hike);
-    await api.logOut();
+
+    
 
 })
 

@@ -241,10 +241,14 @@ describe('testing update hike condition', async () => {
         await firestore.setDoc(firestore.doc(testHikes, "1"), hike);
     });
 
+    after(async () =>{
+        await api.logOut()
+    })
+
     const condition = "ok";
     const condDetails = "open";
     testUpdateHikeCondition(hike, condition, condDetails, "1");
-    await api.logOut();
+
 
 })
 
