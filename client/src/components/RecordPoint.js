@@ -54,6 +54,7 @@ function RecordPoint(props) {
             name: availableRefPoint[i].name,
             lat: availableRefPoint[i].lat,
             lng: availableRefPoint[i].lng,
+            alt: availableRefPoint[i].alt,
             time: dayjs().format('DD/MM/YYYY hh:mm:ss')
 
         };
