@@ -1,5 +1,3 @@
-const { FaItalic } = require("react-icons/fa")
-
 describe('Browse Hikes', () => {
   it('Select city', () => {
     cy.visit("http://localhost:3000/");
