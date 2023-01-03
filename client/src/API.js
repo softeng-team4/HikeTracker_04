@@ -685,11 +685,57 @@ const updateRP = async (regHikeId, refPointList, collection = "regHikes") => {
     });
 }
 
+// API for performance stats
+
+const updateUserStats = async (email, regHike, collection = 'users') => {
+    const stats = (await firestore.getDoc(firestore.doc(db, collection, email))).stats;
+    const hike = await firestore.getDoc(firestore.doc(db, 'hike', regHike.hikeId));
+    const hike_time = dayjs(regHike.endTime).diff(dayjs(regHike.startTime), 'hour', true); //todo check format
+    const refpointList = regHike.passedRP;
+    const avg = hike.length / hike_time;
+    let stats_new = stats ?
+        {...stats} 
+        : 
+        {
+            completed_hikes: 0,
+            distance: 0,
+            time: 0,
+            ascent: 0,
+            ascending_time: 0,
+            highest_altitude: 0,
+            highest_altitude_range: 0,
+            longest_hike_distance: 0,
+            longest_hike_time: 0,
+            shortest_hike_distance: 0,
+            shortest_hike_time: 0,
+            fastest_paced_hike: 0
+        };
+
+    stats_new.comlpeted_hikes += 1;
+    stats_new.distance += hike.length;
+    stats_new.time += hike_time;
+    //todo ascent ascending_time
+    if(!stats || hike.length > stats.longest_hike_distance)
+        stats_new.longest_hike_distance = hike.length;
+    if(!stats || hike.length < stats.shortest_hike_distance)
+    stats_new.shortest_hike_distance = hike.length;
+    if(!stats || hike_time > stats.longest_hike_time)
+        stats_new.longest_hike_time = hike_time;
+    if(!stats || hike_time < stats.shortest_hike_time)
+    stats_new.shortest_hike_time = hike_time;
+    if(!stats || avg < stats.fastest_paced_hike)
+        stats_new.fastest_paced_hike = avg;
+
+    await firestore.updateDoc(firestore.doc(db, collection, email), {
+        stats: stats_new
+    });
+}
+
 module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition,
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor,
-    startHike, terminateHike, getUserActiveHike, getHikeById, updateRP
+    startHike, terminateHike, getUserActiveHike, getHikeById, updateRP, updateUserStats
 };
 
 
