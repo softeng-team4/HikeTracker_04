@@ -140,7 +140,7 @@ function HutWorkerForm(props) {
                     </Card.Body>
                 </Card>
                 : null}
-            <Button onClick={handleShow}>Search hut</Button>
+            <Button onClick={handleShow} className='searchHutBtn'>Search hut</Button>
             <Modal show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Explore Huts</Modal.Title>
@@ -173,7 +173,7 @@ function HutWorkerForm(props) {
                                     </Card.Body>
                                     <Card.Footer key={`card_footer_${hut.id}`}>
                                         <Row md={4} className='row d-flex justify-content-between'>
-                                            <Button onClick={() => handleHut(hut)}>Select hut</Button>
+                                            <Button className='selectBtn' onClick={() => handleHut(hut)} >Select hut</Button>
                                         </Row>
                                     </Card.Footer>
                                 </Card>
@@ -186,7 +186,7 @@ function HutWorkerForm(props) {
                 </Container>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleClose} className='closeBtn'>
                         Close
                     </Button>
                 </Modal.Footer>
