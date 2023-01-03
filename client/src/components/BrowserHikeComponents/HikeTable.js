@@ -137,6 +137,17 @@ const HikeTable = () => {
                                                                 Show more info
                                                             </Button>
                                                         </OverlayTrigger>
+                                                        {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hiker' &&
+                                                        <Button id={hike.id}
+                                                            size='sm'
+                                                            variant='primary'
+                                                            onClick={() => {
+                                                                setHike(hikeList.find((h) => h.id === hike.id));
+                                                                setShowConfirm(true)
+                                                            }}
+                                                            style={{marginLeft:10}}>
+                                                            Start Hike
+                                                        </Button>}
                                                 </Col>
                                             </Col>
                                         </Row>
