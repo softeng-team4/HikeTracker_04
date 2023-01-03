@@ -76,7 +76,7 @@ startPoint and endPoint are maps with the following elements:
 The field referencePoint is a string in a json format that contains all the points in the track. It is formed by and array of objects that contains:
 - lat: number
 - lng: number
-- alt: number
+- alt: number The "alt" attribute is present only if that point is actually a reference point.
 - name: string
 The "name" attribute is present only if that point is actually a reference point.
 
