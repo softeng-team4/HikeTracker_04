@@ -94,7 +94,7 @@ const FilterForm = (props) => {
                                         <GeoAreaForm geoArea={filters.geoArea} setGeoArea={setFilters} />
                                     </Col>
                                     <Col lg={2} className='btn-geoArea p-3'>
-                                        <Button size='sm' variant='success' onClick={handleGeoAreaSwitch}>Switch to radius</Button>
+                                        <Button size='sm' variant='success' className='geoBtn' onClick={handleGeoAreaSwitch}>Switch to radius</Button>
                                     </Col>
                                 </>
                                 :

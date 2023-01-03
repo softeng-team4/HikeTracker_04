@@ -106,6 +106,7 @@ const HikeTable = () => {
                                                 <Col className='d-flex justify-content-md-end'>
                                                         <OverlayTrigger overlay={!authObject.authUser ? <Tooltip id="tooltip-disabled">Sign up to see more info about the hike</Tooltip> : <></>}>
                                                             <Button
+                                                                className='showInfoBtn'
                                                                 id={hike.id}
                                                                 size='sm'
                                                                 variant='success'

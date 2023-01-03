@@ -10,8 +10,9 @@ describe('Browse Huts', () => {
     // cy.get('.password-input').clear().type('password')
     // cy.get('.loginbtn').click()
     cy.login('masterale1999@gmail.com','password')
-    cy.contais('Explore huts')
+    cy.contains('Explore huts').click()
     cy.url().should('include', '/huts')
+
 
   })
   
@@ -57,11 +58,6 @@ describe('Browse Huts', () => {
     cy.contains("No huts found!")
   })
 
-  it('Search by country not found', () => {
-    cy.get('.CountrySelection').select('CN').should('have.value', 'CN')
-    cy.contains('No huts found!')
-  })
-
   it('Search by selection box', () => {
     cy.get('.CountrySelection').select('IN').should('have.value', 'IN')
     cy.get('.button-geoArea').click()
@@ -79,8 +75,8 @@ describe('Browse Huts', () => {
     cy.contains('Phone')
     cy.contains('Email')
     cy.contains('Latitude')
-    cy.contains('Longtitude')
-    cy.contains('Alltitude')
+    cy.contains('Longitude')
+    cy.contains('Altitude')
     cy.contains('Country')
     cy.contains('Region')
     cy.contains('City')

@@ -43,11 +43,16 @@ describe('hikeform e2e test', () => {
     cy.contains('New Hike').click()
     cy.contains('Add A New Hike')
     cy.contains('Title')
-    cy.contains('Length')
     cy.contains('Expected time')
+    cy.contains('minutes')
+    cy.contains('Length')
+    cy.contains('meters')
     cy.contains('Ascent')
+    cy.contains('meters')
     cy.contains('Difficulty')
+    cy.contains('Select difficulty')
     cy.contains('Country')
+    cy.contains('None')
     cy.contains('Region')
     cy.contains('City')
     cy.contains('Description')
@@ -61,8 +66,16 @@ describe('hikeform e2e test', () => {
 
   it('submit form validation',()=>{
     cy.contains('New Hike').click()
-    cy.contains('Please insert')
-
+    cy.contains('Submit form').click()
+    cy.get('.modal').should('exist')
+    cy.contains('New hike')
+    cy.contains('The hike hasn\'t been saved. Check out empty fields or wrong insertions!')
+    cy.get('.modal-footer >.btn').click()
+    cy.contains('Please insert a title.')
+    cy.contains('Please insert the expected time. It must be a positive integer.')
+    cy.contains('Please select a difficulty.')
+    cy.contains('Please insert a .GPX file.')
+    cy.contains('Please insert a description.')
   })
 
   it('submit form', () => {

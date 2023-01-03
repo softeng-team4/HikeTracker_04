@@ -179,8 +179,50 @@ describe('Browse Hikes', () => {
     cy.get(".card").should("have.length", 1)
     cy.contains("There are no hikes")
   })
-  
-  
+
+  it(' Select radius', () => {
+    cy.visit("http://localhost:3000/")
+    cy.get('.geoBtn').click()
+    cy.get('.radiusSelection').select('1')
+    cy.contains("There are no hikes")
+    cy.get('.filterBtn').click()
+  })
+
+  it('check form info',()=>{
+    cy.visit("http://localhost:3000/")
+    cy.contains('Title')
+    cy.contains('Location')
+    cy.contains('Description')
+    cy.contains('Difficulty')
+    cy.contains('Length')
+    cy.contains('Ascent')
+    cy.contains('Estimated Time')
+
+  })
+
+  it('select show more info without login',()=>{
+    cy.visit("http://localhost:3000/")
+    cy.get(':nth-child(4) > .card > .card-header > .row ').contains('Show more info').click()
+    cy.contains('Sign up to see more info about the hike')
+  })
+
+  it('select show more info with login',()=>{
+    cy.visit("http://localhost:3000/")
+    cy.login("masterale1999@gmail.com","password")
+    cy.get(':nth-child(4) > .card > .card-header > .row ').contains('Show more info').click()
+    cy.get('.addInfo').should('exist')
+    cy.contains('Hike')
+    cy.contains('Description')
+    cy.contains('Difficulty')
+    cy.contains('Length')
+    cy.contains('Ascent')
+    cy.contains('Estimated Time')
+    cy.get('.modal-footer > .btn').click()
+    cy.logout()
+
+  })
+
+
   it("Select by preferences", () => {
     cy.visit("http://localhost:3000/")
     cy.login("masterale1999@gmail.com","password")
