@@ -736,9 +736,10 @@ const updateUserStats = async (email, regHike, collection = 'users') => {
     if(!stats || avg < stats.fastest_paced_hike)
         stats_new.fastest_paced_hike = avg;
 
-    await firestore.updateDoc(firestore.doc(db, collection, email), {
-        stats: stats_new
-    });
+    console.log(stats_new);
+    // await firestore.updateDoc(firestore.doc(db, collection, email), {
+    //     stats: stats_new
+    // });
 }
 
 module.exports = {
