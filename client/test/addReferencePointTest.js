@@ -8,14 +8,13 @@ chai.should();
 
 
 // Import the functions you need from the SDKs you need
-const firebase = require('firebase/app')
+const firebase = require('firebase/app');
+const { startAfter } = require('firebase/firestore');
 const firestore = require('firebase/firestore')
 const api = require('../src/API');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
 //import {addNewHike} from "../src/API"
-
-const testHikes = firestore.collection(api.db,"hike-test-reference-points")
 
 describe('testing the addition of reference points by a local guide',()=>{
 
@@ -52,6 +51,11 @@ describe('testing the addition of reference points by a local guide',()=>{
             referencePoint: '[{"lat":45.179357,"lng":7.1644689},{"lat":45.1793465,"lng":7.1644876},{"lat":45.1793246,"lng":7.1645212},{"lat":45.1793012,"lng":7.1645587},{"lat":45.1792856,"lng":7.1645948},{"lat":45.1792792,"lng":7.1646235}]',
         });
     });
+
+    after(async () =>{
+        await api.logOut()
+    })
+    
     const hike = {
         id: "1",
         ascent:"764.57",

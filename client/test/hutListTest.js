@@ -33,11 +33,15 @@ describe('test the searching for huts by a hiker',() =>{
         const hut3 = {
             name: "Ristoro montano",  country: 'Italy', region: 'Piedmont', city: 'Riva Valdobbia', bedsNumber:30, description:"you'll never want to leave", openingHour: 7, openingMinute: 0, closingHour: 22, closingMinute: 30, costPerNight: 25, position:[25.8,31.4]}
     before(async () =>{
-
+        await api.logIn("chicco.siviero@gmail.com","chicco")
         const hutQuery = firestore.query(testHuts);
         const querySnapshot = await firestore.getDocs(hutQuery)
         querySnapshot.forEach(async (doc) =>{
             await firestore.deleteDoc(firestore.doc(api.db,"hut-test",doc.id))
+        })
+        
+        after(async () =>{
+            await api.logOut()
         })
 
         await firestore.setDoc(firestore.doc(testHuts, "1"), hut1);

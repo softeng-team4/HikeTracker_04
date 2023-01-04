@@ -19,8 +19,12 @@ const testHikes = firestore.collection(api.db,"hike-test")
 
 describe('testing the definition of a new hike by a local guide',()=>{
 
-    before(async ()=>{
+    after(async () =>{
+        await api.logOut()
+    })
 
+    before(async ()=>{
+        await api.logIn("chicco.siviero@gmail.com","chicco")
         const hikeQuery = firestore.query(testHikes);
         const querySnapshot = await firestore.getDocs(hikeQuery)
         querySnapshot.forEach(async (doc) =>{
