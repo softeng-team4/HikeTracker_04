@@ -58,7 +58,7 @@ const PerformanceStats = (props) => {
                         </tr>
                         <tr>
                             <td>Longest hike time</td>
-                            <td>{stats.longest_hike_time} {stats.longest_hike_time === 1 ? 'hour' : 'hours'}</td>
+                            <td>{parseFloat(stats.longest_hike_time).toFixed(2)} {stats.longest_hike_time === 1 ? 'hour' : 'hours'}</td>
                         </tr>
                         <tr>
                             <td>Shortest hike distance</td>
@@ -66,20 +66,20 @@ const PerformanceStats = (props) => {
                         </tr>
                         <tr>
                             <td>Shortest hike time</td>
-                            <td>{stats.shortest_hike_time} {stats.shortest_hike_time === 1 ? 'hour' : 'hours'}</td>
+                            <td>{parseFloat(stats.shortest_hike_time).toFixed(2)} {stats.shortest_hike_time === 1 ? 'hour' : 'hours'}</td>
                         </tr>
                         <tr>
                             <td>Average pace</td>
-                            <td>{stats.distance / stats.time} min/km</td>
+                            <td>{parseFloat(stats.time*60 / stats.distance / 1000).toFixed(2)} min/km</td>
                         </tr>
 
                         <tr>
                             <td>Fastest paced hike</td>
-                            <td>{stats.fastest_paced_hike} min/km</td>
+                            <td>{parseFloat(stats.fastest_paced_hike).toFixed(2)} min/km</td>
                         </tr>
                         <tr>
                             <td>Average vertical ascent speed</td>
-                            <td>{stats.ascent / stats.ascending_time} m/hour</td>
+                            <td>{parseFloat(stats.ascent / stats.ascending_time).toFixed(2)} m/hour</td>
                         </tr>
                     </tbody>
                 </Table>

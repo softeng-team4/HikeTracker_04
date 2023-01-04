@@ -3,7 +3,7 @@ import { Container, Card, Col, Row, Button } from 'react-bootstrap';
 import Spacer from './BrowserHikeComponents/Spacer';
 import API from '../API'
 import HikeCard from './BrowserHikeComponents/HikeCard';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ConfirmModal from './ModifyHikeComponents/ConfirmModal';
 import { useNavigate } from 'react-router';
 import { RecordPoint } from './RecordPoint';
@@ -15,6 +15,7 @@ function ActiveHikePage(props) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [showRecordPoint, setShowRecordPoint] = useState(false);
     const navigate = useNavigate()
+    const authObject = useContext(AuthenticationContext);
 
     useEffect(() => {
         const effectFunc = async () => {
@@ -30,6 +31,7 @@ function ActiveHikePage(props) {
         console.log(activeHike.id)
         setShowConfirm(s => !s);
         await API.terminateHike(activeHike.id)
+        authObject.onUpdateUserData()
         navigate(`/`)
     }
 
