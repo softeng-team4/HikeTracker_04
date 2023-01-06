@@ -5,10 +5,8 @@ import Spacer from './Spacer';
 import FilterForm from './FilterForm';
 import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from './HickePageHendler';
-import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
-import API from '../../API';
-import { async } from '@firebase/util';
-import ConfirmModal from '../ModifyHikeComponents/ConfirmModal';
+import { useNavigate } from 'react-router';
+import HikeCard from './HikeCard';
 
 const HikeTable = () => {
 
@@ -23,10 +21,6 @@ const HikeTable = () => {
     const hike4page = 4
     // state to hold list of hikes of current page
     const [subHikeList, setSubHikeList] = useState(hikeList.slice(0, hike4page));
-    // state to hold the selected hike
-    const [hike, setHike] = useState(undefined);
-    // state to display modal with additional hike info
-    const [showInfoModal, setShowInfoModal] = useState(false);
     // state to hold user email --> author of hike
     const user = useContext(AuthenticationContext).authUser;
     const author = user ? user.email : undefined;
@@ -36,9 +30,13 @@ const HikeTable = () => {
     // function to retrieve page index
     const computeIndex = () => parseInt(hikeList.length / hike4page) + (hikeList.length % hike4page ? 1 : 0);
 
+<<<<<<< HEAD
     const [showConfirm, setShowConfirm] = useState(false);
     const [message, setMessage] = useState('');
 
+=======
+    const navigate = useNavigate()
+>>>>>>> terminate-hike-page
     // effect to select the hikes to show based on page number
     useEffect(() => {
         setSubHikeList(hikeList.slice(0, hike4page));
@@ -52,15 +50,6 @@ const HikeTable = () => {
         setIndex(idx);
         setSubHikeList(hikeList.slice(idx * hike4page, idx * hike4page + hike4page));
     };
-
-
-    // function to display additional hike info modal
-    const handleShowInfo = (event) => {
-        event.preventDefault();
-        const id = event.target.id;
-        setHike(hikeList.find((h) => h.id === id));
-        setShowInfoModal(true);
-    }
 
 
     const handleTouchStart = (e) => {
@@ -84,6 +73,7 @@ const HikeTable = () => {
         }
     };
 
+<<<<<<< HEAD
     const startHike = async (hikeId) => {
         try {
             await API.startHike(hikeId);
@@ -95,6 +85,8 @@ const HikeTable = () => {
 
     }
 
+=======
+>>>>>>> terminate-hike-page
     return (
         <AuthenticationContext.Consumer>
             {(authObject) => (
@@ -116,6 +108,7 @@ const HikeTable = () => {
 
                         {subHikeList.map((hike, idx) =>
                             <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
+<<<<<<< HEAD
                                 <Card key={`card_${idx}`}>
                                     <Card.Header key={`card_header_${idx}`}>
                                         <Row>
@@ -164,15 +157,17 @@ const HikeTable = () => {
                                         </Row>
                                     </Card.Footer>
                                 </Card>
+=======
+                                <HikeCard hike={hike}/>
+>>>>>>> terminate-hike-page
                                 <Spacer height='1rem' key={`card_spacer_${idx}`} />
                             </div>
                         )}
                         {!isLoading && hikeList.length === 0 && <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem' /></Container>}
                         <HikePageHandler index={index} pageNum={computeIndex()} handlePageChange={handlePageChange} />
-                        <ConfirmModal show={showConfirm} onSubmit={() => { setShowConfirm(s => !s); startHike(hike.id) }} onAbort={() => { setShowConfirm(false); }} />
+
 
                     </Container>
-                    {hike && <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} />}
                 </>
             )}
         </AuthenticationContext.Consumer>
