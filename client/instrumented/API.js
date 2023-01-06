@@ -6505,6 +6505,9 @@ const hikesList = async (filters, collection) => {
   cov_25g9xggjfy().f[25]++;
   const hikesRef = (cov_25g9xggjfy().s[136]++, firestore.collection(db, collection));
   let q = (cov_25g9xggjfy().s[137]++, firestore.query(hikesRef));
+  let cont = undefined;
+  let names = undefined;
+  let values = undefined;
   let res = (cov_25g9xggjfy().s[141]++, []);
   cov_25g9xggjfy().s[142]++;
   [names, values, cont] = checkFilters(filters);
