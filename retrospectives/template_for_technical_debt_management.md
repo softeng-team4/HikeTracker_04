@@ -36,7 +36,8 @@
 | --------- | -------- | --------- | ----------- | -------------- | ----------- |
 | Security Hotspot | High | client/test/addReferencePointTest.js | 26 |  / | 1m |
 | Security Hotspot | High | client/test/deleteHikeTest.js | 26 |  / | 1m |
-| Code Smell | Critical | client/src/API.js | 202 | 6min | 5m |
-| Code Smell | Critical | client/src/App.js | 16 | 6min | 10m |
-| Code Smell | Major | client/src/API.js | 551 | 5min | 0m |
-| Code Smell | Minor | client/src/API.js | 578 | 5min | 2m |
+| Code Smell | Critical | client/src/API.js | 202 | 6m | 5m |
+| Code Smell | Critical | client/src/App.js | 16 | 6m | 10m |
+| Code Smell | Major | client/src/API.js | 551 | 5m | 0m |
+| Code Smell | Minor | client/src/API.js | 578 | 5m | 2m |
+| Bug | Major | client/src/components/MapComponents/leaflet.awesome-markers.js| 1239 | 10m | 5m |

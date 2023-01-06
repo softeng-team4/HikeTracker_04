@@ -1236,7 +1236,7 @@ cov_inpjou9bl().s[0]++;
 
 /*global L*/
 
-(function (window, document, undefined) {
+(function (window, document, undefinedParam) {
   "use strict";
 
   /*
