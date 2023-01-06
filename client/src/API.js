@@ -328,7 +328,7 @@ const hutsList = async (filters, collection = "huts") => {
     }
     if (filters.name !== undefined) {
         names.push("name");
-        values.push(filters.difficulty);
+        values.push(filters.name);
         cont++;
     }
     switch (cont) {
