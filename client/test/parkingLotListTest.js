@@ -55,8 +55,8 @@ describe('test the retrieving of parking lots', () => {
             firestore.deleteDoc(firestore.doc(api.db, "parkingLots-test", doc.id))
         })
 
-        await api.addNewParkingLot(parkingLot1, "parkingLots-test")
-        await api.addNewParkingLot(parkingLot2, "parkingLots-test")
+        await firestore.setDoc(firestore.doc(testParkingLots, "1"), parkingLot1);
+        await firestore.setDoc(firestore.doc(testParkingLots, "2"), parkingLot2);
 
     })
 
@@ -65,6 +65,7 @@ describe('test the retrieving of parking lots', () => {
     })
 
     getAllParks([parkingLot1, parkingLot2])
+    getParkById(parkingLot1, "1")
 
 });
 
@@ -86,6 +87,27 @@ function getAllParks(parkingLots) {
                     res[i].closingMinute.should.equal(parkingLots[i].closingMinute)
                 }
             })
+            .then(() => done(), done)
+            .catch((error) => {
+                done(error);
+            });
+    })
+}
+
+function getParkById(p, id) {
+    it("retrieve park by id", function (done) {
+        api.getParkingLotById(id, "parkingLots-test").then((res) => {
+            res.name.should.equal(p.name)
+            res.country.should.equal(p.country)
+            res.region.should.equal(p.region)
+            res.lotsNumber.should.equal(p.lotsNumber)
+            res.costPerDay.should.equal(p.costPerDay)
+            res.description.should.equal(p.description)
+            res.openingHour.should.equal(p.openingHour)
+            res.openingMinute.should.equal(p.openingMinute)
+            res.closingHour.should.equal(p.closingHour)
+            res.closingMinute.should.equal(p.closingMinute)
+        })
             .then(() => done(), done)
             .catch((error) => {
                 done(error);
