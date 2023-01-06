@@ -124,3 +124,8 @@
 | Code Smell | Critical | client/instrumented/setupTests.js | 6 | 5m | 30s |
 | Code Smell | Critical | client/instrumented/setupTests.js | 17 | 5m | 30s |
 | Code Smell | Critical | client/instrumented/setupTests.js | 21 | 5m | 30s |
+| Code Smell | Major | client/cypress/support/commands.js | 39 | 5m | 30s |
+| Code Smell | Major | client/cypress/support/commands.js | 50 | 5m | 30s |
+| Code Smell | Major | client/instrumented/API.js | 6508 | 15m | 5m |
+| Code Smell | Major | client/instrumented/API.js | 6509 | 15m | 5m |
+| Code Smell | Major | client/instrumented/API.js | 6510 | 15m | 5m |
