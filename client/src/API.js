@@ -90,7 +90,7 @@ const getUser = async (email) => {
 //Queries for the hike collection
 
 
-const addNewHike = async (hike,collection="hike") => {
+const addNewHike = async (hike, collection = "hike") => {
     const newHike = {
         title: hike.title, country: hike.country, region: hike.region, city: hike.city, description: hike.description, difficulty: hike.difficulty, expectedTime: hike.expectedTime,
         length: hike.length, ascent: hike.ascent, startPoint: hike.startPoint, endPoint: hike.endPoint, referencePoint: JSON.stringify(hike.referencePoint), author: hike.author
@@ -224,7 +224,7 @@ const checkFilters = (filters) => {
         cont++;
     }
     return [names, values, cont]
-} 
+}
 
 const hikesList = async (filters, collection) => {
     const hikesRef = firestore.collection(db, collection);
@@ -625,23 +625,23 @@ const getHikesByAuthor = async (author, collection = "hike") => {
 
 //APIs for registered hikes
 
-const startHike = async (hikeId, collection='regHikes') => {
-    return new Promise( async (resolve,reject) =>{
-        const regHikesref = firestore.collection(db,collection)
+const startHike = async (hikeId, collection = 'regHikes') => {
+    return new Promise(async (resolve, reject) => {
+        const regHikesref = firestore.collection(db, collection)
         const user = fireAuth.getAuth().currentUser
-        const q = firestore.query(regHikesref, firestore.where("userId","==",user.email), firestore.where("status","==","ongoing"))
+        const q = firestore.query(regHikesref, firestore.where("userId", "==", user.email), firestore.where("status", "==", "ongoing"))
         const querySnapshot = await firestore.getDocs(q)
-        if(!querySnapshot.empty){
+        if (!querySnapshot.empty) {
             reject("User already started a hike")
             return
         }
-        const regHike ={
+        const regHike = {
             hikeId: hikeId,
             status: "ongoing",
             startTime: dayjs().format('DD/MM/YYYY hh:mm:ss'),
             userId: user.email
-        } 
-        await firestore.addDoc(regHikesref,regHike)
+        }
+        await firestore.addDoc(regHikesref, regHike)
         resolve("Hike started")
     })
 }
@@ -653,7 +653,7 @@ const terminateHike = async (regHikeId, collection = "regHikes") => {
     });
     const user = fireAuth.getAuth().currentUser;
     const regHike = (await firestore.getDoc(firestore.doc(db, collection, regHikeId))).data();
-    updateUserStats(user.email,regHike);
+    updateUserStats(user.email, regHike);
 }
 
 const getUserActiveHike = async (collection = "regHikes") => {
@@ -690,19 +690,19 @@ const updateRP = async (regHikeId, refPointList, collection = "regHikes") => {
 
 // API for performance stats
 
-const updateUserStats = async (email, regHike, collection = 'users') => {
-    console.log(regHike )
+const updateUserStats = async (email, regHike, collection = 'users', hike_collection = 'hike') => {
+    console.log(regHike)
     const stats = (await firestore.getDoc(firestore.doc(db, collection, email))).data().stats;
-    const hike = (await firestore.getDoc(firestore.doc(db, 'hike', regHike.hikeId))).data();
+    const hike = (await firestore.getDoc(firestore.doc(db, hike_collection, regHike.hikeId))).data();
     const hike_time = dayjs(regHike.endTime).diff(dayjs(regHike.startTime), 'hour', true); //todo check format
     let refpointList = regHike.passedRP ? JSON.parse(regHike.passedRP) : [];
-    refpointList = [{time: regHike.startTime, alt: hike.startPoint.altitude}, ...refpointList, {time: regHike.endTime, alt: hike.endPoint.altitude}]
+    refpointList = [{ time: regHike.startTime, alt: hike.startPoint.altitude }, ...refpointList, { time: regHike.endTime, alt: hike.endPoint.altitude }]
     const maxAlt = Math.max.apply(Math, refpointList.map(rp => rp.alt));
     const rangeAlt = maxAlt - Math.min.apply(Math, refpointList.map(rp => rp.alt));
-    const avg = hike_time*60 / parseFloat(hike.length) / 1000;
+    const avg = hike_time * 60 / parseFloat(hike.length) / 1000;
     let stats_new = stats ?
-        {...stats} 
-        : 
+        { ...stats }
+        :
         {
             completed_hikes: 0,
             distance: 0,
@@ -721,26 +721,26 @@ const updateUserStats = async (email, regHike, collection = 'users') => {
     stats_new.completed_hikes += 1;
     stats_new.distance += parseFloat(hike.length);
     stats_new.time += hike_time;
-    for(let i=1; i<refpointList.length; i++) {
-        const alt_range = refpointList[i - 1].alt && refpointList[i].alt ? refpointList[i - 1].alt - refpointList[i].alt : -1;
-        if(alt_range > 0) {
+    for (let i = 1; i < refpointList.length; i++) {
+        const alt_range = refpointList[i - 1].alt && refpointList[i].alt ? refpointList[i].alt - refpointList[i - 1].alt : -1;
+        if (alt_range > 0) {
             stats_new.ascent += alt_range;
             stats_new.ascending_time += dayjs(refpointList[i].time).diff(dayjs(refpointList[i - 1].time), 'hour', true);
         }
     }
-    if(!stats || maxAlt > stats.highest_altitude)
+    if (!stats || maxAlt > stats.highest_altitude)
         stats_new.highest_altitude = maxAlt;
-        if(!stats || rangeAlt > stats.highest_altitude_range)
+    if (!stats || rangeAlt > stats.highest_altitude_range)
         stats_new.highest_altitude_range = rangeAlt;
-    if(!stats || parseFloat(hike.length) > stats.longest_hike_distance)
+    if (!stats || parseFloat(hike.length) > stats.longest_hike_distance)
         stats_new.longest_hike_distance = parseFloat(hike.length);
-    if(!stats || parseFloat(hike.length) < stats.shortest_hike_distance)
-    stats_new.shortest_hike_distance = parseFloat(hike.length);
-    if(!stats || hike_time > stats.longest_hike_time)
+    if (!stats || parseFloat(hike.length) < stats.shortest_hike_distance)
+        stats_new.shortest_hike_distance = parseFloat(hike.length);
+    if (!stats || hike_time > stats.longest_hike_time)
         stats_new.longest_hike_time = hike_time;
-    if(!stats || hike_time < stats.shortest_hike_time)
-    stats_new.shortest_hike_time = hike_time;
-    if(!stats || avg < stats.fastest_paced_hike)
+    if (!stats || hike_time < stats.shortest_hike_time)
+        stats_new.shortest_hike_time = hike_time;
+    if (!stats || avg < stats.fastest_paced_hike)
         stats_new.fastest_paced_hike = avg;
 
     await firestore.updateDoc(firestore.doc(db, collection, email), {
