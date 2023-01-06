@@ -1,9 +1,9 @@
 function cov_1fqm4ysr32() {
-  var path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/model/User.js";
-  var hash = "1ea11890c872c6a15e3a4d9cce69a2aa80d95443";
-  var global = new Function("return this")();
-  var gcv = "__coverage__";
-  var coverageData = {
+  const path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/model/User.js";
+  const hash = "1ea11890c872c6a15e3a4d9cce69a2aa80d95443";
+  const global = new Function("return this")();
+  const gcv = "__coverage__";
+  let coverageData = {
     path: "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/model/User.js",
     statementMap: {
       "0": {
@@ -153,11 +153,11 @@ function cov_1fqm4ysr32() {
     _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
     hash: "1ea11890c872c6a15e3a4d9cce69a2aa80d95443"
   };
-  var coverage = global[gcv] || (global[gcv] = {});
+  let coverage = global[gcv] || (global[gcv] = {});
   if (!coverage[path] || coverage[path].hash !== hash) {
     coverage[path] = coverageData;
   }
-  var actualCoverage = coverage[path];
+  let actualCoverage = coverage[path];
   {
     // @ts-ignore
     cov_1fqm4ysr32 = function () {
