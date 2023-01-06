@@ -41,3 +41,12 @@
 | Code Smell | Major | client/src/API.js | 551 | 5m | 0m |
 | Code Smell | Minor | client/src/API.js | 578 | 5m | 2m |
 | Bug | Major | client/src/components/MapComponents/leaflet.awesome-markers.js| 1239 | 10m | 5m |
+| Code Smell | Critical | client/instrumented/API.js | 2 | 5m | 2m |
+| Code Smell | Critical | client/instrumented/API.js | 3 | 5m | 2m |
+| Code Smell | Critical | client/instrumented/API.js | 4 | 5m | 2m |
+| Code Smell | Critical | client/instrumented/API.js | 5 | 5m | 2m |
+| Code Smell | Critical | client/instrumented/API.js | 6 | 5m | 2m |
+| Code Smell | Critical | client/instrumented/API.js | 6128 | 5m | 2m |
+| Code Smell | Critical | client/instrumented/API.js | 6132 | 5m | 2m |
+| Bug | Major | client/src/components/BrowserHikeComponents/HikeCard.js | 21 | 5m | 3m |
+| Bug | Major | client/src/components/BrowserHikeComponents/HikeCard.js | 66 | 5m | 3m |
