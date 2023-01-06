@@ -100,7 +100,7 @@ function CompletedHikes(props){
                          </div>
                          )}
                     </Row>
-                    {(!isLoading && hikeList.length === 0) ? <Container className='empty-hikeList'><Spacer height='2rem' /><Card style={{ padding: 10 }}><div align='center'>{!isLoading? <h5>Loading hikes...</h5> : <h5>No hikes found!</h5>}</div></Card><Spacer height='2rem' /></Container> : null}
+                    { hikeList.length === 0 ? <Container className='empty-hikeList'><Spacer height='2rem' /><Card style={{ padding: 10 }}><div align='center'>{isLoading? <h5>Loading hikes...</h5> : <h5>No hikes found!</h5>}</div></Card><Spacer height='2rem' /></Container> : null}
                     <HikePageHandler index={index} pageNum={computeIndex()} handlePageChange={handlePageChange} />
                     </Container>
                 </>
