@@ -100,7 +100,7 @@ function CompletedHikes(props){
                          </div>
                          )}
                     </Row>
-                    {(!isLoading && hikeList.length === 0) ? <Container className='empty-hikeList'><Spacer height='2rem' /><Card style={{ padding: 10 }}><div align='center'><h5>No hikes found!</h5></div></Card><Spacer height='2rem' /></Container> : null}
+                    {(!isLoading && hikeList.length === 0) ? <Container className='empty-hikeList'><Spacer height='2rem' /><Card style={{ padding: 10 }}><div align='center'>{!isLoading? <h5>Loading hikes...</h5> : <h5>No hikes found!</h5>}</div></Card><Spacer height='2rem' /></Container> : null}
                     <HikePageHandler index={index} pageNum={computeIndex()} handlePageChange={handlePageChange} />
                     </Container>
                 </>
@@ -114,24 +114,21 @@ function CompletedHikes(props){
 function RefPointsMap(props){
 
 
-    const [minLat,setMinLat] = useState()
-    const [minLng,setMinLng] = useState()
-    const [maxLat,setMaxLat] = useState()
-    const [maxLng,setMaxLng] = useState()
-    const [points,setPoints] = useState([])
+    const [minLat,setMinLat] = useState(0)
+    const [minLng,setMinLng] = useState(0)
+    const [maxLat,setMaxLat] = useState(0)
+    const [maxLng,setMaxLng] = useState(0)
+    const [points,setPoints] = useState(JSON.parse(props.passedRP))
     const [center,setCenter] = useState()
     const [bounds,setBounds] = useState()
 
-    useEffect(() =>{
-        setPoints(() => JSON.parse(props.passedRP))
-    },[props.passedRP])
-
     useEffect(()=>{
-        if(points){
-            setMinLat(() => Math.min(points.map(p => p.lat)) - 0.003)
-            setMaxLat(() => Math.max(points.map(p => p.lat)) + 0.003)
-            setMinLng(() => Math.min(points.map(p => p.lng)) - 0.003)
-            setMaxLng(() => Math.max(points.map(p => p.lng)) + 0.003)
+        
+            console.log("Setting min max")
+            setMinLat(() => Math.min(...points.map(p => p.lat)) - 0.003)
+            setMaxLat(() => Math.max(...points.map(p => p.lat)) + 0.003)
+            setMinLng(() => Math.min(...points.map(p => p.lng)) - 0.003)
+            setMaxLng(() => Math.max(...points.map(p => p.lng)) + 0.003)
 
             const evaluateCenter = () => {
                 return points.reduce((sum, point) => (
@@ -139,19 +136,19 @@ function RefPointsMap(props){
                 ), [0., 0.]).map(v => v / points.length);
             };
 
-            setCenter(evaluateCenter)
-            
-        }
-    },[points])
+            setCenter(evaluateCenter)   
+    },[])
 
     useEffect(()=>{
-        if(maxLat && maxLng && minLat && minLng)
-            setBounds(() => L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng)))
+        if(maxLat && maxLng && minLat && minLng){
+            console.log(maxLat + " " + maxLng + " " + minLat + " " + minLng)
+            setBounds(() => L.latLngBounds(L.latLng(Number(minLat),Number(minLng)), L.latLng(Number(maxLat), Number(maxLng))))
+        }
     },[maxLat,maxLng,minLat,minLng])
 
     return(
         <>
-        {points && center && bounds?
+        {center && bounds?
         <MapContainer center={center} bounds={bounds}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
