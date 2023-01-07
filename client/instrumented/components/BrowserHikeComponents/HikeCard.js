@@ -21,7 +21,6 @@ const HikeCard = (props) => {
     // function to display additional hike info modal
     const handleShowInfo = (event) => {
         event.preventDefault();
-        setHike(hike);
         setShowInfoModal(true);
     }
 
