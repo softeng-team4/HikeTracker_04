@@ -631,7 +631,19 @@ const MyCompletedHikes = async (collection = 'regHikes') => {
     const res = [];
     querySnapshot.forEach((doc) => {
         const regHike = {
-            id:doc.id,
+            id:doc.id,            hikeId: doc.data().hikeId,
+            status: doc.data().status,
+            startTime: doc.data().startTime,
+            endTime: doc.data().endTime,
+            passedRP: doc.data().passedRP? doc.data().passedRP : undefined,
+            userId: doc.data().userId
+        }
+        res.push(regHike)
+
+    });
+    console.log(res);
+    return res;
+}
 //APIs for registered hikes
 
 const startHike = async (hikeId, collection='regHikes') => {
