@@ -649,6 +649,26 @@ const updateAscentValues = (refpointList) => {
     return [ascent, ascending_time]
 }
 
+const updateStats = (stats_new, stats, maxAlt, rangeAlt, length, hike_time, avg) => {
+
+    if (!stats || maxAlt > stats.highest_altitude)
+        stats_new.highest_altitude = maxAlt;
+    if (!stats || rangeAlt > stats.highest_altitude_range)
+        stats_new.highest_altitude_range = rangeAlt;
+    if (!stats || parseFloat(length) > stats.longest_hike_distance)
+        stats_new.longest_hike_distance = parseFloat(length);
+    if (!stats || parseFloat(length) < stats.shortest_hike_distance)
+        stats_new.shortest_hike_distance = parseFloat(length);
+    if (!stats || hike_time > stats.longest_hike_time)
+        stats_new.longest_hike_time = hike_time;
+    if (!stats || hike_time < stats.shortest_hike_time)
+        stats_new.shortest_hike_time = hike_time;
+    if (!stats || avg < stats.fastest_paced_hike)
+        stats_new.fastest_paced_hike = avg;
+    
+    return stats_new;
+}
+
 const updateUserStats = async (email, regHike, collection = 'users', hike_collection = 'hike') => {
     console.log(regHike)
     const stats = (await firestore.getDoc(firestore.doc(db, collection, email))).data().stats;
@@ -685,22 +705,7 @@ const updateUserStats = async (email, regHike, collection = 'users', hike_collec
     [ascent, ascending_time] = updateAscentValues(refpointList);
     stats_new.ascent += ascent;
     stats_new.ascending_time += ascending_time;
-
-    if (!stats || maxAlt > stats.highest_altitude)
-        stats_new.highest_altitude = maxAlt;
-    if (!stats || rangeAlt > stats.highest_altitude_range)
-        stats_new.highest_altitude_range = rangeAlt;
-    if (!stats || parseFloat(hike.length) > stats.longest_hike_distance)
-        stats_new.longest_hike_distance = parseFloat(hike.length);
-    if (!stats || parseFloat(hike.length) < stats.shortest_hike_distance)
-        stats_new.shortest_hike_distance = parseFloat(hike.length);
-    if (!stats || hike_time > stats.longest_hike_time)
-        stats_new.longest_hike_time = hike_time;
-    if (!stats || hike_time < stats.shortest_hike_time)
-        stats_new.shortest_hike_time = hike_time;
-    if (!stats || avg < stats.fastest_paced_hike)
-        stats_new.fastest_paced_hike = avg;
-
+    stats_new = updateStats(stats_new, stats, maxAlt, rangeAlt, hike.length, hike_time, avg);
     await firestore.updateDoc(firestore.doc(db, collection, email), {
         stats: stats_new
     });
