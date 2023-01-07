@@ -636,6 +636,18 @@ const updateRP = async (regHikeId, refPointList, collection = "regHikes") => {
 }
 
 // API for performance stats
+const updateAscentValues = (refpointList) => {
+    let ascent = 0;
+    let ascending_time = 0;
+    for (let i = 1; i < refpointList.length; i++) {
+        const alt_range = refpointList[i - 1].alt && refpointList[i].alt ? refpointList[i].alt - refpointList[i - 1].alt : -1;
+        if (alt_range > 0) {
+            ascent += alt_range;
+            ascending_time += dayjs(refpointList[i].time).diff(dayjs(refpointList[i - 1].time), 'hour', true);
+        }
+    }
+    return [ascent, ascending_time]
+}
 
 const updateUserStats = async (email, regHike, collection = 'users', hike_collection = 'hike') => {
     console.log(regHike)
@@ -668,13 +680,12 @@ const updateUserStats = async (email, regHike, collection = 'users', hike_collec
     stats_new.completed_hikes += 1;
     stats_new.distance += parseFloat(hike.length);
     stats_new.time += hike_time;
-    for (let i = 1; i < refpointList.length; i++) {
-        const alt_range = refpointList[i - 1].alt && refpointList[i].alt ? refpointList[i].alt - refpointList[i - 1].alt : -1;
-        if (alt_range > 0) {
-            stats_new.ascent += alt_range;
-            stats_new.ascending_time += dayjs(refpointList[i].time).diff(dayjs(refpointList[i - 1].time), 'hour', true);
-        }
-    }
+    let ascent;
+    let ascending_time;
+    [ascent, ascending_time] = updateAscentValues(refpointList);
+    stats_new.ascent += ascent;
+    stats_new.ascending_time += ascending_time;
+
     if (!stats || maxAlt > stats.highest_altitude)
         stats_new.highest_altitude = maxAlt;
     if (!stats || rangeAlt > stats.highest_altitude_range)
