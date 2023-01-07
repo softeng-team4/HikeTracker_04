@@ -32,14 +32,14 @@ function HutWorkerForm(props) {
 
     useEffect(() => {
         let filters;
-        if(geoArea.geoArea !== undefined){
+        if (geoArea.geoArea !== undefined) {
             filters = {
                 name: undefined,
                 country: geoArea.geoArea.country.name !== 'None' ? geoArea.geoArea.country.name : undefined,
                 region: geoArea.geoArea.region.name !== 'None' ? geoArea.geoArea.region.name : undefined,
                 city: geoArea.geoArea.city.name !== 'None' ? geoArea.geoArea.city.name : undefined
             };
-        }else{
+        } else {
             filters = {
                 name: undefined,
                 country: undefined,
@@ -108,12 +108,15 @@ function HutWorkerForm(props) {
         setShow(true);
     }, [setShow]);
 
-    const handleHut = (hut) => {
-        props.hutSelection(hut.id);
-        setHut(hut);
-        setHutSelected(true);
-        handleClose();
-    };
+    const handleHut = useCallback(() => {
+        function handleHut (hut) {
+            props.hutSelection(hut.id);
+            setHut(hut);
+            setHutSelected(true);
+            handleClose();
+        }
+    }, [hut]);
+
 
     return (
         <>
@@ -173,7 +176,7 @@ function HutWorkerForm(props) {
                                     </Card.Body>
                                     <Card.Footer key={`card_footer_${hut.id}`}>
                                         <Row md={4} className='row d-flex justify-content-between'>
-                                            <Button className='selectBtn' onClick={() => handleHut(hut)} >Select hut</Button>
+                                            <Button className='selectBtn' onClick={handleHut(hut)} >Select hut</Button>
                                         </Row>
                                     </Card.Footer>
                                 </Card>

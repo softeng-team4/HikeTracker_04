@@ -1,9 +1,9 @@
 function cov_inpjou9bl() {
-  var path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/components/MapComponents/leaflet.awesome-markers.js";
-  var hash = "ea0759a2f2e765bd6374521d7530260387930b4a";
-  var global = new Function("return this")();
-  var gcv = "__coverage__";
-  var coverageData = {
+  const path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/components/MapComponents/leaflet.awesome-markers.js";
+  const hash = "ea0759a2f2e765bd6374521d7530260387930b4a";
+  const global = new Function("return this")();
+  const gcv = "__coverage__";
+  let coverageData = {
     path: "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/components/MapComponents/leaflet.awesome-markers.js",
     statementMap: {
       "0": {
@@ -1211,11 +1211,11 @@ function cov_inpjou9bl() {
     _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
     hash: "ea0759a2f2e765bd6374521d7530260387930b4a"
   };
-  var coverage = global[gcv] || (global[gcv] = {});
+  let coverage = global[gcv] || (global[gcv] = {});
   if (!coverage[path] || coverage[path].hash !== hash) {
     coverage[path] = coverageData;
   }
-  var actualCoverage = coverage[path];
+  let actualCoverage = coverage[path];
   {
     // @ts-ignore
     cov_inpjou9bl = function () {
@@ -1236,7 +1236,7 @@ cov_inpjou9bl().s[0]++;
 
 /*global L*/
 
-(function (window, document, undefined) {
+(function (window, document, undefinedParam) {
   "use strict";
 
   /*
@@ -1270,7 +1270,7 @@ cov_inpjou9bl().s[0]++;
     },
     createIcon: function () {
       cov_inpjou9bl().f[2]++;
-      var div = (cov_inpjou9bl().s[5]++, document.createElement('div')),
+      let div = (cov_inpjou9bl().s[5]++, document.createElement('div')),
         options = (cov_inpjou9bl().s[6]++, this.options);
       cov_inpjou9bl().s[7]++;
       if (options.icon) {
@@ -1295,7 +1295,7 @@ cov_inpjou9bl().s[0]++;
     },
     _createInner: function () {
       cov_inpjou9bl().f[3]++;
-      var iconClass,
+      let iconClass,
         iconSpinClass = (cov_inpjou9bl().s[13]++, ""),
         iconColorClass = (cov_inpjou9bl().s[14]++, ""),
         iconColorStyle = (cov_inpjou9bl().s[15]++, ""),
@@ -1339,7 +1339,7 @@ cov_inpjou9bl().s[0]++;
     },
     _setIconStyles: function (img, name) {
       cov_inpjou9bl().f[4]++;
-      var options = (cov_inpjou9bl().s[27]++, this.options),
+      let options = (cov_inpjou9bl().s[27]++, this.options),
         size = (cov_inpjou9bl().s[28]++, L.point(options[name === 'shadow' ? (cov_inpjou9bl().b[8][0]++, 'shadowSize') : (cov_inpjou9bl().b[8][1]++, 'iconSize')])),
         anchor;
       cov_inpjou9bl().s[29]++;
@@ -1385,7 +1385,7 @@ cov_inpjou9bl().s[0]++;
     },
     createShadow: function () {
       cov_inpjou9bl().f[5]++;
-      var div = (cov_inpjou9bl().s[41]++, document.createElement('div'));
+      let div = (cov_inpjou9bl().s[41]++, document.createElement('div'));
       cov_inpjou9bl().s[42]++;
       this._setIconStyles(div, 'shadow');
       cov_inpjou9bl().s[43]++;

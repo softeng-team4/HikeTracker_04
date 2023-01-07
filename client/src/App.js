@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, ManagerPage, ModifyHikeByAuthor, UserProfile } from './components/View';
+import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, HikePage, ManagerPage, ModifyHikeByAuthor, UserProfile } from './components/View';
 import { useEffect, useMemo, useState } from 'react';
 import API from './API.js'
 import AuthenticationContext from './components/AuthenticationContext';
@@ -136,7 +136,7 @@ function App() {
               <Route path='myHikeList' element={authUser.role.toLowerCase() === 'local guide' ? <ModifyHikeByAuthor /> : <Navigate to='/' />} />
               <Route path='modifyHike' element={authUser.role.toLowerCase() === 'local guide' ? <StaticHikeInfo /> : <Navigate to='/' />} />
               <Route path='huts' element={<BrowserHuts />} />
-
+              <Route path='active' element={<HikePage/>} />
               <Route path='hikeCondition' element={authUser.role.toLowerCase() === 'hut worker' ? <UpdateCondition /> : <Navigate to='/' />} />
               {/* here are the routes with manager */}
               <Route path='manager' element={authUser.role.toLowerCase() === 'manager' ? <ManagerPage /> : <Navigate to='/' />} />

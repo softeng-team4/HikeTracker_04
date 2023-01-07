@@ -1,9 +1,9 @@
 function cov_25g9xggjfy() {
-  var path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/API.js";
-  var hash = "5337035f388dad5f90b593642d3a6d6812e82d62";
-  var global = new Function("return this")();
-  var gcv = "__coverage__";
-  var coverageData = {
+  const path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/API.js";
+  const hash = "5337035f388dad5f90b593642d3a6d6812e82d62";
+  const global = new Function("return this")();
+  const gcv = "__coverage__";
+  let coverageData = {
     path: "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/API.js",
     statementMap: {
       "0": {
@@ -6125,11 +6125,11 @@ function cov_25g9xggjfy() {
     _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
     hash: "5337035f388dad5f90b593642d3a6d6812e82d62"
   };
-  var coverage = global[gcv] || (global[gcv] = {});
+  let coverage = global[gcv] || (global[gcv] = {});
   if (!coverage[path] || coverage[path].hash !== hash) {
     coverage[path] = coverageData;
   }
-  var actualCoverage = coverage[path];
+  let actualCoverage = coverage[path];
   {
     // @ts-ignore
     cov_25g9xggjfy = function () {
@@ -6505,9 +6505,9 @@ const hikesList = async (filters, collection) => {
   cov_25g9xggjfy().f[25]++;
   const hikesRef = (cov_25g9xggjfy().s[136]++, firestore.collection(db, collection));
   let q = (cov_25g9xggjfy().s[137]++, firestore.query(hikesRef));
-  let cont = (cov_25g9xggjfy().s[138]++, 0);
-  let names = (cov_25g9xggjfy().s[139]++, []);
-  let values = (cov_25g9xggjfy().s[140]++, []);
+  let cont = undefined;
+  let names = undefined;
+  let values = undefined;
   let res = (cov_25g9xggjfy().s[141]++, []);
   cov_25g9xggjfy().s[142]++;
   [names, values, cont] = checkFilters(filters);

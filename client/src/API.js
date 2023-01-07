@@ -656,11 +656,44 @@ const deleteRegHike = async (email) => {
     await deleteDoc(doc(db, "regHikes", querySnapshot.docs[0].id));
 }
 
+const terminateHike = async (regHikeId, collection = "regHikes") => {
+    await firestore.updateDoc(firestore.doc(db, collection, regHikeId), {
+        status: "terminated",
+        endTime: dayjs().format('DD/MM/YYYY hh:mm:ss')
+    });
+}
+
+const getUserActiveHike = async (collection = "regHikes") => {
+    const regHikesref = firestore.collection(db, collection);
+    const user = fireAuth.getAuth().currentUser;
+    const q = firestore.query(regHikesref, firestore.where("userId", "==", user.email), firestore.where("status", "==", "ongoing"));
+    const querySnapshot = await firestore.getDocs(q);
+    const res = [];
+    querySnapshot.forEach((doc) => {
+        const regHike = {
+            id: doc.id,
+            hikeId: doc.data().hikeId,
+            status: doc.data().status,
+            startTime: doc.data().startTime,
+            endTime: doc.data().endTime,
+            passedRP: doc.data().passedRP,
+            userId: doc.data().userId
+        };
+        res.push(regHike);
+    });
+    console.log(res);
+    return res;
+}
+
+const getHikeById = async (hikeId, collection = "hike") => {
+    return { id: hikeId, ...(await firestore.getDoc(firestore.doc(db, collection, hikeId))).data() };
+}
+
 module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition,
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor,
-    startHike, deleteRegHike
+    startHike, terminateHike, getUserActiveHike, getHikeById, deleteRegHike
 };
 
 

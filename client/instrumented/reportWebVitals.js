@@ -1,9 +1,9 @@
 function cov_5ig70w3g4() {
-  var path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/reportWebVitals.js";
-  var hash = "3821366082c5be90d5ff0ade822f6bc558cfe3b5";
-  var global = new Function("return this")();
-  var gcv = "__coverage__";
-  var coverageData = {
+  const path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/reportWebVitals.js";
+  const hash = "3821366082c5be90d5ff0ade822f6bc558cfe3b5";
+  const global = new Function("return this")();
+  const gcv = "__coverage__";
+  let coverageData = {
     path: "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/reportWebVitals.js",
     statementMap: {
       "0": {
@@ -226,11 +226,11 @@ function cov_5ig70w3g4() {
     _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
     hash: "3821366082c5be90d5ff0ade822f6bc558cfe3b5"
   };
-  var coverage = global[gcv] || (global[gcv] = {});
+  let coverage = global[gcv] || (global[gcv] = {});
   if (!coverage[path] || coverage[path].hash !== hash) {
     coverage[path] = coverageData;
   }
-  var actualCoverage = coverage[path];
+  let actualCoverage = coverage[path];
   {
     // @ts-ignore
     cov_5ig70w3g4 = function () {

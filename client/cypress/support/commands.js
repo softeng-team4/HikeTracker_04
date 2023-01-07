@@ -33,10 +33,6 @@ Cypress.Commands.add('login', (email, password) => {
         cy.get('form > :nth-child(2) > #password').clear().type(password)
         cy.contains('Login').click()
         cy.url().should('include', '/')
-        // const auth = fireAuth.getAuth();
-        // fireAuth.signOut(auth);
-        // fireAuth.signInWithEmailAndPassword(auth, email, password);
-        // cy.visit('http://localhost:3000/')
 })
 
 Cypress.Commands.add('hardcodedLogin', (email, password) => {
@@ -46,8 +42,6 @@ Cypress.Commands.add('hardcodedLogin', (email, password) => {
 Cypress.Commands.add('logout', () => {
     cy.get('.userDropdownButton').click()
     cy.get('.logOutBtn').click()
-    // const auth = fireAuth.getAuth();
-    // fireAuth.signOut(auth);
 })
 
 Cypress.Commands.add("createTestHike", (hike = {}) => {

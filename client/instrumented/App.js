@@ -35,7 +35,7 @@ function App() {
   }, [auth]);
 
   //login and logut functions
-  const login = async (email, password) => {
+  async function login (email, password) {
     try {
       const user = await API.logIn(email, password);
       setAuthUser(user);
@@ -64,7 +64,7 @@ function App() {
     return userData;
   };
 
-  const signup = async (email, password, firstName, lastName, role) => {
+  async function signup (email, password, firstName, lastName, role) {
     try {
       await API.signUp(email, password, firstName, lastName, role);
     } catch (err) {
@@ -83,7 +83,7 @@ function App() {
     onUpdateUserData: updateUserData
   }), [authUser, authErr])
 
-  const addNewHike = async (hike) => {
+  async function addNewHike (hike) {
     try {
       await API.addNewHike(hike);
     } catch (e) {
@@ -92,7 +92,7 @@ function App() {
     }
   }
 
-  const addNewHut = async (hut) => {
+  async function addNewHut (hut) {
     console.log("Adding new hut!");
     try {
       await API.addNewHut(hut);
@@ -102,7 +102,7 @@ function App() {
     }
   };
 
-  const addNewParkingLot = async (parkingLot) => {
+  async function addNewParkingLot (parkingLot) {
     console.log("Adding new parking lot!");
     try {
       await API.addNewParkingLot(parkingLot);
