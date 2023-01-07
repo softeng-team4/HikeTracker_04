@@ -34,10 +34,14 @@ function CompletedHikes(props){
         getCompletedHikes().then(r => setHikeList(r))
     },[])
 
+    useEffect(() =>{
+        if(pageHikeList.length)
+            setIsLoading(false)
+    },[pageHikeList])
+
     useEffect(() => {
-        hikeList !== undefined &&
+        hikeList.length &&
             setPageHikeList(() => {
-                setIsLoading(false);
                 return hikeList.slice(index * hike4page, index * hike4page + hike4page)
             })
     }, [hikeList, index])
@@ -78,7 +82,7 @@ function CompletedHikes(props){
                     <Spacer height='2rem' />
                     <h2>Completed hikes</h2>
                     <Row className="mt-3">
-                        {!hikeList && !isLoading ? false : pageHikeList.map((hike,idx) =>
+                        {!hikeList.length && !isLoading ? false : pageHikeList.map((hike,idx) =>
                          <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                             <Card key={`card_${idx}`}>
                                     <Card.Header key={`card_header_${idx}`}>
@@ -124,7 +128,6 @@ function RefPointsMap(props){
 
     useEffect(()=>{
         
-            console.log("Setting min max")
             setMinLat(() => Math.min(...points.map(p => p.lat)) - 0.003)
             setMaxLat(() => Math.max(...points.map(p => p.lat)) + 0.003)
             setMinLng(() => Math.min(...points.map(p => p.lng)) - 0.003)
@@ -137,11 +140,10 @@ function RefPointsMap(props){
             };
 
             setCenter(evaluateCenter)   
-    },[])
+    },[points.length])
 
     useEffect(()=>{
         if(maxLat && maxLng && minLat && minLng){
-            console.log(maxLat + " " + maxLng + " " + minLat + " " + minLng)
             setBounds(() => L.latLngBounds(L.latLng(Number(minLat),Number(minLng)), L.latLng(Number(maxLat), Number(maxLng))))
         }
     },[maxLat,maxLng,minLat,minLng])
