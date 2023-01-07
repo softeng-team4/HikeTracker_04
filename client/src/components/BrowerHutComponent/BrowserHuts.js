@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Card, Row, Spinner } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Spacer from '../BrowserHikeComponents/Spacer';
 import AuthenticationContext from '../AuthenticationContext';
 import HikePageHandler from '../BrowserHikeComponents/HickePageHendler';
@@ -78,10 +78,10 @@ const BrowserHuts = (props) => {
     }, [searchQuery, hutList, range])
 
 
-    const handlePageChange = (idx) => {
+    const handlePageChange = useCallback((idx) => {
         setIndex(idx);
         setPageHutList(subHutList.slice(idx * hut4page, idx * hut4page + hut4page));
-    };
+    }, [setIndex, setPageHutList, subHutList]);
 
 
     const handleTouchStart = (e) => {
@@ -117,10 +117,10 @@ const BrowserHuts = (props) => {
                         <HutSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} geoArea={geoArea} setGeoArea={setGeoArea} setRange={setRange} />
                     </Row>
                     <Row className='mt-3'>
-                        {!hutList && !isLoading ? false : pageHutList.map((hut, idx) =>
-                            <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
+                        {!hutList && !isLoading ? false : pageHutList.map((hut) =>
+                            <div key={`div_${hut.id}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                                 <HutCard hut={hut}></HutCard>
-                                <Spacer height='1rem' key={`card_spacer_${idx}`} />
+                                <Spacer height='1rem' key={`card_spacer_${hut.id}`} />
                             </div>
                         )}
                     </Row>
