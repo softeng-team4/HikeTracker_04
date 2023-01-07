@@ -13,9 +13,6 @@ chai.should();
 const firestore = require('firebase/firestore');
 const { getMaxListeners } = require('process');
 const api = require('../src/API');
-//import { initializeApp } from "firebase/app";
-//import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
-//import {addNewHike} from "../src/API"
 
 const testHikes = firestore.collection(api.db, "regHikes-test")
 
@@ -63,7 +60,7 @@ function startHike(regHike) {
 
 function rejectStart(regHike) {
     it("Already started hike ", function (done) {
-        api.startHike(regHike, "regHikes-test").catch((err) =>{
+        api.startHike(regHike, "regHikes-test").catch((err) => {
             expect(err).to.be.equal("You already started a hike")
         })
             .then(() => done(), done)

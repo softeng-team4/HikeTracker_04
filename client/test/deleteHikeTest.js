@@ -11,9 +11,6 @@ chai.should();
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const api = require('../src/API');
-//import { initializeApp } from "firebase/app";
-//import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
-//import {addNewHike} from "../src/API"
 
 const collection = "hike-test";
 
@@ -21,11 +18,11 @@ const testHikes = firestore.collection(api.db, collection);
 
 describe('testing delete hike function', async () => {
 
-    after(async () =>{
+    after(async () => {
         await api.logOut()
     })
-    
-    await api.logIn("chicco.siviero@gmail.com","chicco")
+
+    await api.logIn("chicco.siviero@gmail.com", "chicco")
     const hike1 = {
         ascent: 1317.10,
         author: "luca.mistruzzi@gmail.com",
@@ -172,7 +169,7 @@ describe('testing delete hike function', async () => {
     testDeleteHike("1");
 })
 
-function testDeleteHike(hutId){
+function testDeleteHike(hutId) {
     let cont = 0;
     it("Deleting an hike given its id", function (done) {
         api.deleteHike(hutId, collection)

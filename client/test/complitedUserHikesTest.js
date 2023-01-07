@@ -12,14 +12,11 @@ chai.should();
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const api = require('../src/API');
-//import { initializeApp } from "firebase/app";
-//import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
-//import {addNewHike} from "../src/API"
 
 const collection = "regHikes-test";
 const testRegHikes = firestore.collection(api.db, collection);
 
-describe('test the list of complited hikes of a logged hiker', async() =>{
+describe('test the list of complited hikes of a logged hiker', async () => {
 
     const regHike1 = {
         hikeId: "1",
@@ -73,7 +70,7 @@ describe('test the list of complited hikes of a logged hiker', async() =>{
         await firestore.addDoc(testRegHikes, regHike4);
 
     })
-    
+
     testMyCompletedHikes("masterale1999@gmail.com", 2);
     await api.logOut();
 })
@@ -83,7 +80,7 @@ function testMyCompletedHikes(author, n) {
         api.MyCompletedHikes(collection)
             .then((res) => {
                 res.length.should.equal(n);
-                for(let i = 0; i < res.length; i++){
+                for (let i = 0; i < res.length; i++) {
                     res[i].userId.should.equal(author);
                     res[i].status.should.equal("terminated");
                 }

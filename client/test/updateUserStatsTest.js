@@ -13,9 +13,6 @@ const firestore = require('firebase/firestore');
 const { json } = require('react-router');
 const api = require('../src/API');
 const dayjs = require('dayjs');
-//import { initializeApp } from "firebase/app";
-//import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
-//import {addNewHike} from "../src/API"
 
 const collection = "user_test";
 const hike_collection = "hike_test";
