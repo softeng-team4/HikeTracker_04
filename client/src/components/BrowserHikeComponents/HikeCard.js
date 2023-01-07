@@ -60,6 +60,7 @@ const HikeCard = (props) => {
                                             <Button id={hike.id}
                                                 size='sm'
                                                 variant='primary'
+                                                style={{marginLeft:10}}
                                                 onClick={() => {
                                                     setShowConfirm(true)
                                                 }}>
