@@ -19,9 +19,11 @@ function ActiveHikePage(props) {
     useEffect(() => {
         const effectFunc = async () => {
             const activeHike = await (await API.getUserActiveHike())[0]
+            if (activeHike !== undefined) {
             const hike = await API.getHikeById(activeHike.hikeId)
-            setActiveHike(activeHike)
-            setHike(hike)
+                setActiveHike(activeHike)
+                setHike(hike)
+            }
         }
         effectFunc().then()
     }, [])
