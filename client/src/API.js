@@ -3,7 +3,7 @@ const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth');
 const dayjs = require('dayjs')
-const { GeoPoint, updateDoc, doc, deleteDoc } = require('firebase/firestore');
+const { GeoPoint, updateDoc, doc } = require('firebase/firestore');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, setDoc, getDoc, addDoc, collection} from "firebase/firestore";
 //import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile  } from "firebase/auth";
@@ -88,7 +88,6 @@ const getUser = async (email) => {
 }
 
 //Queries for the hike collection
-
 
 const addNewHike = async (hike, collection = "hike") => {
     const newHike = {
@@ -224,7 +223,7 @@ const checkFilters = (filters) => {
         cont++;
     }
     return [names, values, cont]
-} 
+}
 
 const hikesList = async (filters, collection) => {
     const hikesRef = firestore.collection(db, collection);
@@ -646,23 +645,23 @@ const MyCompletedHikes = async (collection = 'regHikes') => {
 }
 //APIs for registered hikes
 
-const startHike = async (hikeId, collection='regHikes') => {
-    return new Promise( async (resolve,reject) =>{
-        const regHikesref = firestore.collection(db,collection)
+const startHike = async (hikeId, collection = 'regHikes') => {
+    return new Promise(async (resolve, reject) => {
+        const regHikesref = firestore.collection(db, collection)
         const user = fireAuth.getAuth().currentUser
-        const q = firestore.query(regHikesref, firestore.where("userId","==",user.email), firestore.where("status","==","ongoing"))
+        const q = firestore.query(regHikesref, firestore.where("userId", "==", user.email), firestore.where("status", "==", "ongoing"))
         const querySnapshot = await firestore.getDocs(q)
         if(!querySnapshot.empty){
             reject("You already started a hike")
             return
         }
-        const regHike ={
+        const regHike = {
             hikeId: hikeId,
             status: "ongoing",
             startTime: dayjs().format('DD/MM/YYYY hh:mm:ss'),
             userId: user.email
-        } 
-        await firestore.addDoc(regHikesref,regHike)
+        }
+        await firestore.addDoc(regHikesref, regHike)
         resolve("Hike started")
     })
 }
@@ -682,6 +681,9 @@ const terminateHike = async (regHikeId, collection = "regHikes") => {
         status: "terminated",
         endTime: dayjs().format('DD/MM/YYYY hh:mm:ss')
     });
+    const user = fireAuth.getAuth().currentUser;
+    const regHike = (await firestore.getDoc(firestore.doc(db, collection, regHikeId))).data();
+    updateUserStats(user.email, regHike);
 }
 
 const getUserActiveHike = async (collection = "regHikes") => {
@@ -711,12 +713,75 @@ const getHikeById = async (hikeId, collection = "hike") => {
     return { id: hikeId, ...(await firestore.getDoc(firestore.doc(db, collection, hikeId))).data() };
 }
 
+const updateRP = async (regHikeId, refPointList, collection = "regHikes") => {
+    await firestore.updateDoc(firestore.doc(db, collection, regHikeId), {
+        passedRP: JSON.stringify(refPointList)
+    });
+}
+
+// API for performance stats
+
+const updateUserStats = async (email, regHike, collection = 'users', hike_collection = 'hike') => {
+    console.log(regHike)
+    const stats = (await firestore.getDoc(firestore.doc(db, collection, email))).data().stats;
+    const hike = (await firestore.getDoc(firestore.doc(db, hike_collection, regHike.hikeId))).data();
+    const hike_time = dayjs(regHike.endTime).diff(dayjs(regHike.startTime), 'hour', true); //todo check format
+    let refpointList = regHike.passedRP ? JSON.parse(regHike.passedRP) : [];
+    refpointList = [{ time: regHike.startTime, alt: hike.startPoint.altitude }, ...refpointList, { time: regHike.endTime, alt: hike.endPoint.altitude }]
+    const maxAlt = Math.max.apply(Math, refpointList.map(rp => rp.alt));
+    const rangeAlt = maxAlt - Math.min.apply(Math, refpointList.map(rp => rp.alt));
+    const avg = hike_time * 60 / parseFloat(hike.length) / 1000;
+    let stats_new = stats ?
+        { ...stats }
+        :
+        {
+            completed_hikes: 0,
+            distance: 0,
+            time: 0,
+            ascent: 0,
+            ascending_time: 0,
+            highest_altitude: 0,
+            highest_altitude_range: 0,
+            longest_hike_distance: 0,
+            longest_hike_time: 0,
+            shortest_hike_distance: Number.MAX_VALUE,
+            shortest_hike_time: Number.MAX_VALUE,
+            fastest_paced_hike: Number.MAX_VALUE
+        };
+
+    stats_new.completed_hikes += 1;
+    stats_new.distance += parseFloat(hike.length);
+    stats_new.time += hike_time;
+    for (let i = 1; i < refpointList.length; i++) {
+        const alt_range = refpointList[i - 1].alt && refpointList[i].alt ? refpointList[i].alt - refpointList[i - 1].alt : -1;
+        if (alt_range > 0) {
+            stats_new.ascent += alt_range;
+            stats_new.ascending_time += dayjs(refpointList[i].time).diff(dayjs(refpointList[i - 1].time), 'hour', true);
+        }
+    }
+    if (!stats || maxAlt > stats.highest_altitude)
+        stats_new.highest_altitude = maxAlt;
+    if (!stats || rangeAlt > stats.highest_altitude_range)
+        stats_new.highest_altitude_range = rangeAlt;
+    if (!stats || parseFloat(hike.length) > stats.longest_hike_distance)
+        stats_new.longest_hike_distance = parseFloat(hike.length);
+    if (!stats || parseFloat(hike.length) < stats.shortest_hike_distance)
+        stats_new.shortest_hike_distance = parseFloat(hike.length);
+    if (!stats || hike_time > stats.longest_hike_time)
+        stats_new.longest_hike_time = hike_time;
+    if (!stats || hike_time < stats.shortest_hike_time)
+        stats_new.shortest_hike_time = hike_time;
+    if (!stats || avg < stats.fastest_paced_hike)
+        stats_new.fastest_paced_hike = avg;
+
+    await firestore.updateDoc(firestore.doc(db, collection, email), {
+        stats: stats_new
+    });
+}
+
 module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, MyCompletedHikes,
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor,
-    startHike, terminateHike, getUserActiveHike, getHikeById, deleteRegHike
+    startHike, terminateHike, getUserActiveHike, getHikeById, updateRP, updateUserStats, deleteRegHike
 };
-
-
-

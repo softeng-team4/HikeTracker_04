@@ -1,5 +1,5 @@
 import AuthenticationContext from "../AuthenticationContext";
-import { Row, Col, Container, Card, ButtonGroup, Button, Tooltip, OverlayTrigger, Spinner, Modal } from 'react-bootstrap';
+import { Row, Col, Card, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import ConfirmModal from '../ModifyHikeComponents/ConfirmModal';
 import { useEffect, useState } from "react";
@@ -14,10 +14,14 @@ const HikeCard = (props) => {
     const activeHike = props.activeHike
     const navigate = useNavigate()
 
+    useEffect(() => {
+        setHike(props.hike)
+    }, [props])
+
     // function to display additional hike info modal
     const handleShowInfo = (event) => {
         event.preventDefault();
-        const id = event.target.id;
+        setHike(hike);
         setShowInfoModal(true);
     }
 
