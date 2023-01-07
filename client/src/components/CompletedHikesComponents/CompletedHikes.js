@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Container, Card, Row, Spinner } from 'react-bootstrap';
 import HikePageHandler from '../BrowserHikeComponents/HickePageHendler';
 import L from 'leaflet';
-import { LocationMarker } from "../HutParkFormComponents/LocationMarker";
 import MapIcons from '../MapComponents/MapIcons';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 
@@ -82,25 +81,25 @@ function CompletedHikes(props){
                     <Spacer height='2rem' />
                     <h2>Completed hikes</h2>
                     <Row className="mt-3">
-                        {!hikeList.length && !isLoading ? false : pageHikeList.map((hike,idx) =>
-                         <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
-                            <Card key={`card_${idx}`}>
-                                    <Card.Header key={`card_header_${idx}`}>
+                        {!hikeList.length && !isLoading ? false : pageHikeList.map((hike) =>
+                         <div key={`div_${hike.id}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
+                            <Card key={`card_${hike.id}`}>
+                                    <Card.Header key={`card_header_${hike.id}`}>
                                         <Row md={10} className='row d-flex justify-content-between'>
                                             <Col lg={4}><b>Start time:</b>&nbsp;{hike.startTime}</Col>
                                             <Col lg={4}><b>End time:</b>&nbsp;{hike.endTime}</Col>
                                             {hike.title? <Col lg={4}><b>Title:</b>&nbsp;{hike.title}</Col> : false}
                                         </Row>
                                     </Card.Header>
-                                    <Card.Body key={`card_body_${idx}`}>
+                                    <Card.Body key={`card_body_${hike.id}`}>
                                         {hike.passedRP && hike.passedRP.length? <RefPointsMap passedRP={hike.passedRP}></RefPointsMap> : false}
                                     </Card.Body>
-                                    <Card.Footer key={`card_footer_${idx}`}>
+                                    <Card.Footer key={`card_footer_${hike.id}`}>
                                         <Row md={10} className='row d-flex justify-content-between'>
                                         </Row>
                                     </Card.Footer>
                                 </Card>
-                                <Spacer height='1rem' key={`card_spacer_${idx}`} />
+                                <Spacer height='1rem' key={`card_spacer_${hike.id}`} />
                          </div>
                          )}
                     </Row>
@@ -122,7 +121,7 @@ function RefPointsMap(props){
     const [minLng,setMinLng] = useState(0)
     const [maxLat,setMaxLat] = useState(0)
     const [maxLng,setMaxLng] = useState(0)
-    const [points,setPoints] = useState(JSON.parse(props.passedRP))
+    const points = JSON.parse(props.passedRP)
     const [center,setCenter] = useState()
     const [bounds,setBounds] = useState()
 

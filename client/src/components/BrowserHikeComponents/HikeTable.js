@@ -69,10 +69,10 @@ const HikeTable = () => {
                 <Spacer height='2rem' />
                 <h2>Explore Hike</h2>
                 <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} />
-                {subHikeList.map((hike, idx) =>
-                    <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
+                {subHikeList.map((hike) =>
+                    <div key={`div_${hike.id}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                         <HikeCard hike={hike} />
-                        <Spacer height='1rem' key={`card_spacer_${idx}`} />
+                        <Spacer height='1rem' key={`card_spacer_${hike.id}`} />
                     </div>
                 )}
                 {!isLoading && hikeList.length === 0 && <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There are no hikes for the selected filters!</h5></Card><Spacer height='2rem' /></Container>}

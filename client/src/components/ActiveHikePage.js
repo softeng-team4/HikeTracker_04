@@ -1,5 +1,5 @@
 import AuthenticationContext from './AuthenticationContext';
-import { Container, Card, Col, Row, Button } from 'react-bootstrap';
+import { Container, Card, Button } from 'react-bootstrap';
 import Spacer from './BrowserHikeComponents/Spacer';
 import API from '../API'
 import HikeCard from './BrowserHikeComponents/HikeCard';
