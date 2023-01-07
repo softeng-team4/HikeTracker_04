@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-test": "react-scripts -r @cypress/instrument-cra start",
+    "start-test": "npx nyc instrument --compact=false src instrumented && react-scripts -r @cypress/instrument-cra start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "apiTest": "nyc mocha test --runInBand --timeout 8000 --exit",

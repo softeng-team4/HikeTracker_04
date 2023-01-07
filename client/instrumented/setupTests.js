@@ -1,9 +1,9 @@
 function cov_tmyebfi30() {
-  const path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/setupTests.js";
-  const hash = "561810dc266dc7e21fc081593fdb22357986a2e5";
-  const global = new Function("return this")();
-  const gcv = "__coverage__";
-  let coverageData = {
+  var path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/setupTests.js";
+  var hash = "561810dc266dc7e21fc081593fdb22357986a2e5";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
     path: "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/setupTests.js",
     statementMap: {},
     fnMap: {},
@@ -14,11 +14,11 @@ function cov_tmyebfi30() {
     _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
     hash: "561810dc266dc7e21fc081593fdb22357986a2e5"
   };
-  let coverage = global[gcv] || (global[gcv] = {});
+  var coverage = global[gcv] || (global[gcv] = {});
   if (!coverage[path] || coverage[path].hash !== hash) {
     coverage[path] = coverageData;
   }
-  let actualCoverage = coverage[path];
+  var actualCoverage = coverage[path];
   {
     // @ts-ignore
     cov_tmyebfi30 = function () {

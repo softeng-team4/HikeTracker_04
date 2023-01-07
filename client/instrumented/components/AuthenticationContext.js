@@ -1,9 +1,9 @@
 function cov_o1j4chtri() {
-  const path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/components/AuthenticationContext.js";
-  const hash = "eac45129aa2dde7b375a9531b56328c3fd8a71d2";
-  const global = new Function("return this")();
-  const gcv = "__coverage__";
-  let coverageData = {
+  var path = "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/components/AuthenticationContext.js";
+  var hash = "eac45129aa2dde7b375a9531b56328c3fd8a71d2";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
     path: "/home/mistru97/Polito/MasterDegree/02_year/softeng2/HikeTracker_04/client/src/components/AuthenticationContext.js",
     statementMap: {
       "0": {
@@ -27,11 +27,11 @@ function cov_o1j4chtri() {
     _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
     hash: "eac45129aa2dde7b375a9531b56328c3fd8a71d2"
   };
-  let coverage = global[gcv] || (global[gcv] = {});
+  var coverage = global[gcv] || (global[gcv] = {});
   if (!coverage[path] || coverage[path].hash !== hash) {
     coverage[path] = coverageData;
   }
-  let actualCoverage = coverage[path];
+  var actualCoverage = coverage[path];
   {
     // @ts-ignore
     cov_o1j4chtri = function () {

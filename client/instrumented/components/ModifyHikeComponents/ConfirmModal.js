@@ -11,8 +11,8 @@ const ConfirmModal = (props) => {
                 <Row className='d-flex justify-content-center'>This operation is not reversible!</Row>
             </Modal.Body>
             <Modal.Footer className='addInfo d-flex justify-content-center py-2'>
-                <Button className='mx-4 px-2' size='md' variant='success' onClick={() => { props.onSubmit() }}>Yes</Button>
-                <Button className='mx-4 px-2' size='md' variant='secondary' onClick={() => { props.onAbort() }}>No</Button>
+                <Button className='yesButton mx-4 px-2' size='md' variant='success' onClick={() => { props.onSubmit() }}>Yes</Button>
+                <Button className='noButton mx-4 px-2' size='md' variant='secondary' onClick={() => { props.onAbort() }}>No</Button>
             </Modal.Footer>
         </Modal>
     );

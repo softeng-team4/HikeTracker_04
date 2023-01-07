@@ -17,42 +17,69 @@ describe("test record point of regHike", () => {
     })
 
     after(() => {
-        cy.get('.btn-danger').click()
+        cy.contains('.btn-danger', 'Terminate Hike').click()
+        cy.wait(1000)
         cy.contains('.btn', 'Yes').click()
-        cy.logout();
+        cy.logout()
+    })
+
+    beforeEach(() => {
+        cy.visit('http://localhost:3000/active')
+        cy.get('.btn-primary').click()
     })
 
     it("visualize map and reference points", () => {
-        cy.get('.btn-primary').click()
         cy.get('.fa-info-circle').should('have.length', 3)
     })
 
     it("add a record point", () => {
         cy.get('.addPoint_0').click()
         cy.wait(300)
-        cy.contains('.addPoint_0')
-        cy.contains('.addPoint_1')
-        cy.contains('.removePoint_0')
+        cy.get('.addPoint_0').should('exist')
+        cy.get('.addPoint_1').should('exist')
+        cy.get('.removePoint_0').should('exist')
     })
 
     it("add a second record point", () => {
         cy.get('.addPoint_0').click()
         cy.wait(300)
-        cy.contains('.addPoint_0')
-        cy.contains('.removePoint_0')
+        cy.get('.addPoint_0').click()
+        cy.wait(300)
+        cy.get('.addPoint_0').should('exist')
+        cy.get('.removePoint_1').should('exist')
     })
 
     it("add a third record point", () => {
         cy.get('.addPoint_0').click()
         cy.wait(300)
-        cy.contains('.addPoint_0').should('not.exist')
-        cy.contains('.removePoint_0')
+        cy.get('.addPoint_0').click()
+        cy.wait(300)
+        cy.get('.addPoint_0').click()
+        cy.wait(300)
+        cy.get('.addPoint_0').should('not.exist')
+        cy.get('.removePoint_2').should('exist')
     })
 
-    it("remove last inserted record point", () => {
+    it("remove inserted record point", () => {
+        cy.get('.addPoint_0').click()
+        cy.wait(300)
         cy.get('.removePoint_0').click()
         cy.wait(300)
-        cy.contains('.addPoint_0')
-        cy.contains('.removePoint_0')
+        cy.get('.addPoint_0').should('exist')
+        cy.get('.addPoint_1').should('exist')
+        cy.get('.addPoint_2').should('exist')
+    })
+
+    it("submit record points", () => {
+        cy.get('.addPoint_0').click()
+        cy.wait(300)
+        cy.get('.addPoint_0').click()
+        cy.wait(300)
+        cy.contains('.btn-success', 'Record point').click()
+        cy.wait(1000)
+        cy.contains('.btn', 'Yes').click()
+        cy.get('.addPoint_0').should('exist')
+        cy.get('.addPoint_1').should('not.exist')
+        cy.get('.removePoint_0').should('not.exist')
     })
 })

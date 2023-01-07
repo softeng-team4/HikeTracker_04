@@ -10,6 +10,7 @@ function Map(props) {
 
     // const [position, setPosition] = useState([45.06294822296754, 7.662272990156818])
     const points = props.positions;
+    const refPoints = props.positions.filter(p => p.name);
     // values to bounds the map
     const minLat = Math.min(...points.map(p => p.lat)) - 0.003;
     const minLng = Math.min(...points.map(p => p.lng)) - 0.003;
@@ -18,7 +19,7 @@ function Map(props) {
     const huts = props.huts ? props.huts : [];
     const filteredHuts = !props.isDisplay ? huts.filter(h => {
         return !points.every(p => {
-            const maxDistance = 5000; // max distance of a hut to the hike to be linked now is 2.5km
+            const maxDistance = 5000; // max distance of a hut to the hike to be linked now is 5km
             const from = L.latLng([h.position._lat, h.position._long]);
             const to = L.latLng([p.lat, p.lng]);
             const d = from.distanceTo(to);
@@ -120,6 +121,11 @@ function Map(props) {
                 )}
                 {props.parkLots && props.parkLots.map((p) => 
                     <Marker key={`mark_${p.name}${p.position._lat}${p.position._long}`} position={[p.position._lat, p.position._long]} icon={MapIcons.parkIcon}>
+                        <Popup key={`pop_${p.name}`}>{p.name}</Popup>
+                    </Marker>
+                )}
+                {refPoints.length > 0 && refPoints.map((p) => 
+                    <Marker key={`mark_${p.name}${p.lat}${p.lng}`} position={[p.lat, p.lng]} icon={MapIcons.refIcon}>
                         <Popup key={`pop_${p.name}`}>{p.name}</Popup>
                     </Marker>
                 )}
