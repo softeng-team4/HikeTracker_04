@@ -97,87 +97,6 @@ const addNewHike = async (hike, collection = "hike") => {
     firestore.addDoc(firestore.collection(db, collection), newHike);
 }
 
-const deleteInvalidHikes = async () => {
-    const hikesRef = firestore.collection(db, "hike");
-    let q = firestore.query(hikesRef, firestore.where("ascent", '==', ''));
-    let querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        firestore.deleteDoc(doc.ref);
-    });
-    q = firestore.query(hikesRef, firestore.where("country", '==', ''));
-    querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        firestore.deleteDoc(doc.ref);
-    });
-    q = firestore.query(hikesRef, firestore.where("region", '==', ''));
-    querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        firestore.deleteDoc(doc.ref);
-    });
-    q = firestore.query(hikesRef, firestore.where("city", '==', ''));
-    querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        firestore.deleteDoc(doc.ref);
-    });
-    q = firestore.query(hikesRef, firestore.where("description", '==', ''));
-    querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        firestore.deleteDoc(doc.ref);
-    });
-    q = firestore.query(hikesRef, firestore.where("difficulty", '==', ''));
-    querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        firestore.deleteDoc(doc.ref);
-    });
-    q = firestore.query(hikesRef, firestore.where("expectedTime", '==', ''));
-    querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        firestore.deleteDoc(doc.ref);
-    });
-    q = firestore.query(hikesRef, firestore.where("length", '==', ''));
-    querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        firestore.deleteDoc(doc.ref);
-    });
-    q = firestore.query(hikesRef, firestore.where("title", '==', ''));
-    querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        firestore.deleteDoc(doc.ref);
-    });
-}
-
-const countryList = async () => {
-    const hikesRef = firestore.collection(db, "hike");
-    const res = new Set();
-    const querySnapshot = await firestore.getDocs(hikesRef);
-    querySnapshot.forEach((doc) => {
-        res.add(doc.data().country);
-    });
-    return Array.from(res);
-}
-
-const regionList = async (country) => {
-    const hikesRef = firestore.collection(db, "hike");
-    const res = new Set();
-    const q = firestore.query(hikesRef, firestore.where('country', '==', country));
-    const querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        res.add(doc.data().region);
-    });
-    return Array.from(res);
-}
-
-const cityList = async (country, region) => {
-    const hikesRef = firestore.collection(db, "hike");
-    const res = new Set();
-    const q = firestore.query(hikesRef, firestore.where('country', '==', country), firestore.where('region', '==', region));
-    const querySnapshot = await firestore.getDocs(q);
-    querySnapshot.forEach((doc) => {
-        res.add(doc.data().city);
-    });
-    return Array.from(res);
-}
-
 //Spherical law of cosines distance
 function distance(lat1, lon1, lat2, lon2) {
     if ((lat1 === lat2) && (lon1 === lon2)) {
@@ -780,7 +699,7 @@ const updateUserStats = async (email, regHike, collection = 'users', hike_collec
 }
 
 module.exports = {
-    deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
+    signUp, logIn, logOut, getUser, addNewHike, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, MyCompletedHikes,
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor,
     startHike, terminateHike, getUserActiveHike, getHikeById, updateRP, updateUserStats, deleteRegHike
