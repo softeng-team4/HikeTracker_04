@@ -11,9 +11,6 @@ chai.should();
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const api = require('../src/API');
-//import { initializeApp } from "firebase/app";
-//import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
-//import {addNewHike} from "../src/API"
 
 const testHuts = firestore.collection(api.db, "hut-test")
 

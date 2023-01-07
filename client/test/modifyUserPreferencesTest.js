@@ -11,21 +11,18 @@ chai.should();
 const firebase = require('firebase/app')
 const firestore = require('firebase/firestore')
 const api = require('../src/API');
-//import { initializeApp } from "firebase/app";
-//import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
-//import {addNewHike} from "../src/API"
 
 const collection = "user-test-preferences"
 const testUser = firestore.collection(api.db, collection)
 
-describe('testing the update of preferences by an hiker',()=>{
+describe('testing the update of preferences by an hiker', () => {
 
-    before(async ()=>{
+    before(async () => {
 
-        await api.logIn("masterale1999@gmail.com","password")
+        await api.logIn("masterale1999@gmail.com", "password")
         const userQuery = firestore.query(testUser);
         const querySnapshot = await firestore.getDocs(userQuery)
-        querySnapshot.forEach(async (doc) =>{
+        querySnapshot.forEach(async (doc) => {
             await firestore.deleteDoc(firestore.doc(api.db, collection, doc.id));
         })
 
@@ -38,10 +35,10 @@ describe('testing the update of preferences by an hiker',()=>{
         });
     });
 
-    after(async () =>{
+    after(async () => {
         await api.logOut()
     })
-    
+
     const user = {
         email: "testeamail@test.it",
         firstName: "Paolo",
@@ -50,15 +47,15 @@ describe('testing the update of preferences by an hiker',()=>{
         role: "Hiker"
     }
     const preferences = {
-        ascentRange:{
+        ascentRange: {
             max: 800,
             min: 0
         },
-        lengthRange:{
+        lengthRange: {
             max: 15,
             min: 0
         },
-        timeRange:{
+        timeRange: {
             max: 600,
             min: 0
         }
@@ -67,23 +64,23 @@ describe('testing the update of preferences by an hiker',()=>{
     testModifyUserPreferences(user, preferences);
 })
 
-function testModifyUserPreferences(user, preferences){
-    it("Check preferences update ",function(done){
+function testModifyUserPreferences(user, preferences) {
+    it("Check preferences update ", function (done) {
         api.modifyUserPreferences(user.email, preferences, collection)
-        .then(()=>{
-            firestore.getDoc(firestore.doc(api.db, collection, user.email))
-            .then((doc) =>{
-                doc.data.email.should.equal(user.email);
-                doc.data.firstName.should.equal(user.firstName);
-                doc.data.lastName.should.equal(user.lastName);
-                doc.data.phoneNumber.should.equal(user.phoneNumber);
-                doc.data.role.should.equal(user.name);
-                doc.data.preferences.should.equal(preferences);
+            .then(() => {
+                firestore.getDoc(firestore.doc(api.db, collection, user.email))
+                    .then((doc) => {
+                        doc.data.email.should.equal(user.email);
+                        doc.data.firstName.should.equal(user.firstName);
+                        doc.data.lastName.should.equal(user.lastName);
+                        doc.data.phoneNumber.should.equal(user.phoneNumber);
+                        doc.data.role.should.equal(user.name);
+                        doc.data.preferences.should.equal(preferences);
+                    })
             })
-        })
-        .then(() => done(), done)
-        .catch((error) => {
-            done(error);
-        });
+            .then(() => done(), done)
+            .catch((error) => {
+                done(error);
+            });
     })
 }

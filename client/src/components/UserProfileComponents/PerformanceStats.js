@@ -8,20 +8,6 @@ import { useContext } from 'react';
 const PerformanceStats = (props) => {
 
     const stats = useContext(AuthenticationContext).authUser.stats;
-    // let stats = {
-    //     completed_hikes: 0,
-    //     distance: 0,
-    //     time: 1,
-    //     ascent: 0,
-    //     ascending_time: 1,
-    //     highest_altitude: 0,
-    //     highest_altitude_range: 0,
-    //     longest_hike_distance: 0,
-    //     longest_hike_time: 0,
-    //     shortest_hike_distance: 0,
-    //     shortest_hike_time: 0,
-    //     fastest_paced_hike: 0
-    // }
 
     return (
         <>

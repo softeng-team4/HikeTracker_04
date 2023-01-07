@@ -11,9 +11,6 @@ chai.should();
 const firebase = require('firebase/app');
 const firestore = require('firebase/firestore');
 const api = require('../src/API');
-//import { initializeApp } from "firebase/app";
-//import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
-//import {addNewHike} from "../src/API"
 
 const collection = "hike-test";
 
@@ -77,7 +74,7 @@ describe('update hike description test', async () => {
         await firestore.setDoc(firestore.doc(testHikes, "1"), hike);
     })
 
-    after(async () =>{
+    after(async () => {
         await api.logOut()
     })
 
@@ -90,7 +87,7 @@ describe('update hike description test', async () => {
 
     testUpdateHikeDescription(values, "1", hike);
 
-    
+
 
 })
 
