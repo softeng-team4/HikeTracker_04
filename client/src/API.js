@@ -328,7 +328,7 @@ const hutsList = async (filters, collection = "huts") => {
     }
     if (filters.name !== undefined) {
         names.push("name");
-        values.push(filters.difficulty);
+        values.push(filters.name);
         cont++;
     }
     switch (cont) {
@@ -632,7 +632,7 @@ const startHike = async (hikeId, collection='regHikes') => {
         const q = firestore.query(regHikesref, firestore.where("userId","==",user.email), firestore.where("status","==","ongoing"))
         const querySnapshot = await firestore.getDocs(q)
         if(!querySnapshot.empty){
-            reject("User already started a hike")
+            reject("You already started a hike")
             return
         }
         const regHike ={
@@ -644,6 +644,16 @@ const startHike = async (hikeId, collection='regHikes') => {
         await firestore.addDoc(regHikesref,regHike)
         resolve("Hike started")
     })
+}
+
+const deleteRegHike = async (email) => {
+    const regHikesref = firestore.collection(db,'regHikes')
+    const q = firestore.query(regHikesref, firestore.where("userId","==",email), firestore.where("status","==","ongoing"))
+    const querySnapshot = await firestore.getDocs(q)
+    if(querySnapshot.empty){
+        return
+    }
+    await deleteDoc(doc(db, "regHikes", querySnapshot.docs[0].id));
 }
 
 const terminateHike = async (regHikeId, collection = "regHikes") => {
@@ -689,7 +699,7 @@ module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition,
     getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor,
-    startHike, terminateHike, getUserActiveHike, getHikeById, updateRP
+    startHike, terminateHike, getUserActiveHike, getHikeById, updateRP, deleteRegHike
 };
 
 

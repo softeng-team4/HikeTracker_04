@@ -22,12 +22,17 @@ describe('testing the definition of a new hut by a local guide',()=>{
 
     before(async ()=>{
 
+        await api.logIn("chicco.siviero@gmail.com","chicco")
         const hutQuery = firestore.query(testHuts);
         const querySnapshot = await firestore.getDocs(hutQuery)
         querySnapshot.forEach((doc) =>{
             firestore.deleteDoc(firestore.doc(api.db,"huts-test",doc.id))
         })
 
+    })
+
+    after(async () =>{
+        await api.logOut()
     })
 
     const hut = {

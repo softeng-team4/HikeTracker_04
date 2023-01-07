@@ -15,6 +15,10 @@ describe("testing the management of local guide/hut worker role requests", () =>
 
     let users = []
 
+    before(async () =>{
+        await api.logIn("chicco.siviero@gmail.com","chicco")
+    })
+
     beforeEach(async () => {
 
         users[0] = {
@@ -54,7 +58,6 @@ describe("testing the management of local guide/hut worker role requests", () =>
         }
 
     })
-
 
     testRequestList(users)
     testHandleRoleRequest(users)
@@ -155,8 +158,8 @@ describe("testing the management of local guide/hut worker role requests", () =>
         for (let u of users) {
             await fireAuth.signInWithEmailAndPassword(auth, u.email, "123456")
             const user = auth.currentUser
-            await fireAuth.deleteUser(user)
             await firestore.deleteDoc(firestore.doc(api.db, "users", user.email))
+            await fireAuth.deleteUser(user)
         }
     })
 

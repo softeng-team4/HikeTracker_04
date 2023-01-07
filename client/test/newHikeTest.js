@@ -20,12 +20,17 @@ describe('testing the definition of a new hike by a local guide',()=>{
 
     before(async ()=>{
 
+        await api.logIn("chicco.siviero@gmail.com","chicco")
         const hikeQuery = firestore.query(testHikes);
         const querySnapshot = await firestore.getDocs(hikeQuery)
         querySnapshot.forEach((doc) =>{
             firestore.deleteDoc(firestore.doc(api.db,"hike-test",doc.id))
         })
 
+    })
+
+    after(async () =>{
+        await api.logOut()
     })
 
     const hike = {title:'111',city:"Milan",country:"Italy",region:"Lombardia",length:10,expectedTime:0,ascent:0,difficulty:2,startPoint:[45.555,34.222],endPoint:[78.999,22.111],referencePoint:'',description:'222',author: 'chicco.siviero@gmail.com'}

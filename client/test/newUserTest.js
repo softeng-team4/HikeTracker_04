@@ -7,11 +7,12 @@ chai.should();// Import the functions you need from the SDKs you need
 const firestore = require('firebase/firestore')
 const fireAuth = require('firebase/auth')
 const api = require('../src/API');
+const { beforeAuthStateChanged } = require('firebase/auth');
 
-describe('testing the creation of a new user', () => {
+describe('testing the creation of a new user', async () => {
 
     const userInfo1 = {
-        email: 'kekkok99@gmail.com',
+        email: 'kekkok96@gmail.com',
         username: 'frafio',
         firstName: "Francesco",
         lastName: "Fiorella",
@@ -58,6 +59,11 @@ describe('testing the creation of a new user', () => {
     await deleteUser(userInfo3.email,p);
 
     });
+
+    before(async () =>{
+        await api.logIn("chicco.siviero@gmail.com","chicco")
+    })
+    
 
     newUser(userInfo1, p, true);
 
@@ -111,7 +117,6 @@ async function deleteUser(email,p) {
     const auth = fireAuth.getAuth()
     await fireAuth.signInWithEmailAndPassword(auth,email,p)
     const user = auth.currentUser
-    await fireAuth.deleteUser(user)
     await firestore.deleteDoc(firestore.doc(api.db, "users", email))
-    await api.logOut();
+    await fireAuth.deleteUser(user)
 }

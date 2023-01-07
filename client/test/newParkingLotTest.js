@@ -22,12 +22,17 @@ describe('testing the definition of a new parking lot by a local guide',()=>{
 
     before(async ()=>{
 
+        await api.logIn("chicco.siviero@gmail.com","chicco")
         const parkingLotQuery = firestore.query(testParkingLots);
         const querySnapshot = await firestore.getDocs(parkingLotQuery)
         querySnapshot.forEach((doc) =>{
             firestore.deleteDoc(firestore.doc(api.db,"parkingLots-test",doc.id))
         })
 
+    })
+
+    after(async () =>{
+        await api.logOut()
     })
 
     const parkingLot = {

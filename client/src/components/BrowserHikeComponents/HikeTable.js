@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Row, Col, Container, Card, ButtonGroup, Button, Tooltip, OverlayTrigger, Spinner, Modal } from 'react-bootstrap';
+import { Row, Col, Container, Card, ButtonGroup, Button, Tooltip, OverlayTrigger, Spinner, Modal, Alert, Toast, ToastContainer } from 'react-bootstrap';
 import { useContext, useEffect, useState } from 'react';
 import Spacer from './Spacer';
 import FilterForm from './FilterForm';
@@ -76,6 +76,7 @@ const HikeTable = () => {
                         <Spacer height='2rem' />
                         <h2>Explore Hike</h2>
                         <FilterForm setHikeList={setHikeList} setIsLoading={setIsLoading} />
+
                         {subHikeList.map((hike, idx) =>
                             <div key={`div_${idx}`} onTouchStart={e => handleTouchStart(e)} onTouchMove={e => handleTouchMove(e)} onTouchEnd={handleTouchEnd}>
                                 <HikeCard hike={hike}/>

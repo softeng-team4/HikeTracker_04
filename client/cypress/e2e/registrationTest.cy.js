@@ -30,6 +30,8 @@ describe('can select all roles', () => {
     cy.get('select[id=role]').select('Local guide').should('have.value', 'Local guide');
     cy.get('select[id=role]').select('Hiker').should('have.value', 'Hiker');
     cy.get('select[id=role]').select('Hut worker').should('have.value', 'Hut worker');
+    cy.get('.searchHutBtn').click()
+    cy.get('.closeBtn').click()
   })
 })
 
@@ -162,6 +164,45 @@ describe('wrong telephone typed', () => {
     cy.get('input[id=phoneNumber]').type('123456');
     cy.get('form').submit();
     cy.get(':nth-child(7) > .invalid-feedback').contains('Invalid phone number.');
+  })
+})
+
+describe('sign up with a hut worker', () => {
+  it('should select a hut', () => {
+    cy.visit('/signup');
+    cy.get('input[id=email]').type('john.doe@polito.it');
+    cy.get('input[id=password]').type('notSoSafePassword1!');
+    cy.get('input[id=confirm_password]').type('notSoSafePassword1!');
+    cy.get('input[id=firstName]').type('John');    
+    cy.get('input[id=lastName]').type("Doe");
+    cy.get('input[id=username]').type('john_doe');
+    cy.get('input[id=phoneNumber]').type('1234567890');
+    cy.get('select[id=role]').select('Hut worker').should('have.value', 'Hut worker');
+    cy.get('.searchHutBtn').click()
+    cy.contains('Name')
+    cy.contains('Phone')
+    cy.contains('Email')
+    cy.contains('Latitude')
+    cy.contains('Longitude')
+    cy.contains('Altitude')
+    cy.contains('Country')
+    cy.contains('Region')
+    cy.contains('City')
+    cy.contains('Website')
+    cy.contains('Description')
+    cy.get(':nth-child(4) > .card > .card-footer').contains('Select hut').click()
+    cy.contains('Name')
+    cy.contains('Phone')
+    cy.contains('Email')
+    cy.contains('Latitude')
+    cy.contains('Longitude')
+    cy.contains('Altitude')
+    cy.contains('Country')
+    cy.contains('Region')
+    cy.contains('City')
+    cy.contains('Website')
+    cy.contains('Description')
+    cy.contains('Sign Up').click()
   })
 })
 

@@ -18,7 +18,6 @@ const HikeCard = (props) => {
     const handleShowInfo = (event) => {
         event.preventDefault();
         const id = event.target.id;
-        setHike(hike);
         setShowInfoModal(true);
     }
 
@@ -30,7 +29,6 @@ const HikeCard = (props) => {
 
     const confirmModalSubmit = () => {
         setShowConfirm(s => !s);
-        
         startHike(hike.id)
     }
 
@@ -63,7 +61,6 @@ const HikeCard = (props) => {
                                                 size='sm'
                                                 variant='primary'
                                                 onClick={() => {
-                                                    setHike(hike);
                                                     setShowConfirm(true)
                                                 }}>
                                                 Start hike

@@ -1,22 +1,16 @@
 describe('update condition', () => {
 
-    it('login', () => {
-        cy.visit('http://localhost:3000/login')
-        cy.get('.email-input').clear()
-        cy.get('.password-input').clear()
+    it('login by hut worker to update condition ', () => { 
+        cy.visit('http://localhost:3000/')
+        cy.contains('Sign In').click()
+        cy.url().should('include', '/login')
         cy.get('.email-input').type('s300179@studenti.polito.it')
         cy.get('.password-input').type('123456789')
-        cy.contains('Login').click()
+        cy.get('.loginbtn').click()
         cy.url().should('include', '/')
-    })
-
-    it('click into update hike condition page', () => {
-        cy.get('.align-self-center').click()
-        cy.get('.condition-link').click()
+        cy.get('.mb-1').click()
+        cy.contains('Hike Condition').click()
         cy.url().should('include', '/hikeCondition')
-    })
-
-    it('get hike list', () => {
         cy.contains('Title')
         cy.contains('Location')
         cy.contains('Description')
@@ -26,9 +20,6 @@ describe('update condition', () => {
         cy.contains('Length')
         cy.contains('Ascent')
         cy.contains('Estimated Time')
-    })
-
-    it('see more information', () => {
         cy.contains('Show more info').click()
         cy.contains('Hike')
         cy.contains('Description')
@@ -36,10 +27,7 @@ describe('update condition', () => {
         cy.contains('Length')
         cy.contains('Ascent')
         cy.contains('Estimated Time')
-        cy.contains('Close').click()
-    })
-
-    it('update condition', () => {
+        cy.get('.closebtn').click()
         cy.get('.update_cond').click()
         cy.contains('Update Condition')
         cy.contains('Condition')
@@ -50,16 +38,11 @@ describe('update condition', () => {
         cy.contains('Update Condition Feedback')
         cy.contains('Update Condition Success!')
         cy.get('.close-feedback').click()
-    })
-
-    it('check changes', () => {
         cy.contains('partly blocked')
         cy.contains('Repair')
-    })
-
-    it('logout', () => {
-        cy.contains('HUT').click()
+        cy.get('.mb-1').click()
         cy.contains('Sign out').click()
         cy.url().should('include', '/')
+
     })
 })

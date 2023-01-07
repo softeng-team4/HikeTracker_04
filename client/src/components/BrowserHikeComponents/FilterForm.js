@@ -94,7 +94,7 @@ const FilterForm = (props) => {
                                         <GeoAreaForm geoArea={filters.geoArea} setGeoArea={setFilters} />
                                     </Col>
                                     <Col lg={2} className='btn-geoArea p-3'>
-                                        <Button size='sm' variant='success' onClick={handleGeoAreaSwitch}>Switch to radius</Button>
+                                        <Button size='sm' variant='success' className='geoBtn' onClick={handleGeoAreaSwitch}>Switch to radius</Button>
                                     </Col>
                                 </>
                                 :
@@ -106,7 +106,7 @@ const FilterForm = (props) => {
                             <SliderForm customPreferences={customPreferences} setRanges={setFilters} />
                         </Row>
                         {authObject.authUser && authObject.authUser.role.toLowerCase() === 'hiker' && authObject.authUser.preferences && <Row>
-                            <Form.Check type='checkbox' reverse label='Apply my preferences filter' onChange={(ev) => handleCustomFilters(ev)} />
+                            <Form.Check type='checkbox' reverse label='Apply my preferences filter' onChange={(ev) => handleCustomFilters(ev)} className='setPreBtn' />
                         </Row>
                         }
                     </Row>
