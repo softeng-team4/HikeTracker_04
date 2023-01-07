@@ -12,6 +12,7 @@ const dayjs = require('dayjs')
 function RecordPoint(props) {
 
     const [refPointList, setRefPointList] = useState([]);
+    const [previousRFNotPassed, setPreviousRFNotPassed] = useState([]);
     const [passedRefPoint, setPasseRefPoint] = useState(props.regHike.passedRP !== undefined ? JSON.parse(props.regHike.passedRP) : []);
     const [availableRefPoint, setAvailableRefPoint] = useState([]);
     const [showConfirm, setShowConfirm] = useState(false);
@@ -25,9 +26,18 @@ function RecordPoint(props) {
 
     useEffect(() => {
         const notAvailableRefPoint = passedRefPoint.concat(refPointList);
+        let  index = -1;
+        if(notAvailableRefPoint.length>0){
+            definedRefPoints.forEach((rf, i) => {
+                if (rf.name === notAvailableRefPoint[notAvailableRefPoint.length-1].name && rf.lat === notAvailableRefPoint[notAvailableRefPoint.length-1].lat && rf.lng === notAvailableRefPoint[notAvailableRefPoint.length-1].lng) {
+                    index = i;
+                }
+            })
+        }
         const arf = [];
+        const prfnp = [];
         let cont = 0;
-        definedRefPoints.forEach(rf => {
+        definedRefPoints.forEach((rf, i) => {
             notAvailableRefPoint.forEach(narf => {
                 if (rf.name === narf.name && rf.lat === narf.lat && rf.lng === narf.lng) {
                     cont++
@@ -35,11 +45,17 @@ function RecordPoint(props) {
             }
             )
             if (cont === 0) {
-                arf.push(rf);
+                if(i > index ){
+                    arf.push(rf);
+                }else{
+                    prfnp.push(rf);
+                }
+                
             }
             cont = 0;
         });
         setAvailableRefPoint(arf);
+        setPreviousRFNotPassed(prfnp);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refPointList]);
 
@@ -109,6 +125,13 @@ function RecordPoint(props) {
                                 </Popup>
                             </Marker>
                         )}
+                        {previousRFNotPassed.map(rp =>
+                            <Marker key={`mark_${rp.name}${rp.lat}${rp.lng}`} position={[rp.lat, rp.lng]} icon={MapIcons.refIconToConfirm}>
+                                <Popup>
+                                    {rp.name}
+                                </Popup>
+                            </Marker>
+                        )}
                         {refPointList.map(rp =>
                             <Marker key={`mark_${rp.name}${rp.lat}${rp.lng}`} position={[rp.lat, rp.lng]} icon={MapIcons.newRefIcon}>
                                 <Popup>
@@ -140,7 +163,7 @@ function RecordPoint(props) {
                                 <td>{rp.name}</td>
                                 <td>{rp.lat}</td>
                                 <td>{rp.lng}</td>
-                                <td><Button variant='danger' onClick={() => deleteRefPoint(i)}><FaRegTrashAlt /></Button></td>
+                                {i === refPointList.length-1 ? <td><Button variant='danger' onClick={() => deleteRefPoint(i)}><FaRegTrashAlt /></Button></td> : null}
                             </tr>
                         )}
                         {availableRefPoint.map((rp, i) =>
