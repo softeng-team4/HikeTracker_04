@@ -8,7 +8,7 @@ function LoginForm(props) {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (event) => {
+  function handleSubmit (event) {
     event.preventDefault();
     setErrorMessage('');
 
@@ -35,6 +35,14 @@ function LoginForm(props) {
     }
   };
 
+  function handleUsername (event) {
+    setUsername(event.target.value)
+  }
+
+  function handlePassword (event) {
+    setPassword(event.target.value)
+  }
+
   return (
     <Container className="col-sm-8 col-12 below-nav" style={{ marginBottom: 20 }}>
       <Spacer height='2rem' />
@@ -42,14 +50,14 @@ function LoginForm(props) {
         {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
         <Form.Group controlId='username'>
           <Form.Label >Email</Form.Label>
-          <Form.Control className='email-input' type='email' value={username} onChange={ev => setUsername(ev.target.value)} />
+          <Form.Control className='email-input' type='email' value={username} onChange={handleUsername} />
         </Form.Group>
         <Form.Group controlId='password'>
           <Form.Label >Password</Form.Label>
-          <Form.Control className='password-input' type='password' value={password} onChange={ev => setPassword(ev.target.value)} autoComplete="on" />
+          <Form.Control className='password-input' type='password' value={password} onChange={handlePassword} autoComplete="on" />
         </Form.Group>
         <div align="right" style={{ marginTop: 10 }}>
-          <Button type="submit">Login</Button>
+          <Button type="submit" className='loginbtn'>Login</Button>
         </div>
       </Form>
     </Container>)

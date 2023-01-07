@@ -8,7 +8,7 @@ import Spacer from '../BrowserHikeComponents/Spacer';
 
 
 function validPhoneNumber(phoneNumber) {
-  let phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  let phoneno = /^\(?(\d{3})\)?[-. ]?(\d{3})[-. ]?(\d{4})$/;
   if (phoneNumber.match(phoneno)) {
     console.log("Valid phone number");
     return true;
@@ -35,9 +35,7 @@ function SignupForm(props) {
   const [errorMessage, setErrorMessage] = useState('');
 
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const validInputs = () =>{
     let valid = true;
     let e = {
       email: false,
@@ -83,6 +81,46 @@ function SignupForm(props) {
       e.hutId = true;
     }
     setError(e);
+    return valid;
+
+  }
+
+  function handleEmail (event) {
+    setEmail(event.target.value)
+  }
+
+  function handlePassword (event) {
+    setPassword(event.target.value)
+  }  
+  
+  function handleConfirmPassword (event) {
+    setConfirmPassword(event.target.value)
+  }
+
+  function handleUsername (event) {
+    setUsername(event.target.value)
+  }
+
+  function handleFirstName (event) {
+    setFirstName(event.target.value)
+  }
+
+  function handleLastName (event) {
+    setLastName(event.target.value)
+  }
+
+  function handlePhoneNumber (event) {
+    setPhoneNumber(event.target.value)
+  }
+
+  function handleRole (event) {
+    setRole(event.target.value)
+  }  
+
+  function handleSubmit (event) {
+    event.preventDefault();
+    const valid = validInputs();
+    
     if (valid) {
       const userClass = new User(
         email,
@@ -122,42 +160,42 @@ function SignupForm(props) {
           {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
             <Form.Group controlId='email'>
               <Form.Label>Email</Form.Label>
-              <Form.Control className='email' type='email' required value={email} isInvalid={!!error.email} onChange={ev => setEmail(ev.target.value)} />
+              <Form.Control className='email' type='email' required value={email} isInvalid={!!error.email} onChange={handleEmail} />
               <Form.Control.Feedback type="invalid">Invalid email address.</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId='password'>
               <Form.Label>Password</Form.Label>
-              <Form.Control className='password' type='password' required value={password} isInvalid={!!error.password} onChange={ev => setPassword(ev.target.value)} autoComplete="on" />
+              <Form.Control className='password' type='password' required value={password} isInvalid={!!error.password} onChange={handlePassword} autoComplete="on" />
               <Form.Control.Feedback type="invalid">Password must be at least six character long.</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId='confirm_password'>
               <Form.Label>Confirm Password</Form.Label>
-              <Form.Control className='confirm_password' type='password' value={confirmPassword} isInvalid={!!error.confirmedPassword} onChange={ev => setConfirmPassword(ev.target.value)} autoComplete="on" />
+              <Form.Control className='confirm_password' type='password' value={confirmPassword} isInvalid={!!error.confirmedPassword} onChange={handleConfirmPassword} autoComplete="on" />
               <Form.Control.Feedback type="invalid">Passwords do not match.</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId='username'>
               <Form.Label>Username</Form.Label>
-              <Form.Control className='username' type='text' required value={username} isInvalid={!!error.username} onChange={ev => setUsername(ev.target.value)} />
+              <Form.Control className='username' type='text' required value={username} isInvalid={!!error.username} onChange={handleUsername} />
               <Form.Control.Feedback type="invalid">Username cannot be empty.</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId='firstName'>
               <Form.Label>First Name</Form.Label>
-              <Form.Control className='firstName' required type='text' value={firstName} isInvalid={!!error.firstName} onChange={ev => setFirstName(ev.target.value)} />
+              <Form.Control className='firstName' required type='text' value={firstName} isInvalid={!!error.firstName} onChange={handleFirstName} />
               <Form.Control.Feedback type="invalid">First name cannot be empty.</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId='lastName'>
               <Form.Label>Last Name</Form.Label>
-              <Form.Control className='lastName' required type='text' value={lastName} isInvalid={!!error.lastName} onChange={ev => setLastName(ev.target.value)} />
+              <Form.Control className='lastName' required type='text' value={lastName} isInvalid={!!error.lastName} onChange={handleLastName} />
               <Form.Control.Feedback type="invalid">Last name cannot be empty.</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId='phoneNumber'>
               <Form.Label>Phone Number</Form.Label>
-              <Form.Control className='phoneNumber' type='text' required value={phoneNumber} isInvalid={!!error.phoneNumber} onChange={ev => setPhoneNumber(ev.target.value)} />
+              <Form.Control className='phoneNumber' type='text' required value={phoneNumber} isInvalid={!!error.phoneNumber} onChange={handlePhoneNumber} />
               <Form.Control.Feedback type="invalid">Invalid phone number.</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId='role'>
               <Form.Label>Select your role</Form.Label>
-              <Form.Select onChange={ev => setRole(ev.target.value)}>
+              <Form.Select onChange={handleRole}>
                 <option value="Hiker">Hiker</option>
                 <option value="Local guide">Local guide</option>
                 <option value="Hut worker">Hut worker</option>

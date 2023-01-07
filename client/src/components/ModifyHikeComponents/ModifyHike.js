@@ -87,11 +87,11 @@ function ModifyHike(props) {
                                 <Form.Label>Hut List:</Form.Label>
                             </Col>
                             <Col>
-                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => { setStart(event.target.value); setType('hut') }}>
+                                {modal === 'start' ? <Form.Select className='startHut' value={start} onChange={(event) => { setStart(event.target.value); setType('hut') }}>
                                     <option value={''}>Select hut</option>
                                     {hutList.map((h, i) => <option key={i} value={h.id}>{h.name}</option>)}
                                 </Form.Select> :
-                                    <Form.Select value={end} onChange={(event) => { setEnd(event.target.value); setType('hut') }}>
+                                    <Form.Select value={end} className='arrivalHut' onChange={(event) => { setEnd(event.target.value); setType('hut') }}>
                                         <option value={''}>Select hut</option>
                                         {hutList.map((h, i) => <option key={i} value={h.id}>{h.name}</option>)}
                                     </Form.Select>}
@@ -103,11 +103,11 @@ function ModifyHike(props) {
                                 <Form.Label>Parking Lot List:</Form.Label>
                             </Col>
                             <Col>
-                                {modal === 'start' ? <Form.Select value={start} onChange={(event) => { setStart(event.target.value); setType('parking lot') }}>
+                                {modal === 'start' ? <Form.Select className='startPark' value={start} onChange={(event) => { setStart(event.target.value); setType('parking lot') }}>
                                     <option value={''}>Select Park</option>
                                     {parkingList.map((p, j) => <option key={j} value={p.id}>{p.name}</option>)}
                                 </Form.Select> :
-                                    <Form.Select value={end} onChange={(event) => { setEnd(event.target.value); setType('parking lot') }}>
+                                    <Form.Select className='arrivalPark' value={end} onChange={(event) => { setEnd(event.target.value); setType('parking lot') }}>
                                         <option value={''}>Select Park</option>
                                         {parkingList.map((p, j) => <option key={j} value={p.id}>{p.name}</option>)}
                                     </Form.Select>}
@@ -120,9 +120,9 @@ function ModifyHike(props) {
                     <Button variant="danger" onClick={handleClose}>
                         Close
                     </Button>
-                    {modal === 'start' ? <Button variant="success" onClick={handleChange} disabled={start === ''}>
+                    {modal === 'start' ? <Button className='startConfirmBtn' variant="success" onClick={handleChange} disabled={start === ''}>
                         Confirm
-                    </Button> : <Button variant="success" onClick={handleChange} disabled={end === ''}>
+                    </Button> : <Button  className='arrivalConfirmBtn' variant="success" onClick={handleChange} disabled={end === ''}>
                         Confirm
                     </Button>}
                 </Modal.Footer>
@@ -154,7 +154,7 @@ function ModifyHike(props) {
                                 <td>{startPoint.longitude}</td>
                                 <td>{hike.startPoint.altitude}</td>
                                 <td>{startPoint.name === null ? '' : startPoint.name}</td>
-                                <td><Button onClick={(event) => { handleShow(); setModal('start') }}>Link</Button></td>
+                                <td><Button className='linkStartBtn' onClick={(event) => { handleShow(); setModal('start') }}>Link</Button></td>
                             </tr>
                             <tr>
                                 <td>End point</td>
@@ -162,7 +162,7 @@ function ModifyHike(props) {
                                 <td>{endPoint.longitude}</td>
                                 <td>{hike.endPoint.altitude}</td>
                                 <td>{endPoint.name === null ? '' : endPoint.name}</td>
-                                <td><Button onClick={(event) => { handleShow(); setModal('end') }}>Link</Button></td>
+                                <td><Button className='linkArrivalBtn' onClick={(event) => { handleShow(); setModal('end') }}>Link</Button></td>
                             </tr>
                         </tbody>
                     </Table>

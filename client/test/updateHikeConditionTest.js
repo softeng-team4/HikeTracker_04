@@ -8,8 +8,8 @@ chai.should();
 
 
 // Import the functions you need from the SDKs you need
-const firebase = require('firebase/app')
-const firestore = require('firebase/firestore')
+const firebase = require('firebase/app');
+const firestore = require('firebase/firestore');
 const api = require('../src/API');
 //import { initializeApp } from "firebase/app";
 //import { getFirestore, doc, query, collection, getDocs, deleteDoc, documentId, getDoc} from "firebase/firestore";
@@ -19,7 +19,7 @@ const collection = "hike-test-update-condition";
 
 const testHikes = firestore.collection(api.db, collection);
 
-describe('testing getHikesByLinkHutWorker API function', () => {
+describe('testing getHikesByLinkHutWorker API function', async () => {
 
     const hike1 = {
         ascent: 1317.10,
@@ -65,7 +65,8 @@ describe('testing getHikesByLinkHutWorker API function', () => {
         title: "Col Clapier from Val Carea"
 
 
-    }
+    };
+
     const hike2 = {
         ascent: "-Infinity",
         author: "aleganino@gmail.com",
@@ -151,21 +152,23 @@ describe('testing getHikesByLinkHutWorker API function', () => {
 
         title: "Mount Ciarmetta from Bussoleno"
     };
-    before(async () => {
 
+    before(async () => {
+        await api.logIn("gianmarcobell95@gmail.com", "password123");
         const hikeQuery = firestore.query(testHikes);
-        const querySnapshot = await firestore.getDocs(hikeQuery)
+        const querySnapshot = await firestore.getDocs(hikeQuery);
         querySnapshot.forEach(async (doc) => {
-            await firestore.deleteDoc(firestore.doc(api.db, collection, doc.id))
+            await firestore.deleteDoc(firestore.doc(api.db, collection, doc.id));
         })
         await firestore.addDoc(testHikes, hike1);
         await firestore.addDoc(testHikes, hike2);
         await firestore.addDoc(testHikes, hike3);
 
     })
-    
+
     testHikeList("1", 2);
     testHikeList("2", 1);
+    await api.logOut();
 })
 
 function testHikeList(hutId, n) {
@@ -182,7 +185,7 @@ function testHikeList(hutId, n) {
 }
 
 
-describe('testing update hike condition',()=>{
+describe('testing update hike condition', async () => {
     const hike = {
         ascent: 1317.10,
         author: "luca.mistruzzi@gmail.com",
@@ -225,51 +228,56 @@ describe('testing update hike condition',()=>{
             time: ''
         },
         title: "Col Clapier from Val Carea"
-    }
+    };
 
-    before(async ()=>{
-
+    before(async () => {
+        await api.logIn("gianmarcobell95@gmail.com", "password123");
         const hikeQuery = firestore.query(testHikes);
-        const querySnapshot = await firestore.getDocs(hikeQuery)
+        const querySnapshot = await firestore.getDocs(hikeQuery);
         querySnapshot.forEach(async (doc) => {
-            await firestore.deleteDoc(firestore.doc(api.db, collection, doc.id))
+            await firestore.deleteDoc(firestore.doc(api.db, collection, doc.id));
         })
 
         await firestore.setDoc(firestore.doc(testHikes, "1"), hike);
     });
 
+    after(async () =>{
+        await api.logOut()
+    })
+
     const condition = "ok";
     const condDetails = "open";
-    testUpdateHikeCondition(hike, condition, condDetails, "1")
-    
+    testUpdateHikeCondition(hike, condition, condDetails, "1");
+
+
 })
 
-function testUpdateHikeCondition(hike, condition, condDetails, hikeID){
-    it("Check hike update condition",function(done){
+function testUpdateHikeCondition(hike, condition, condDetails, hikeID) {
+    it("Check hike update condition", function (done) {
         api.updateCondition(condition, condDetails, hikeID, collection)
-        .then(()=>{
-            firestore.getDoc(firestore.doc(api.db, collection,"1"))
-            .then((doc) =>{
-                doc.data.title.should.equal(hike.title);
-                doc.data.length.should.equal(hike.length);
-                doc.data.expectedTime.should.equal(hike.expectedTime);
-                doc.data.ascent.should.equal(hike.ascent);
-                doc.data.difficulty.should.equal(hike.difficulty);
-                doc.data.startPoint.should.equal(hike.startPoint);
-                doc.data.endPoint.should.equal(hike.endPoint);
-                doc.data.description.should.equal(hike.description);
-                doc.data.country.should.equal(hike.country);
-                doc.data.region.should.equal(hike.region);
-                doc.data.city.should.equal(hike.city);
-                doc.data.condition.should.equal(condition);
-                doc.data.condDetails.should.equal(condDetails);
-                doc.data.linkedHuts.should.equal(hike.linkedHuts);
-                doc.data.referencePoint.should.equal(hike.referencePoint);
+            .then(() => {
+                firestore.getDoc(firestore.doc(api.db, collection, "1"))
+                    .then((doc) => {
+                        doc.data.title.should.equal(hike.title);
+                        doc.data.length.should.equal(hike.length);
+                        doc.data.expectedTime.should.equal(hike.expectedTime);
+                        doc.data.ascent.should.equal(hike.ascent);
+                        doc.data.difficulty.should.equal(hike.difficulty);
+                        doc.data.startPoint.should.equal(hike.startPoint);
+                        doc.data.endPoint.should.equal(hike.endPoint);
+                        doc.data.description.should.equal(hike.description);
+                        doc.data.country.should.equal(hike.country);
+                        doc.data.region.should.equal(hike.region);
+                        doc.data.city.should.equal(hike.city);
+                        doc.data.condition.should.equal(condition);
+                        doc.data.condDetails.should.equal(condDetails);
+                        doc.data.linkedHuts.should.equal(hike.linkedHuts);
+                        doc.data.referencePoint.should.equal(hike.referencePoint);
+                    })
             })
-        })
-        .then(() => done(), done)
-        .catch((error) => {
-            done(error);
-        });
+            .then(() => done(), done)
+            .catch((error) => {
+                done(error);
+            });
     })
 }

@@ -22,6 +22,7 @@ describe('testing the update of preferences by an hiker',()=>{
 
     before(async ()=>{
 
+        await api.logIn("masterale1999@gmail.com","password")
         const userQuery = firestore.query(testUser);
         const querySnapshot = await firestore.getDocs(userQuery)
         querySnapshot.forEach(async (doc) =>{
@@ -36,6 +37,11 @@ describe('testing the update of preferences by an hiker',()=>{
             role: "Hiker"
         });
     });
+
+    after(async () =>{
+        await api.logOut()
+    })
+    
     const user = {
         email: "testeamail@test.it",
         firstName: "Paolo",

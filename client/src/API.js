@@ -199,13 +199,10 @@ function distance(lat1, lon1, lat2, lon2) {
     }
 }
 
-const hikesList = async (filters, collection) => {
-    const hikesRef = firestore.collection(db, collection);
-    let q = firestore.query(hikesRef);
-    let cont = 0;
-    const names = [];
-    const values = [];
-    const res = [];
+const checkFilters = (filters) => {
+    let cont = 0
+    let names = []
+    let values = []
     if (filters.country !== undefined) {
         names.push("country");
         values.push(filters.country);
@@ -226,6 +223,20 @@ const hikesList = async (filters, collection) => {
         values.push(filters.difficulty);
         cont++;
     }
+    return [names, values, cont]
+} 
+
+const hikesList = async (filters, collection) => {
+    const hikesRef = firestore.collection(db, collection);
+    let q = firestore.query(hikesRef);
+    let cont = 0;
+    let names = [];
+    let values = [];
+    let res = [];
+    [names, values, cont] = checkFilters(filters)
+    console.log(names)
+    console.log(values)
+    console.log(cont)
     switch (cont) {
         case 1:
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]));
@@ -237,7 +248,7 @@ const hikesList = async (filters, collection) => {
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
             break;
         case 4:
-            q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]));
+            q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]), firestore.where(names[1], '==', values[1]), firestore.where(names[2], '==', values[2]), firestore.where(names[3], '==', values[3]));
             break;
         default:
             break;
@@ -317,7 +328,7 @@ const hutsList = async (filters, collection = "huts") => {
     }
     if (filters.name !== undefined) {
         names.push("name");
-        values.push(filters.difficulty);
+        values.push(filters.name);
         cont++;
     }
     switch (cont) {
@@ -537,12 +548,11 @@ const getHikesByLinkHutWorker = async (hutID, collection = "hike") => {
     const querySnapshot = await firestore.getDocs(hikesRef);
     const res = [];
     querySnapshot.forEach((doc) => {
-        // console.log(doc.id, " => ", doc.data().linkedHuts);
         if (doc.data().linkedHuts !== undefined) {
-            for (let i = 0; i < doc.data().linkedHuts.length; i++) {
-                console.log(doc.id, " => ", doc.data().linkedHuts[i].id, hutID, doc.data().linkedHuts[i].id === hutID);
+            for (let linkedHut of doc.data().linkedHuts) {
+                console.log(doc.id, " => ", linkedHut.id, hutID, linkedHut.id === hutID);
 
-                if (doc.data().linkedHuts[i].id === hutID) {
+                if (linkedHut.id === hutID) {
                     const hike = {
                         id: doc.id,
                         ascent: doc.data().ascent,
@@ -622,6 +632,55 @@ const MyCompletedHikes = async (collection = 'regHikes') => {
     querySnapshot.forEach((doc) => {
         const regHike = {
             id:doc.id,
+//APIs for registered hikes
+
+const startHike = async (hikeId, collection='regHikes') => {
+    return new Promise( async (resolve,reject) =>{
+        const regHikesref = firestore.collection(db,collection)
+        const user = fireAuth.getAuth().currentUser
+        const q = firestore.query(regHikesref, firestore.where("userId","==",user.email), firestore.where("status","==","ongoing"))
+        const querySnapshot = await firestore.getDocs(q)
+        if(!querySnapshot.empty){
+            reject("You already started a hike")
+            return
+        }
+        const regHike ={
+            hikeId: hikeId,
+            status: "ongoing",
+            startTime: dayjs().format('DD/MM/YYYY hh:mm:ss'),
+            userId: user.email
+        } 
+        await firestore.addDoc(regHikesref,regHike)
+        resolve("Hike started")
+    })
+}
+
+const deleteRegHike = async (email) => {
+    const regHikesref = firestore.collection(db,'regHikes')
+    const q = firestore.query(regHikesref, firestore.where("userId","==",email), firestore.where("status","==","ongoing"))
+    const querySnapshot = await firestore.getDocs(q)
+    if(querySnapshot.empty){
+        return
+    }
+    await deleteDoc(doc(db, "regHikes", querySnapshot.docs[0].id));
+}
+
+const terminateHike = async (regHikeId, collection = "regHikes") => {
+    await firestore.updateDoc(firestore.doc(db, collection, regHikeId), {
+        status: "terminated",
+        endTime: dayjs().format('DD/MM/YYYY hh:mm:ss')
+    });
+}
+
+const getUserActiveHike = async (collection = "regHikes") => {
+    const regHikesref = firestore.collection(db, collection);
+    const user = fireAuth.getAuth().currentUser;
+    const q = firestore.query(regHikesref, firestore.where("userId", "==", user.email), firestore.where("status", "==", "ongoing"));
+    const querySnapshot = await firestore.getDocs(q);
+    const res = [];
+    querySnapshot.forEach((doc) => {
+        const regHike = {
+            id: doc.id,
             hikeId: doc.data().hikeId,
             status: doc.data().status,
             startTime: doc.data().startTime,
@@ -630,6 +689,7 @@ const MyCompletedHikes = async (collection = 'regHikes') => {
             userId: doc.data().userId
         }
         res.push(regHike)
+
     });
     console.log(res);
     return res;
@@ -642,6 +702,9 @@ const getHikeById = async (hikeId, collection = "hike") => {
 module.exports = {
     deleteInvalidHikes, signUp, logIn, logOut, getUser, addNewHike, countryList, regionList, cityList, hikesList, app, db, createUserOnDb,
     addNewHut, deleteHike, addNewParkingLot, getAllParkingLots, hutsList, modifyHike, modifyReferencePoints, linkHuts, updateCondition, MyCompletedHikes,
-    getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor, getHikeById
+    getHikesByLinkHutWorker, getHutById, getParkingLotById, modifyUserPreferences, UpdateHikeDescription, getRequestingUsers, handleRoleRequest, getHikesByAuthor,
+    startHike, terminateHike, getUserActiveHike, getHikeById, deleteRegHike
 };
+
+
 
