@@ -1,5 +1,6 @@
 'use strict';
 
+const { assert, expect } = require('chai');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const dayjs = require('dayjs');
@@ -21,7 +22,7 @@ const testHikes = firestore.collection(api.db, "regHikes-test")
 describe('testing the definition of starting a new hike by a hiker', () => {
 
     before(async () => {
-        await api.logIn("masterale1999@gmail.com","password")
+        await api.logIn("masterale1999@gmail.com", "password")
         const regHikesQuery = firestore.query(testHikes);
         const querySnapshot = await firestore.getDocs(regHikesQuery)
         querySnapshot.forEach((doc) => {
@@ -30,7 +31,7 @@ describe('testing the definition of starting a new hike by a hiker', () => {
 
     })
 
-    after(async () =>{
+    after(async () => {
         await api.logOut()
     })
 
@@ -38,6 +39,7 @@ describe('testing the definition of starting a new hike by a hiker', () => {
         hikeId: '', status: "ongoing", startTime: dayjs().format('DD/MM/YYYY hh:mm:ss'), userId: 'dqy0828@gmail.com'
     }
     startHike(regHike)
+    rejectStart(regHike)
 })
 
 function startHike(regHike) {
@@ -52,6 +54,18 @@ function startHike(regHike) {
                         doc.data.userId.should.equal(regHike.userId)
                     })
             })
+            .then(() => done(), done)
+            .catch((error) => {
+                done(error);
+            });
+    })
+}
+
+function rejectStart(regHike) {
+    it("Already started hike ", function (done) {
+        api.startHike(regHike, "regHikes-test").catch((err) =>{
+            expect(err).to.be.equal("You already started a hike")
+        })
             .then(() => done(), done)
             .catch((error) => {
                 done(error);
