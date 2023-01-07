@@ -28,7 +28,39 @@
 |   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     174          |      5m          |      3m     |
 |   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     180          |      5m          |      3m     |
 |   Code Smell   |    Critical     |      client/.../components/BrowerHutComponent/BrowserHuts.js   |     110          |      12m         |      10m    |
-|           |          |           |             |                |             |
+|   Bug          |    Major     |      client/.../BrowserHikeComponents/HikeCard.js              |     24          |      5m         |      3m    |
+|   Code Smell   |    Major     |      client/.../UserProfileComponents/PerformanceStats.js      |     24          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/addReferencePointTest.js        |     17          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/complitedUserHikesTest.js       |     17          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/deleteHikeTest.js               |     16          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/hikeListTest.js                 |     16          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/hutListTest.js                  |     16          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/listHikesByAuthorTest.js        |     16          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/modifyUserPreferencesTest.js    |     16          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/newHikeTest.js                  |     15          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/newHutTest.js                   |     17          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/newParkingLotTest.js            |     17          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/startHike.js                    |     18          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/updateHikeConditionTest.js      |     16          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/updateHikeDescriptionTest.js    |     16          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/test/updateUserStatsTest.js          |     18          |      5m         |      1m    |
+|   Code Smell   |    Critical     |      client/src/API.js         |     643          |      12m         |      22m    |
+|   Code Smell   |    Major     |      client/.../components/BrowerHutComponent/BrowserHuts.js          |     121          |      5m         |      3m    |
+|   Code Smell   |    Major     |      client/.../components/BrowerHutComponent/BrowserHuts.js          |     123          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/.../components/BrowerHutComponent/BrowserHuts.js          |     128          |      5m         |      5m    |
+|   Code Smell   |    Minor     |      client/src/components/ActiveHikePage.js          |     2          |      2m         |      30s    |
+|   Code Smell   |    Minor     |      client/src/components/ActiveHikePage.js          |     2          |      2m         |      30s    |
+|   Code Smell   |    Major     |      client/.../BrowserHikeComponents/HikeTable.js          |     73          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/.../BrowserHikeComponents/HikeTable.js          |     75          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     86          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     87          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     88          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     95          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     98          |      5m         |      1m    |
+|   Code Smell   |    Major     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     103          |      5m         |      1m    |
+|   Code Smell   |    Minor     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     9          |      2m         |      30s    |
+|   Code Smell   |    Minor     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     125          |      5m         |      1m30s    |
+|           |          |   
 
 # Alessandro 
 
