@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Form, Button, Row, Col, Alert, Table, Container } from 'react-bootstrap';
+import { Modal, Form, Button, Row, Col, Alert, Table, Container, InputGroup } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
@@ -12,6 +12,7 @@ import MapIcons from '../MapComponents/MapIcons';
 
 function ReferencePointForm(props) {
     const [name, setName] = useState('');
+    const [altitude, setAltitude] = useState('');
     const [position, setPosition] = useState([45.06294822296754, 7.662272990156818]);
     const [validated, setValidated] = useState(false);
     const [refPointList, setRefPointList] = useState([]);
@@ -51,6 +52,7 @@ function ReferencePointForm(props) {
             console.log(position, "=>", [p.lat, p.lng], "distance: ", min);
             const rp = {
                 name: name,
+                alt: altitude,
                 lat: p.lat,
                 lng: p.lng
             }
@@ -64,7 +66,7 @@ function ReferencePointForm(props) {
         event.preventDefault();
         console.log(props.hike.id);
         const form = event.currentTarget;
-        if (form.checkValidity() === false || name === '') {
+        if (form.checkValidity() === false || name === '' || altitude === '') {
             event.stopPropagation();
             setValidated(true);
             return;
@@ -93,6 +95,7 @@ function ReferencePointForm(props) {
     useEffect(() => {
         setPosition([45.06294822296754, 7.662272990156818]);
         setName('');
+        setAltitude('');
         setErrorMessage('');
     }, [refPointList]);
 
@@ -118,7 +121,6 @@ function ReferencePointForm(props) {
             </Modal.Footer>
         </Modal>
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="mt-3" style={{ marginBottom: 10 }}>
-            {/* <StaticHikeInfo hike={props.hike} status={props.status} /> */}
             <Form.Group as={Row} className="mb-3">
                 <Col sm={2}>
                     <Form.Label>Name:</Form.Label>
@@ -129,8 +131,21 @@ function ReferencePointForm(props) {
                     <Form.Control.Feedback type="invalid">Please insert a name.</Form.Control.Feedback>
                 </Col>
             </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+                <Col sm={2}>
+                    <Form.Label>Altitude:</Form.Label>
+                </Col>
+                <Col>
+                    <InputGroup>
+                        <Form.Control className='altitude-input' required type='number' min={0} value={altitude} onChange={(event) => setAltitude(event.target.value)} />
+                        <InputGroup.Text>meters</InputGroup.Text>
+                        <Form.Control.Feedback>Valid altitude!</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please insert a valid altitude value.</Form.Control.Feedback>
+                    </InputGroup>
+                </Col>
+            </Form.Group>
             <Row style={{ marginBottom: 10 }}>
-                <MapContainer center={evaluateCenter()} bounds={L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng))}>
+                <MapContainer className='map_ref' center={evaluateCenter()} bounds={L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng))}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -173,22 +188,24 @@ function ReferencePointForm(props) {
                         <th>Name</th>
                         <th>Latitude</th>
                         <th>Longitude</th>
+                        <th>Altitude</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {refPointList.map((rp, i) =>
-                        <tr key={`${rp.name}${rp.lat}${rp.lng}`}>
+                        <tr key={`${rp.name}${rp.lat}${rp.lng}${rp.alt}`}>
                             <td>{rp.name}</td>
                             <td>{rp.lat}</td>
                             <td>{rp.lng}</td>
+                            <td>{rp.alt}</td>
                             <td><Button variant='danger' onClick={() => deleteRefPoint(i)}><FaRegTrashAlt /></Button></td>
                         </tr>
                     )}
                 </tbody>
             </Table>
-            <Button type="submit" onClick={(ev) => AddRefPoint(ev)}>Add point</Button>
-            <Button variant='success' type="submit" style={{ marginLeft: 10 }}>Submit changes</Button>
+            <Button type="submit" className='refAddBtn' onClick={(ev) => AddRefPoint(ev)}>Add point</Button>
+            <Button variant='success' className='refConfirmBtn' type="submit" style={{ marginLeft: 10 }}>Submit changes</Button>
         </Form>
     </Container>);
 }

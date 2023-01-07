@@ -152,9 +152,6 @@ const hikesList = async (filters, collection) => {
     let values = [];
     let res = [];
     [names, values, cont] = checkFilters(filters)
-    console.log(names)
-    console.log(values)
-    console.log(cont)
     switch (cont) {
         case 1:
             q = firestore.query(hikesRef, firestore.where(names[0], '==', values[0]));

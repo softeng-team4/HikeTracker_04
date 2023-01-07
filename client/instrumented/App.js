@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, ManagerPage, ModifyHikeByAuthor, UserProfile } from './components/View';
+import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, HikePage, ManagerPage, ModifyHikeByAuthor, UserProfile } from './components/View';
 import { useEffect, useMemo, useState } from 'react';
 import API from './API.js'
 import AuthenticationContext from './components/AuthenticationContext';
@@ -11,6 +11,7 @@ import { SignupForm } from './components/AuthComponents/SignupComponents';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { BrowserHuts } from './components/BrowerHutComponent/BrowserHuts'
 import { UpdateCondition } from './components/UpdateCondition';
+import { CompletedHikes } from './components/CompletedHikesComponents/CompletedHikes';
 import StaticHikeInfo from './components/ModifyHikeComponents/StaticHikeInfo';
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
   }, [auth]);
 
   //login and logut functions
-  async function login (email, password) {
+  const login = async (email, password) => {
     try {
       const user = await API.logIn(email, password);
       setAuthUser(user);
@@ -64,7 +65,7 @@ function App() {
     return userData;
   };
 
-  async function signup (email, password, firstName, lastName, role) {
+  const signup = async (email, password, firstName, lastName, role) => {
     try {
       await API.signUp(email, password, firstName, lastName, role);
     } catch (err) {
@@ -83,7 +84,7 @@ function App() {
     onUpdateUserData: updateUserData
   }), [authUser, authErr])
 
-  async function addNewHike (hike) {
+  const addNewHike = async (hike) => {
     try {
       await API.addNewHike(hike);
     } catch (e) {
@@ -92,7 +93,7 @@ function App() {
     }
   }
 
-  async function addNewHut (hut) {
+  const addNewHut = async (hut) => {
     console.log("Adding new hut!");
     try {
       await API.addNewHut(hut);
@@ -102,7 +103,7 @@ function App() {
     }
   };
 
-  async function addNewParkingLot (parkingLot) {
+  const addNewParkingLot = async (parkingLot) => {
     console.log("Adding new parking lot!");
     try {
       await API.addNewParkingLot(parkingLot);
@@ -135,8 +136,9 @@ function App() {
               <Route path='newHut' element={authUser.role.toLowerCase() === 'local guide' ? <AddNewHut addNewHut={addNewHut} /> : <Navigate to='/' />} />
               <Route path='myHikeList' element={authUser.role.toLowerCase() === 'local guide' ? <ModifyHikeByAuthor /> : <Navigate to='/' />} />
               <Route path='modifyHike' element={authUser.role.toLowerCase() === 'local guide' ? <StaticHikeInfo /> : <Navigate to='/' />} />
+              <Route path='completedHikes' element ={authUser.role.toLowerCase() === 'hiker' ? <CompletedHikes /> : <Navigate to='/ ' />} />
               <Route path='huts' element={<BrowserHuts />} />
-
+              <Route path='active' element={<HikePage/>} />
               <Route path='hikeCondition' element={authUser.role.toLowerCase() === 'hut worker' ? <UpdateCondition /> : <Navigate to='/' />} />
               {/* here are the routes with manager */}
               <Route path='manager' element={authUser.role.toLowerCase() === 'manager' ? <ManagerPage /> : <Navigate to='/' />} />
