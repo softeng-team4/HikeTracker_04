@@ -673,7 +673,7 @@ const deleteRegHike = async (email) => {
     if(querySnapshot.empty){
         return
     }
-    await deleteDoc(doc(db, "regHikes", querySnapshot.docs[0].id));
+    await firestore.deleteDoc(doc(db, "regHikes", querySnapshot.docs[0].id));
 }
 
 const terminateHike = async (regHikeId, collection = "regHikes") => {
