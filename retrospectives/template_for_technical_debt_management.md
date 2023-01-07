@@ -12,7 +12,6 @@
 
 | Type      | Severity | File name | Line number | Estimated time | Actual time |
 | --------- | -------- | --------- | ----------- | -------------- | ----------- |
-|           |          |           |             |                |             |
 |   Code Smell   |    Critical     |    client/src/components/AuthComponents/SignupComponents.js    |     38           |      7m          |      5m     |
 |   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     140          |      5m          |      10m    |
 |   Code Smell   |    Major        |      client/src/components/AuthComponents/HutWorkerForm.js     |     141          |      5m          |      8m     |
@@ -60,7 +59,6 @@
 |   Code Smell   |    Major     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     103          |      5m         |      1m    |
 |   Code Smell   |    Minor     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     9          |      2m         |      30s    |
 |   Code Smell   |    Minor     |      client/.../CompletedHikesComponents/CompletedHikes.js          |     125          |      5m         |      1m30s    |
-|           |          |   
 
 # Alessandro 
 
