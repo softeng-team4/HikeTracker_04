@@ -163,7 +163,7 @@ function RecordPoint(props) {
                                 <td>{rp.name}</td>
                                 <td>{rp.lat}</td>
                                 <td>{rp.lng}</td>
-                                {i === refPointList.length-1 ? <td><Button variant='danger' onClick={() => deleteRefPoint(i)}><FaRegTrashAlt /></Button></td> : null}
+                                {i === refPointList.length-1 ? <td><Button className={`removePoint_${i}`} variant='danger' onClick={() => deleteRefPoint(i)}><FaRegTrashAlt /></Button></td> : null}
                             </tr>
                         )}
                         {availableRefPoint.map((rp, i) =>
@@ -171,7 +171,7 @@ function RecordPoint(props) {
                                 <td>{rp.name}</td>
                                 <td>{rp.lat}</td>
                                 <td>{rp.lng}</td>
-                                <td><Button variant='success' onClick={() => AddRefPoint(i)}><FaCheck /></Button></td>
+                                <td><Button className={`addPoint_${i}`} variant='success' onClick={() => AddRefPoint(i)}><FaCheck /></Button></td>
                             </tr>
                         )}
 
