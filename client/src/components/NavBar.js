@@ -66,20 +66,19 @@ const NavBar = (props) => {
                                                         title={<><FaRegUserCircle className='mb-1' />{'   '}{authObject.authUser.firstName.toUpperCase()}</>}
                                                     >
                                                         {!path.startsWith('/profile/') &&
-                                                            <>
-                                                                <Dropdown.Item
-                                                                    className='nav-profile-link'
-                                                                    variant='link'
-                                                                    onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}
-                                                                >
-                                                                    My Profile
-                                                                </Dropdown.Item>
-                                                                {authObject.authUser.role.toLowerCase() === 'hut worker' && <Dropdown.Item className='condition-link' onClick={() => { navigate('/hikeCondition'); }} >Hike Condition</Dropdown.Item>}
-                                                                {authObject.authUser.role.toLowerCase() === 'local guide' && <Dropdown.Item className='modify-page' onClick={() => { navigate('/myHikeList'); }} >My Hikes</Dropdown.Item>}
-                                                                {authObject.authUser.role.toLowerCase() === 'hiker' && <Dropdown.Item className='completed-hikes' onClick={ () => {navigate('/completedHikes')}}>Completed hikes</Dropdown.Item>}
-                                                                <Dropdown.Divider />
-                                                            </>
+
+                                                            <Dropdown.Item
+                                                                className='nav-profile-link'
+                                                                variant='link'
+                                                                onClick={() => setShowProfileOffCanvas(!showProfileOffCanvas)}
+                                                            >
+                                                                My Profile
+                                                            </Dropdown.Item>
                                                         }
+                                                        {authObject.authUser.role.toLowerCase() === 'hut worker' && <Dropdown.Item className='condition-link' onClick={() => { navigate('/hikeCondition'); }} >Hike Condition</Dropdown.Item>}
+                                                        {authObject.authUser.role.toLowerCase() === 'local guide' && <Dropdown.Item className='modify-page' onClick={() => { navigate('/myHikeList'); }} >My Hikes</Dropdown.Item>}
+                                                        {authObject.authUser.role.toLowerCase() === 'hiker' && <Dropdown.Item className='completed-hikes' onClick={() => { navigate('/completedHikes') }}>Completed hikes</Dropdown.Item>}
+                                                        <Dropdown.Divider />
                                                         <Dropdown.Item className='logOutBtn' onClick={() => { authObject.onLogout(); navigate('/'); }}>Sign out</Dropdown.Item>
                                                     </DropdownButton>
                                                 }
@@ -99,7 +98,7 @@ const NavBar = (props) => {
                                                         {authObject.authUser.role.toLowerCase() === 'hut worker' &&
                                                             <Nav.Link className='condition-link d-flex justify-content-center' onClick={() => { navigate('/hikeCondition'); }} >Hike Condition</Nav.Link>}
                                                         {authObject.authUser.role.toLowerCase() === 'hiker' &&
-                                                            <Nav.Link className='d-flex justify-content-center' onClick={ () => {navigate('/completedHikes')}}>Completed hikes</Nav.Link>}
+                                                            <Nav.Link className='d-flex justify-content-center' onClick={() => { navigate('/completedHikes') }}>Completed hikes</Nav.Link>}
                                                         {authObject.authUser.role.toLowerCase() === 'local guide' &&
                                                             <Nav.Link className='modify-page d-flex justify-content-center' onClick={() => { navigate('/myHikeList'); }} >My Hikes</Nav.Link>}
                                                         <Nav.Link className='d-flex justify-content-center' onClick={() => authObject.onLogout()}>Sign Out</Nav.Link>
