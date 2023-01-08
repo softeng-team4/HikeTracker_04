@@ -1,5 +1,5 @@
 import AuthenticationContext from "../AuthenticationContext";
-import { Row, Col, Card, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Row, Col, Card, Button, Tooltip, OverlayTrigger, Modal } from 'react-bootstrap';
 import AdditionalHikeInfoModal from './AdditionalHikeInfoModal';
 import ConfirmModal from '../ModifyHikeComponents/ConfirmModal';
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import API from "../../API"
 const HikeCard = (props) => {
     // state to display modal with additional hike info
     const [showInfoModal, setShowInfoModal] = useState(false);
+    const [showAlreadyActiveError, setShowAlreadyActiveErrorModal] = useState(false);
     const [hike, setHike] = useState(props.hike);
     const [showConfirm, setShowConfirm] = useState(false);
     const activeHike = props.activeHike
@@ -24,9 +25,9 @@ const HikeCard = (props) => {
         setShowInfoModal(true);
     }
 
+
     const startHike = async (hikeId) => {
-        await API.startHike(hikeId);
-        navigate(`/active`)
+        await API.startHike(hikeId).then(() => navigate(`/active`)).catch(() => setShowAlreadyActiveErrorModal(true));
     }
 
 
@@ -86,6 +87,11 @@ const HikeCard = (props) => {
                         </Card.Footer>
                     </Card>
                     <AdditionalHikeInfoModal hike={hike} show={showInfoModal} onHide={() => setShowInfoModal(false)} />
+                    <Modal show={showAlreadyActiveError} onHide={() => setShowAlreadyActiveErrorModal(false)}>
+                        <Modal.Header><h3>Hike already started!</h3></Modal.Header>
+                        <Modal.Body>A hike is already active. You cannot start more than one hike at the same time.</Modal.Body>
+                        <Modal.Footer><Button variant='danger' onClick={() => setShowAlreadyActiveErrorModal(false)}>Close</Button></Modal.Footer>
+                    </Modal>
                     <ConfirmModal show={showConfirm} onSubmit={confirmModalSubmit} onAbort={() => { setShowConfirm(false); }} />
                 </>
             )}
