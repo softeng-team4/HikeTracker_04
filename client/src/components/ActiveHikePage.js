@@ -27,12 +27,20 @@ function ActiveHikePage(props) {
         effectFunc().then()
     }, [])
 
-    const confirmModalSubmit = async () => {
+    async function confirmModalSubmit () {
         console.log(activeHike.id)
         setShowConfirm(s => !s);
         await API.terminateHike(activeHike.id)
         authObject.onUpdateUserData()
         navigate(`/`)
+    }
+
+    function handleShowConfirm () {
+        setShowConfirm(!showConfirm)
+    }
+
+    function handleShowRecordPoint() {
+        setShowRecordPoint(!showRecordPoint)
     }
 
     return (
@@ -46,18 +54,18 @@ function ActiveHikePage(props) {
                             <>
                                 <HikeCard hike={hike} activeHike={true} />
                                 <Spacer height='2rem' />
-                                {!showRecordPoint ? <Button onClick={() => setShowRecordPoint(true)} style={{marginRight:10}}>
+                                {!showRecordPoint ? <Button onClick={handleShowRecordPoint} style={{marginRight:10}}>
                                     Record point
                                 </Button> : null}
 
                                 {showRecordPoint ? <RecordPoint regHike={activeHike} hike={hike}></RecordPoint> : null}
-                                <Button variant='danger' onClick={() => setShowConfirm(true)}>
+                                <Button variant='danger' onClick={handleShowConfirm}>
                                     Terminate Hike
                                 </Button>
                             </>
                             : <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There is no active hike!</h5></Card><Spacer height='2rem' /></Container>}
                     </Container>
-                    <ConfirmModal show={showConfirm} onSubmit={confirmModalSubmit} onAbort={() => { setShowConfirm(false); }} />
+                    <ConfirmModal show={showConfirm} onSubmit={confirmModalSubmit} onAbort={handleShowConfirm} />
                 </>
             )}
         </AuthenticationContext.Consumer>
