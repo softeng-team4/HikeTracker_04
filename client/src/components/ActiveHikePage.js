@@ -10,6 +10,7 @@ import { RecordPoint } from './RecordPoint';
 
 
 function ActiveHikePage(props) {
+    const [isLoading,setIsLoading] = useState(true)
     const [activeHike, setActiveHike] = useState(undefined)
     const [hike, setHike] = useState(undefined)
     const [showConfirm, setShowConfirm] = useState(false);
@@ -18,11 +19,15 @@ function ActiveHikePage(props) {
     const authObject = useContext(AuthenticationContext);
 
     useEffect(() => {
+        setIsLoading(true)
         const effectFunc = async () => {
             const activeHike = await (await API.getUserActiveHike())[0]
-            const hike = await API.getHikeById(activeHike.hikeId)
-            setActiveHike(activeHike)
-            setHike(hike)
+            if(activeHike){
+                const hike = await API.getHikeById(activeHike.hikeId)
+                setActiveHike(activeHike)
+                setHike(hike)
+            }
+            setIsLoading(false)
         }
         effectFunc().then()
     }, [])
@@ -63,7 +68,7 @@ function ActiveHikePage(props) {
                                     Terminate Hike
                                 </Button>
                             </>
-                            : <Container className='emty-hikeList'><Spacer height='2rem' /><Card><h5>There is no active hike!</h5></Card><Spacer height='2rem' /></Container>}
+                            : <Container className='emty-hikeList'><Spacer height='2rem' /><Card>{isLoading? <h5>Loading...</h5> : <h5>There is no active hike!</h5>}</Card><Spacer height='2rem' /></Container>}
                     </Container>
                     <ConfirmModal show={showConfirm} onSubmit={confirmModalSubmit} onAbort={handleShowConfirm} />
                 </>
