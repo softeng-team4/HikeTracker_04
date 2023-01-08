@@ -181,11 +181,11 @@
 | Code Smell | Major | client/instrumented/components/AuthComponents/SignupComponents.js | 161 | 5m | 1m |
 | Code Smell | Major | client/instrumented/components/AuthComponents/SignupComponents.js | 166 | 5m | 1m |
 | Code Smell | Major | client/instrumented/components/AuthComponents/SignupComponents.js | 173 | 5m | 1m |
-| Code Smell | Major | client/src/App.js | 127  | 5m | 1m |
-| Code Smell | Major | client/src/App.js | 128 | 5m | 1m |
-| Code Smell | Major | client/src/App.js | 134 | 5m | 1m |
-| Code Smell | Major | client/src/App.js | 135 | 5m | 1m |
-| Code Smell | Major | client/src/App.js | 136 | 5m | 1m |
+| Code Smell | Major | client/src/App.js | 127  | 5m | 10m |
+| Code Smell | Major | client/src/App.js | 128 | 5m | 10m |
+| Code Smell | Major | client/src/App.js | 134 | 5m | 5m |
+| Code Smell | Major | client/src/App.js | 135 | 5m | 5m |
+| Code Smell | Major | client/src/App.js | 136 | 5m | 5m |
 | Code Smell | Major | client/src/components/ActiveHikePage.js | 49 | 5m | 1m |
 | Code Smell | Major | client/src/components/ActiveHikePage.js | 54 | 5m | 1m |
 | Code Smell | Major | client/src/components/ActiveHikePage.js | 60 | 5m | 10m |

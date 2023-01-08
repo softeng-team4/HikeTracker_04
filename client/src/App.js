@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'leaflet/dist/leaflet.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AddNewHike, AddNewHut, AddNewPark, AppLayout, BrowserHikes, DefaultRoute, HikePage, ManagerPage, ModifyHikeByAuthor, UserProfile } from './components/View';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import API from './API.js'
 import AuthenticationContext from './components/AuthenticationContext';
 import { LoginForm } from './components/AuthComponents/LoginComponents';
@@ -36,7 +36,7 @@ function App() {
   }, [auth]);
 
   //login and logut functions
-  async function login (email, password) {
+  const login = useCallback( async (email, password) => {
     try {
       const user = await API.logIn(email, password);
       setAuthUser(user);
@@ -47,7 +47,8 @@ function App() {
       console.log(err);
       throw (err);
     }
-  }
+  }, [setAuthErr, setAuthUser])
+
   async function logout () {
     try {
       await API.logOut();
@@ -57,6 +58,7 @@ function App() {
       console.log(err);
     }
   }
+  
 
   // function to trigger update of authUser data
   const updateUserData = async () => {
@@ -65,14 +67,14 @@ function App() {
     return userData;
   };
 
-  async function signup (email, password, firstName, lastName, role) {
+  const signup = useCallback( async (email, password, firstName, lastName, role) => {
     try {
       await API.signUp(email, password, firstName, lastName, role);
     } catch (err) {
       console.log(err);
       throw err;
     }
-  }
+  }, [])
 
 
   //value for AuthenticationContext
@@ -84,16 +86,16 @@ function App() {
     onUpdateUserData: updateUserData
   }), [authUser, authErr])
 
-  async function addNewHike (hike) {
+  const addNewHike = useCallback( async (hike) => {
     try {
       await API.addNewHike(hike);
     } catch (e) {
       console.log(e);
       throw (e);
     }
-  }
+  }, [])
 
-  async function addNewHut (hut) {
+  const addNewHut = useCallback( async (hut) => {
     console.log("Adding new hut!");
     try {
       await API.addNewHut(hut);
@@ -101,9 +103,9 @@ function App() {
       console.log(e);
       throw (e);
     }
-  };
+  }, [])
 
-  async function addNewParkingLot (parkingLot) {
+  const addNewParkingLot = useCallback(  async (parkingLot) => {
     console.log("Adding new parking lot!");
     try {
       await API.addNewParkingLot(parkingLot);
@@ -111,7 +113,7 @@ function App() {
       console.log(e);
       throw (e);
     }
-  };
+  }, [])
 
 
   return (
