@@ -30,13 +30,11 @@ function CompletedHikes(props){
             return hikes
         }
         setIsLoading(true)
-        getCompletedHikes().then(r => setHikeList(r))
-    },[])
-
-    useEffect(() =>{
-        if(pageHikeList.length)
+        getCompletedHikes().then(r => {
+            setHikeList(r)
             setIsLoading(false)
-    },[pageHikeList])
+        })
+    },[])
 
     useEffect(() => {
         hikeList.length &&
