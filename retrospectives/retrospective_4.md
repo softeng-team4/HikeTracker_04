@@ -69,11 +69,11 @@ Sections:
 - Technical Debt management:
   - Total hours estimated: 4h
   - Total hours spent: 5h 8m
-  - Hours estimated for remediation by SonarQube: `todo`
-  - Hours estimated for remediation by SonarQube only for the selected and planned issues: `todo`
-  - Hours spent on remediation: `todo`
-  - debt ratio (as reported by SonarQube under "Measures-Maintainability"): `todo`
-  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability ): `todo`
+  - Hours estimated for remediation by SonarQube: 3d 4h
+  - Hours estimated for remediation by SonarQube only for the selected and planned issues: 1d 7h 4m
+  - Hours spent on remediation: 5h 8m
+  - debt ratio (as reported by SonarQube under "Measures-Maintainability"): 0.5%
+  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability ):
 	
 	- Reilability: A
 	- Security: A
