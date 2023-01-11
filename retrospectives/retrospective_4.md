@@ -46,7 +46,7 @@ Sections:
 > technical tasks correspond to story `#0` and don't include story points (not applicable in this case)
 
 - Hours per task (average, standard deviation)
-	- Average: 1.5h estimated vs 1.51h spent
+	- Average: 1.89h estimated vs 1.94h spent
 	- Standard deviation: 1.02h estimated vs 1.43h spent
 
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1
