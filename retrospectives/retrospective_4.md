@@ -47,7 +47,7 @@ Sections:
 
 - Hours per task (average, standard deviation)
 	- Average: 1.5h estimated vs 1.51h spent
-	- Standard deviation: `todo` estimated vs `todo` spent
+	- Standard deviation: 1.02h estimated vs 1.43h spent
 
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1
 	- TTEER = -0.0068965517
