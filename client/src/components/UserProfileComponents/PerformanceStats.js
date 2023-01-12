@@ -28,7 +28,7 @@ const PerformanceStats = (props) => {
                         </tr>
                         <tr>
                             <td>Distance</td>
-                            <td>{stats.distance} km</td>
+                            <td>{stats.distance / 1000} km</td>
                         </tr>
                         <tr>
                             <td>Highest elevation gain</td>
@@ -40,7 +40,7 @@ const PerformanceStats = (props) => {
                         </tr>
                         <tr>
                             <td>Longest hike distance</td>
-                            <td>{stats.longest_hike_distance} km</td>
+                            <td>{stats.longest_hike_distance / 1000} km</td>
                         </tr>
                         <tr>
                             <td>Longest hike time</td>
@@ -48,7 +48,7 @@ const PerformanceStats = (props) => {
                         </tr>
                         <tr>
                             <td>Shortest hike distance</td>
-                            <td>{stats.shortest_hike_distance} km</td>
+                            <td>{stats.shortest_hike_distance / 1000} km</td>
                         </tr>
                         <tr>
                             <td>Shortest hike time</td>
